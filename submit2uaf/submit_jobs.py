@@ -77,9 +77,9 @@ def change(infile,outfile,changearray):
         fout.write(line)
 
 def usage():
-    print 'This script requires 2 arguments:'
-    print 'Usage: '+sys.argv[0]+'  < runnumber> <should submit to batch queue y/n> <CMSSW TAG>'
-    print 'e.g.:  '+sys.argv[0]+'  1000 n'
+    print '\n'
+    print 'Usage: '+sys.argv[0]+'  <cfg filename> <initial run> <last run> <only test script: y/n>'
+    print 'e.g.:  '+sys.argv[0]+'  myconfig.cfg 100 150'
 
 
 def main():
