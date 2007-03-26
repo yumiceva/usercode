@@ -264,7 +264,8 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	//reco::JetTagCollection::iterator btagite;
 
 	int btagCollsize = btagColl.size();
-	
+
+	bool muonfound = false;
 	for( jet = recoJets.begin(); jet != recoJets.end(); ++jet ) {
 
 		int tmptotmuon = 0;
@@ -274,11 +275,14 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			double delta  = ROOT::Math::VectorUtil::DeltaR(jet->p4().Vect(), muon->momentum());
 
 			if ( (delta > conesize_) || muon->pt()<5 ) continue;
+
+			muonfound = true;
 			
 			fMySummary[ispl]->jet_pt.push_back(jet->pt());
 			fMySummary[ispl]->jet_eta.push_back(jet->eta());
 			fMySummary[ispl]->jet_phi.push_back(jet->phi());
 			fMySummary[ispl]->jet_et.push_back(jet->et());
+
 			fMySummary[ispl]->jet_deltar.push_back(delta);
 
 			fMySummary[ispl]->muon_pt.push_back(muon->pt());
@@ -292,6 +296,11 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			tmpvec += muonvec;
 
 			double ptrel = muonvec.Perp(tmpvec);
+
+			// cross-check ptrel
+			//std::cout << "ptrel = " << ptrel << std::endl;
+			//double tmpdot = (muonvec*tmpvec)/tmpvec.Mag();
+			//std::cout << "check = " << sqrt(muon->p()*muon->p() - tmpdot*tmpdot ) << std::endl;
 
 			fMySummary[ispl]->jet_ptrel.push_back(ptrel);
 			fMySummary[ispl]->jet_flavour.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());	
@@ -322,9 +331,44 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			tmptotmuon++;
 
 		}
-		std::cout << " total muons in jet = " << tmptotmuon << std::endl;
+		//std::cout << " total muons in jet = " << tmptotmuon << std::endl;			
 		
-		
+	}
+
+	if ( muonfound ) {
+
+		for( jet = recoJets.begin(); jet != recoJets.end(); ++jet ) {
+
+			fMySummary[ispl]->otherjet_pt.push_back(jet->pt());
+			fMySummary[ispl]->otherjet_eta.push_back(jet->eta());
+			fMySummary[ispl]->otherjet_phi.push_back(jet->phi());
+			fMySummary[ispl]->otherjet_et.push_back(jet->et());
+			
+			fMySummary[ispl]->otherjet_flavour.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());	
+			int isbTagged = 0;
+			double small = 1.e-5;
+			double discriminator0 = -9999.;
+			double discriminator1 = -9999.;
+			double discriminator2 = -9999.;
+			
+			for (int ib = 0; ib != btagCollsize; ++ib ) {
+				
+				// naive way to check for similar jets
+				if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - btagColl[ib].jet().eta())< small ) {
+					isbTagged = 1;
+					discriminator0 = btagInfo[ib].discriminator(0,1);
+					discriminator1 = btagInfo[ib].discriminator(1,1);
+					discriminator2 = btagInfo[ib].discriminator(2,1);
+					
+					break;
+				}
+			}
+			fMySummary[ispl]->otherjet_btagged.push_back(isbTagged);
+			fMySummary[ispl]->otherbtag_discriminator0.push_back(discriminator0);
+			fMySummary[ispl]->otherbtag_discriminator1.push_back(discriminator1);
+			fMySummary[ispl]->otherbtag_discriminator2.push_back(discriminator2);
+
+		}
 	}
 
 	

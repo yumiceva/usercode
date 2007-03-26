@@ -10,7 +10,7 @@
 ________________________________________________________________**/
 
 
-#include "Analyzers/BTagAnalyzer/interface/BTagSummary.h"
+#include "BTagSummary.h"
 
 // C++ standard
 

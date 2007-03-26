@@ -1,0 +1,13 @@
+
+
+
+
+
+# make plots
+
+gROOT->SetStyle("CMS");
+gSystem->Load("BTagSummary_cc.so");
+gStyle->SetOptStat(110)
+.L plot_summary.C++
+plot_summary t("../../../UserCode/Yumiceva/submit2uaf/results/analysis_qcd*.root")
+t.Loop()

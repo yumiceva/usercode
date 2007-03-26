@@ -72,7 +72,7 @@ class BTagSummary : public TObject {
 	std::vector< double > otherbtag_discriminator1;
 	std::vector< double > otherbtag_discriminator2;
 
-	ClassDef(BTagSummary,1);
+	ClassDef(BTagSummary,2);
 
 };
 
