@@ -1,0 +1,1 @@
+./submit_jobs_new2.py analysis_qcd80_120_template.cfg ../../../Analyzers/BTagAnalyzer/test/mc-onsel-120_QCD_pt_80_120_all.txt 100 "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/CMSSW_1_2_3/src/UserCode/Yumiceva/submit2uaf/results" 1
