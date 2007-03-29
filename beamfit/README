@@ -1,0 +1,15 @@
+beamfit.cxx             ! make fit to the beam distribution to xtract 
+                        ! beta*, emitance, z0, sigz0
+                        ! assume that beam and slope are 0.0 
+                        ! (or that the track parameters have been 
+beamfit_fcts.cxx
+dphi_fit.cxx            ! make beamline fit
+gen.cxx                 ! generate events/tracks  (emittance and beta* 
+                        !  effects included)
+tnt.cxx                 
+Tracks.cxx/.h           ! routine to read in CDF data:
+                        ! make a cut on PT and number of Hits 
+                        ! write Root file in format that can be rad by the
+	                ! fitter. 
+                        ! usage:
+                        !       Tracks inputfile outputfile
