@@ -5,6 +5,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TString.h>
+#include "TH1.h"
 
 #include <iostream>
 
@@ -39,6 +40,7 @@ class plot_summary {
 	void Print(bool print=true) {
 		fprintcanvas = print;
 	};
+		
 };
 
 #endif
@@ -105,6 +107,25 @@ std::string ftoa(float i, const char *format="0") {
   return((std::string)temp);
 }
 
+std::string GetStringFlavour(int i) {
+	if ( i == 5 ) { return "_b"; }
+	else if ( i == 4 ) { return "_c"; }
+	else if ( i>0 && i<=3 ) { return "_uds"; }
+	else if ( i == 21 ) { return "_g"; }
+	else if ( i == 0 ) { return "ambiguous";}
+	else { 
+		//cout << " not defined flavour " << i << endl;
+		return "";
+	}
+}
+
+void NormalizeHistograms(std::vector< TH1* > hist) {
+
+	for ( std::vector< TH1* >::size_type ihist = 0; ihist != hist.size() ; ++ihist ) {
+		hist[ihist]->Scale(1./hist[ihist]->Integral());
+	}
+	
+}
 
 Int_t plot_summary::GetEntry(Long64_t entry)
 {
@@ -112,6 +133,7 @@ Int_t plot_summary::GetEntry(Long64_t entry)
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
+
 Long64_t plot_summary::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry

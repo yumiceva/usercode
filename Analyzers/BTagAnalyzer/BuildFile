@@ -11,6 +11,8 @@
 <use name=RecoMuon/TrackingTools>
 <use name=TrackingTools/TransientTrack>
 <use name=SimDataFormats/Track>
+<use name=SimTracker/TrackAssociation>
+<use name=SimTracker/Records>
 <use name=rootrflx>
 <use name=DataFormats/Math>
 <use name=RecoBTag/MCTools>

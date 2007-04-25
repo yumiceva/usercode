@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: BTagSummary.h,v 1.1 2006/12/15 20:00:37 yumiceva Exp $
+ version $Id: BTagSummary.h,v 1.2 2007/03/26 20:42:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -38,14 +38,27 @@ class BTagSummary : public TObject {
 	// reco
 	Int_t njets;    // number of jets
 	Int_t nmuons;   // number of muons
-	Int_t ntracks;   // number of tracks
 	Int_t nvertex;  // number of vertices
+	Int_t ngenjets; // number of generated jets
 
+	std::vector< double > jet_p;
 	std::vector< double > jet_pt;
 	std::vector< double > jet_eta;
 	std::vector< double > jet_phi;
 	std::vector< double > jet_et;
-	
+	std::vector< double > jet_vx;
+	std::vector< double > jet_vy;
+	std::vector< double > jet_vz;
+
+	std::vector< double > genjet_p;
+	std::vector< double > genjet_pt;
+	std::vector< double > genjet_eta;
+	std::vector< double > genjet_phi;
+	std::vector< double > genjet_et;
+	std::vector< double > genjet_vx;
+	std::vector< double > genjet_vy;
+	std::vector< double > genjet_vz;
+
 	std::vector< double > jet_deltar;
 
 	std::vector< double > muon_pt;
@@ -53,6 +66,35 @@ class BTagSummary : public TObject {
 	std::vector< double > muon_phi;
 	std::vector< double > muon_charge;
 	std::vector< double > muon_p;
+	std::vector< double > muon_chi2;
+	std::vector< double > muon_ndof;
+	std::vector< double > muon_d0;
+	std::vector< double > muon_d0sigma;
+	std::vector< double > muon_vx;
+	std::vector< double > muon_vy;
+	std::vector< double > muon_vz;
+
+	std::vector< double > muon_chi2_hits_mc;
+	std::vector< double > muon_pt_hits_mc;
+	std::vector< double > muon_eta_hits_mc;
+	std::vector< double > muon_phi_hits_mc;
+	std::vector< double > muon_charge_hits_mc;
+	std::vector< double > muon_p_hits_mc;
+	std::vector< int > muon_pdgid_hits_mc;
+	std::vector< double > muon_vx_hits_mc;
+	std::vector< double > muon_vy_hits_mc;
+	std::vector< double > muon_vz_hits_mc;
+	
+	std::vector< double > muon_chi2_chi2_mc;
+	std::vector< double > muon_pt_chi2_mc;
+	std::vector< double > muon_eta_chi2_mc;
+	std::vector< double > muon_phi_chi2_mc;
+	std::vector< double > muon_charge_chi2_mc;
+	std::vector< double > muon_p_chi2_mc;
+	std::vector< double > muon_vx_chi2_mc;
+	std::vector< double > muon_vy_chi2_mc;
+	std::vector< double > muon_vz_chi2_mc;
+	std::vector< int > muon_pdgid_chi2_mc;
 	
 	std::vector< double > jet_ptrel;
 	std::vector< int > jet_flavour;

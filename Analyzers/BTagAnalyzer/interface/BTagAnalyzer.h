@@ -34,8 +34,17 @@
 #include <SimDataFormats/Track/interface/SimTrack.h>
 #include <SimDataFormats/Track/interface/SimTrackContainer.h>
 
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/JetReco/interface/CaloJet.h"
+#include "DataFormats/BTauReco/interface/JetTagFwd.h"
+#include "DataFormats/JetReco/interface/CaloJetCollection.h"
+#include "DataFormats/JetReco/interface/GenJet.h"
+
 #include "RecoBTag/MCTools/interface/JetFlavour.h"
 #include "RecoBTag/MCTools/interface/JetFlavourIdentifier.h"
+
+#include "SimTracker/TrackAssociation/interface/TrackAssociatorBase.h"
+#include "SimTracker/TrackAssociation/interface/TrackAssociatorByHits.h"
 
 // Root
 #include <TH1.h>
@@ -44,6 +53,8 @@
 
 #include "Analyzers/BTagAnalyzer/interface/BTagSummary.h"
 
+
+TrackAssociatorBase * associatorByHits;
 
 // class declaration
 
@@ -58,6 +69,9 @@ public:
   virtual void beginJob(edm::EventSetup const&);
   virtual void endJob();
   
+  reco::GenJet GetGenJet(reco::CaloJet calojet, reco::GenJetCollection genJetColl);
+  SimTrack GetGenTrk(reco::Track atrack, edm::SimTrackContainer simTrkColl, edm::SimVertexContainer simVtcs);
+  
 private:
  
   // ----------member data ---------------------------
@@ -69,8 +83,11 @@ private:
   std::string JetTrackAssociatorTags_;
   std::string MuonCollectionTags_;
   std::string CaloJetCollectionTags_;
-
+  std::string GenJetCollectionTags_;
+  std::string SimTrkCollectionTags_;
+  
   JetFlavourIdentifier jetFlavourIdentifier_;
+  JetFlavourIdentifier jetFlavourIdentifier2_;
 
   double conesize_;
   
@@ -85,6 +102,9 @@ private:
   BTagSummary *fMySummary[3];
 
   int feventcounter;
+
+  TrackAssociatorBase *associatorByChi2;
+  TrackAssociatorByHits *associatorByHits;
   
 };
 

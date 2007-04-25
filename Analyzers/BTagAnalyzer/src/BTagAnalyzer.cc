@@ -17,6 +17,9 @@
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
 #include "DataFormats/JetReco/interface/Jet.h"
 #include "DataFormats/BTauReco/interface/JetTag.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/TrackingRecHit/interface/TrackingRecHit.h"
+#include "DataFormats/TrackingRecHit/interface/TrackingRecHitFwd.h"
 
 #include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/MuonReco/interface/MuonFwd.h"
@@ -25,6 +28,10 @@
 #include "DataFormats/BTauReco/interface/TrackCountingTagInfo.h"
 #include "DataFormats/BTauReco/interface/TrackCountingTagInfoFwd.h"
 
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
+
+#include "SimTracker/Records/interface/TrackAssociatorRecord.h"
+#include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
 
 // simulated vertices,..., add <use name=SimDataFormats/Vertex> and <../Track>
 #include <SimDataFormats/Vertex/interface/SimVertex.h>
@@ -91,9 +98,14 @@ BTagAnalyzer::BTagAnalyzer(const ParameterSet& iConfig)
   
   CaloJetCollectionTags_ = iConfig.getParameter<std::string>("Jets");
 
+  GenJetCollectionTags_ = iConfig.getParameter<std::string>("GenJets");
+
   JetTrackAssociatorTags_ = iConfig.getParameter<std::string>("JetTracks");
+
+  SimTrkCollectionTags_ = iConfig.getParameter<std::string>("SimTracks");
   
   jetFlavourIdentifier_ = JetFlavourIdentifier(iConfig.getParameter<edm::ParameterSet>("jetIdParameters"));
+  jetFlavourIdentifier2_ = JetFlavourIdentifier(iConfig.getParameter<edm::ParameterSet>("jetIdParameters2"));
 
   conesize_ = iConfig.getParameter<double>("coneSize");
 						 
@@ -125,13 +137,14 @@ BTagAnalyzer::BTagAnalyzer(const ParameterSet& iConfig)
   }
 	  
   
+  
   //simUnit_= 1.0;  // starting with CMSSW_1_2_x ??
   if ( (edm::getReleaseVersion()).find("CMSSW_1_1_",0)!=std::string::npos){
     simUnit_=0.1;  // for use in  CMSSW_1_1_1 tutorial
   }
   simUnit_= 1.;  // apparently not, still need this
 
-  feventcounter++;
+  feventcounter = 0;
   
 }
 
@@ -165,15 +178,69 @@ void BTagAnalyzer::beginJob(edm::EventSetup const& iSetup){
 
   rootFile_->cd();
   // release validation histograms used in DoCompare.C
-    
+
+  /*
+  // track matching MC
+  edm::ESHandle<TrackAssociatorBase> theChiAssociator;
+  iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByChi2",theChiAssociator);
+  associatorByChi2 = (TrackAssociatorBase *) theChiAssociator.product();
+  
+  edm::ESHandle<TrackAssociatorBase> theHitsAssociator;
+  iSetup.get<TrackAssociatorRecord>().get("TrackAssociatorByHits",theHitsAssociator);
+  associatorByHits = (TrackAssociatorByHits *) theHitsAssociator.product();
+  */
 }
 
 
 void BTagAnalyzer::endJob() {
+
+	std::cout << "[BTagAnalyzer] Total events processed: " << feventcounter << std::endl;
+	
   rootFile_->cd();
 
 }
 
+reco::GenJet BTagAnalyzer::GetGenJet(reco::CaloJet calojet, reco::GenJetCollection genJetColl) {
+
+  reco::GenJet matchedJet;
+
+  double predelta = 99999.;
+  for (GenJetCollection::const_iterator genjet = genJetColl.begin(); genjet != genJetColl.end(); ++genjet) {
+
+    double delta  = ROOT::Math::VectorUtil::DeltaR(genjet->p4().Vect(), calojet.p4().Vect() );
+
+    if ( delta < 0.2 && delta<predelta ) {
+      matchedJet = *genjet;
+      predelta = delta;
+    }
+  }
+  
+  return matchedJet;
+}
+
+SimTrack BTagAnalyzer::GetGenTrk(reco::Track atrack, edm::SimTrackContainer simTrkColl, edm::SimVertexContainer simVtcs) {
+
+	  SimTrack matchedTrk;
+
+  double predelta = 99999.;
+  for (SimTrackContainer::const_iterator gentrk = simTrkColl.begin(); gentrk != simTrkColl.end(); ++gentrk) {
+
+	  double delta  = ROOT::Math::VectorUtil::DeltaR( TVector3((*gentrk).momentum().x(),(*gentrk).momentum().y(),(*gentrk).momentum().z()) , atrack.momentum() );
+	  int type = (*gentrk).type();
+	if ( delta < 0.2 && delta<predelta && ((*gentrk).charge() == atrack.charge() ) && 
+		( abs(type)==11 || abs(type)==13 || abs(type)==15 || abs(type)==211 || abs(type)==321 ) ) {
+		  matchedTrk = *gentrk;
+		  predelta = delta;
+		  HepLorentzVector v = (simVtcs)[(*gentrk).vertIndex()].position();
+		  
+		  //std::cout << "gentrk: vx = " << v.x() << std::endl;
+		  //std::cout << "rectrk: vx = " << atrack.vx() << std::endl;
+		  
+	  }
+  }
+  
+  return matchedTrk;
+}
 
 // ------------ method called to produce the data  ------------
 void
@@ -181,6 +248,7 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 {
 
 	jetFlavourIdentifier_.readEvent(iEvent);
+	jetFlavourIdentifier2_.readEvent(iEvent);
 	
     // get tracks from two collections
 	Handle<reco::TrackCollection> recTrks[2];
@@ -195,11 +263,25 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	Handle<reco::JetTracksAssociationCollection> jetTracksAssociation;
 	iEvent.getByLabel(JetTrackAssociatorTags_, jetTracksAssociation);
 
-	Handle<reco::MuonCollection> muons;
-	iEvent.getByLabel(MuonCollectionTags_, muons);
+	Handle<reco::MuonCollection> muonsColl;
+	iEvent.getByLabel(MuonCollectionTags_, muonsColl);
 
-	Handle<reco::CaloJetCollection> jets;
-	iEvent.getByLabel(CaloJetCollectionTags_, jets);
+	Handle<edm::SimTrackContainer> simtrkColl;
+	iEvent.getByLabel(SimTrkCollectionTags_, simtrkColl);
+	
+	Handle<reco::CaloJetCollection> jetsColl;
+	iEvent.getByLabel(CaloJetCollectionTags_, jetsColl);
+
+	Handle<reco::GenJetCollection> genjetsColl;
+	iEvent.getByLabel(GenJetCollectionTags_, genjetsColl);
+
+	Handle<edm::SimVertexContainer> simVtcs;
+	iEvent.getByLabel( "g4SimHits", simVtcs);
+		
+	// truth tracks
+	//edm::Handle<TrackingParticleCollection>  TPCollectionH ;
+	//iEvent.getByLabel("trackingtruth","TrackTruth",TPCollectionH);
+	//const TrackingParticleCollection tPC = *(TPCollectionH.product());
 
 	// b-tag
 	edm::Handle<reco::JetTagCollection> tagHandle;
@@ -210,13 +292,15 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	iEvent.getByLabel(moduleLabel_[0], tagInfoHandle);
 	const reco::TrackCountingTagInfoCollection & btagInfo = *(tagInfoHandle.product());
 
-	const reco::CaloJetCollection recoJets =   *(jets.product());
-	const reco::MuonCollection    recoMuons =  *(muons.product());
-
+	const reco::CaloJetCollection recoJets =   *(jetsColl.product());
+	const reco::GenJetCollection  genJets  =   *(genjetsColl.product());
+	const reco::MuonCollection    recoMuons =  *(muonsColl.product());
+	const edm::SimTrackContainer simTrks =    *(simtrkColl.product());
+	
 	// MC
   
-	Handle<SimTrackContainer> simTrks;
-	iEvent.getByLabel( simG4_, simTrks);
+	//Handle<SimTrackContainer> simTrks;
+	//iEvent.getByLabel( simG4_, simTrks);
 
 	bool MC=false;
 	Handle<HepMCProduct> evtMC;
@@ -257,12 +341,21 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	// loop over jets
 	fMySummary[ispl]->njets = recoJets.size();
 	fMySummary[ispl]->nmuons = recoMuons.size();
-	
+	fMySummary[ispl]->ngenjets = genJets.size();
+
 	CaloJetCollection::const_iterator jet;
+	//GenJetCollection::const_iterator genjet;
 	reco::MuonCollection::const_iterator muon;
 
 	//reco::JetTagCollection::iterator btagite;
 
+
+	// mc truth 
+/*	reco::RecoToSimCollection phits = 
+	  associatorByHits->associateRecoToSim(recTrks[0],TPCollectionH,&iEvent );
+	reco::RecoToSimCollection pchi2 =
+		associatorByChi2->associateRecoToSim(recTrks[0],TPCollectionH,&iEvent );
+*/	
 	int btagCollsize = btagColl.size();
 
 	bool muonfound = false;
@@ -272,27 +365,122 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		
 		for ( muon = recoMuons.begin(); muon != recoMuons.end(); ++muon) {
 
-			double delta  = ROOT::Math::VectorUtil::DeltaR(jet->p4().Vect(), muon->momentum());
+			Track muonTrk = *muon->track();
 
-			if ( (delta > conesize_) || muon->pt()<5 ) continue;
+			
+			TrackingParticleRef TrueHitsTrk;
+			/*
+			try{
+				std::vector<std::pair<TrackingParticleRef, double> > trkTrueVec = phits[muon->track()];
+				for (std::vector<std::pair<TrackingParticleRef, double> >::const_iterator it = trkTrueVec.begin(); it != trkTrueVec.end(); ++it) {
+					TrueHitsTrk = it->first;
+					double assocChi2 = it->second;
+					
+					fMySummary[ispl]->muon_chi2_hits_mc.push_back(assocChi2);
+					fMySummary[ispl]->muon_pt_hits_mc.push_back( (*TrueHitsTrk).pt() );
+					fMySummary[ispl]->muon_eta_hits_mc.push_back((*TrueHitsTrk).eta());
+					fMySummary[ispl]->muon_phi_hits_mc.push_back((*TrueHitsTrk).phi());
+					fMySummary[ispl]->muon_charge_hits_mc.push_back((*TrueHitsTrk).charge());
+					fMySummary[ispl]->muon_p_hits_mc.push_back((*TrueHitsTrk).p());
+					fMySummary[ispl]->muon_pdgid_hits_mc.push_back( (*TrueHitsTrk).pdgId() );
+				}
+			}
+			catch (Exception iEvent) {
+				std::cout << " track matched by hits to 0 MC tracks" << std::endl;
+			}
+			
+			
+			try{
+				std::vector<std::pair<TrackingParticleRef, double> > trkTrueVec = pchi2[muon->track()];
+				for (std::vector<std::pair<TrackingParticleRef, double> >::const_iterator it = trkTrueVec.begin(); it != trkTrueVec.end(); ++it) {
+					TrueHitsTrk = it->first;
+					double assocChi2 = it->second;
+					
+					fMySummary[ispl]->muon_chi2_chi2_mc.push_back(assocChi2);
+					fMySummary[ispl]->muon_pt_chi2_mc.push_back( (*TrueHitsTrk).pt() );
+					fMySummary[ispl]->muon_eta_chi2_mc.push_back((*TrueHitsTrk).eta());
+					fMySummary[ispl]->muon_phi_chi2_mc.push_back((*TrueHitsTrk).phi());
+					fMySummary[ispl]->muon_charge_chi2_mc.push_back((*TrueHitsTrk).charge());
+					fMySummary[ispl]->muon_p_chi2_mc.push_back((*TrueHitsTrk).p());
+					fMySummary[ispl]->muon_pdgid_chi2_mc.push_back( (*TrueHitsTrk).pdgId() );
+				}
+			}
+			catch (Exception iEvent) {
+				std::cout << " track matched by chi2 to 0 MC tracks" << std::endl;
+			}
+			*/
+			
+			double delta  = ROOT::Math::VectorUtil::DeltaR(jet->p4().Vect(), muonTrk.momentum() );//muon->momentum());
+
+			if ( (delta > conesize_) || muon->pt()<4 ) continue;
 
 			muonfound = true;
-			
+
+			fMySummary[ispl]->jet_p.push_back(jet->p());
 			fMySummary[ispl]->jet_pt.push_back(jet->pt());
 			fMySummary[ispl]->jet_eta.push_back(jet->eta());
 			fMySummary[ispl]->jet_phi.push_back(jet->phi());
 			fMySummary[ispl]->jet_et.push_back(jet->et());
+			fMySummary[ispl]->jet_vx.push_back(jet->vx());
+			fMySummary[ispl]->jet_vy.push_back(jet->vy());
+			fMySummary[ispl]->jet_vz.push_back(jet->vz());
 
+            // find generated jet
+			reco::GenJet genjet = this->GetGenJet(*jet,genJets);
+			fMySummary[ispl]->genjet_p.push_back(genjet.p());
+			fMySummary[ispl]->genjet_pt.push_back(genjet.pt());
+			fMySummary[ispl]->genjet_eta.push_back(genjet.eta());
+			fMySummary[ispl]->genjet_phi.push_back(genjet.phi());
+			fMySummary[ispl]->genjet_et.push_back(genjet.et());
+			fMySummary[ispl]->genjet_vx.push_back(genjet.vx());
+            fMySummary[ispl]->genjet_vy.push_back(genjet.vy());
+            fMySummary[ispl]->genjet_vz.push_back(genjet.vz());
+
+				
 			fMySummary[ispl]->jet_deltar.push_back(delta);
-
-			fMySummary[ispl]->muon_pt.push_back(muon->pt());
-			fMySummary[ispl]->muon_eta.push_back(muon->eta());
-			fMySummary[ispl]->muon_phi.push_back(muon->phi());
-			fMySummary[ispl]->muon_charge.push_back(muon->charge());
-			fMySummary[ispl]->muon_p.push_back(muon->p());
+			
+			fMySummary[ispl]->muon_pt.push_back(muonTrk.pt());
+			fMySummary[ispl]->muon_eta.push_back(muonTrk.eta());
+			fMySummary[ispl]->muon_phi.push_back(muonTrk.phi());
+			fMySummary[ispl]->muon_charge.push_back(muonTrk.charge());
+			fMySummary[ispl]->muon_p.push_back(muonTrk.p());
+			fMySummary[ispl]->muon_trkchi2.push_back(muonTrk.chi2());
+			fMySummary[ispl]->muon_trkndof.push_back(muonTrk.ndof());
+			fMySummary[ispl]->muon_chi2.push_back( (*(muon->combinedMuon())).chi2() );
+			fMySummary[ispl]->muon_ndof.push_back( (*(muon->combinedMuon())).ndof() );
+			Track muonSA = *muon->standAloneMuon();
+			int nhit = muonSA.recHitsSize();
+			fMySummary[ispl]->muon_SArechits.push_back( nhit );
+			nhit = muonTrk.recHitsSize();
+			fMySummary[ispl]->muon_trkrechits.push_back( nhit );
+			fMySummary[ispl]->muon_d0.push_back(muonTrk.d0());
+			fMySummary[ispl]->muon_d0sigma.push_back(muonTrk.d0Error());
+			fMySummary[ispl]->muon_vx.push_back(muonTrk.vx());
+			fMySummary[ispl]->muon_vy.push_back(muonTrk.vy());
+			fMySummary[ispl]->muon_vz.push_back(muonTrk.vz());
+			
+			// muon ECAL
+			//const reco::SuperCluster & muon_sc = *(muon->superCluster() );
+			//math::XYZPoint v( 0, 0, 0 ); // this should be taken from something else...
+			//math::XYZVector p = muon_sc.energy() * ( muon_sc.position() - v ).unit();
+			//double mu_ecal_e = sqrt( 0.105658*0.105658 + p.mag2() ); // using muon mass
+			//std::cout << "muon ecal e= " << mu_ecal_e << " px = " << p.x() << " py = " << p.y() << " pz = " << p.z() << std::endl;
+			
+			// find a sim track
+			SimTrack genmuon = this->GetGenTrk(muonTrk, simTrks, *(simVtcs.product()) );
+			fMySummary[ispl]->muon_p_chi2_mc.push_back( genmuon.momentum().vect().mag());
+			fMySummary[ispl]->muon_pt_chi2_mc.push_back( genmuon.momentum().perp() );
+			fMySummary[ispl]->muon_phi_chi2_mc.push_back( genmuon.momentum().phi() );
+			fMySummary[ispl]->muon_eta_chi2_mc.push_back( genmuon.momentum().pseudoRapidity() );
+			fMySummary[ispl]->muon_charge_chi2_mc.push_back( genmuon.charge() );
+			fMySummary[ispl]->muon_vx_chi2_mc.push_back(genmuon.momentum().x());
+                        fMySummary[ispl]->muon_vy_chi2_mc.push_back(genmuon.momentum().y());
+                        fMySummary[ispl]->muon_vz_chi2_mc.push_back(genmuon.momentum().z());
+			fMySummary[ispl]->muon_pdgid_chi2_mc.push_back( genmuon.type() );
 			
 			TVector3 tmpvec(jet->p4().Vect().X(),jet->p4().Vect().Y(),  jet->p4().Vect().Z());
-			TVector3 muonvec(muon->momentum().X(), muon->momentum().Y(),muon->momentum().Z());
+			TVector3 muonvec(muonTrk.momentum().X(), muonTrk.momentum().Y(),muonTrk.momentum().Z());
+			
 			tmpvec += muonvec;
 
 			double ptrel = muonvec.Perp(tmpvec);
@@ -303,7 +491,8 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			//std::cout << "check = " << sqrt(muon->p()*muon->p() - tmpdot*tmpdot ) << std::endl;
 
 			fMySummary[ispl]->jet_ptrel.push_back(ptrel);
-			fMySummary[ispl]->jet_flavour.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());	
+			fMySummary[ispl]->jet_flavour_alg.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());	
+			fMySummary[ispl]->jet_flavour_phy.push_back(jetFlavourIdentifier2_.identifyBasedOnPartons(*jet).flavour());	
 
 			int isbTagged = 0;
 			double small = 1.e-5;

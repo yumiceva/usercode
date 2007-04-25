@@ -1,48 +1,47 @@
 /**_________________________________________________________________
-   class:   BTagSummary.cc
-   package: Validation/RecoVertex
+   class:   TopEvent.cc
+   package: Analyzer/TopEvent
    
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: BTagSummary.cc,v 1.2 2007/03/26 20:42:14 yumiceva Exp $
+ version $Id: TopEvent.cc,v 1.2 2007/03/26 20:42:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
 
-#include "BTagSummary.h"
+#include "Analyzers/TopEvent/interface/TopEvent.h"
 
 // C++ standard
 
 // ROOT
 
 //_______________________________________________________________
-BTagSummary::BTagSummary() {
+TopEvent::TopEvent() {
 
 	this->Reset();
-	
 }
 
 //_______________________________________________________________
-BTagSummary::~BTagSummary() {
+TopEvent::~TopEvent() {
 }
 
 //_______________________________________________________________
-void BTagSummary::Reset() {
+void TopEvent::Reset() {
 
+  // event information
 	event   = -1;
 	run     = -1;
 
-		
-	// mc
-
-	// reco
+	// total number of objects
 	njets       = -1;
-	nmuons      = -1;
-	
-	nvertex     = -1;
+	nleptons    = -1;
+        nvertex     = -1;
+	// MC
 	ngenjets    = -1;
+	ngenleptons = -1;
 
+	// jets
 	jet_p.clear();
 	jet_pt.clear();
 	jet_eta.clear();
@@ -58,45 +57,37 @@ void BTagSummary::Reset() {
 	genjet_eta.clear();
 	genjet_phi.clear();
 	genjet_et.clear();
-	genjet_vx.clear();
-	genjet_vy.clear();
-	genjet_vz.clear();
 	
-	muon_pt.clear();
-	muon_eta.clear();
-	muon_phi.clear();
-	muon_charge.clear();
-	muon_p.clear();
-	muon_chi2.clear();
-	muon_ndof.clear();
-	muon_d0.clear();
-	muon_d0sigma.clear();
-	muon_vx.clear();
-	muon_vy.clear();
-	muon_vz.clear();
+	lepton_pt.clear();
+	lepton_eta.clear();
+	lepton_phi.clear();
+	lepton_charge.clear();
+	lepton_p.clear();
+	lepton_chi2.clear();
+	lepton_ndof.clear();
+	lepton_d0.clear();
+	lepton_d0sigma.clear();
+	lepton_vx.clear();
+	lepton_vy.clear();
+	lepton_vz.clear();
+	lepton_pid.clear();
+	// MC
+	lepton_chi2_hits_mc.clear();
+	lepton_pt_hits_mc.clear();
+	lepton_eta_hits_mc.clear();
+	lepton_phi_hits_mc.clear();
+	lepton_charge_hits_mc.clear();
+	lepton_p_hits_mc.clear();
+	lepton_pdgid_hits_mc.clear();
 	
-	muon_chi2_hits_mc.clear();
-	muon_pt_hits_mc.clear();
-	muon_eta_hits_mc.clear();
-	muon_phi_hits_mc.clear();
-	muon_charge_hits_mc.clear();
-	muon_p_hits_mc.clear();
-	muon_pdgid_hits_mc.clear();
-	muon_vx_hits_mc.clear();
-	muon_vy_hits_mc.clear();
-	muon_vz_hits_mc.clear();
-	
-	muon_chi2_chi2_mc.clear();
-	muon_pt_chi2_mc.clear();
-	muon_eta_chi2_mc.clear();
-	muon_phi_chi2_mc.clear();
-	muon_charge_chi2_mc.clear();
-	muon_p_chi2_mc.clear();
-	muon_pdgid_chi2_mc.clear();
-	muon_vx_chi2_mc.clear();
-	muon_vy_chi2_mc.clear();
-	muon_vz_chi2_mc.clear();
-	
+	lepton_chi2_chi2_mc.clear();
+	lepton_pt_chi2_mc.clear();
+	lepton_eta_chi2_mc.clear();
+	lepton_phi_chi2_mc.clear();
+	lepton_charge_chi2_mc.clear();
+	lepton_p_chi2_mc.clear();
+	lepton_pdgid_chi2_mc.clear();
+
 	jet_ptrel.clear();
 	jet_flavour.clear();
 	
