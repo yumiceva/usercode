@@ -1,0 +1,22 @@
+#ifndef kinfit_h
+#define kinfit_h
+
+#include "TMatrixD.h"
+
+
+class kinfit {
+
+  public:
+
+	kinfit();
+	virtual ~kinfit();
+
+	void iteration(int i, int nf, int nm, int ny,
+				   TMatrixD f, TMatrix dfdm, TMatrix dfdy, TMatrix C);
+	
+
+
+};
+
+#endif
+
