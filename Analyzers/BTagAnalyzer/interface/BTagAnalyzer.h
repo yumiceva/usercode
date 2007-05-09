@@ -1,6 +1,14 @@
 #ifndef BTagAnalyzer_h
 #define BTagAnalyzer_h
-
+/** \class edm::EDAnalyzer BTagAnalysis
+ *  
+ * Analyzer to select jets together with a muon on it.
+ *
+ * \author Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
+ *
+ * \version $Id: BTagAnalyzer.h,v 1.2 2007/01/22 04:48:40 yumiceva Exp $
+ *
+ */
 
 // system include files
 #include <memory>
@@ -51,6 +59,7 @@
 #include <TFile.h>
 #include <TTree.h>
 
+// event class
 #include "Analyzers/BTagAnalyzer/interface/BTagSummary.h"
 
 
@@ -71,6 +80,7 @@ public:
   
   reco::GenJet GetGenJet(reco::CaloJet calojet, reco::GenJetCollection genJetColl);
   SimTrack GetGenTrk(reco::Track atrack, edm::SimTrackContainer simTrkColl, edm::SimVertexContainer simVtcs);
+  int GetMotherId(edm::SimVertexContainer simVtxColl, edm::SimTrackContainer simTrkColl, SimTrack muonMC);
   
 private:
  
@@ -83,6 +93,7 @@ private:
   std::string JetTrackAssociatorTags_;
   std::string MuonCollectionTags_;
   std::string CaloJetCollectionTags_;
+  std::string CorrCaloJetCollectionTags_;
   std::string GenJetCollectionTags_;
   std::string SimTrkCollectionTags_;
   

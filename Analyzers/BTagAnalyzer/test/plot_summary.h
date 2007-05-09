@@ -1,11 +1,22 @@
 #ifndef plot_summary_h
 #define plot_summary_h
+/** \class plot_summary
+ *  
+ * Analyze ROOT files produced by analyzer and create plots
+ *
+ * \author Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
+ *
+ * \version $Id: plot_summary.h,v 1.2 2007/01/22 04:48:40 yumiceva Exp $
+ *
+ */
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 #include <TString.h>
 #include "TH1.h"
+#include "TH2.h"
+#include "TCanvas.h"
 
 #include <iostream>
 
@@ -17,11 +28,14 @@ class plot_summary {
 	TChain            *fChain;
 	Int_t             fCurrent;
 	TFile            *ffile;
+	TFile            *foutfile;
 	TString           fsamplename;
-	bool              fprintcanvas;
-	
-	BTagSummary *fBTagSummary[3];
 		
+	BTagSummary *fBTagSummary[3];
+	std::map<std::string, TCanvas*> cv_map;
+	std::map<std::string, TH1*> h1;
+	std::map<std::string, TH2*> h2;
+	
 	//plot_summary(TTree *tree=0);
 	plot_summary(TString filename);
 	virtual ~plot_summary();
@@ -37,8 +51,33 @@ class plot_summary {
 	void SampleName(TString sample) {
 		fsamplename = sample;
 	};
-	void Print(bool print=true) {
-		fprintcanvas = print;
+	void Print(string extension="png",string tag="") {
+		if ( tag != "" ) tag = "_"+tag;
+		
+		for(std::map<std::string,TCanvas*>::const_iterator icv=cv_map.begin(); icv!=cv_map.end(); ++icv){
+
+			string tmpname = icv->first;
+			TCanvas *acv = icv->second;
+			acv->Print(TString(tmpname+tag+"."+extension));
+		}		
+	};
+	
+	void SaveToFile(TString filename="plots_summary.root") {
+
+		//if (!foutfile) {
+			
+		foutfile = new TFile(filename,"RECREATE");
+		for(std::map<std::string,TH1* >::const_iterator ih=h1.begin(); ih!=h1.end(); ++ih){
+			TH1 *htemp = ih->second;
+			htemp->Write();
+		}
+		for(std::map<std::string,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih){
+			TH2 *htemp = ih->second;
+			htemp->Write();
+		}
+		
+		foutfile->Write();
+		foutfile->Close();
 	};
 		
 };
@@ -51,7 +90,7 @@ plot_summary::plot_summary(TString filename)
 	//ffile = (TFile*)gROOT->GetListOfFiles()->FindObject(filename);
 	//ffile = new TFile(filename);
 	//TTree *tree = (TTree*)gDirectory->Get("summary");
-
+		
 	TChain *tree = new TChain("summary");
 	tree->Add(filename);
 	
@@ -59,8 +98,7 @@ plot_summary::plot_summary(TString filename)
 	//fBTagSummary[1] = new BTagSummary();
 	//fBTagSummary[2] = new BTagSummary();
 
-	fprintcanvas = false;
-	
+		
 	//cout << " file loaded and objects created" << endl;
 	Init(tree);
 	
@@ -110,8 +148,8 @@ std::string ftoa(float i, const char *format="0") {
 std::string GetStringFlavour(int i) {
 	if ( i == 5 ) { return "_b"; }
 	else if ( i == 4 ) { return "_c"; }
-	else if ( i>0 && i<=3 ) { return "_uds"; }
-	else if ( i == 21 ) { return "_g"; }
+	else if ( i>0 && i<=3 ) { return "_udsg"; }
+	else if ( i == 21 ) { return "_udsg"; }
 	else if ( i == 0 ) { return "ambiguous";}
 	else { 
 		//cout << " not defined flavour " << i << endl;

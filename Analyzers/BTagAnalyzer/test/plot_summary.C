@@ -55,18 +55,24 @@ void plot_summary::Loop()
 //    fChain->GetEntry(jentry);       //read all branches
 //by  b_branchname->GetEntry(ientry); //read only this branch
   
-  double w_nevents[5] = { 4.8411e-2,
-		      6.8658e-2,
-		      54.0482e-2,
-		      21.7107e-2,
-		      12.5342e-2};
-
-  double xsec[5] = {
-	  6.32E-01,
-	  1.63E-01,
-	  2.16E-02,
-	  3.08E-03,
-      4.94E-04 };
+	double w_nevents[7] = {
+		154536.,
+		219167.,
+		1728296.,
+		693038.,
+		400110.,
+		409244.,
+		313778. };
+	  
+	  // xsec in mb
+  double xsec[7] = {
+	  6.32e-01,
+	  1.63e-01,
+	  2.16e-02,
+	  3.08e-03,
+      4.94e-04,
+      1.01e-04,
+	  2.45e-05 };
 
 	std::vector < std::string > pthat_label;
 	pthat_label.push_back("_20_30");
@@ -74,10 +80,12 @@ void plot_summary::Loop()
 	pthat_label.push_back("_50_80");
 	pthat_label.push_back("_80_120");
 	pthat_label.push_back("_120_170");
-	pthat_label.push_back("_20_170");
+	pthat_label.push_back("_170_230");
+	pthat_label.push_back("_230_300");
+	pthat_label.push_back("_20_300");
 	
-	std::map<std::string, TH1*> h1;
 	
+
 	std::string hname;
 	std::string htitle;
 
@@ -91,11 +99,11 @@ void plot_summary::Loop()
 
 	hname = "muon_pt"; 
 	htitle = "muon p_{T} [GeV/c]";
-	h1[hname] = new TH1D(hname.c_str(),htitle.c_str(),60,0.,80.);		
+	h1[hname] = new TH1D(hname.c_str(),htitle.c_str(),50,0.,80.);		
 
 	hname = "jet_pt"; 
 	htitle = "jet p_{T} [GeV/c]";
-	h1[hname] = new TH1D(hname.c_str(),htitle.c_str(),60,0.,170.);
+	h1[hname] = new TH1D(hname.c_str(),htitle.c_str(),50,0.,170.);
 
 	//hname = "jet_et"; 
 	//htitle = "jet E_{T} [GeV]";
@@ -127,15 +135,15 @@ void plot_summary::Loop()
 	quark_label.push_back("");
 	quark_label.push_back("_b");
 	quark_label.push_back("_c");
-	quark_label.push_back("_uds");
-	quark_label.push_back("_g");
+	quark_label.push_back("_udsg");
+	//quark_label.push_back("_g");
 
 	std::vector < int > quark_color;
 	quark_color.push_back(1);
 	quark_color.push_back(2);
 	quark_color.push_back(3);
 	quark_color.push_back(4);
-	quark_color.push_back(6);
+	//quark_color.push_back(6);
 	
 	std::vector < std::string > cut_label;
 	cut_label.push_back("");
@@ -161,10 +169,11 @@ void plot_summary::Loop()
 				thename += cut_label[ic];
 				thename += pthat_label[ipt];
 				
-				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),60,0.,4.);
+				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),30,0.,4.);
 				h1[thename]->SetLineColor(quark_color[iq]);
 				h1[thename]->SetMarkerColor(quark_color[iq]);
 				h1[thename]->SetXTitle(h1[thename]->GetTitle());
+				h1[thename]->Sumw2();
 				cout << " Histogram: " << thename << " created." << endl;
 			
 				thename = hname;
@@ -172,10 +181,11 @@ void plot_summary::Loop()
 				thename += cut_label[ic];
 				thename += pthat_label[ipt];
 				
-				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),60,0.,4.);
+				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),30,0.,4.);
 				h1[thename]->SetLineColor(quark_color[iq]);
 				h1[thename]->SetMarkerColor(quark_color[iq]);
 				h1[thename]->SetXTitle(h1[thename]->GetTitle());
+				h1[thename]->Sumw2();
 				cout << " Histogram: " << thename << " created." << endl;
 				
 			}
@@ -195,8 +205,10 @@ void plot_summary::Loop()
 				thename += quark_label[iq];
 				thename += cut_label[ic];
 				thename += pthat_label[ipt];
-				
-				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),20,20.,170.);
+
+				// original
+				//h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),20,20.,170.);
+				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),15,30.,250.);
 				h1[thename]->Sumw2();
 				h1[thename]->SetLineColor(quark_color[iq]);
 				h1[thename]->SetMarkerColor(quark_color[iq]);
@@ -208,7 +220,7 @@ void plot_summary::Loop()
 				thename += cut_label[ic];
 				thename += pthat_label[ipt];
 				
-				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),20,20.,170.);
+				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),15,30.,250.);
 				h1[thename]->Sumw2();
 				h1[thename]->SetLineColor(quark_color[iq]);
 				h1[thename]->SetMarkerColor(quark_color[iq]);
@@ -218,7 +230,60 @@ void plot_summary::Loop()
 		}
 
 	}
+	
+	// Double_t jetetabins[8] = {0.0,0.25,0.5,0.75,1.0,1.25,1.5,2.0};
+	const int nptbins = 30;
+	Double_t jetptbins[nptbins] = {30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,
+								   105., 110., 115., 120., 125., 130., 135., 140., 150, 160., 170., 180., 190., 200., 250.};
+	
+	Double_t jetetabins[8] = {0.0,0.25,0.5,0.75,1.0,1.25,1.5,2.0};
 
+	h2["npT"] = new TH2F("npT","MuTag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+	h2["ppT"] = new TH2F("ppT","MuTag && CMBtag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+	h2["ncmbpT"] = new TH2F("ncmbpT","opp tag: MuTag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+	h2["pcmbpT"] = new TH2F("pcmbpT","opp tag MuTag && CMBtag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+
+	h2["nEta"] = new TH2F("nEta","MuTag Eta vs pTrel",7,jetetabins,50,0.,5.);
+	h2["pEta"] = new TH2F("pEta","MuTag && CMBtag Eta vs pTrel",7,jetetabins,50,0.,5.);
+	h2["ncmbEta"] = new TH2F("ncmbEta","opp tag: MuTag Eta vs pTrel",7,jetetabins,50,0.,5.);
+	h2["pcmbEta"] = new TH2F("pcmbEta","opp tag MuTag && CMBtag Eta vs pTrel",7,jetetabins,50,0.,5.);
+
+	h2["b_npT"] = new TH2F("b_npT","b MuTag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+	h2["b_ppT"] = new TH2F("b_ppT","b MuTag && CMBtag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+	h2["b_ncmbpT"] = new TH2F("b_ncmbpT","b opp tag: MuTag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+	h2["b_pcmbpT"] = new TH2F("b_pcmbpT","b opp tag MuTag && CMBtag pT vs pTrel",nptbins-1,jetptbins,50,0.,5.);
+
+	h2["b_nEta"] = new TH2F("b_nEta","b MuTag Eta vs pTrel",7,jetetabins,50,0.,5.);
+	h2["b_pEta"] = new TH2F("b_pEta","b MuTag && CMBtag Eta vs pTrel",7,jetetabins,50,0.,5.);
+	h2["b_ncmbEta"] = new TH2F("b_ncmbEta","b opp tag: MuTag Eta vs pTrel",7,jetetabins,50,0.,5.);
+	h2["b_pcmbEta"] = new TH2F("b_pcmbEta","b opp tag MuTag && CMBtag Eta vs pTrel",7,jetetabins,50,0.,5.);
+
+	// errors
+	h2["npT"]->Sumw2();
+	h2["ppT"]->Sumw2();
+	h2["ncmbpT"]->Sumw2();
+	h2["pcmbpT"]->Sumw2();
+	h2["nEta"]->Sumw2();
+	h2["pEta"]->Sumw2();
+	h2["ncmbEta"]->Sumw2();
+	h2["pcmbEta"]->Sumw2();
+	h2["b_npT"]->Sumw2();
+	h2["b_ppT"]->Sumw2();
+	h2["b_ncmbpT"]->Sumw2();
+	h2["b_pcmbpT"]->Sumw2();
+	h2["b_nEta"]->Sumw2();
+	h2["b_pEta"]->Sumw2();
+	h2["b_ncmbEta"]->Sumw2();
+	h2["b_pcmbEta"]->Sumw2();
+	
+/*
+	for(std::map<std::string,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih) {
+
+		TH2F *htmp = ih->second;
+		htmp->Sumw2();
+	}
+*/
+		
 	hname = "discriminator1";
 	htitle = "2nd track IP significance";
 	for ( int iq=0; iq != quark_size; iq++ ) {
@@ -271,27 +336,41 @@ void plot_summary::Loop()
 		TString tmpfilename = TString(tmpfile->GetName());
 		std::string this_pthat_label = "";
 		if ( tmpfilename.Contains("qcd20_30_") ) { 
-			weight = w_nevents[0] / xsec[0];
+			weight = 0.;//xsec[0] / w_nevents[0];
 			this_pthat_label = "_20_30";
 		}
-		else if ( tmpfilename.Contains("qcd30_50_") ) { 
-			weight = w_nevents[1] / xsec[1];
+		else if ( tmpfilename.Contains("30_50_") ) { 
+			weight = 0.;//xsec[1] / w_nevents[1];
 			this_pthat_label = "_30_50";
 		}
-		else if ( tmpfilename.Contains("qcd50_80_") ) { 
-			weight = w_nevents[2] / xsec[2];
+		else if ( tmpfilename.Contains("50_80_") ) { 
+			weight = 1.;//xsec[2] / w_nevents[2];
 			this_pthat_label = "_50_80";
 		}
-		else if ( tmpfilename.Contains("qcd80_120_") ) { 
-			weight = w_nevents[3] / xsec[3];
+		else if ( tmpfilename.Contains("80_120_") ) { 
+			weight = 1.;//xsec[3] / w_nevents[3];
 			this_pthat_label = "_80_120";
 		}
 		else if ( tmpfilename.Contains("qcd120_170_") ) { 
-			weight = w_nevents[4] / xsec[4];
+			weight = 1.;//xsec[4] / w_nevents[4];
 			this_pthat_label = "_120_170";
 		}
-		else { cout << " NO matched name found for dataset " << tmpfilename << endl; }
-				
+		else if ( tmpfilename.Contains("qcd170_230_") ) { 
+			weight = 1.;//xsec[5] / w_nevents[5];
+			this_pthat_label = "_170_230";
+		}
+		else if ( tmpfilename.Contains("qcd230_300_") ) { 
+			weight = 1.;//xsec[6] / w_nevents[6];
+			this_pthat_label = "_230_300";
+		}
+		else { 
+		  cout << " NO matched name found for dataset " << tmpfilename << endl;
+		  //weight = 1.;
+		}
+
+		//weight = 1.;///weight;
+
+		
 		h1["njets"]->Fill(fBTagSummary[0]->njets);
 		h1["nmuons"]->Fill(fBTagSummary[0]->nmuons);
 
@@ -333,6 +412,8 @@ void plot_summary::Loop()
 		double muon_p = fBTagSummary[0]->muon_p[ijet];
 		double muon_chi2 = fBTagSummary[0]->muon_chi2[ijet];
 		double muon_ndof = fBTagSummary[0]->muon_ndof[ijet];
+		//double muon_
+		
 		double jet_pt = fBTagSummary[0]->jet_pt[ijet];
 		double jet_phi = fBTagSummary[0]->jet_phi[ijet];
 		double jet_eta = fBTagSummary[0]->jet_eta[ijet];
@@ -344,7 +425,7 @@ void plot_summary::Loop()
 		double jet_p = fBTagSummary[0]->jet_p[ijet];
 		double deltar = fBTagSummary[0]->jet_deltar[ijet];
 		double ptrel = fBTagSummary[0]->jet_ptrel[ijet];
-		int flavour = fBTagSummary[0]->jet_flavour[ijet];
+		int flavour = fBTagSummary[0]->jet_flavour_alg[ijet];
 
 			// change axis for ptrel
 			/*
@@ -357,15 +438,15 @@ void plot_summary::Loop()
 			*/
 			
 		h1["jet_pt"]->Fill(jet_pt, weight);
-		h1["muon_pt"]->Fill(muon_pt);
+		h1["muon_pt"]->Fill(muon_pt, weight);
 		h1["jet_deltar"]->Fill(deltar,weight);
 			
 			bool pass = false;
 			//cout << " muon_chi2=" << muon_chi2 << " muon_ndof=" << muon_ndof << endl;
 			
-		if ( jet_et>20 && TMath::Abs(jet_eta)<2.0 &&
-			 muon_pt> 4 &&
-			 deltar < 0.4 && (muon_chi2/muon_ndof)<10
+		if ( jet_et>30 && TMath::Abs(jet_eta)<2.0 &&
+			 muon_pt> 6 &&
+			 deltar < 0.4 && (muon_chi2/muon_ndof)<3 
 			) pass = true;
 			
 		//muonjet_tag.push_back(pass); // n sample
@@ -384,7 +465,10 @@ void plot_summary::Loop()
 			}
 
 			//bool othertagged = false;
-			double otherdisc = fBTagSummary[0]->otherbtag_discriminator1[ijet];
+			double otherdisc = -9999.;
+			if ( tmpfilename.Contains("BBbar") || tmpfilename.Contains("CCbar") ) { otherdisc=fBTagSummary[0]->otherbtag_discriminator0[ijet]; }
+			else { otherdisc=fBTagSummary[0]->otherbtag_discriminator1[ijet]; }
+			
 			//cout << "otherdisc: " << otherdisc << endl;
 			if ( (ojet_pt>20.) && TMath::Abs(jet_eta)<2.0 && (otherdisc > TCdiscriminator) ) othertagged = true;
 		}
@@ -399,7 +483,10 @@ void plot_summary::Loop()
 		//otherjet_ptrel_tag.push_back(othertagged&&ptrelcut);
 				
 		bool tagged = false;
-		double disc = fBTagSummary[0]->btag_discriminator1[ijet];
+		double disc = -999.;
+		if ( tmpfilename.Contains("BBbar") || tmpfilename.Contains("CCbar") ) { disc = fBTagSummary[0]->btag_discriminator0[ijet]; }
+		else { disc = fBTagSummary[0]->btag_discriminator1[ijet]; }
+		
 		if ( pass && disc>4.0 ) tagged = true;
 
 		//	muonjet_btag_tag.push_back(tagged);
@@ -415,62 +502,84 @@ void plot_summary::Loop()
 
 		// fill histograms
 		// only for jet without ambiguous parton flavour
-		if ( flavour == 0 ) continue;
+		//if ( flavour == 0 ) continue;
 		
 		std::string thename1 = "jet_ptrel";
 		std::string thename2 = "jet_et";
 		std::string suffixname = GetStringFlavour(flavour);
 		suffixname += ""; // cut
 		suffixname += this_pthat_label;
+		string suf = "_20_300";
 		if (pass) {
 			//cout << " begin filling histo: pass " << (thename1+suffixname) << " " << (thename2+suffixname) << endl;
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += ""; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += ""; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+				if ( flavour == 5) {
+					h2["b_npT"]->Fill(jet_pt,ptrel);
+					h2["b_nEta"]->Fill(TMath::Abs(jet_eta),ptrel);
+				}
+			}
+			h2["npT"]->Fill(jet_pt,ptrel);
+			h2["nEta"]->Fill(TMath::Abs(jet_eta),ptrel);
 		}
 		suffixname = GetStringFlavour(flavour);
 		suffixname += "_cut1"; // cut
 		suffixname += this_pthat_label;
 		if (ptrelcut) {
 			//cout << " begin filling histo: cut1" << endl;
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += "_cut1"; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
-			
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += "_cut1"; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+				
+			}
+						
 		}
 		suffixname = GetStringFlavour(flavour);
 		suffixname += "_cut2"; // cut
 		suffixname += this_pthat_label;
 		if (tagged) {
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += "_cut2"; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += "_cut2"; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+				if ( flavour == 5) {
+					h2["b_ncmbpT"]->Fill(jet_pt,ptrel);
+					h2["b_ncmbEta"]->Fill(TMath::Abs(jet_eta),ptrel);
+				}
+			}
+			h2["ncmbpT"]->Fill(jet_pt,ptrel);
+			h2["ncmbEta"]->Fill(TMath::Abs(jet_eta),ptrel);
+			
 			
 		}
 		suffixname = GetStringFlavour(flavour);
 		suffixname += "_cut3"; // cut
 		suffixname += this_pthat_label;
 		if (bothtaggers) {
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += "_cut3"; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
-			
+			if ( flavour !=0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += "_cut3"; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+			}
 		}
 		thename1 = "jet_ptrel_other";
 		thename2 = "jet_et_other";
@@ -478,50 +587,72 @@ void plot_summary::Loop()
 		suffixname += ""; // cut
 		suffixname += this_pthat_label;
 		if (pass && othertagged) {
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += ""; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += ""; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+				if ( flavour == 5) {
+					h2["b_ppT"]->Fill(jet_pt,ptrel);
+					h2["b_pEta"]->Fill(TMath::Abs(jet_eta),ptrel);
+				}
+			}
+			h2["ppT"]->Fill(jet_pt,ptrel);
+			h2["pEta"]->Fill(TMath::Abs(jet_eta),ptrel);
+			
 		}
 		suffixname = GetStringFlavour(flavour);
 		suffixname += "_cut1"; // cut
 		suffixname += this_pthat_label;
 		if (ptrelcut && othertagged) {
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += "_cut1"; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
-			
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += "_cut1"; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+			}
 		}
 		suffixname = GetStringFlavour(flavour);
 		suffixname += "_cut2"; // cut
 		suffixname += this_pthat_label;
 		if (tagged && othertagged) {
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += "_cut2"; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += "_cut2"; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+				if ( flavour == 5) {
+					h2["b_pcmbpT"]->Fill(jet_pt,ptrel);
+					h2["b_pcmbEta"]->Fill(TMath::Abs(jet_eta),ptrel);
+				}
+			}
+			h2["pcmbpT"]->Fill(jet_pt,ptrel);
+			h2["pcmbEta"]->Fill(TMath::Abs(jet_eta),ptrel);
 		}
 		suffixname = GetStringFlavour(flavour);
 		suffixname += "_cut3"; // cut
 		suffixname += this_pthat_label;
 		if (bothtaggers && othertagged) {
-			h1[thename1+suffixname]->Fill(ptrel);
-			h1[thename2+suffixname]->Fill(jet_et);
-			suffixname = GetStringFlavour(flavour);
-			suffixname += "_cut3"; // cut
-			suffixname += "_20_170";
-			h1[thename1+suffixname]->Fill(ptrel,weight);
-			h1[thename2+suffixname]->Fill(jet_et,weight);
+			if ( flavour != 0 ) {
+				h1[thename1+suffixname]->Fill(ptrel);
+				h1[thename2+suffixname]->Fill(jet_et);
+				suffixname = GetStringFlavour(flavour);
+				suffixname += "_cut3"; // cut
+				suffixname += suf;
+				h1[thename1+suffixname]->Fill(ptrel,weight);
+				h1[thename2+suffixname]->Fill(jet_et,weight);
+			}
+			
+
 		}
 		
 //
@@ -663,13 +794,55 @@ void plot_summary::Loop()
 		
 				
 	} // end loop
+
+	// fix overflow bins
+	for(std::map<std::string,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih){
+		string tmpname = ih->first;
+		TH2 *htmp = ih->second;
+		if (TString(tmpname).Contains("pT") ) {
+			for (int iptrel=1; iptrel <=50; iptrel++) {
+				double overflow = htmp->GetBinContent(nptbins,iptrel);// number of bins is nptbins-1
+				htmp->SetBinContent(nptbins-1,iptrel, htmp->GetBinContent(nptbins-1,iptrel) + overflow);
+				htmp->SetBinContent(nptbins,iptrel, 0.);
+			}
+		}
+		if (TString(tmpname).Contains("Eta") ) {
+			for (int iptrel=1; iptrel <=50; iptrel++) {
+				double overflow = htmp->GetBinContent(8,iptrel);
+				htmp->SetBinContent(7,iptrel, htmp->GetBinContent(7,iptrel) + overflow);
+				htmp->SetBinContent(8,iptrel, 0.);
+			}
+		}
+	}
+	
+	
 	
 	cout << " Events with multiples muons: " << count_multiple_mu << endl;
+	cout << " Total entries = " << fChain->GetEntries() << endl;
+
+	//______________________________________________________
+
+	cv_map["jet_pt"] = new TCanvas("jet_pt","jet_pt",700,700);
+	h1["jet_pt"]->SetXTitle("jet p_{T} [GeV/c]");
+	h1["jet_pt"]->Draw();
+
+	//______________________________________________________
+
+	cv_map["muon_pt"] = new TCanvas("muon_pt","muon_pt",700,700);
+	h1["muon_pt"]->SetXTitle("muon p_{T} [GeV/c]");
+	h1["muon_pt"]->Draw();
+
 	
-	std::map<std::string, TCanvas*> cv_map;
+	//______________________________________________________
+
 	std::vector< TH1* > tmp_hist_vec;
+
+	TLegend *leg = new TLegend(0.55,0.45,0.85,0.7,"","NDC");
+	leg->SetBorderSize(0);
+	leg->SetFillColor(10);
+	//leg->SetTextSize(0.03);
 	
-	for ( int iq=1; iq != quark_size; ++iq ) { // ignore first entry with label ""
+	for ( int iq=1; iq <4; ++iq ) { // ignore first entry with label ""
 	
 		string thenamecv = "ptrel_in_pthatbins";
 		thenamecv += quark_label[iq];
@@ -679,38 +852,130 @@ void plot_summary::Loop()
 		tmp_hist_vec.clear();
 		//tmp_hist_vec.push_back(h1["jet_ptrel"+quark_label[iq]+"_20_30"]);
 		//tmp_hist_vec.push_back(h1["jet_ptrel"+quark_label[iq]+"_30_50"]);
+
+		//tmpname = "jet_ptrel"+quark_label[iq]+"_30_50";
+		//h1[tmpname]->SetLineColor(7);
+		//h1[tmpname]->SetMarkerColor(7);
+		//tmp_hist_vec.push_back(h1[tmpname]);
+		//if (iq==1) leg->AddEntry(h1[tmpname],"30 < #hat{p}_{T} < 50","l");
+
 		tmpname = "jet_ptrel"+quark_label[iq]+"_50_80";
 		h1[tmpname]->SetLineColor(1);
+		h1[tmpname]->SetMarkerColor(1);
 		tmp_hist_vec.push_back(h1[tmpname]);
+		if (iq==1) leg->AddEntry(h1[tmpname],"50 < #hat{p}_{T} < 80","l");
+		
 		tmpname = "jet_ptrel"+quark_label[iq]+"_80_120";
 		h1[tmpname]->SetLineColor(2);
+		h1[tmpname]->SetMarkerColor(2);
 		tmp_hist_vec.push_back(h1[tmpname]);
-		std::sort(tmp_hist_vec.begin(), tmp_hist_vec.end(), SortByMaximum);
+		if (iq==1) leg->AddEntry(h1[tmpname],"80 < #hat{p}_{T} < 120","l");
+		
+		tmpname = "jet_ptrel"+quark_label[iq]+"_120_170";
+		h1[tmpname]->SetLineColor(3);
+		h1[tmpname]->SetMarkerColor(3);
+		tmp_hist_vec.push_back(h1[tmpname]);
+		if (iq==1) leg->AddEntry(h1[tmpname],"120 < #hat{p}_{T} < 170","l");
+		
+		tmpname = "jet_ptrel"+quark_label[iq]+"_170_230";
+		h1[tmpname]->SetLineColor(4);
+		h1[tmpname]->SetMarkerColor(4);
+		tmp_hist_vec.push_back(h1[tmpname]);
+		if (iq==1) leg->AddEntry(h1[tmpname],"170 < #hat{p}_{T} < 230","l");
+		
+		tmpname = "jet_ptrel"+quark_label[iq]+"_230_300";
+		h1[tmpname]->SetLineColor(6);
+		h1[tmpname]->SetMarkerColor(6);
+		tmp_hist_vec.push_back(h1[tmpname]);
+		if (iq==1) leg->AddEntry(h1[tmpname],"230 < #hat{p}_{T} < 300","l");
+		
 		NormalizeHistograms(tmp_hist_vec);
+		std::sort(tmp_hist_vec.begin(), tmp_hist_vec.end(), SortByMaximum);
 		
 		for ( std::vector< TH1* >::size_type ihist = 0; ihist != tmp_hist_vec.size() ; ++ihist ) {
 			if ( ihist==0 ) tmp_hist_vec[ihist]->Draw();
 			else tmp_hist_vec[ihist]->Draw("same");
 		}
+		leg->Draw();
+	}
+	
+
+	//______________________________________________________
+
+	std::vector< double > events_sample;
+	std::map<std::string, std::vector< double > > eventsmap;
+	
+	TLegend *leg_allpthat = new TLegend(0.5,0.5,0.8,0.7,"","NDC");
+	leg_allpthat->SetBorderSize(0);
+	leg_allpthat->SetFillColor(10);
+
+	std::vector< string > label_vec;
+	label_vec.push_back("jet_ptrel");
+	label_vec.push_back("jet_ptrel_other");
+	int labelsize = label_vec.size();
+
+	for ( int il=0; il != labelsize; ++il) {
+	
+		for (int ic=0; ic != cut_size; ++ic) {
+
+			string thenamecv = label_vec[il]+"_allpthat";
+			thenamecv += cut_label[ic];
 		
+			cv_map[thenamecv] = new TCanvas(thenamecv.c_str(),thenamecv.c_str(), 700, 700);
+			tmp_hist_vec.clear();
+			events_sample.clear();
+		
+			string pref = label_vec[il];
+			string suf = "_20_300";
+			string tmpname = pref+"_b"+cut_label[ic]+suf;
+		
+			tmp_hist_vec.push_back(h1[tmpname]);
+			if (ic==0 && il==0) leg_allpthat->AddEntry(h1[tmpname],"b-jet","l");
+			events_sample.push_back( h1[tmpname]->Integral() );
+			
+			tmpname = pref+"_c"+cut_label[ic]+suf;
+			tmp_hist_vec.push_back(h1[tmpname]);
+			if (ic==0 && il==0) leg_allpthat->AddEntry(h1[tmpname],"c-jet","l");
+			events_sample.push_back( h1[tmpname]->Integral() );
+			
+			tmpname = pref+"_udsg"+cut_label[ic]+suf;
+			tmp_hist_vec.push_back(h1[tmpname]);
+			if (ic==0 && il==0) leg_allpthat->AddEntry(h1[tmpname],"udsg-jet","l");
+			events_sample.push_back( h1[tmpname]->Integral() );
+		
+			//tmpname = pref+"_g"+cut_label[ic]+suf;
+			//tmp_hist_vec.push_back(h1[tmpname]);
+			//if (ic==0 && il==0) leg_allpthat->AddEntry(h1[tmpname],"g-jet","l");
+			events_sample.push_back( h1[tmpname]->Integral() );
+			
+			//NormalizeHistograms(tmp_hist_vec);
+			std::sort(tmp_hist_vec.begin(), tmp_hist_vec.end(), SortByMaximum);
+			
+			for ( std::vector< TH1* >::size_type ihist = 0; ihist != tmp_hist_vec.size() ; ++ihist ) {
+				if ( ihist==0 ) tmp_hist_vec[ihist]->Draw();
+				else tmp_hist_vec[ihist]->Draw("same");
+			}
+			leg_allpthat->Draw();
+			eventsmap[pref+cut_label[ic]+suf] = events_sample;
+		
+			// plot normalized plot for first selection
+			if (ic==0) {
+				string thenamecv = label_vec[il]+"_allpthat";
+				thenamecv += cut_label[ic] + "_norm";
+				cv_map[thenamecv] = new TCanvas(thenamecv.c_str(),thenamecv.c_str(), 700, 700);
+				
+				NormalizeHistograms(tmp_hist_vec);
+				std::sort(tmp_hist_vec.begin(), tmp_hist_vec.end(), SortByMaximum);
+		
+				for ( std::vector< TH1* >::size_type ihist = 0; ihist != tmp_hist_vec.size() ; ++ihist ) {
+					if ( ihist==0 ) tmp_hist_vec[ihist]->Draw();
+					else tmp_hist_vec[ihist]->Draw("same");
+				}
+				leg_allpthat->Draw();
+			}
+		}
 	}
 
-	string thenamecv = "ptrel_allpthat";
-	cv_map[thenamecv] = new TCanvas(thenamecv.c_str(),thenamecv.c_str(), 700, 700);
-
-	tmp_hist_vec.clear();
-	tmp_hist_vec.push_back(h1["jet_ptrel_b_20_170"]);
-	tmp_hist_vec.push_back(h1["jet_ptrel_c_20_170"]);
-	tmp_hist_vec.push_back(h1["jet_ptrel_uds_20_170"]);
-	tmp_hist_vec.push_back(h1["jet_ptrel_g_20_170"]);
-
-
-	
-
-
-
-	
-	
 	
 	/*
 	
@@ -1013,12 +1278,14 @@ void plot_summary::Loop()
 
 
 	}
-	
-	TCanvas *cvjetet_b = new TCanvas("jetet_b","jetet_b",700,700);
-	cvjetet_b->Divide(2,2);
-	cvjetet_b->cd(1);
-	TH1D *h1d_b_cut1 = (TH1D*) h1["jet_et"]->Clone("h1d_b_cut1");
-	h1d_b_cut1->Divide(h1["jet_et_b_cut1"],h1["jet_et_b"],1.,1.,"B");
+
+	*/
+	string suf = "_20_300";
+	cv_map["jetet_b"] = new TCanvas("jetet_b","jetet_b",700,700);
+	cv_map["jetet_b"]->Divide(2,2);
+	cv_map["jetet_b"]->cd(1);
+	TH1D *h1d_b_cut1 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_b_cut1"+suf));
+	h1d_b_cut1->Divide(h1["jet_et_b_cut1"+suf],h1["jet_et_b"+suf],1.,1.,"B");
 	h1d_b_cut1->SetYTitle("#epsilon^{pTrel}");
 	h1d_b_cut1->SetMarkerColor(1);
 	h1d_b_cut1->SetMarkerStyle(8);
@@ -1026,26 +1293,26 @@ void plot_summary::Loop()
 	h1d_b_cut1->Draw("PE1");
 	gPad->Update();
 
-	cvjetet_b->cd(2);
-        TH1D *h1d_b_cut2 = (TH1D*) h1["jet_et"]->Clone("h1d_b_cut2");
-        h1d_b_cut2->Divide(h1["jet_et_b_cut2"],h1["jet_et_b"],1.,1.,"B");
+	cv_map["jetet_b"]->cd(2);
+        TH1D *h1d_b_cut2 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_b_cut2"+suf));
+        h1d_b_cut2->Divide(h1["jet_et_b_cut2"+suf],h1["jet_et_b"+suf],1.,1.,"B");
 	h1d_b_cut2->SetYTitle("#epsilon^{Tagger}");
 	h1d_b_cut2->SetMarkerColor(1);
         h1d_b_cut2->SetMarkerStyle(8);
 	h1d_b_cut2->SetMarkerSize(1.5);
         h1d_b_cut2->Draw("PE1");
 
-	cvjetet_b->cd(3);
-        TH1D *h1d_b_cut3 = (TH1D*) h1["jet_et"]->Clone("h1d_b_cut3");
-        h1d_b_cut3->Divide(h1["jet_et_b_cut3"],h1["jet_et_b"],1.,1.,"B");
+	cv_map["jetet_b"]->cd(3);
+        TH1D *h1d_b_cut3 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_b_cut3"+suf));
+        h1d_b_cut3->Divide(h1["jet_et_b_cut3"+suf],h1["jet_et_b"+suf],1.,1.,"B");
 	h1d_b_cut3->SetYTitle("#epsilon^{pTrel&Tagger}");
 	h1d_b_cut3->SetMarkerColor(1);
         h1d_b_cut3->SetMarkerStyle(8);
 	h1d_b_cut3->SetMarkerSize(1.5);
         h1d_b_cut3->Draw("PE1");
 
-        cvjetet_b->cd(4);
-        TH1D *h1d_b_ratio = (TH1D*) h1["jet_et"]->Clone("h1d_b_ratio");
+        cv_map["jetet_b"]->cd(4);
+        TH1D *h1d_b_ratio = (TH1D*) h1["jet_et"+suf]->Clone("h1d_b_ratio");
         h1d_b_ratio->Divide(h1d_b_cut3,h1d_b_cut1);
 	h1d_b_ratio->Divide(h1d_b_cut2);
 	h1d_b_ratio->SetYTitle("#epsilon^{pTrel&Tagger}/(#epsilon^{pTrel}#epsilon^{Tagger})");
@@ -1058,15 +1325,15 @@ void plot_summary::Loop()
 	f1_b->SetLineColor(3);
 	f1_b->Draw("same");
 
-	cvjetet_b->Update();
-	cvjetet_b->Print("figures/"+TString(cvjetet_b->GetName())+".pdf");
-	
+	cv_map["jetet_b"]->Update();
+	//cv_map["jetet_b"]->Print("figures/"+TString(cvjetet_b->GetName())+".pdf");
 
-	TCanvas *cvjetet_c = new TCanvas("jetet_c","jetet_c",700,700);
-        cvjetet_c->Divide(2,2);
-        cvjetet_c->cd(1);
-        TH1D *h1d_c_cut1 = (TH1D*) h1["jet_et"]->Clone("h1d_c_cut1");
-        h1d_c_cut1->Divide(h1["jet_et_c_cut1"],h1["jet_et_c"],1.,1.,"B");
+
+	cv_map["jetet_c"] = new TCanvas("jetet_c","jetet_c",700,700);
+        cv_map["jetet_c"]->Divide(2,2);
+        cv_map["jetet_c"]->cd(1);
+        TH1D *h1d_c_cut1 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_c_cut1"+suf));
+        h1d_c_cut1->Divide(h1["jet_et_c_cut1"+suf],h1["jet_et_c"+suf],1.,1.,"B");
         h1d_c_cut1->SetYTitle("#epsilon^{pTrel}");
         h1d_c_cut1->SetMarkerColor(1);
         h1d_c_cut1->SetMarkerStyle(8);
@@ -1074,26 +1341,26 @@ void plot_summary::Loop()
         h1d_c_cut1->Draw("PE1");
         gPad->Update();
 
-        cvjetet_c->cd(2);
-        TH1D *h1d_c_cut2 = (TH1D*) h1["jet_et"]->Clone("h1d_c_cut2");
-        h1d_c_cut2->Divide(h1["jet_et_c_cut2"],h1["jet_et_c"],1.,1.,"B");
+        cv_map["jetet_c"]->cd(2);
+        TH1D *h1d_c_cut2 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_c_cut2"+suf));
+        h1d_c_cut2->Divide(h1["jet_et_c_cut2"+suf],h1["jet_et_c"+suf],1.,1.,"B");
         h1d_c_cut2->SetYTitle("#epsilon^{Tagger}");
         h1d_c_cut2->SetMarkerColor(1);
         h1d_c_cut2->SetMarkerStyle(8);
         h1d_c_cut2->SetMarkerSize(1.5);
         h1d_c_cut2->Draw("PE1");
 
-        cvjetet_c->cd(3);
-        TH1D *h1d_c_cut3 = (TH1D*) h1["jet_et"]->Clone("h1d_c_cut3");
-        h1d_c_cut3->Divide(h1["jet_et_c_cut3"],h1["jet_et_c"],1.,1.,"B");
+        cv_map["jetet_c"]->cd(3);
+        TH1D *h1d_c_cut3 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_c_cut3"+suf));
+        h1d_c_cut3->Divide(h1["jet_et_c_cut3"+suf],h1["jet_et_c"+suf],1.,1.,"B");
         h1d_c_cut3->SetXTitle("#epsilon^{pTrel&Tagger}");
         h1d_c_cut3->SetMarkerColor(1);
         h1d_c_cut3->SetMarkerStyle(8);
         h1d_c_cut3->SetMarkerSize(1.5);
         h1d_c_cut3->Draw("PE1");
 
-        cvjetet_c->cd(4);
-        TH1D *h1d_c_ratio = (TH1D*) h1["jet_et"]->Clone("h1d_c_ratio");
+        cv_map["jetet_c"]->cd(4);
+        TH1D *h1d_c_ratio = (TH1D*) h1["jet_et"+suf]->Clone("h1d_c_ratio");
         h1d_c_ratio->Divide(h1d_c_cut3,h1d_c_cut1);
         h1d_c_ratio->Divide(h1d_c_cut2);
         h1d_c_ratio->SetYTitle("#epsilon^{pTrel&Tagger}/(#epsilon^{pTrel}#epsilon^{Tagger})");
@@ -1106,61 +1373,61 @@ void plot_summary::Loop()
         f1_c->SetLineColor(3);
         f1_c->Draw("same");
 
-	cvjetet_c->Update();
-        cvjetet_c->Print("figures/"+TString(cvjetet_c->GetName())+".pdf");
+	cv_map["jetet_c"]->Update();
+        //cvjetet_c->Print("figures/"+TString(cvjetet_c->GetName())+".pdf");
 
-	TCanvas *cvjetet_uds = new TCanvas("jetet_uds","jetet_uds",700,700);
-        cvjetet_uds->Divide(2,2);
-        cvjetet_uds->cd(1);
-        TH1D *h1d_uds_cut1 = (TH1D*) h1["jet_et"]->Clone("h1d_uds_cut1");
-        h1d_uds_cut1->Divide(h1["jet_et_uds_cut1"],h1["jet_et_uds"],1.,1.,"B");
-        h1d_uds_cut1->SetYTitle("#epsilon^{pTrel}");
-        h1d_uds_cut1->SetMarkerColor(1);
-        h1d_uds_cut1->SetMarkerStyle(8);
-        h1d_uds_cut1->SetMarkerSize(1.5);
-        h1d_uds_cut1->Draw("PE1");
+	cv_map["jetet_udsg"] = new TCanvas("jetet_udsg","jetet_udsg",700,700);
+        cv_map["jetet_udsg"]->Divide(2,2);
+        cv_map["jetet_udsg"]->cd(1);
+        TH1D *h1d_udsg_cut1 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_udsg_cut1"+suf));
+        h1d_udsg_cut1->Divide(h1["jet_et_udsg_cut1"+suf],h1["jet_et_udsg"+suf],1.,1.,"B");
+        h1d_udsg_cut1->SetYTitle("#epsilon^{pTrel}");
+        h1d_udsg_cut1->SetMarkerColor(1);
+        h1d_udsg_cut1->SetMarkerStyle(8);
+        h1d_udsg_cut1->SetMarkerSize(1.5);
+        h1d_udsg_cut1->Draw("PE1");
         gPad->Update();
 
-        cvjetet_uds->cd(2);
-        TH1D *h1d_uds_cut2 = (TH1D*) h1["jet_et"]->Clone("h1d_uds_cut2");
-        h1d_uds_cut2->Divide(h1["jet_et_uds_cut2"],h1["jet_et_uds"],1.,1.,"B");
-        h1d_uds_cut2->SetYTitle("#epsilon^{Tagger}");
-        h1d_uds_cut2->SetMarkerColor(1);
-        h1d_uds_cut2->SetMarkerStyle(8);
-        h1d_uds_cut2->SetMarkerSize(1.5);
-        h1d_uds_cut2->Draw("PE1");
+        cv_map["jetet_udsg"]->cd(2);
+        TH1D *h1d_udsg_cut2 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_udsg_cut2"+suf));
+        h1d_udsg_cut2->Divide(h1["jet_et_udsg_cut2"+suf],h1["jet_et_udsg"+suf],1.,1.,"B");
+        h1d_udsg_cut2->SetYTitle("#epsilon^{Tagger}");
+        h1d_udsg_cut2->SetMarkerColor(1);
+        h1d_udsg_cut2->SetMarkerStyle(8);
+        h1d_udsg_cut2->SetMarkerSize(1.5);
+        h1d_udsg_cut2->Draw("PE1");
 
-        cvjetet_uds->cd(3);
-        TH1D *h1d_uds_cut3 = (TH1D*) h1["jet_et"]->Clone("h1d_uds_cut3");
-        h1d_uds_cut3->Divide(h1["jet_et_uds_cut3"],h1["jet_et_uds"],1.,1.,"B");
-        h1d_uds_cut3->SetXTitle("#epsilon^{pTrel&Tagger}");
-        h1d_uds_cut3->SetMarkerColor(1);
-        h1d_uds_cut3->SetMarkerStyle(8);
-        h1d_uds_cut3->SetMarkerSize(1.5);
-        h1d_uds_cut3->Draw("PE1");
+        cv_map["jetet_udsg"]->cd(3);
+        TH1D *h1d_udsg_cut3 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_udsg_cut3"+suf));
+        h1d_udsg_cut3->Divide(h1["jet_et_udsg_cut3"+suf],h1["jet_et_udsg"+suf],1.,1.,"B");
+        h1d_udsg_cut3->SetXTitle("#epsilon^{pTrel&Tagger}");
+        h1d_udsg_cut3->SetMarkerColor(1);
+        h1d_udsg_cut3->SetMarkerStyle(8);
+        h1d_udsg_cut3->SetMarkerSize(1.5);
+        h1d_udsg_cut3->Draw("PE1");
 
-        cvjetet_uds->cd(4);
-        TH1D *h1d_uds_ratio = (TH1D*) h1["jet_et"]->Clone("h1d_uds_ratio");
-        h1d_uds_ratio->Divide(h1d_uds_cut3,h1d_uds_cut1);
-        h1d_uds_ratio->Divide(h1d_uds_cut2);
-        h1d_uds_ratio->SetYTitle("#epsilon^{pTrel&Tagger}/(#epsilon^{pTrel}#epsilon^{Tagger})");
-        h1d_uds_ratio->SetMarkerColor(1);
-        h1d_uds_ratio->SetMarkerStyle(8);
-        h1d_uds_ratio->SetMarkerSize(1.5);
-        h1d_uds_ratio->Draw("PE1");
-        h1d_uds_ratio->Fit("pol1","0");
-        TF1 *f1_uds = h1d_uds_ratio->GetFunction("pol1");
-        f1_uds->SetLineColor(3);
-        f1_uds->Draw("same");
+        cv_map["jetet_udsg"]->cd(4);
+        TH1D *h1d_udsg_ratio = (TH1D*) h1["jet_et"+suf]->Clone("h1d_udsg_ratio");
+        h1d_udsg_ratio->Divide(h1d_udsg_cut3,h1d_udsg_cut1);
+        h1d_udsg_ratio->Divide(h1d_udsg_cut2);
+        h1d_udsg_ratio->SetYTitle("#epsilon^{pTrel&Tagger}/(#epsilon^{pTrel}#epsilon^{Tagger})");
+        h1d_udsg_ratio->SetMarkerColor(1);
+        h1d_udsg_ratio->SetMarkerStyle(8);
+        h1d_udsg_ratio->SetMarkerSize(1.5);
+        h1d_udsg_ratio->Draw("PE1");
+        h1d_udsg_ratio->Fit("pol1","0");
+        TF1 *f1_udsg = h1d_udsg_ratio->GetFunction("pol1");
+        f1_udsg->SetLineColor(3);
+        f1_udsg->Draw("same");
 
-	cvjetet_uds->Update();
-        cvjetet_uds->Print("figures/"+TString(cvjetet_uds->GetName())+".pdf");
-
-	TCanvas *cvjetet_g = new TCanvas("jetet_g","jetet_g",700,700);
-        cvjetet_g->Divide(2,2);
-        cvjetet_g->cd(1);
-        TH1D *h1d_g_cut1 = (TH1D*) h1["jet_et"]->Clone("h1d_g_cut1");
-        h1d_g_cut1->Divide(h1["jet_et_g_cut1"],h1["jet_et_g"],1.,1.,"B");
+	cv_map["jetet_udsg"]->Update();
+        //cvjetet_udsg->Print("figures/"+TString(cvjetet_udsg->GetName())+".pdf");
+	/*
+	cv_map["jetet_g"] = new TCanvas("jetet_g","jetet_g",700,700);
+        cv_map["jetet_g"]->Divide(2,2);
+        cv_map["jetet_g"]->cd(1);
+        TH1D *h1d_g_cut1 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_g_cut1"+suf));
+        h1d_g_cut1->Divide(h1["jet_et_g_cut1"+suf],h1["jet_et_g"+suf],1.,1.,"B");
         h1d_g_cut1->SetYTitle("#epsilon^{pTrel}");
         h1d_g_cut1->SetMarkerColor(1);
         h1d_g_cut1->SetMarkerStyle(8);
@@ -1168,26 +1435,26 @@ void plot_summary::Loop()
         h1d_g_cut1->Draw("PE1");
         gPad->Update();
 
-        cvjetet_g->cd(2);
-        TH1D *h1d_g_cut2 = (TH1D*) h1["jet_et"]->Clone("h1d_g_cut2");
-        h1d_g_cut2->Divide(h1["jet_et_g_cut2"],h1["jet_et_g"],1.,1.,"B");
+        cv_map["jetet_g"]->cd(2);
+        TH1D *h1d_g_cut2 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_g_cut2"+suf));
+        h1d_g_cut2->Divide(h1["jet_et_g_cut2"+suf],h1["jet_et_g"+suf],1.,1.,"B");
         h1d_g_cut2->SetYTitle("#epsilon^{Tagger}");
         h1d_g_cut2->SetMarkerColor(1);
         h1d_g_cut2->SetMarkerStyle(8);
         h1d_g_cut2->SetMarkerSize(1.5);
         h1d_g_cut2->Draw("PE1");
 
-        cvjetet_g->cd(3);
-        TH1D *h1d_g_cut3 = (TH1D*) h1["jet_et"]->Clone("h1d_g_cut3");
-        h1d_g_cut3->Divide(h1["jet_et_g_cut3"],h1["jet_et_g"],1.,1.,"B");
+        cv_map["jetet_g"]->cd(3);
+        TH1D *h1d_g_cut3 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_g_cut3"+suf));
+        h1d_g_cut3->Divide(h1["jet_et_g_cut3"+suf],h1["jet_et_g"+suf],1.,1.,"B");
         h1d_g_cut3->SetXTitle("#epsilon^{pTrel&Tagger}");
         h1d_g_cut3->SetMarkerColor(1);
         h1d_g_cut3->SetMarkerStyle(8);
         h1d_g_cut3->SetMarkerSize(1.5);
         h1d_g_cut3->Draw("PE1");
 
-        cvjetet_g->cd(4);
-        TH1D *h1d_g_ratio = (TH1D*) h1["jet_et"]->Clone("h1d_g_ratio");
+        cv_map["jetet_g"]->cd(4);
+        TH1D *h1d_g_ratio = (TH1D*) h1["jet_et"+suf]->Clone("h1d_g_ratio");
         h1d_g_ratio->Divide(h1d_g_cut3,h1d_g_cut1);
         h1d_g_ratio->Divide(h1d_g_cut2);
         h1d_g_ratio->SetYTitle("#epsilon^{pTrel&Tagger}/(#epsilon^{pTrel}#epsilon^{Tagger})");
@@ -1200,9 +1467,9 @@ void plot_summary::Loop()
         f1_g->SetLineColor(3);
         f1_g->Draw("same");
 
-	cvjetet_g->Update();
-        cvjetet_g->Print("figures/"+TString(cvjetet_g->GetName())+".pdf");
-
+	cv_map["jetet_g"]->Update();
+        //cvjetet_g->Print("figures/"+TString(cvjetet_g->GetName())+".pdf");
+		*/
 
 
 	// print results
@@ -1210,7 +1477,7 @@ void plot_summary::Loop()
 	
 	cout << " Results: \n" << endl;
 	
-	cout << "| sample " << setw(cw) << setw(cw) << setw(cw) << "|  total  " << setw(cw) << "|  b " << setw(cw) << "|  c " << setw(cw) << "|  uds " << setw(cw) << "|  g      |" << endl;
+	cout << "| sample " << setw(cw) << setw(cw) << setw(cw) << "|  total  " << setw(cw) << "|  b " << setw(cw) << "|  c " << setw(cw) << "|  udsg " << endl; //setw(cw) << "|  g      |" << endl;
 
 	//cout << " mu+jet:"<< setw(cw);
 	for(std::map<std::string,std::vector< double > >::const_iterator imap=eventsmap.begin(); imap!=eventsmap.end(); ++imap){
@@ -1229,7 +1496,7 @@ void plot_summary::Loop()
 		cout << endl;
 	}
 	
-	 */
+	 
 }
 
 

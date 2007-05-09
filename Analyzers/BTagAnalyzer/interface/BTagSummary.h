@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: BTagSummary.h,v 1.2 2007/03/26 20:42:14 yumiceva Exp $
+ version $Id: BTagSummary.h,v 1.3 2007/04/25 03:53:52 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -49,6 +49,17 @@ class BTagSummary : public TObject {
 	std::vector< double > jet_vx;
 	std::vector< double > jet_vy;
 	std::vector< double > jet_vz;
+	std::vector< double > jet_deltar;
+	std::vector< double > jet_ptrel;
+	std::vector< int > jet_flavour_phy;
+	std::vector< int > jet_flavour_alg;
+	std::vector< int > jet_btagged;
+	
+	std::vector< double > jetcorr_p;
+	std::vector< double > jetcorr_pt;
+	std::vector< double > jetcorr_et;
+	std::vector< double > jetcorr_ptrel;
+	std::vector< int > jetcorr_btagged;
 
 	std::vector< double > genjet_p;
 	std::vector< double > genjet_pt;
@@ -59,7 +70,6 @@ class BTagSummary : public TObject {
 	std::vector< double > genjet_vy;
 	std::vector< double > genjet_vz;
 
-	std::vector< double > jet_deltar;
 
 	std::vector< double > muon_pt;
 	std::vector< double > muon_eta;
@@ -99,12 +109,8 @@ class BTagSummary : public TObject {
 	std::vector< double > muon_vy_chi2_mc;
 	std::vector< double > muon_vz_chi2_mc;
 	std::vector< int > muon_pdgid_chi2_mc;
-	
-	std::vector< double > jet_ptrel;
-	std::vector< int > jet_flavour_phy;
-	std::vector< int > jet_flavour_alg;
-	
-	std::vector< int > jet_btagged;
+	std::vector< int > muon_mother_pdgid_chi2_mc;
+
 	std::vector< double > btag_discriminator0;
 	std::vector< double > btag_discriminator1;
 	std::vector< double > btag_discriminator2;
