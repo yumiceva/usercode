@@ -1,13 +1,24 @@
 
+1. Run Analyzer to produce small root filte with all the needed data
 
+ cmsRun analysis.cfg
 
+2. Build and run code to produce plots, within root
 
-
-# make plots
-
+// my style
 gROOT->SetStyle("CMS");
+// load BTagSummary class event
 gSystem->Load("BTagSummary_cc.so");
-gStyle->SetOptStat(110)
+// turn on statistics box
+gStyle->SetOptStat(110);
+// build program
 .L plot_summary.C++
-plot_summary t("../../../UserCode/Yumiceva/submit2uaf/results/analysis_qcd*.root")
-t.Loop()
+// create a object type plot_summary initialized to the filename(s) of the rooot file(s)
+plot_summary t("../../../UserCode/Yumiceva/submit2uaf/results/analysis_qcd*.root");
+// loop over events
+t.Loop();
+// save output histograms
+t.SaveToFile("final_plots.root");
+// print plots
+t.Print("png");
+
