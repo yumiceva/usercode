@@ -241,6 +241,15 @@ if __name__ == "__main__":
     else:
         print "Comparasion with reference plots will NOT be run."
     
+
+    # check if make_plots.C exits
+    if not os.path.isfile("make_plots.C"):
+        print "make_plots.C file does not exist in path, will get it from CVS..."
+        os.system("cvs co -d tmpdir UserCode/Yumiceva/ValidationTools/make_plots.C")
+        os.system("mv tmpdir/make_plots.C .")
+        os.system("rm -rf tmpdir")
+    
+
     
     cmssw_version = os.environ['CMSSW_VERSION']
     
