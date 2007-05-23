@@ -31,7 +31,7 @@ function displaymessage(thetext){
                         </div>
                         <div id="fedora-header-items">
                                 <span class="fedora-header-icon">
-				      [<a href="" alt="">About this page</a>]<br>
+				      [<a href="https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideVertexReco#Analysis_and_Validation" alt="">About this page</a>]<br>
                                         <!--<a href="yumiceva_fluka.pdf" id="link-internal">
                                         <img src="../../img/pdf.png" alt="">Download PDF version of this web page</a> -->
                                         <!--This page is automatically updated every 30'<br>-->

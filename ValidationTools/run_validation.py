@@ -288,7 +288,6 @@ if __name__ == "__main__":
 			    sys.exit()
         
 
-	
 		
 		    os.system("cp "+isample+ " the_data.cfg")
 
@@ -317,6 +316,7 @@ if __name__ == "__main__":
                     outputlog.write(" Build ROOT macro to produce plots \n")
                     
 		    tmpbatchroot.write('''void tmpbatch() {
+                    gROOT->SetStyle("Plain");
 		    gROOT->ProcessLine(".L make_plots.C++");
 		    ''')
 		    if not option.nocompare:
@@ -337,6 +337,7 @@ if __name__ == "__main__":
 		    #os.system("root -l -b -q tmpbatch.C")
 
                     #os.system("mv "+cmssw_version+"_validation.root "+rootfilename)
+                    outputlog.close()
 		    os.system("mv "+logfilename+ " " + folder+"/.")
                     print " root and log file moved to " + folder
                     # clean up

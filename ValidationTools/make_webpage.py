@@ -163,7 +163,17 @@ if __name__ == "__main__":
 		    usage()
 		    sys.exit()
 
+    outputfilelog = sys.argv[0].replace(".py",".log")
+    
     print " working path: " + webpath
+
+    print " log file: " + webpath+"/"+outputfilelog
+    
+    print " copying base html files to "+ webpath
+    os.system("cp -r css "+webpath)
+    os.system("cp -r img "+webpath)
+    os.system("cp index_head.txt "+webpath)
+    os.system("cp index_foot.txt "+webpath)
     
     os.chdir(webpath)
 
@@ -176,14 +186,14 @@ if __name__ == "__main__":
  #   except IOError:
 #	    print ""
 
-    outputfilelog = sys.argv[0].replace(".py",".log")
     
     try:
 	    outputlog = open(outputfilelog,"w")
     except IOError:
 	    print " Error when try to open file " + outputfilelog
 	    sys.exit()
-    
+
+        
     # redirec output to log file
     sys.stdout = outputlog
     sys.stderr = outputlog
@@ -249,6 +259,7 @@ if __name__ == "__main__":
 	    total_list[ipkg] = release_map
     
     print " processing page"
+
     
     for ipkg in total_list:
 
@@ -381,7 +392,7 @@ if __name__ == "__main__":
     
 			    # read end file
 			    myfile = None
-			    endfile = "index_foot.txt"
+			    endfile = webpath+"/index_foot.txt"
 			    try:
 				    myfile = open(endfile,"r")
 	     
