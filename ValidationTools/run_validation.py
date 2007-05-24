@@ -23,8 +23,9 @@
    -4, --sample4 = SAMPLE4: cfg sample
    -5, --sample5 = SAMPLE5: cfg sample
    -6, --sample6 = SAMPLE6: cfg sample
-   -r, --reference = REFERENCE: CMSSW version of reference plots
+   -r, --reference = REFERENCE: CMSSW version of reference plots, default is 1.3.1
    -n, --nocompare : do not compare histograms only produce plots. It can be used to create reference plots.
+   -p, --plots : just produce plots.
 """
 
 # Modules
@@ -279,30 +280,38 @@ if __name__ == "__main__":
 			    pkg = "RecoB"
 		    
                     #suffix = "validation_PrimaryVertex"
+                    folder = webpath + "/packages/"+pkg+"/"+cmssw_version+"/"+asample
 		    logfilename = cmssw_version + "_"+ pkg + "_" +asample + ".log"
-
-		    try:
-			    outputlog = open(logfilename,"w")
-		    except IOError:
-			    print " Error when try to open file " + outputfilelog
-			    sys.exit()
-        
-
-		
-		    os.system("cp "+isample+ " the_data.cfg")
-
-		    outputlog.write( runCommand2("cmsRun "+icfg) )
+                    if option.plots:
+                        logfilename = folder + "/"+cmssw_version + "_"+ pkg + "_" +asample + ".log"
 
                     
-		    folder = webpath + "/packages/"+pkg+"/"+cmssw_version+"/"+asample
-		    if not os.path.exists(folder):
-			    os.makedirs(folder)
+		    try:
+                        if option.plots:
+                            outputlog = open(logfilename,"a")
+                        else:
+                            outputlog = open(logfilename,"w")
+		    except IOError:
+                        print " Error when try to open file " + logfilename
+                        sys.exit()
+        
 
-		    rootfilename = folder+"/"+cmssw_version+"_"+pkg + "_" +asample + ".root"
+                    
+                    rootfilename = folder+"/"+cmssw_version+"_"+pkg + "_" +asample + ".root"
 		    ref_rootfilename = webpath + "/packages/"+pkg+"/"+cmssw_reference+"/"+asample+"/"+cmssw_reference+"_"+pkg + "_" +asample + ".root"
+                    
+                    if not option.plots:
+                        
+                        os.system("cp "+isample+ " the_data.cfg")
+
+                        outputlog.write( runCommand2("cmsRun "+icfg) )
 		    
-		    os.system("mv "+cmssw_version+"_validation.root "+rootfilename)		    		    		    
-		    print " now producing plots"
+                        if not os.path.exists(folder):
+			    os.makedirs(folder)
+                        
+                        os.system("mv "+cmssw_version+"_validation.root "+rootfilename)
+                    
+                    print " now producing plots"
 
 		    # first write a temp file
 		    try:
@@ -338,12 +347,15 @@ if __name__ == "__main__":
 
                     #os.system("mv "+cmssw_version+"_validation.root "+rootfilename)
                     outputlog.close()
-		    os.system("mv "+logfilename+ " " + folder+"/.")
-                    print " root and log file moved to " + folder
+                    if not option.plots:
+                        os.system("mv "+logfilename+ " " + folder+"/.")
+                        print " root and log file moved to " + folder
                     # clean up
-                    os.system("rm -f the_data.cfg")
-		    os.system("rm tmpbatch.C")
-		    
+                    os.system("rm -f the_data.cfg")   
+		    os.system("rm -f tmpbatch.C")
+                    
+
+    os.system("rm -f make_plots.C make_plots_C.so")
 		    
                     
 		    
