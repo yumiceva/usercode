@@ -50,6 +50,7 @@
 #include <TH1.h>
 #include <TFile.h>
 #include <TTree.h>
+#include "Math/LorentzVector.h"
 
 #include "Analyzers/TopEvent/interface/TopEvent.h"
 
@@ -72,8 +73,9 @@ public:
   reco::GenJet GetGenJet(reco::CaloJet calojet, reco::GenJetCollection genJetColl);
   SimTrack GetGenTrk(reco::Track atrack, edm::SimTrackContainer simTrkColl);
 
-  bool filter(const edm::Event&, const edm::EventSetup&);
-  
+  bool GenFilter(const edm::Event&, const edm::EventSetup&);
+
+
 private:
  
   // ----------member data ---------------------------
@@ -104,6 +106,7 @@ private:
 
   int fnEvent;
   int fnAccepted;
+  int fnEvent_cut0;
   
   TrackAssociatorBase *associatorByChi2;
   TrackAssociatorByHits *associatorByHits;

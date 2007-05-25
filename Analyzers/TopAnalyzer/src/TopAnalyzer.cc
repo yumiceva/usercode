@@ -28,6 +28,8 @@
 #include "SimTracker/Records/interface/TrackAssociatorRecord.h"
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
 
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+
 // simulated vertices,..., add <use name=SimDataFormats/Vertex> and <../Track>
 #include <SimDataFormats/Vertex/interface/SimVertex.h>
 #include <SimDataFormats/Vertex/interface/SimVertexContainer.h>
@@ -51,6 +53,7 @@
 #include "TVector3.h"
 #include "Math/GenVector/VectorUtil.h"
 #include "Math/GenVector/PxPyPzE4D.h"
+#include "Math/LorentzVector.h"
 
 using namespace edm;
 using namespace reco;
@@ -84,9 +87,9 @@ TopAnalyzer::TopAnalyzer(const ParameterSet& iConfig)
   ftree->AutoSave();
 
   // get list of tracks
-  recoTrackList_ = iConfig.getUntrackedParameter<std::vector<std::string> >("TrkCollectionList");
+  //recoTrackList_ = iConfig.getUntrackedParameter<std::vector<std::string> >("TrkCollectionList");
   // get list of PV
-  recoVtxList_ = iConfig.getUntrackedParameter<std::vector<std::string> >("PVCollectionList");
+  //recoVtxList_ = iConfig.getUntrackedParameter<std::vector<std::string> >("PVCollectionList");
 
   //
   MuonCollectionTags_ = iConfig.getParameter<std::string>("Muons");
@@ -95,7 +98,7 @@ TopAnalyzer::TopAnalyzer(const ParameterSet& iConfig)
 
   GenJetCollectionTags_ = iConfig.getParameter<std::string>("GenJets");
 
-  JetTrackAssociatorTags_ = iConfig.getParameter<std::string>("JetTracks");
+  //JetTrackAssociatorTags_ = iConfig.getParameter<std::string>("JetTracks");
 
   SimTrkCollectionTags_ = iConfig.getParameter<std::string>("SimTracks");
   
@@ -114,7 +117,7 @@ TopAnalyzer::TopAnalyzer(const ParameterSet& iConfig)
 		  //std::cout << "in TrackCounting summary to be created" << std::endl;
 		  fmyEvent = new TopEvent();
 		  //std::cout << "in TrackCounting summary created" << std::endl;
-		  ftree->Branch("TopEvent","TopEvent",&fmyEvent,64000,1);
+		  ftree->Branch("top.","TopEvent",&fmyEvent,64000,1);
 		  //ftree->Branch("TC.","TopEvent",&fmyEvent[isample],64000,1);
 		  //std::cout << " ini done" << std::endl;
 	  }
@@ -134,15 +137,11 @@ TopAnalyzer::TopAnalyzer(const ParameterSet& iConfig)
   }
 	  
   
-  
-  //simUnit_= 1.0;  // starting with CMSSW_1_2_x ??
-  if ( (edm::getReleaseVersion()).find("CMSSW_1_1_",0)!=std::string::npos){
-    simUnit_=0.1;  // for use in  CMSSW_1_1_1 tutorial
-  }
-  simUnit_= 1.;  // apparently not, still need this
-
+ 
+  // counters
   fnEvent = 0;
   fnAccepted = 0;
+  fnEvent_cut0 = 0;
   
 }
 
@@ -150,18 +149,8 @@ TopAnalyzer::TopAnalyzer(const ParameterSet& iConfig)
 TopAnalyzer::~TopAnalyzer()
 {
 	ftree->Write();
-		
-	
-   // do anything here that needs to be done at desctruction time
-   // (e.g. close files, deallocate resources etc.)
-  
-    
+
 	if ( fmyEvent ) delete fmyEvent;
-	//std::cout << " delete" << std::endl;
-	//if ( fmyEvent[1] ) delete fmyEvent[1];
-	//std::cout << " delete" << std::endl;
-	//if ( fmyEvent[2] ) delete fmyEvent[2];
-	//std::cout << " delete" << std::endl;
 	delete ftree;
 	delete rootFile_;
 }
@@ -172,7 +161,7 @@ TopAnalyzer::~TopAnalyzer()
 // member functions
 //
 void TopAnalyzer::beginJob(edm::EventSetup const& iSetup){
-  std::cout << " bTagAnalyzer::beginJob  conversion from sim units to rec units is " << simUnit_ << std::endl;
+  std::cout << "TopAnalyzer::beginJob() " << std::endl;
 
   rootFile_->cd();
   // release validation histograms used in DoCompare.C
@@ -191,10 +180,16 @@ void TopAnalyzer::beginJob(edm::EventSetup const& iSetup){
 
 
 void TopAnalyzer::endJob() {
-  rootFile_->cd();
-
-  std::cout << " Total number of events processed: \t" << fnEvent << std::endl;
-  std::cout << " Total events accepted by filter:  \t" << fnAccepted << std::endl;
+	
+	std::cout << "TopAnalyzer::endJob() " << std::endl;
+	
+	rootFile_->cd();
+	double fraction = 0;
+	std::cout << "[TopAnalyzer] Total number of events processed: \t" << fnEvent << std::endl;
+	fraction = ((double)fnAccepted)/((double)fnEvent);
+	std::cout << "[TopAnalyzer] Total events accepted by filter:  \t" << fnAccepted << "\t ("<< fraction << "%)" << std::endl;
+	fraction = ((double)fnEvent_cut0)/((double)fnAccepted);
+	std::cout << "[TopAnalyzer] Total events accepted by cut 0 :  \t" << fnEvent_cut0 << "]t (" << fraction << "%)" << std::endl;
 
 }
 
@@ -235,7 +230,7 @@ SimTrack TopAnalyzer::GetGenTrk(reco::Track atrack, edm::SimTrackContainer simTr
 }
 
 bool
-TopAnalyzer::filter(const Event& iEvent, const EventSetup& iSetup) {
+TopAnalyzer::GenFilter(const Event& iEvent, const EventSetup& iSetup) {
 
   using namespace edm;
   bool accepted = false;
@@ -316,44 +311,46 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	fnEvent++;
 
 	// apply filter
-	bool passfilter = filter(iEvent,iSetup);
+	bool passfilter = GenFilter(iEvent,iSetup);
 
 	if (passfilter) {
-
-		jetFlavourIdentifier_.readEvent(iEvent);
-	
+		
 		// initialize jet flavour tool
 		jetFlavourIdentifier_.readEvent(iEvent);
-	
-		// get tracks from collections
-		Handle<reco::TrackCollection> recTrks[2];
-		iEvent.getByLabel(recoTrackList_[0], recTrks[0]); // use only one collection for the moment
 
-	
-		// get PV collections
-		Handle<reco::VertexCollection> recVtxs[3];
-		iEvent.getByLabel(recoVtxList_[0], recVtxs[0] );// use only one collection for the moment
-	
+		// initialize jet corrector
+		const JetCorrector *acorrector = JetCorrector::getJetCorrector("MCJetCorrectorIcone5",iSetup);
+		
 		// get jet associator
-		Handle<reco::JetTracksAssociationCollection> jetTracksAssociation;
-		iEvent.getByLabel(JetTrackAssociatorTags_, jetTracksAssociation);
-
+		//Handle<reco::JetTracksAssociationCollection> jetTracksAssociation;
+		//iEvent.getByLabel(JetTrackAssociatorTags_, jetTracksAssociation);
+		//const reco::CaloJetCollection recoJets =   *(jetsColl.product()); // get product
+		
 		// get muon collection
 		Handle<reco::MuonCollection> muonsColl;
 		iEvent.getByLabel(MuonCollectionTags_, muonsColl);
-
+		const reco::MuonCollection recoMuons =  *(muonsColl.product());
+		
 		// get simulated collection of tracks
 		Handle<edm::SimTrackContainer> simtrkColl;
 		iEvent.getByLabel(SimTrkCollectionTags_, simtrkColl);
+		const edm::SimTrackContainer simTrks =    *(simtrkColl.product());
 
+		// get simulated collection of vertices
+		Handle<edm::SimVertexContainer> simVtxColl;
+		iEvent.getByLabel( "g4SimHits", simVtxColl);
+		const edm::SimVertexContainer simVtcs =    *(simVtxColl.product());
+		
 		// get jet collection
 		Handle<reco::CaloJetCollection> jetsColl;
 		iEvent.getByLabel(CaloJetCollectionTags_, jetsColl);
-
+		const reco::CaloJetCollection recoJets =   *(jetsColl.product());
+		
 		// get generated jet collection
 		Handle<reco::GenJetCollection> genjetsColl;
 		iEvent.getByLabel(GenJetCollectionTags_, genjetsColl);
-
+		const reco::GenJetCollection  genJets  =   *(genjetsColl.product());
+		
 		// truth tracks
 		//edm::Handle<TrackingParticleCollection>  TPCollectionH ;
 		//iEvent.getByLabel("trackingtruth","TrackTruth",TPCollectionH);
@@ -367,24 +364,11 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		edm::Handle<reco::TrackCountingTagInfoCollection> tagInfoHandle;
 		iEvent.getByLabel(moduleLabel_[0], tagInfoHandle);
 		const reco::TrackCountingTagInfoCollection & btagInfo = *(tagInfoHandle.product());
-
-		// get products
-		const reco::CaloJetCollection recoJets =   *(jetsColl.product());
-		const reco::GenJetCollection  genJets  =   *(genjetsColl.product());
-		const reco::MuonCollection    recoMuons =  *(muonsColl.product());
-		const edm::SimTrackContainer simTrks =    *(simtrkColl.product());
-	
-		// MC
-  
-		//Handle<SimTrackContainer> simTrks;
-		//iEvent.getByLabel( simG4_, simTrks);
-
+		int btagCollsize = btagColl.size();
+				
 		bool MC=false;
 		Handle<HepMCProduct> evtMC;
   
-		// for now just use one collection
-		//int ispl=0;
-
 		try {
 			iEvent.getByLabel("VtxSmeared",evtMC);
 			MC=true;
@@ -420,51 +404,195 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		fmyEvent->nleptons = recoMuons.size();
 		fmyEvent->ngenjets = genJets.size();
 		fmyEvent->ngenleptons = simTrks.size();
+
+
+		// generator stuff
 		
+		HepMC::GenEvent * myGenEvent = new  HepMC::GenEvent(*(evtMC->GetEvent()));
+		for ( HepMC::GenEvent::particle_iterator p = myGenEvent->particles_begin();
+		      p != myGenEvent->particles_end(); ++p ) {
+		  if ( abs((*p)->pdg_id()) == 6 ) {
+			  fmyEvent->gentop_px.push_back((*p)->momentum().px());
+			  fmyEvent->gentop_py.push_back((*p)->momentum().py());
+			  fmyEvent->gentop_pz.push_back((*p)->momentum().pz());
+			  fmyEvent->gentop_e.push_back((*p)->momentum().e());
+			  fmyEvent->gentop_charge.push_back((*p)->pdg_id());
+		  }
+		}
+
+		//f ( fnAccepted < 3 ) {
+		//std::cout << " njets= " << recoJets.size()
+		//    << " nleptons= " << recoMuons.size() << std::endl;
+		//}
+
 		// define iterators
 		CaloJetCollection::const_iterator jet;
 		GenJetCollection::const_iterator genjet;
 		reco::MuonCollection::const_iterator muon;
 		SimTrackContainer::const_iterator simmuon;
 		//reco::JetTagCollection::iterator btagite;
+
+		// require at least 4 jets and at least 1 muon
+		if ( recoJets.size() < 4  || recoMuons.size()==0 ) return;
+		fnEvent_cut0++;
+
+		// Lorentz vectors
+		TLorentzVector p4Jet[4];
+		TLorentzVector twobody[6];
+		TLorentzVector threebody[12];
+		TLorentzVector p4Muon;
+		TVector3 p3MET;
 		
-		// loop over gen jets
-		
-		for ( genjet = genJets.begin(); genjet != genJets.end(); ++genjet ) {
+		// loop over jets
+		int ijet = 0;
+		for( jet = recoJets.begin(); jet != recoJets.end(); ++jet ) {
 
-			fmyEvent->genjet_p.push_back(   (*genjet).p());
-			fmyEvent->genjet_pt.push_back(  (*genjet).pt());
-			fmyEvent->genjet_eta.push_back( (*genjet).eta());
-			fmyEvent->genjet_phi.push_back( (*genjet).phi());
-			fmyEvent->genjet_et.push_back(  (*genjet).et());
-			fmyEvent->genjet_vx.push_back(  (*genjet).vx());
-			fmyEvent->genjet_vy.push_back(  (*genjet).vy());
-			fmyEvent->genjet_vz.push_back(  (*genjet).vz());	
-			fmyEvent->genjet_flavour.push_back( jetFlavourIdentifier_.identifyBasedOnPartons(*genjet).flavour() );
-		}
+			if ( ijet < 4 ) {
+				p4Jet[ijet].SetXYZT(jet->px(),jet->py(),jet->pz(),jet->energy());
+				fmyEvent->jet_px.push_back(jet->px());
+				fmyEvent->jet_py.push_back(jet->py());
+				fmyEvent->jet_pz.push_back(jet->pz());
+				fmyEvent->jet_e.push_back(jet->energy());
 
-		// loop over sim tracks and select only muons
-		for ( simmuon = simTrks.begin(); simmuon != simTrks.end(); ++simmuon ) {
-			SimTrack genmuon = *simmuon;
-			if ( abs(genmuon.type()) == 13 ) {
 
-				fmyEvent->lepton_p_chi2_mc.push_back( genmuon.momentum().vect().mag() );
-				fmyEvent->lepton_pt_chi2_mc.push_back( genmuon.momentum().perp() );
-				fmyEvent->lepton_phi_chi2_mc.push_back( genmuon.momentum().phi() );
-				fmyEvent->lepton_eta_chi2_mc.push_back( genmuon.momentum().pseudoRapidity() );
-				fmyEvent->lepton_charge_chi2_mc.push_back( genmuon.charge() );
-				fmyEvent->lepton_vx_chi2_mc.push_back(genmuon.momentum().x());
-				fmyEvent->lepton_vy_chi2_mc.push_back(genmuon.momentum().y());
-				fmyEvent->lepton_vz_chi2_mc.push_back(genmuon.momentum().z());
-				fmyEvent->lepton_pdgid_chi2_mc.push_back( genmuon.type() );
+
+				//if ( fnAccepted ) {
+				//	  std::cout << " jet px= " << jet->px()
+				//    << " jet py= " << jet->py() << std::endl;
+				//  std::cout << " p4Jetx= " << p4Jet[ijet].Px()
+				//    << " p4Jety= " << p4Jet[ijet].Py() << std::endl;
+				  //}
+
+				// get jet correction
+				//fmyEvent->jet_correction.push_back( acorrector->correction(*jet, iEvent, iSetup) );
+
+				// b-tagging
+				/*
+				double small = 1.e-5;
+				double discriminant = -9999.;
+				
+				for (int ib = 0; ib != btagCollsize; ++ib ) {
+
+				  // simple way to check for similar jets
+				  if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - 
+													btagColl[ib].jet().eta())< small ) {
+				    
+				    discriminant = btagInfo[ib].discriminator(1,1);
+				    
+				    break;
+				  }
+				}
+				*/
+				//fmyEvent->jet_btag_discriminant.push_back( discriminant );
+
+				// MET
+				p3MET += TVector3(jet->px(),jet->py(),0.);
 				
 			}
+			ijet++;
+			fmyEvent->alljet_px.push_back(jet->px());
+			fmyEvent->alljet_py.push_back(jet->py());
+			fmyEvent->alljet_pz.push_back(jet->pz());
+			fmyEvent->alljet_e.push_back(jet->energy());
+			// get jet correction
+			fmyEvent->jet_correction.push_back( acorrector->correction(*jet, iEvent, iSetup) );
+			// b-tagging
+			double small = 1.e-5;
+			double discriminant = -9999.;
+				
+			for (int ib = 0; ib != btagCollsize; ++ib ) {
+
+				// simple way to check for similar jets
+				if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - 
+																					  btagColl[ib].jet().eta())< small ) {
+				    
+				    discriminant = btagInfo[ib].discriminator(1,1);
+				    
+				    break;
+				}
+			}
+			fmyEvent->jet_btag_discriminant.push_back( discriminant );
 			
+			fmyEvent->alljet_et.push_back(jet->et());
+			fmyEvent->alljet_eta.push_back(jet->eta());
+			fmyEvent->alljet_phi.push_back(jet->phi());
 		}
-	
-	
+		
+		// loop over muons
+		double mass_mu = 0.105658; // GeV/c
+		int imuon = 0;
+		for (muon = recoMuons.begin(); muon != recoMuons.end(); ++muon) {
+		  
+		  Track combinedMuon = *(muon->combinedMuon());
+
+		  double global_chi2 = combinedMuon.chi2();
+		  double global_ndof = combinedMuon.ndof();
+		  double mu_pt = combinedMuon.pt();
+		  
+		  // find a sim track
+		  SimTrack genmuon = this->GetGenTrk(combinedMuon, simTrks );
+		  
+		  if ( mu_pt > 10 ) {
+		    p4Muon.SetXYZT(combinedMuon.px(), combinedMuon.py(), combinedMuon.pz(), TMath::Sqrt(combinedMuon.p() * combinedMuon.p() + mass_mu*mass_mu) );
+		    fmyEvent->muon_px.push_back(combinedMuon.px());
+		    fmyEvent->muon_py.push_back(combinedMuon.py());
+		    fmyEvent->muon_pz.push_back(combinedMuon.pz());
+		    fmyEvent->muon_e.push_back(p4Muon.E());
+
+		    //std::cout << " p4MuonPx= " << p4Muon.Px() 
+		    //      << " p4MuonPy= " << p4Muon.Py() << std::endl;
+
+			fmyEvent->muon_mc_pdgid.push_back(genmuon.type());
+			p3MET += TVector3(combinedMuon.px(),combinedMuon.py(),0.);
+		    imuon++;
+		  }
+		  fmyEvent->allmuon_pt.push_back(mu_pt);
+		  fmyEvent->allmuon_normchi2.push_back(global_chi2/global_ndof);
+		  fmyEvent->allmuon_d0.push_back(combinedMuon.d0());
+		  fmyEvent->allmuon_d0Error.push_back(combinedMuon.d0Error());
+		  fmyEvent->allmuon_nrechits.push_back(combinedMuon.recHitsSize());
+		  fmyEvent->allmuon_mc_pdgid.push_back( genmuon.type() );
+		  
+		}
+		//std::cout << "muons that passed selection: " << imuon << std::endl;
+
+		// set MET
+		fmyEvent->met.push_back(p3MET.Mag());
+		
+		// find masses
+		twobody[0] = p4Jet[0] + p4Jet[1];
+		twobody[1] = p4Jet[0] + p4Jet[2];
+		twobody[2] = p4Jet[0] + p4Jet[3];
+		twobody[3] = p4Jet[1] + p4Jet[2];
+		twobody[4] = p4Jet[1] + p4Jet[3];
+		twobody[5] = p4Jet[2] + p4Jet[3];
+		
+		for ( int i=0; i<6; i++ ) {
+		  fmyEvent->twobody.push_back( twobody[i] );
+		}
+
+		threebody[0] = twobody[0] + p4Jet[2];
+		threebody[1] = twobody[0] + p4Jet[3];
+		threebody[2] = twobody[1] + p4Jet[1];
+		threebody[3] = twobody[1] + p4Jet[3];
+		threebody[4] = twobody[2] + p4Jet[1];
+		threebody[5] = twobody[2] + p4Jet[2];
+		threebody[6] = twobody[3] + p4Jet[0];
+		threebody[7] = twobody[3] + p4Jet[3];
+		threebody[8] = twobody[4] + p4Jet[0];
+		threebody[9] = twobody[4] + p4Jet[2];
+		threebody[10] = twobody[5] + p4Jet[0];
+		threebody[11] = twobody[5] + p4Jet[1];
+		
+		for (int i=0; i<6; i++) {
+		  fmyEvent->threebody.push_back( threebody[i] );
+		}
+
+		
+		// fill event
 		ftree->Fill();
-	}
+		
+	}// close filter
 	
 }
 
