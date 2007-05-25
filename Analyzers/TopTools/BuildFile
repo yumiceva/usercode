@@ -1,0 +1,6 @@
+<use name=root>
+
+<export>
+   <lib name=AnalyzersTopTools>
+   <use name=root>
+</export>
