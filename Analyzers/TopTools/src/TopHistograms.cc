@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.3 2007/05/30 15:15:33 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.4 2007/05/30 15:32:04 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -41,7 +41,7 @@ void TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["muon_pt"+suffix1]       = new TH1D("muon_pt"+suffix1,"Muon p_{T} [GeV/c]",50,0.0,100.0);
 	}
 	else if ( type == "MET") {
-		H1["MET"+suffix1] = new TH1D("MET"+suffix1,"MET [GeV]",50,0.0,150.0);
+		h1["MET"+suffix1] = new TH1D("MET"+suffix1,"MET [GeV]",50,0.0,150.0);
 		h1["METcomplex"+suffix1] = new TH1D("METcomplex"+suffix1,"MET [GeV]",50,0.0,150.0);
 	}
 	else {
