@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.h,v 1.4 2007/05/30 15:10:37 yumiceva Exp $
+ version $Id: TopHistograms.h,v 1.5 2007/05/30 15:18:22 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -38,5 +38,6 @@ class TopHistograms {
 	std::map<std::string, TH2*> h2;
 	
 	
-}
+};
 
+#endif
