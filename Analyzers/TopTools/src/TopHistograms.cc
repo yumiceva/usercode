@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.1 2007/05/26 05:03:33 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.2 2007/05/30 15:10:37 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -69,10 +69,40 @@ TopHistograms::fill1d(TString name, Double_t x) {
 }
 
 //_______________________________________________________________
-TopHistograms::fill2d(TString name, Double_t x, Double_t y) {
+TopHistograms::Fill2d(TString name, Double_t x, Double_t y) {
 
 	h2[name]->Fill(x,y);
 	
 }
 
+//_______________________________________________________________
+TopHistograms::Print(TString extension, TString tag) {
 
+	if ( tag != "" ) tag = "_"+tag;
+                
+	for(std::map<std::string,TCanvas*>::const_iterator icv=cv_map.begin(); icv!=cv_map.end(); ++icv){
+
+		std::string tmpname = icv->first;
+		TCanvas *acv = icv->second;
+		acv->Print(TString(tmpname+tag+"."+extension));
+	}               
+
+}
+
+//_______________________________________________________________
+TopHistograms::SaveToFile(TString filename) {
+
+	foutfile = new TFile(filename,"RECREATE");
+	for(std::map<std::string,TH1* >::const_iterator ih=h1.begin(); ih!=h1.end(); ++ih){
+		TH1 *htemp = ih->second;
+		htemp->Write();
+	}
+	for(std::map<std::string,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih){
+		TH2 *htemp = ih->second;
+		htemp->Write();
+	}
+                
+	foutfile->Write();
+	foutfile->Close();
+	
+}

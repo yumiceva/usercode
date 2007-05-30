@@ -1,5 +1,5 @@
-#ifndef TopAnalysis_h
-#define TopAnalysis_h
+#ifndef TopHistograms_h
+#define TopHistograms_h
 
 /**_________________________________________________________________
    class:   TopHistograms.h
@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.h,v 1.3 2007/05/26 05:03:19 yumiceva Exp $
+ version $Id: TopHistograms.h,v 1.4 2007/05/30 15:10:37 yumiceva Exp $
 
 ________________________________________________________________**/
 
