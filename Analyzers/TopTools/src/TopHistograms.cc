@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.2 2007/05/30 15:10:37 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.3 2007/05/30 15:15:33 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -24,7 +24,7 @@ TopHistograms::~TopHistograms() {
 }
 
 //_______________________________________________________________
-TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
+void TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 
 	if (suffix1 != "") suffix1 = "_" + suffix1;
 	if (suffix2 != "") suffix1 += "_" + suffix2;
@@ -57,26 +57,26 @@ TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 }
 
 //_______________________________________________________________
-TopHistograms::fill1d(TString name, Double_t x) {
+void TopHistograms::fill1d(TString name, Double_t x) {
 
 	h1[name]->Fill(x);
 }
 
 //_______________________________________________________________
-TopHistograms::fill1d(TString name, Double_t x) {
+void TopHistograms::fill1d(TString name, Double_t x) {
 
 	h1[name]->Fill(x);
 }
 
 //_______________________________________________________________
-TopHistograms::Fill2d(TString name, Double_t x, Double_t y) {
+void TopHistograms::Fill2d(TString name, Double_t x, Double_t y) {
 
 	h2[name]->Fill(x,y);
 	
 }
 
 //_______________________________________________________________
-TopHistograms::Print(TString extension, TString tag) {
+void TopHistograms::Print(TString extension, TString tag) {
 
 	if ( tag != "" ) tag = "_"+tag;
                 
@@ -90,7 +90,7 @@ TopHistograms::Print(TString extension, TString tag) {
 }
 
 //_______________________________________________________________
-TopHistograms::SaveToFile(TString filename) {
+void TopHistograms::SaveToFile(TString filename) {
 
 	foutfile = new TFile(filename,"RECREATE");
 	for(std::map<std::string,TH1* >::const_iterator ih=h1.begin(); ih!=h1.end(); ++ih){

@@ -8,15 +8,16 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.h,v 1.5 2007/05/30 15:18:22 yumiceva Exp $
+ version $Id: TopHistograms.h,v 1.6 2007/05/30 15:20:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
 
-#include <TString.h>
+#include "TString.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TCanvas.h"
+#include "TFile.h"
 
 class TopHistograms {
 
@@ -33,10 +34,11 @@ class TopHistograms {
 
   private:
 
-	std::map<std::string, TCanvas*> cv_map;
-	std::map<std::string, TH1*> h1;
-	std::map<std::string, TH2*> h2;
-	
+	std::map<TString, TCanvas*> cv_map;
+	std::map<TString, TH1*> h1;
+	std::map<TString, TH2*> h2;
+	TFile            *ffile;
+	TFile            *foutfile;		
 	
 };
 
