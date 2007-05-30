@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.h,v 1.2 2007/05/25 21:27:33 yumiceva Exp $
+ version $Id: TopHistograms.h,v 1.3 2007/05/26 05:03:19 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -25,7 +25,7 @@ class TopHistograms {
 	TopHistograms();
 	~TopHistograms();
 
-	void Init();
+	void Init(TString type, TString suffix1="", TString suffix2="");
 	void fill1d(TString name, Double_t x );
 	void fill2d(TString name, Double_t x, Double_t y);
 	void Print(TString extension="png", TString tag="");

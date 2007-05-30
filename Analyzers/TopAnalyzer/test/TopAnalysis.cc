@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.cc,v 1.1 2007/04/25 03:53:54 yumiceva Exp $
+ version $Id: TopAnalysis.cc,v 1.1 2007/05/25 20:10:38 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -30,6 +30,17 @@ TopAnalysis::TopAnalysis(TString filename) {
 	
 	Init(tree);
 
+	// initialize histograms
+	h_ = new TopHistograms();
+	h_->Init("jets");
+	h_->Init("jets","","MC");
+	h_->Init("muons");
+	h_->Init("muons","","MC");
+	h_->Init("MET");
+	h_->Init("MET","","MC");
+	h_->Init("others");
+	h_->Init("others","","MC");
+	
 }
 
 //_______________________________________________________________
@@ -41,9 +52,7 @@ TopAnalysis::~TopAnalysis() {
 //_______________________________________________________________
 void TopAnalysis::Loop()
 {
-	h1["njets"] = new TH1D("njets","number of jets",50,0,50);
-	h1["nleptons"] = new TH1D("nleptons","number of muons",8,0,8);
-
+	
 
 }
 

@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.h,v 1.1 2007/04/25 03:53:54 yumiceva Exp $
+ version $Id: TopAnalysis.h,v 1.1 2007/05/25 20:10:38 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -26,7 +26,7 @@ ________________________________________________________________**/
 #include "Analyzers/TopEvent/interface/TopEvent.h"
 #include "Analyzers/TopTools/interface/TopWSolver.h"
 #include "Analyzers/TopTools/interface/TopTwoComb.h"
-
+#include "Analyzers/TopTools/interface/TopHistograms.h"
 
 class TopAnalysis {
 
@@ -69,9 +69,10 @@ class TopAnalysis {
 	Double_t          fphicut;
 
 	TopEvent *fevent;
-	std::map<std::string, TCanvas*> cv_map;
-	std::map<std::string, TH1*> h1;
-	std::map<std::string, TH2*> h2;
+	TopHistograms *h_;
+		//std::map<std::string, TCanvas*> cv_map;
+		//std::map<std::string, TH1*> h1;
+		//std::map<std::string, TH2*> h2;
 	
 };
 
