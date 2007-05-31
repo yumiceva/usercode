@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.h,v 1.2 2007/05/30 15:06:53 yumiceva Exp $
+ version $Id: TopAnalysis.h,v 1.3 2007/05/31 16:05:08 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -38,7 +38,7 @@ class TopAnalysis {
 	// root stuff
 	virtual Int_t    GetEntry(Long64_t entry);
 	virtual void     Init(TChain *tree);
-	virtual void     Loop();
+	virtual void     Loop(int max_entries=0);
 	virtual Long64_t LoadTree(Long64_t entry);
 	virtual void     Show(Long64_t entry = -1);
 	virtual Int_t    Cut(Long64_t entry);

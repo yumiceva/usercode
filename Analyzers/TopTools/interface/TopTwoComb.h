@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetComb.h,v 1.1 2007/04/25 03:53:54 yumiceva Exp $
+ version $Id: TopTwoComb.h,v 1.1 2007/05/25 19:47:13 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -26,7 +26,7 @@ class TopTwoComb {
 		cand1_ = candidates;
 	}
 	void SetCandidate2( std::vector< TLorentzVector > candidates ) {
-		cand1_ = candidates;
+		cand2_ = candidates;
 	}
 	void SetMinInvMass( Double_t mass ) { minInvMass_ = mass; }
 	void SetMaxInvMass( Double_t mass ) { maxInvMass_ = mass; }

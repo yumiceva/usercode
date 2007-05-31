@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.cc,v 1.2 2007/05/30 15:06:53 yumiceva Exp $
+ version $Id: TopAnalysis.cc,v 1.3 2007/05/31 16:05:08 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -75,13 +75,17 @@ TopAnalysis::~TopAnalysis() {
 }
 
 //_______________________________________________________________
-void TopAnalysis::Loop() {
+void TopAnalysis::Loop(int max_entry) {
 	
 	if (fChain == 0) return;
 
 	Long64_t nentries = fChain->GetEntriesFast();
 	if (fverbose) std::cout << " Total entries = " << fChain->GetEntries() << std::endl;
-
+	if (max_entry!= 0) {
+		nentries = max_entry;
+		std::cout << " run over a maximum of "<< nentries << std::endl;
+	}
+	
 	//______ main loop over entries______
 	Long64_t nbytes = 0, nb = 0;
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -98,6 +102,7 @@ void TopAnalysis::Loop() {
 
 		std::vector< TLorentzVector > tmpmupt;
 		int muon_size = fevent->nleptons;
+		if (fverbose) std::cout << "number of muons = " << muon_size << std::endl;
 		h_->Fill1d(TString("muons")+"_"+"cut0",muon_size);
 
 		for (int imu = 0; imu != muon_size; ++imu) {
@@ -112,6 +117,9 @@ void TopAnalysis::Loop() {
 		}
 		// pt>10
 		muon_size = fevent->muon_px.size();
+		if (fverbose) std::cout << "number of muons pt>10 = " << muon_size << std::endl;
+		if (muon_size == 0 ) continue;
+		
 		for (int imu = 0; imu != muon_size; ++imu) {
 			TLorentzVector tmpp4(fevent->muon_px[imu],fevent->muon_py[imu],fevent->muon_pz[imu],fevent->muon_e[imu]);
 			h_->Fill1d(TString("muon_pt")+"_"+"cut1", tmpp4.Pt());
@@ -126,7 +134,7 @@ void TopAnalysis::Loop() {
 
 		if (fverbose) {
 			std::cout << "Muon 0th (" << p4Muon.Px() <<","<< p4Muon.Py() <<","<< p4Muon.Pz() <<","<<p4Muon.E()<<")"<<std::endl;
-			std::cout << "Muon 1th (" << tmpmupt[1].Px() <<","<< tmpmupt[1].Py() <<","<< tmpmupt[1].Pz() <<","<< tmpmupt[1].E()<<")"<<std::endl;
+			if (muon_size>1) std::cout << "Muon 1th (" << tmpmupt[1].Px() <<","<< tmpmupt[1].Py() <<","<< tmpmupt[1].Pz() <<","<< tmpmupt[1].E()<<")"<<std::endl;
 		}
 		tmpmupt.clear();
 
@@ -202,7 +210,7 @@ void TopAnalysis::Loop() {
 							TMath::Sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzNu*pzNu) );
 
 		TLorentzVector p4Wlnu = p4Muon + p4Nu;
-		h_->Fill1d(TString("mu_nu")+"_"+"cut0",p4Wlnu.M() );
+		h_->Fill1d(TString("WToMuNu")+"_"+"cut0",p4Wlnu.M() );
 		
 		// Combinations
 		//TopTwoComb *Wlnu = new TopTwoComb(); // W -> l + nu
@@ -212,21 +220,38 @@ void TopAnalysis::Loop() {
 
 		// Wjj
 		std::vector< TLorentzVector > cand1;
-		std::vector< TLorentzVector > cand2;
+		//std::vector< TLorentzVector > cand2;
+		std::vector< TLorentzVector > candb;
 		for (int i=0; i<4; ++i ) {
 			cand1.push_back( p4Jet[i] );
-			cand2.push_back( p4Jet[i] );
+			//cand2.push_back( p4Jet[i] );
+			if ( is_bjet[i] ) candb.push_back( p4Jet[i] );
+		}
+		if (fverbose) {
+			std::cout << "njets in cand1="<< cand1.size() << std::endl;
+			std::cout << "nbjets= " << candb.size() << std::endl;
 		}
 		Wjj.SetCandidate1( cand1 );
-		Wjj.SetCandidate2( cand2 );
+		Wjj.SetCandidate2( cand1 );
 
-		std::vector< TLorentzVector > candWjj;
-		candWjj = Wjj.GetComposites();
-		if (fverbose) std::cout << "Wjj combinations = "<< candWjj.size() << std::endl;
-		for (unsigned int i=0; i!= candWjj.size(); ++i) {
-			h_->Fill1d(TString("Wjj")+"_"+"cut0",candWjj[i].M() )
+		std::vector< TLorentzVector > candWTojj;
+		candWTojj = Wjj.GetComposites();
+		if (fverbose) std::cout << "WTojj combinations = "<< candWTojj.size() << std::endl;
+		for (unsigned int i=0; i!= candWTojj.size(); ++i) {
+			h_->Fill1d(TString("WTojj")+"_"+"cut0",candWTojj[i].M() );
 		}
-	}
+
+		t2.SetCandidate1( candWTojj );
+		t2.SetCandidate2( cand1 );
+		std::vector< TLorentzVector > candtToWj;
+		candtToWj = t2.GetComposites();
+		if (fverbose) std::cout << "tToWj combinations = " << candtToWj.size() << std::endl;
+		for (unsigned int i=0; i!= candtToWj.size(); ++i) {
+			h_->Fill1d(TString("tToWj")+"_"+"cut0",candtToWj[i].M() );
+		}
+
+		
+	} // end main loop
 
 }
 

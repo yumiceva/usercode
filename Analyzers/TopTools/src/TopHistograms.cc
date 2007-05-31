@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.5 2007/05/30 15:36:29 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.6 2007/05/31 16:05:10 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -51,10 +51,10 @@ void TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 	
 		h1["nu_pz"+suffix1] = new TH1D("nu_pz"+suffix1,"Neutrino p_{z} [GeV/c]",50,-500.0,500.0);
 	
-		h1["mu_nu"+suffix1] = new TH1D("mu_nu"+suffix1,"(#mu + #nu) mass [GeV/c]",80,0.0,300.0);
+		h1["WToMuNu"+suffix1] = new TH1D("WToMuNu"+suffix1,"(#mu + #nu) mass [GeV/c]",80,0.0,300.0);
 
-		h1["Wjj"+suffix1] = new TH1D("Wjj","jet+jet mass [GeV/c]",80,0.0,300.0);
-		
+		h1["WTojj"+suffix1] = new TH1D("WTojj"+suffix1,"(jet+jet) mass [GeV/c]",80,0.0,300.0);
+		h1["tToWj"+suffix1] = new TH1D("tToWj"+suffix1,"(W_{jj} + jet) mass [GeV/c]",50,0.0,500.0);
 	}
 	
 }

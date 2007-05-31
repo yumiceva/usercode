@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopTwoComb.cc,v 1.1 2007/04/25 03:53:54 yumiceva Exp $
+ version $Id: TopTwoComb.cc,v 1.1 2007/05/25 19:47:13 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -13,7 +13,7 @@ ________________________________________________________________**/
 #include "Analyzers/TopTools/interface/TopTwoComb.h"
 
 #include "TMath.h"
-
+#include <iostream>
 
 //_______________________________________________________________
 TopTwoComb::TopTwoComb() {
@@ -40,7 +40,8 @@ void TopTwoComb::Clear() {
 std::vector< TLorentzVector > TopTwoComb::GetComposites() {
 
 	std::vector< TLorentzVector > composites;
-	
+
+	std::cout << "TC: cand1="<< cand1_.size() << " cand2=" << cand2_.size() << std::endl;
 	for ( unsigned icand1 = 0; icand1 < cand1_.size(); ++icand1 ) {
 
 		for ( unsigned icand2 = 0; icand2 < cand2_.size(); ++icand2 ) {
@@ -51,7 +52,8 @@ std::vector< TLorentzVector > TopTwoComb::GetComposites() {
 			if ( cand2 != cand1 ) {
 
 				TLorentzVector acomp = cand1 + cand2;
-
+				std::cout << "TC: mass= " << acomp.M() << std::endl;
+				
 				if ( acomp.M() > minInvMass_ && acomp.M() < maxInvMass_ ) {
 
 
