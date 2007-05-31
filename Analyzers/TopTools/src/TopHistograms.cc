@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.4 2007/05/30 15:32:04 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.5 2007/05/30 15:36:29 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -52,18 +52,15 @@ void TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["nu_pz"+suffix1] = new TH1D("nu_pz"+suffix1,"Neutrino p_{z} [GeV/c]",50,-500.0,500.0);
 	
 		h1["mu_nu"+suffix1] = new TH1D("mu_nu"+suffix1,"(#mu + #nu) mass [GeV/c]",80,0.0,300.0);
+
+		h1["Wjj"+suffix1] = new TH1D("Wjj","jet+jet mass [GeV/c]",80,0.0,300.0);
+		
 	}
 	
 }
 
 //_______________________________________________________________
-void TopHistograms::fill1d(TString name, Double_t x) {
-
-	h1[name]->Fill(x);
-}
-
-//_______________________________________________________________
-void TopHistograms::fill1d(TString name, Double_t x) {
+void TopHistograms::Fill1d(TString name, Double_t x) {
 
 	h1[name]->Fill(x);
 }
@@ -80,9 +77,9 @@ void TopHistograms::Print(TString extension, TString tag) {
 
 	if ( tag != "" ) tag = "_"+tag;
                 
-	for(std::map<std::string,TCanvas*>::const_iterator icv=cv_map.begin(); icv!=cv_map.end(); ++icv){
+	for(std::map<TString,TCanvas*>::const_iterator icv=cv_map.begin(); icv!=cv_map.end(); ++icv){
 
-		std::string tmpname = icv->first;
+		TString tmpname = icv->first;
 		TCanvas *acv = icv->second;
 		acv->Print(TString(tmpname+tag+"."+extension));
 	}               
@@ -93,11 +90,11 @@ void TopHistograms::Print(TString extension, TString tag) {
 void TopHistograms::SaveToFile(TString filename) {
 
 	foutfile = new TFile(filename,"RECREATE");
-	for(std::map<std::string,TH1* >::const_iterator ih=h1.begin(); ih!=h1.end(); ++ih){
+	for(std::map<TString,TH1* >::const_iterator ih=h1.begin(); ih!=h1.end(); ++ih){
 		TH1 *htemp = ih->second;
 		htemp->Write();
 	}
-	for(std::map<std::string,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih){
+	for(std::map<TString,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih){
 		TH2 *htemp = ih->second;
 		htemp->Write();
 	}

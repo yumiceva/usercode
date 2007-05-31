@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.h,v 1.1 2007/05/25 20:10:38 yumiceva Exp $
+ version $Id: TopAnalysis.h,v 1.2 2007/05/30 15:06:53 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -48,7 +48,7 @@ class TopAnalysis {
 	void ApplyJetCorrections(bool option = true ) {fcorrections = option; };
 	void ApplyKinFit( bool option = true ) { fkinfit = option; };	void SetMinKFChi2( double value) { fminKFchi2 = value; };
 	void SetPhiCut( double value) { fphicut = value; };
-	void Verbose(bool option) { fverbose = option; };
+	void Verbose(bool option=true) { fverbose = option; };
 	void SampleName(TString sample) {
 		fsamplename = sample;
 	};
@@ -70,6 +70,9 @@ class TopAnalysis {
 
 	TopEvent *fevent;
 	TopHistograms *h_;
+
+	std::map<TString, TString> cut_map;
+	
 		//std::map<std::string, TCanvas*> cv_map;
 		//std::map<std::string, TH1*> h1;
 		//std::map<std::string, TH2*> h2;
