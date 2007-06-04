@@ -1,4 +1,4 @@
-#include "Analyzers/TopTools/interface/TopTwoComb.h"
+#include "Analyzers/TopTools/interface/TopCombos.h"
 #include "Analyzers/TopTools/interface/TopWSolver.h"
 #include "Analyzers/TopTools/interface/TopBJet.h"
 
@@ -7,7 +7,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class TopTwoComb+;
+#pragma link C++ class TopCombos+;
 #pragma link C++ class TopWSolver+;
 #pragma link C++ class TopBJet+;
 #endif

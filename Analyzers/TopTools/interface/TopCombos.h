@@ -1,26 +1,26 @@
-#ifndef TopTwoComb_h
-#define TopTwoComb_h
+#ifndef TopCombos_h
+#define TopCombos_h
 
 /**_________________________________________________________________
-   class:   TopTwoComb.h
+   class:   TopCombos.h
    package: Analyzers/TopTools
 
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopTwoComb.h,v 1.1 2007/05/25 19:47:13 yumiceva Exp $
+ version $Id: TopCombos.h,v 1.2 2007/05/31 21:29:07 yumiceva Exp $
 
 ________________________________________________________________**/
 
 #include "TLorentzVector.h"
 
 
-class TopTwoComb {
+class TopCombos {
 
   public:
 
-	TopTwoComb();
-	~TopTwoComb();
+	TopCombos();
+	~TopCombos();
 
 	void SetCandidate1( std::vector< TLorentzVector > candidates ) {
 		cand1_ = candidates;
@@ -28,6 +28,10 @@ class TopTwoComb {
 	void SetCandidate2( std::vector< TLorentzVector > candidates ) {
 		cand2_ = candidates;
 	}
+	void SetCandidate3( std::vector< TLorentzVector > candidates ) {
+		cand3_ = candidates;
+	}
+	
 	void SetMinInvMass( Double_t mass ) { minInvMass_ = mass; }
 	void SetMaxInvMass( Double_t mass ) { maxInvMass_ = mass; }
 	void SetMinDeltaPhi( Double_t angle ) { minPhi_ = angle; }
@@ -43,7 +47,7 @@ class TopTwoComb {
 
 	std::vector< TLorentzVector > cand1_;
 	std::vector< TLorentzVector > cand2_;
-
+	std::vector< TLorentzVector > cand3_;
 	
 };
 
