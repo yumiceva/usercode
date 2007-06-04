@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopCombos.cc,v 1.2 2007/05/31 21:25:08 yumiceva Exp $
+ version $Id: TopCombos.cc,v 1.1 2007/06/04 15:54:21 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -34,6 +34,7 @@ TopCombos::~TopCombos() {
 void TopCombos::Clear() {
 	cand1_.clear();
 	cand2_.clear();
+	cand3_.clear();
 }
 
 
@@ -118,7 +119,7 @@ std::vector< TLorentzVector > TopCombos::ThreeCombos() {
 						if ( acomp123.M() > minInvMass_ && acomp123.M() < maxInvMass_ ) {
 
 
-							Double_t adelta = TMath::Abs(cand12.Phi() - cand3.Phi());
+							Double_t adelta = TMath::Abs(acomp12.Phi() - cand3.Phi());
 							if ( adelta > TMath::Pi() ) adelta = TMath::Abs(2.*TMath::Pi() - adelta);
 					
 							if ( adelta > minPhi_ ) {

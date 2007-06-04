@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopCombos.h,v 1.2 2007/05/31 21:29:07 yumiceva Exp $
+ version $Id: TopCombos.h,v 1.1 2007/06/04 15:54:20 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -37,7 +37,9 @@ class TopCombos {
 	void SetMinDeltaPhi( Double_t angle ) { minPhi_ = angle; }
 	
 	std::vector< TLorentzVector > GetComposites();
-
+	std::vector< TLorentzVector > TwoCombos();
+	std::vector< TLorentzVector > ThreeCombos();
+	
 	void Clear();
 	
   private:
