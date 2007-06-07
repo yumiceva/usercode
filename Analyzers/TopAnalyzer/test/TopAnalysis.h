@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.h,v 1.3 2007/05/31 16:05:08 yumiceva Exp $
+ version $Id: TopAnalysis.h,v 1.4 2007/05/31 21:25:08 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -25,7 +25,6 @@ ________________________________________________________________**/
 
 #include "Analyzers/TopEvent/interface/TopEvent.h"
 #include "Analyzers/TopTools/interface/TopWSolver.h"
-#include "Analyzers/TopTools/interface/TopTwoComb.h"
 #include "Analyzers/TopTools/interface/TopHistograms.h"
 
 class TopAnalysis {
@@ -52,8 +51,8 @@ class TopAnalysis {
 	void SampleName(TString sample) {
 		fsamplename = sample;
 	};
-	//void Print(std::string extension="png",std::string tag="");
-	//void SaveToFile(TString filename="plots_summary.root");
+	void Print(std::string extension="png",std::string tag="");
+	void SaveToFile(TString filename="plots_summary.root");
 	
   private:
 

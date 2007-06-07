@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.6 2007/05/31 16:05:10 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.7 2007/05/31 21:25:08 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -55,8 +55,18 @@ void TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 
 		h1["WTojj"+suffix1] = new TH1D("WTojj"+suffix1,"(jet+jet) mass [GeV/c]",80,0.0,300.0);
 		h1["tToWj"+suffix1] = new TH1D("tToWj"+suffix1,"(W_{jj} + jet) mass [GeV/c]",50,0.0,500.0);
+		h1["WTojj_nob"+suffix1] = new TH1D("WTojj_nob"+suffix1,"(jet+jet) mass [GeV/c]",80,0.0,300.0);
+		h1["tToWb"+suffix1] = new TH1D("tToWb"+suffix1,"(W_{jj} + jet) mass [GeV/c]",50,0.0,500.0);
 	}
-	
+
+	for(std::map<TString,TH1* >::const_iterator ih=h1.begin(); ih!=h1.end(); ++ih){
+		TH1 *htemp = ih->second;
+		htemp->SetXTitle( htemp->GetName() );
+	}
+	for(std::map<TString,TH2* >::const_iterator ih=h2.begin(); ih!=h2.end(); ++ih){
+		TH2 *htemp = ih->second;
+		htemp->SetXTitle( htemp->GetName() );
+	}
 }
 
 //_______________________________________________________________
