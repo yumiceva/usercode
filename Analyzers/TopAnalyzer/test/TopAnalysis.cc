@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.cc,v 1.4 2007/05/31 21:25:08 yumiceva Exp $
+ version $Id: TopAnalysis.cc,v 1.5 2007/06/07 14:10:23 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -23,6 +23,7 @@ bool SortBjets( TopBJet b1, TopBJet b2) {
 
 	return b1.GetDiscriminator() > b2.GetDiscriminator(); 
 }
+
 
 
 //_______________________________________________________________
@@ -65,7 +66,7 @@ TopAnalysis::TopAnalysis(TString filename) {
 		h_->Init("others",acut);
 		h_->Init("others",acut,"MC");
 	}
-	
+	h_->Init("generator");
 }
 
 //_______________________________________________________________
@@ -96,6 +97,16 @@ void TopAnalysis::Loop(int max_entry) {
 		if ( fverbose ) { std::cout << " processing entry: " << jentry << std::endl; }
 		else if ( jentry%100000 == 0 ) { std::cout << " processing entry: " << jentry << std::endl; }
 
+
+		// generator
+		TLorentzVector gent;
+		TLorentzVector genT;
+		for (unsigned int itop =0; itop !=fevent->gentop_charge.size(); ++itop) {
+			if (fevent->gentop_charge[itop] < 0 ) genT.SetXYZT(fevent->gentop_px[itop],fevent->gentop_py[itop],fevent->gentop_pz[itop],fevent->gentop_e[itop]);
+			else  gent.SetXYZT(fevent->gentop_px[itop],fevent->gentop_py[itop],fevent->gentop_pz[itop],fevent->gentop_e[itop]);
+		}
+		h_->Fill2d(TString("gentop_rapidities"), gent.Rapidity(), genT.Rapidity() );
+		
 		// muons
 		bool goodMuon = false;
 		TLorentzVector p4Muon;
@@ -111,11 +122,10 @@ void TopAnalysis::Loop(int max_entry) {
 			double normchi2_mu = fevent->allmuon_normchi2[imu];
 			
 			h_->Fill1d(TString("muon_pt")+"_"+"cut0", pt_mu);
-			h_->Fill1d(TString("muon_normchi2")+"_"+"cut0",normchi2_mu);
-
-			
+			h_->Fill1d(TString("muon_normchi2")+"_"+"cut0",normchi2_mu);			
 		}
-		// pt>10
+
+        // pt>10
 		muon_size = fevent->muon_px.size();
 		if (fverbose) std::cout << "number of muons pt>10 = " << muon_size << std::endl;
 		if (muon_size == 0 ) continue;
@@ -162,7 +172,7 @@ void TopAnalysis::Loop(int max_entry) {
 									0.,
 									0.);
 			
-			h_->Fill1d(TString("jet_et")+"_"+"cut0",fevent->alljet_et[ijet]);
+			h_->Fill1d(TString("jet_et")+"_"+"cut0",corr*fevent->alljet_et[ijet]);
 			h_->Fill1d(TString("jet_eta")+"_"+"cut0",fevent->alljet_eta[ijet]);
 			h_->Fill1d(TString("jet_phi")+"_"+"cut0",fevent->alljet_phi[ijet]);
 
@@ -172,7 +182,9 @@ void TopAnalysis::Loop(int max_entry) {
 											  corr*fevent->alljet_py[ijet],
 											  corr*fevent->alljet_pz[ijet],
 											  corr*fevent->alljet_e[ijet]);
-
+				h_->Fill1d(TString("jet_et")+"_"+"cut1",p4Jet[njets].Pt());
+				h_->Fill1d(TString("jet_eta")+"_"+"cut1",p4Jet[njets].Eta());
+				
 				// b taggingig
 				abjet[njets].SetDiscriminator(fevent->jet_btag_discriminant[ijet]);
 				abjet[njets].SetId(njets);
@@ -194,6 +206,13 @@ void TopAnalysis::Loop(int max_entry) {
 			is_bjet[tmpbvec[0].GetId()] = true;
 		}
 		if ( tmpbvec[1].GetDiscriminator() > 4.0 ) is_bjet[tmpbvec[1].GetId()] = true;
+
+		for (int i=0; i<4; ++i) {
+			if ( is_bjet[i] ) {
+				h_->Fill1d(TString("jet_et")+"_"+"cut2",p4Jet[njets].Pt());
+				h_->Fill1d(TString("jet_eta")+"_"+"cut2",p4Jet[njets].Eta());
+			}
+		}
 		
 		// add muon to MET
 		p4MET += TLorentzVector(p4Muon.Px(), p4Muon.Py(), 0., 0.);
@@ -219,10 +238,14 @@ void TopAnalysis::Loop(int max_entry) {
 		h_->Fill1d(TString("WToMuNu")+"_"+"cut0",p4Wlnu.M() );
 		
 		// Combinations
+		TopCombos tToWlnuj; // t -> W + j, W -> mu + nu
 		TopCombos WTojj;//  = new TopTwoComb(); // W -> j + j
 		TopCombos tToWj; //  = new TopTwoComb(); // t -> W(j+j) + j
 
-		// jets
+		// leptonic W
+		std::vector< TLorentzVector > candw;
+		candw.push_back( p4Wlnu );
+		// all jets
 		std::vector< TLorentzVector > cand1;
 		// light jets
 		std::vector< TLorentzVector > candq;
@@ -239,7 +262,16 @@ void TopAnalysis::Loop(int max_entry) {
 			std::cout << "nbjets= " << candb.size() << std::endl;
 			std::cout << "nlight= " << candq.size() << std::endl;
 		}
-		
+
+		tToWlnuj.SetCandidate1( candw  );
+		tToWlnuj.SetCandidate2( cand1 );
+		std::vector< TLorentzVector > candtToWlnuj;
+		candtToWlnuj = tToWlnuj.GetComposites();
+		if (fverbose) std::cout << "tToWlnuj combinations = "<< candtToWlnuj.size() << std::endl;
+		for (unsigned int i=0; i!= candtToWlnuj.size(); ++i) {
+			h_->Fill1d(TString("tToWlnuj")+"_"+"cut0",candtToWlnuj[i].M() );
+		}
+
 		WTojj.SetCandidate1( cand1 );
 		WTojj.SetCandidate2( cand1 );
 
@@ -260,27 +292,68 @@ void TopAnalysis::Loop(int max_entry) {
 			h_->Fill1d(TString("tToWj")+"_"+"cut0",candtToWj[i].M() );
 		}
 
-		// b-tagging
-		TopCombos WTojj_nob;
-		TopCombos tToWb;
-
-		WTojj_nob.SetCandidate1( candq );
-		WTojj_nob.SetCandidate2( candq );
-		std::vector< TLorentzVector > candWTojj_nob;
-		candWTojj_nob = WTojj_nob.GetComposites();
-		if (fverbose) std::cout << "WTojj_nob combinations = "<< candWTojj_nob.size() << std::endl;
-		for (unsigned int i=0; i!= candWTojj_nob.size(); ++i) {
-			h_->Fill1d(TString("WTojj_nob")+"_"+"cut0",candWTojj_nob[i].M() );
+		// request back-to-back events in phi
+		tToWj.SetMinDeltaPhi( 1.5 );
+		tToWj.SetMinInvMass(50.);
+		tToWj.SetMaxInvMass(110.);
+		candtToWj.clear();
+		candtToWj = tToWj.GetComposites();
+		for (unsigned int i=0; i!= candtToWj.size(); ++i) {
+			h_->Fill1d(TString("tToWj")+"_"+"cut1",candtToWj[i].M() );
 		}
 
-		tToWb.SetCandidate1( candq ); // j1 of t-> W + b, W -> j1 + j2
-		tToWb.SetCandidate2( candq ); // j2
-		tToWb.SetCandidate3( candb ); // b
-		std::vector< TLorentzVector > candtToWb;
-		candtToWb = tToWb.GetComposites();
-		if (fverbose) std::cout << "tToWb combinations = " << candtToWj.size() << std::endl;
-		for (unsigned int i=0; i!= candtToWb.size(); ++i) {
-			h_->Fill1d(TString("tToWb")+"_"+"cut0",candtToWj[i].M() );
+		
+		// considering b-tagging
+		if (candb.size() > 0) {
+			TopCombos tToWlnub;
+			TopCombos WTojj_nob;
+			TopCombos tToWb;
+
+			tToWlnub.SetCandidate1( candw );
+			tToWlnub.SetCandidate2( candb );
+			std::vector< TLorentzVector > candtToWlnub;
+			candtToWlnub = tToWlnub.GetComposites();
+			if (fverbose) std::cout << "tToWlnub combinations = "<< candtToWlnub.size() << std::endl;
+			for (unsigned int i=0; i!= candtToWlnub.size(); ++i) {
+				h_->Fill1d(TString("tToWlnub")+"_"+"cut0",candtToWlnub[i].M() );
+			}
+			// request back-to-back events in phi
+			tToWlnub.SetMinDeltaPhi(1.5);
+			candtToWlnub.clear();
+			candtToWlnub = tToWlnub.GetComposites();
+			for (unsigned int i=0; i!= candtToWlnub.size(); ++i) {
+				h_->Fill1d(TString("tToWlnub")+"_"+"cut1",candtToWlnub[i].M() );
+			}
+
+		
+			WTojj_nob.SetCandidate1( candq );
+			WTojj_nob.SetCandidate2( candq );
+			std::vector< TLorentzVector > candWTojj_nob;
+			candWTojj_nob = WTojj_nob.GetComposites();
+			if (fverbose) std::cout << "WTojj_nob combinations = "<< candWTojj_nob.size() << std::endl;
+			for (unsigned int i=0; i!= candWTojj_nob.size(); ++i) {
+				h_->Fill1d(TString("WTojj_nob")+"_"+"cut0",candWTojj_nob[i].M() );
+			}
+
+			tToWb.SetCandidate1( candq ); // j1 of t-> W + b, W -> j1 + j2
+			tToWb.SetCandidate2( candq ); // j2
+			tToWb.SetCandidate3( candb ); // b
+			std::vector< TLorentzVector > candtToWb;
+			candtToWb = tToWb.GetComposites();
+			if (fverbose) std::cout << "tToWb combinations = " << candtToWb.size() << std::endl;
+			for (unsigned int i=0; i!= candtToWb.size(); ++i) {
+				h_->Fill1d(TString("tToWb")+"_"+"cut0",candtToWb[i].M() );
+			}
+			// request back-to-back events in phi
+			tToWb.SetMinDeltaPhi(1.5);
+			tToWb.SetMinInvMass(50.);
+			tToWb.SetMaxInvMass(110.);
+			candtToWb.clear();
+			candtToWb = tToWb.GetComposites();
+			for (unsigned int i=0; i!= candtToWb.size(); ++i) {
+				h_->Fill1d(TString("tToWb")+"_"+"cut1",candtToWlnub[i].M() );
+			}
+
 		}
 		
 		

@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopCombos.cc,v 1.1 2007/06/04 15:54:21 yumiceva Exp $
+ version $Id: TopCombos.cc,v 1.2 2007/06/04 16:02:04 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -106,7 +106,7 @@ std::vector< TLorentzVector > TopCombos::ThreeCombos() {
 			TLorentzVector cand2 = cand2_[icand2];
 						
 			if ( cand2 != cand1 ) {
-				for ( unsigned icand3 = icand2; icand3 < cand3_.size(); ++icand3 ) {
+				for ( unsigned icand3 = 0; icand3 < cand3_.size(); ++icand3 ) {
 					
 					TLorentzVector cand3 = cand3_[icand3];
 			
@@ -116,7 +116,7 @@ std::vector< TLorentzVector > TopCombos::ThreeCombos() {
 						TLorentzVector acomp123 = cand1 + cand2 + cand3;
 						
 				
-						if ( acomp123.M() > minInvMass_ && acomp123.M() < maxInvMass_ ) {
+						if ( acomp12.M() > minInvMass_ && acomp12.M() < maxInvMass_ ) {
 
 
 							Double_t adelta = TMath::Abs(acomp12.Phi() - cand3.Phi());
@@ -124,7 +124,15 @@ std::vector< TLorentzVector > TopCombos::ThreeCombos() {
 					
 							if ( adelta > minPhi_ ) {
 
-								composites.push_back(acomp123);
+							  // check for duplicates
+							  bool isduplicate = false;
+							  for ( unsigned ic = 0; ic < composites.size(); ++ic) {
+							    //std::cout << "ci comp M= " << composites[ic].M() << std::endl;
+							    if ( TMath::Abs(composites[ic].M() - acomp123.M())<1.0e-4) { isduplicate = true; break; }
+
+							  }
+							  //std::cout << "composites M= " << acomp123.M() << std::endl;
+							  if (!isduplicate) composites.push_back(acomp123);
 							}
 						}
 					}
