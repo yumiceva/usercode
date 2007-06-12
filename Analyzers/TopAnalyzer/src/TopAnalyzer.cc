@@ -411,6 +411,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		HepMC::GenEvent * myGenEvent = new  HepMC::GenEvent(*(evtMC->GetEvent()));
 		for ( HepMC::GenEvent::particle_iterator p = myGenEvent->particles_begin();
 		      p != myGenEvent->particles_end(); ++p ) {
+		  // select ttbar
 		  if ( abs((*p)->pdg_id()) == 6 ) {
 			  fmyEvent->gentop_px.push_back((*p)->momentum().px());
 			  fmyEvent->gentop_py.push_back((*p)->momentum().py());
@@ -418,6 +419,14 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			  fmyEvent->gentop_e.push_back((*p)->momentum().e());
 			  fmyEvent->gentop_charge.push_back((*p)->pdg_id());
 		  }
+		  // select neutrino
+		  if ( abs((*p)->pdg_id()) == 12 || abs((*p)->pdg_id()) == 14 ) {
+		    fmyEvent->gennu_px.push_back((*p)->momentum().px());
+		    fmyEvent->gennu_py.push_back((*p)->momentum().py());
+		    fmyEvent->gennu_pz.push_back((*p)->momentum().pz());
+		    fmyEvent->gennu_pdg.push_back((*p)->pdg_id());
+                  }
+
 		}
 
 		//f ( fnAccepted < 3 ) {

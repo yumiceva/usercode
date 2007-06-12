@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEvent.h,v 1.1 2007/04/25 03:53:54 yumiceva Exp $
+ version $Id: TopEvent.h,v 1.2 2007/05/25 19:35:34 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -70,7 +70,11 @@ class TopEvent : public TObject {
 	std::vector< double > gentop_e;
 	std::vector< double > gentop_charge;
 	std::vector< int > gentop_hadronic;
-	
+	std::vector< double > gennu_px;
+	std::vector< double > gennu_py;
+	std::vector< double > gennu_pz;
+	std::vector< int > gennu_pdg;
+
 	//_____ MC jets _________________________________
 	std::vector< double > genjet_p;
 	std::vector< double > genjet_pt;

@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEvent.cc,v 1.1 2007/04/25 03:53:54 yumiceva Exp $
+ version $Id: TopEvent.cc,v 1.2 2007/05/25 19:35:35 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -70,6 +70,10 @@ void TopEvent::Reset() {
 	gentop_e.clear();
 	gentop_charge.clear();
 	gentop_hadronic.clear();
+	gennu_px.clear();
+        gennu_py.clear();
+        gennu_pz.clear();
+        gennu_pdg.clear();
 
 	genjet_p.clear();
 	genjet_pt.clear();

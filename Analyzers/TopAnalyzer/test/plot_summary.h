@@ -163,9 +163,9 @@ class plot_summary {
 	Double_t          fphicut;
 
 	TopEvent *fevent;
-	std::map<std::string, TCanvas*> cv_map;
-	std::map<std::string, TH1*> h1;
-	std::map<std::string, TH2*> h2;
+	std::map<TString, TCanvas*> cv_map;
+	std::map<TString, TH1*> h1;
+	std::map<TString, TH2*> h2;
 	
 		
 };
