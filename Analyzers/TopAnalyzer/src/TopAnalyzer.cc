@@ -189,7 +189,7 @@ void TopAnalyzer::endJob() {
 	fraction = ((double)fnAccepted)/((double)fnEvent);
 	std::cout << "[TopAnalyzer] Total events accepted by filter:  \t" << fnAccepted << "\t ("<< fraction << "%)" << std::endl;
 	fraction = ((double)fnEvent_cut0)/((double)fnAccepted);
-	std::cout << "[TopAnalyzer] Total events accepted by cut 0 :  \t" << fnEvent_cut0 << "]t (" << fraction << "%)" << std::endl;
+	std::cout << "[TopAnalyzer] Total events accepted by cut 0 :  \t" << fnEvent_cut0 << "\t (" << fraction << "%)" << std::endl;
 
 }
 
@@ -407,7 +407,6 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 
 		// generator stuff
-		
 		HepMC::GenEvent * myGenEvent = new  HepMC::GenEvent(*(evtMC->GetEvent()));
 		for ( HepMC::GenEvent::particle_iterator p = myGenEvent->particles_begin();
 		      p != myGenEvent->particles_end(); ++p ) {
@@ -418,15 +417,36 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			  fmyEvent->gentop_pz.push_back((*p)->momentum().pz());
 			  fmyEvent->gentop_e.push_back((*p)->momentum().e());
 			  fmyEvent->gentop_charge.push_back((*p)->pdg_id());
-		  }
-		  // select neutrino
-		  if ( abs((*p)->pdg_id()) == 12 || abs((*p)->pdg_id()) == 14 ) {
-		    fmyEvent->gennu_px.push_back((*p)->momentum().px());
-		    fmyEvent->gennu_py.push_back((*p)->momentum().py());
-		    fmyEvent->gennu_pz.push_back((*p)->momentum().pz());
-		    fmyEvent->gennu_pdg.push_back((*p)->pdg_id());
-                  }
+			  
+			  std::vector<HepMC::GenParticle*> top_children;
+			  HepMC::GenVertex* outVertex=(*p)->end_vertex();
+			  for(HepMC::GenVertex::particles_out_const_iterator iter = outVertex->particles_out_const_begin(); iter != outVertex->particles_out_const_end(); ++iter)
+			    top_children.push_back(*iter);
 
+			  std::vector<HepMC::GenParticle*>::const_iterator aDaughter;
+			  for (aDaughter = top_children.begin();aDaughter != top_children.end();aDaughter++) {
+			    //std::cout << " gen dau= " << (*aDaughter)->pdg_id() << std::endl;
+			    // get a W
+			    if ( abs((*aDaughter)->pdg_id()) == 24 ) {
+			      std::vector<HepMC::GenParticle*> w_children;
+			      HepMC::GenVertex* out2Vertex=(*aDaughter)->end_vertex();
+			      for(HepMC::GenVertex::particles_out_const_iterator iter2 = out2Vertex->particles_out_const_begin(); iter2 != out2Vertex->particles_out_const_end(); ++iter2)
+				w_children.push_back(*iter2);
+
+			      std::vector<HepMC::GenParticle*>::const_iterator granDaughter;
+			      for (granDaughter = w_children.begin();granDaughter != w_children.end(); ++granDaughter) {
+				//std::cout << " gen grandau= " << (*granDaughter)->pdg_id() << std::endl;
+				// select neutrino
+				if ( abs((*granDaughter)->pdg_id()) == 12 || abs((*granDaughter)->pdg_id()) == 14 || abs((*granDaughter)->pdg_id()) == 16 ) {
+				  fmyEvent->gennu_px.push_back((*granDaughter)->momentum().px());
+				  fmyEvent->gennu_py.push_back((*granDaughter)->momentum().py());
+				  fmyEvent->gennu_pz.push_back((*granDaughter)->momentum().pz());
+				  fmyEvent->gennu_pdg.push_back((*granDaughter)->pdg_id());
+				}
+			      }
+			    }
+			  }
+		  }
 		}
 
 		//f ( fnAccepted < 3 ) {
