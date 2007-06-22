@@ -129,7 +129,12 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				hist->SetXTitle(hist->GetTitle());
 				hist->Draw();
 				label->Draw();
-				
+				if (logaxis) {
+				  cout << "  make log Y-axis scale" << endl;
+				  gPad->SetLogy();
+				  gPad->SetGrid();
+				}
+
 				cv_map["cv_"+cvname]->cd(2);
 				std::vector<std::string> histPathName;
 				//histPathName.push_back (dirName1[idir]);
@@ -181,13 +186,6 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				label->Draw();
 			}
 
-			if (logaxis) {
-			  cout << "  make log Y-axis scale" << endl;
-			  cv_map["cv_"+cvname]->cd(1);
-			  cv_map["cv_"+cvname]->SetLogy();
-			  cv_map["cv_"+cvname]->SetGrid();
-			  cv_map["cv_"+cvname]->Update();
-			}
 
 			cv_map["cv_"+cvname]->cd();
 			cout << " print canvas" << endl;
@@ -226,7 +224,12 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							hist->SetXTitle(hist->GetTitle());
 							hist->Draw();
 							label->Draw();
-					  
+							if (logaxis) {
+							  cout << "  make log Y-axis scale" << endl;
+							  gPad->SetLogy();
+							  gPad->SetGrid();
+							}
+
 							cv_map["cv_"+cvname]->cd(2);
 							std::vector<std::string> histPathName;
 							histPathName.push_back (dirName1[idir]);
@@ -278,13 +281,6 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							label->Draw();
 						}
 								
-						if (logaxis) {
-						  cout << "  make log Y-axis scale" << endl;
-						  cv_map["cv_"+cvname]->cd(1);
-						  cv_map["cv_"+cvname]->SetLogy();
-						  cv_map["cv_"+cvname]->SetGrid();
-						  cv_map["cv_"+cvname]->Update();
-						}
 
 						cv_map["cv_"+cvname]->cd();
 						cout << " print canvas" << endl;
@@ -325,7 +321,12 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									hist->SetXTitle(hist->GetTitle());
 									hist->Draw();
 									label->Draw();
-									
+									if (logaxis) {
+									  cout << "  make log Y-axis scale" << endl;
+									  gPad->SetLogy();
+									  gPad->SetGrid();
+									}
+
 									cv_map["cv_"+cvname]->cd(2);
 									std::vector<std::string> histPathName;
 									histPathName.push_back (dirName1[idir]);
@@ -376,13 +377,6 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									label->Draw();
 								}
 									
-								if (logaxis) {
-								  cout << "  make log Y-axis scale" << endl;
-								  cv_map["cv_"+cvname]->cd(1);
-								  cv_map["cv_"+cvname]->SetLogy();
-								  cv_map["cv_"+cvname]->SetGrid();
-								  cv_map["cv_"+cvname]->Update();
-								}
 
 								cv_map["cv_"+cvname]->cd();
 								cout << " print canvas" << endl;
