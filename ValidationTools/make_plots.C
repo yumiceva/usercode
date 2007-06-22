@@ -181,7 +181,10 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				label->Draw();
 			}
 
-			if (logaxis) cv_map["cv_"+cvname]->SetLogy();
+			if (logaxis) {
+			  cv_map["cv_"+cvname]->SetLogy();
+			  cv_map["cv_"+cvname]->SetGrid();
+			}
 
 			cv_map["cv_"+cvname]->cd();
 			cout << " print canvas" << endl;
@@ -271,7 +274,12 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							hist->Draw();
 							label->Draw();
 						}
-									
+								
+						if (logaxis) {
+						  cv_map["cv_"+cvname]->SetLogy();
+						  cv_map["cv_"+cvname]->SetGrid();
+						}
+
 						cv_map["cv_"+cvname]->cd();
 						cout << " print canvas" << endl;
 						cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
@@ -362,6 +370,11 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									label->Draw();
 								}
 									
+								if (logaxis) {
+								  cv_map["cv_"+cvname]->SetLogy();
+								  cv_map["cv_"+cvname]->SetGrid();
+								}
+
 								cv_map["cv_"+cvname]->cd();
 								cout << " print canvas" << endl;
 								cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
