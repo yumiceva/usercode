@@ -82,7 +82,7 @@ TH1* HistoCompare(TH1 *h, TH1 *refHisto) {
   
 }
 
-void make_plots(TString root_filename, TString webpath, TString extension="png", bool compare = false, TString compare_filename="") {
+void make_plots(TString root_filename, TString webpath, TString extension="png", bool compare = false, TString compare_filename="", bool logaxis = false) {
 
 	// get a file
 	TFile *afile = new TFile(root_filename);
@@ -180,6 +180,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				hist->Draw();
 				label->Draw();
 			}
+
+			if (logaxis) cv_map["cv_"+cvname]->SetLogy();
 
 			cv_map["cv_"+cvname]->cd();
 			cout << " print canvas" << endl;
