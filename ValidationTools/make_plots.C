@@ -182,6 +182,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 			}
 
 			if (logaxis) {
+			  cout << "  make log Y-axis scale" << endl;
+			  cv_map["cv_"+cvname]->cd(1);
 			  cv_map["cv_"+cvname]->SetLogy();
 			  cv_map["cv_"+cvname]->SetGrid();
 			}
@@ -276,6 +278,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 						}
 								
 						if (logaxis) {
+						  cout << "  make log Y-axis scale" << endl;
+						  cv_map["cv_"+cvname]->cd(1);
 						  cv_map["cv_"+cvname]->SetLogy();
 						  cv_map["cv_"+cvname]->SetGrid();
 						}
@@ -371,6 +375,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 								}
 									
 								if (logaxis) {
+								  cout << "  make log Y-axis scale" << endl;
+								  cv_map["cv_"+cvname]->cd(1);
 								  cv_map["cv_"+cvname]->SetLogy();
 								  cv_map["cv_"+cvname]->SetGrid();
 								}
