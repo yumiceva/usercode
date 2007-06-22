@@ -186,6 +186,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 			  cv_map["cv_"+cvname]->cd(1);
 			  cv_map["cv_"+cvname]->SetLogy();
 			  cv_map["cv_"+cvname]->SetGrid();
+			  cv_map["cv_"+cvname]->Update();
 			}
 
 			cv_map["cv_"+cvname]->cd();
@@ -282,6 +283,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 						  cv_map["cv_"+cvname]->cd(1);
 						  cv_map["cv_"+cvname]->SetLogy();
 						  cv_map["cv_"+cvname]->SetGrid();
+						  cv_map["cv_"+cvname]->Update();
 						}
 
 						cv_map["cv_"+cvname]->cd();
@@ -379,6 +381,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 								  cv_map["cv_"+cvname]->cd(1);
 								  cv_map["cv_"+cvname]->SetLogy();
 								  cv_map["cv_"+cvname]->SetGrid();
+								  cv_map["cv_"+cvname]->Update();
 								}
 
 								cv_map["cv_"+cvname]->cd();
