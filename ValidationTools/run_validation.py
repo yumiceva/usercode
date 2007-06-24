@@ -26,6 +26,7 @@
    -r, --reference = REFERENCE: CMSSW version of reference plots, default is 1.3.1
    -n, --nocompare : do not compare histograms only produce plots. It can be used to create reference plots.
    -p, --plots : just produce plots.
+   -l, --logaxis : produce plots with a logarithm Y-axis scale.
 """
 
 # Modules
@@ -330,9 +331,13 @@ if __name__ == "__main__":
 		    ''')
 		    if not option.nocompare:
 			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",true,\""+ref_rootfilename+"\");}\n"
+                            if option.logaxis:
+                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",true,\""+ref_rootfilename+"\",true);}\n"
 			    tmpbatchroot.write(tmpline)
 		    else:
 			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\");}\n"
+                            if option.logaxis:
+                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",false,\"\",true);}\n"
 			    tmpbatchroot.write(tmpline)
 
                     tmpbatchroot.close()
