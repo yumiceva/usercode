@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: BTagSummary.cc,v 1.3 2007/04/25 03:53:53 yumiceva Exp $
+ version $Id: BTagSummary.cc,v 1.4 2007/05/09 03:32:21 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -57,11 +57,13 @@ void BTagSummary::Reset() {
 	jet_flavour_phy.clear();
 	jet_btagged.clear();
 
-	jetcorr_p.clear();
-	jetcorr_pt.clear();
-	jetcorr_et.clear();
-	jetcorr_ptrel.clear();
-	jetcorr_btagged.clear();
+	jetcorrection.clear();
+	
+	//jetcorr_p.clear();
+	//jetcorr_pt.clear();
+	//jetcorr_et.clear();
+	//jetcorr_ptrel.clear();
+	//jetcorr_btagged.clear();
 	
 	genjet_p.clear();
 	genjet_pt.clear();
@@ -115,7 +117,8 @@ void BTagSummary::Reset() {
 	btag_discriminator0.clear();
 	btag_discriminator1.clear();
 	btag_discriminator2.clear();
-	
+
+	otherjetcorrection.clear();
 	otherjet_pt.clear();
 	otherjet_eta.clear();
 	otherjet_phi.clear();

@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: BTagSummary.h,v 1.3 2007/04/25 03:53:52 yumiceva Exp $
+ version $Id: BTagSummary.h,v 1.3 2007/05/09 03:34:07 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -54,12 +54,14 @@ class BTagSummary : public TObject {
 	std::vector< int > jet_flavour_phy;
 	std::vector< int > jet_flavour_alg;
 	std::vector< int > jet_btagged;
+
+	std::vector< double > jetcorrection;
 	
-	std::vector< double > jetcorr_p;
-	std::vector< double > jetcorr_pt;
-	std::vector< double > jetcorr_et;
-	std::vector< double > jetcorr_ptrel;
-	std::vector< int > jetcorr_btagged;
+	//std::vector< double > jetcorr_p;
+	//std::vector< double > jetcorr_pt;
+	//std::vector< double > jetcorr_et;
+	//std::vector< double > jetcorr_ptrel;
+	//std::vector< int > jetcorr_btagged;
 
 	std::vector< double > genjet_p;
 	std::vector< double > genjet_pt;
@@ -115,6 +117,7 @@ class BTagSummary : public TObject {
 	std::vector< double > btag_discriminator1;
 	std::vector< double > btag_discriminator2;
 
+	std::vector< double > otherjetcorrection;
 	std::vector< double > otherjet_pt;
 	std::vector< double > otherjet_eta;
 	std::vector< double > otherjet_phi;

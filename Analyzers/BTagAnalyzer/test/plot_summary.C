@@ -208,7 +208,7 @@ void plot_summary::Loop()
 
 				// original
 				//h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),20,20.,170.);
-				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),15,30.,250.);
+				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),15,30.,230.);
 				h1[thename]->Sumw2();
 				h1[thename]->SetLineColor(quark_color[iq]);
 				h1[thename]->SetMarkerColor(quark_color[iq]);
@@ -220,7 +220,7 @@ void plot_summary::Loop()
 				thename += cut_label[ic];
 				thename += pthat_label[ipt];
 				
-				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),15,30.,250.);
+				h1[thename] = new TH1D(thename.c_str(),htitle.c_str(),15,30.,230.);
 				h1[thename]->Sumw2();
 				h1[thename]->SetLineColor(quark_color[iq]);
 				h1[thename]->SetMarkerColor(quark_color[iq]);
@@ -234,7 +234,7 @@ void plot_summary::Loop()
 	// Double_t jetetabins[8] = {0.0,0.25,0.5,0.75,1.0,1.25,1.5,2.0};
 	const int nptbins = 30;
 	Double_t jetptbins[nptbins] = {30., 35., 40., 45., 50., 55., 60., 65., 70., 75., 80., 85., 90., 95., 100.,
-								   105., 110., 115., 120., 125., 130., 135., 140., 150, 160., 170., 180., 190., 200., 250.};
+								   105., 110., 115., 120., 125., 130., 135., 140., 150, 160., 170., 180., 190., 200., 230.};
 	
 	Double_t jetetabins[8] = {0.0,0.25,0.5,0.75,1.0,1.25,1.5,2.0};
 
@@ -351,7 +351,7 @@ void plot_summary::Loop()
 			weight = 1.;//xsec[3] / w_nevents[3];
 			this_pthat_label = "_80_120";
 		}
-		else if ( tmpfilename.Contains("qcd120_170_") ) { 
+		else if ( tmpfilename.Contains("120_170_") ) { 
 			weight = 1.;//xsec[4] / w_nevents[4];
 			this_pthat_label = "_120_170";
 		}
@@ -390,14 +390,20 @@ void plot_summary::Loop()
 		
 		int othervec_size = (fBTagSummary[0]->otherjet_pt).size();
 		
-		double large_d0sig = 0;
+		double large_d0sig = 0.;
+		double large_jetet = 0.;
 		int index_selected_mu = -1;
 		
-		// select only the muon with the best SIP
+		// select only the muon with the best IPS
 		for ( int ijet =0; ijet != vec_size; ++ijet) {
+			double tmp_large_jetet = fBTagSummary[0]->jet_et[ijet];
 			double tmp_large_d0sig = TMath::Abs(fBTagSummary[0]->muon_d0[ijet] / fBTagSummary[0]->muon_d0sigma[ijet]);
-			if ( tmp_large_d0sig >= large_d0sig ) {
+			if ( tmp_large_d0sig > large_d0sig ) {
 				large_d0sig = tmp_large_d0sig;
+				index_selected_mu = ijet;
+			}
+			else if ( ( tmp_large_d0sig == large_d0sig ) && (tmp_large_jetet > large_jetet) ) {
+				large_jetet = tmp_large_large_jetet;
 				index_selected_mu = ijet;
 			}
 		}
@@ -456,21 +462,29 @@ void plot_summary::Loop()
 
 			double ojet_pt = fBTagSummary[0]->otherjet_pt[jjet];
 			double ojet_eta = fBTagSummary[0]->otherjet_eta[jjet];
+			double ojet_phi = fBTagSummary[0]->otherjet_phi[jjet];
 				//cout << "ojet_pt:" << ojet_pt << endl;
 				
 			// skip main jet
-			for ( int jjet =0; jjet != vec_size; ++jjet) {
-				if ( jet_pt  == ojet_pt ) continue;
+			//for ( int jjet =0; jjet != vec_size; ++jjet) {
+			//if ( jet_pt  == ojet_pt ) continue;
 				//cout << " skipping jet" << endl;
-			}
+			//}
+
+			// select a back-to-back jet
+			double deltaphi = TMath::Abs(jet_phi - ojet_phi);
+			if ( deltaphi > TMath::Pi() ) deltaphi = TMath::Abs(2.*TMath::Pi() - deltaphi);
+
+			if ( deltaphi <= 1.5 ) continue;
+			
 
 			//bool othertagged = false;
 			double otherdisc = -9999.;
-			if ( tmpfilename.Contains("BBbar") || tmpfilename.Contains("CCbar") ) { otherdisc=fBTagSummary[0]->otherbtag_discriminator0[ijet]; }
+			if ( tmpfilename.Contains("BBbar") || tmpfilename.Contains("CCbar") ) { otherdisc=fBTagSummary[0]->otherbtag_discriminator1[ijet]; }
 			else { otherdisc=fBTagSummary[0]->otherbtag_discriminator1[ijet]; }
 			
 			//cout << "otherdisc: " << otherdisc << endl;
-			if ( (ojet_pt>20.) && TMath::Abs(jet_eta)<2.0 && (otherdisc > TCdiscriminator) ) othertagged = true;
+			if ( (ojet_et>20.) && TMath::Abs(jet_eta)<2.0 && (otherdisc > TCdiscriminator) ) othertagged = true;
 		}
 
 		//otherjet_tag.push_back(othertagged);
@@ -484,7 +498,7 @@ void plot_summary::Loop()
 				
 		bool tagged = false;
 		double disc = -999.;
-		if ( tmpfilename.Contains("BBbar") || tmpfilename.Contains("CCbar") ) { disc = fBTagSummary[0]->btag_discriminator0[ijet]; }
+		if ( tmpfilename.Contains("BBbar") || tmpfilename.Contains("CCbar") ) { disc = fBTagSummary[0]->btag_discriminator1[ijet]; }
 		else { disc = fBTagSummary[0]->btag_discriminator1[ijet]; }
 		
 		if ( pass && disc>4.0 ) tagged = true;
@@ -1339,6 +1353,7 @@ void plot_summary::Loop()
         h1d_c_cut1->SetMarkerStyle(8);
         h1d_c_cut1->SetMarkerSize(1.5);
         h1d_c_cut1->Draw("PE1");
+		gPad->SetGrid();
         gPad->Update();
 
         cv_map["jetet_c"]->cd(2);
@@ -1349,7 +1364,8 @@ void plot_summary::Loop()
         h1d_c_cut2->SetMarkerStyle(8);
         h1d_c_cut2->SetMarkerSize(1.5);
         h1d_c_cut2->Draw("PE1");
-
+		gPad->SetGrid();
+		
         cv_map["jetet_c"]->cd(3);
         TH1D *h1d_c_cut3 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_c_cut3"+suf));
         h1d_c_cut3->Divide(h1["jet_et_c_cut3"+suf],h1["jet_et_c"+suf],1.,1.,"B");
@@ -1358,7 +1374,8 @@ void plot_summary::Loop()
         h1d_c_cut3->SetMarkerStyle(8);
         h1d_c_cut3->SetMarkerSize(1.5);
         h1d_c_cut3->Draw("PE1");
-
+		gPad->SetGrid();
+		
         cv_map["jetet_c"]->cd(4);
         TH1D *h1d_c_ratio = (TH1D*) h1["jet_et"+suf]->Clone("h1d_c_ratio");
         h1d_c_ratio->Divide(h1d_c_cut3,h1d_c_cut1);
@@ -1372,8 +1389,9 @@ void plot_summary::Loop()
         TF1 *f1_c = h1d_c_ratio->GetFunction("pol1");
         f1_c->SetLineColor(3);
         f1_c->Draw("same");
-
-	cv_map["jetet_c"]->Update();
+		gPad->SetGrid();
+		
+		cv_map["jetet_c"]->Update();
         //cvjetet_c->Print("figures/"+TString(cvjetet_c->GetName())+".pdf");
 
 	cv_map["jetet_udsg"] = new TCanvas("jetet_udsg","jetet_udsg",700,700);
@@ -1386,6 +1404,7 @@ void plot_summary::Loop()
         h1d_udsg_cut1->SetMarkerStyle(8);
         h1d_udsg_cut1->SetMarkerSize(1.5);
         h1d_udsg_cut1->Draw("PE1");
+		gPad->SetGrid();
         gPad->Update();
 
         cv_map["jetet_udsg"]->cd(2);
@@ -1396,7 +1415,8 @@ void plot_summary::Loop()
         h1d_udsg_cut2->SetMarkerStyle(8);
         h1d_udsg_cut2->SetMarkerSize(1.5);
         h1d_udsg_cut2->Draw("PE1");
-
+		gPad->SetGrid();
+		
         cv_map["jetet_udsg"]->cd(3);
         TH1D *h1d_udsg_cut3 = (TH1D*) h1["jet_et"+suf]->Clone(TString("h1d_udsg_cut3"+suf));
         h1d_udsg_cut3->Divide(h1["jet_et_udsg_cut3"+suf],h1["jet_et_udsg"+suf],1.,1.,"B");
@@ -1405,7 +1425,8 @@ void plot_summary::Loop()
         h1d_udsg_cut3->SetMarkerStyle(8);
         h1d_udsg_cut3->SetMarkerSize(1.5);
         h1d_udsg_cut3->Draw("PE1");
-
+		gPad->SetGrid();
+		
         cv_map["jetet_udsg"]->cd(4);
         TH1D *h1d_udsg_ratio = (TH1D*) h1["jet_et"+suf]->Clone("h1d_udsg_ratio");
         h1d_udsg_ratio->Divide(h1d_udsg_cut3,h1d_udsg_cut1);
@@ -1419,7 +1440,8 @@ void plot_summary::Loop()
         TF1 *f1_udsg = h1d_udsg_ratio->GetFunction("pol1");
         f1_udsg->SetLineColor(3);
         f1_udsg->Draw("same");
-
+		gPad->SetGrid();
+		
 	cv_map["jetet_udsg"]->Update();
         //cvjetet_udsg->Print("figures/"+TString(cvjetet_udsg->GetName())+".pdf");
 	/*

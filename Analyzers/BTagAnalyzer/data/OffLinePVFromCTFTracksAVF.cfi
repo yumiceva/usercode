@@ -3,9 +3,10 @@ module offlinePVFromCTFTracksAVF = PrimaryVertexProducer
 	# label of tracks to be used
 	string TrackLabel = "ctfWithMaterialTracks"
 	bool useBeamConstraint = false
-	untracked bool verbose = true
-	string fitter = "AdaptiveVertexFitter"
-	string finder = ""
+	untracked bool verbose = false
+#	string fitter = "AdaptiveVertexFitter"
+#	string finder = ""
+	string algorithm = "AdaptiveVertexFitter"
 
 	PSet TkFilterParameters =
 	{

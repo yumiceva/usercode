@@ -30,6 +30,8 @@
 
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+
 #include "SimTracker/Records/interface/TrackAssociatorRecord.h"
 #include "SimDataFormats/TrackingAnalysis/interface/TrackingParticle.h"
 
@@ -100,7 +102,7 @@ BTagAnalyzer::BTagAnalyzer(const ParameterSet& iConfig)
   
   CaloJetCollectionTags_ = iConfig.getParameter<std::string>("Jets");
 
-  CorrCaloJetCollectionTags_ = iConfig.getParameter<std::string>("CorrJets");
+  //CorrCaloJetCollectionTags_ = iConfig.getParameter<std::string>("CorrJets");
 
   GenJetCollectionTags_ = iConfig.getParameter<std::string>("GenJets");
 
@@ -117,10 +119,11 @@ BTagAnalyzer::BTagAnalyzer(const ParameterSet& iConfig)
   TaggerList_ = iConfig.getUntrackedParameter<std::vector<std::string> >("TaggerList");
   int isample=0;
   for(std::vector<std::string>::iterator objectName = TaggerList_.begin(); objectName != TaggerList_.end(); ++objectName) {
-	  if ( *objectName == "TrackCounting" ) {
+	  if ( *objectName == "TrackProbability" ) {
 		  //std::cout << "in TrackCounting ini" << std::endl;
 		  isample=0;
-		  moduleLabel_.push_back("trackCountingJetTags");
+		  //moduleLabel_.push_back("trackCountingJetTags");
+		  moduleLabel_.push_back("trackProbabilityJetTags");
 		  //std::cout << "in TrackCounting summary to be created" << std::endl;
 		  fMySummary[isample] = new BTagSummary();
 		  //std::cout << "in TrackCounting summary created" << std::endl;
@@ -308,9 +311,12 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	Handle<reco::CaloJetCollection> jetsColl;
 	iEvent.getByLabel(CaloJetCollectionTags_, jetsColl);
 
-	Handle<reco::CaloJetCollection> jetsCorrColl;
-	iEvent.getByLabel(CorrCaloJetCollectionTags_, jetsCorrColl);
+	//Handle<reco::CaloJetCollection> jetsCorrColl;
+	//iEvent.getByLabel(CorrCaloJetCollectionTags_, jetsCorrColl);
 
+    // initialize jet corrector
+	const JetCorrector *acorrector = JetCorrector::getJetCorrector("MCJetCorrectorIcone5",iSetup);
+		
 	Handle<reco::GenJetCollection> genjetsColl;
 	iEvent.getByLabel(GenJetCollectionTags_, genjetsColl);
 
@@ -334,7 +340,7 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	const reco::TrackCountingTagInfoCollection & btagInfo = *(tagInfoHandle.product());
 
 	const reco::CaloJetCollection recoJets =   *(jetsColl.product());
-	const reco::CaloJetCollection recoCorrJets =   *(jetsCorrColl.product());
+	//const reco::CaloJetCollection recoCorrJets =   *(jetsCorrColl.product());
 	const reco::GenJetCollection  genJets  =   *(genjetsColl.product());
 	const reco::MuonCollection    recoMuons =  *(muonsColl.product());
 	const edm::SimTrackContainer simTrks =    *(simtrkColl.product());
@@ -538,15 +544,18 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 			fMySummary[ispl]->jet_flavour_alg.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());	
 			fMySummary[ispl]->jet_flavour_phy.push_back(jetFlavourIdentifier2_.identifyBasedOnPartons(*jet).flavour());	
 
-			CaloJet corrjet = recoCorrJets[ijet];
-			fMySummary[ispl]->jetcorr_p.push_back(corrjet.p());
-			fMySummary[ispl]->jetcorr_pt.push_back(corrjet.pt());
-			fMySummary[ispl]->jetcorr_et.push_back(corrjet.et());
-			TVector3 tmpveccorr(corrjet.p4().Vect().X(),corrjet.p4().Vect().Y(), corrjet.p4().Vect().Z());
+			//CaloJet corrjet = recoCorrJets[ijet];
+			//fMySummary[ispl]->jetcorr_p.push_back(corrjet.p());
+			//fMySummary[ispl]->jetcorr_pt.push_back(corrjet.pt());
+			//fMySummary[ispl]->jetcorr_et.push_back(corrjet.et());
+			//TVector3 tmpveccorr(corrjet.p4().Vect().X(),corrjet.p4().Vect().Y(), corrjet.p4().Vect().Z());
 			//TVector3 muonveccorr(muonTrk.momentum().X(), muonTrk.momentum().Y(),muonTrk.momentum().Z());
-			tmpveccorr += muonvec;
-			double ptrelcorr = muonvec.Perp(tmpveccorr);
-			fMySummary[ispl]->jetcorr_ptrel.push_back(ptrelcorr);
+			//tmpveccorr += muonvec;
+			//double ptrelcorr = muonvec.Perp(tmpveccorr);
+			//fMySummary[ispl]->jetcorr_ptrel.push_back(ptrelcorr);
+
+			// get jet correction
+			fMySummary[ispl]->jetcorrection.push_back( acorrector->correction(*jet, iEvent, iSetup) );
 			
 			int isbTagged = 0;
 			double small = 1.e-5;
@@ -559,9 +568,9 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 				// naive way to check for similar jets
 				if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - btagColl[ib].jet().eta())< small ) {
 					isbTagged = 1;
-					discriminator0 = btagInfo[ib].discriminator(0,1);
-					discriminator1 = btagInfo[ib].discriminator(1,1);
-					discriminator2 = btagInfo[ib].discriminator(2,1);
+					discriminator0 = btagInfo[ib].discriminator(1,0);
+					discriminator1 = btagInfo[ib].discriminator(2,0);
+					discriminator2 = btagInfo[ib].discriminator(3,0);
 					
 					break;
 				}
@@ -599,13 +608,16 @@ BTagAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 				// naive way to check for similar jets
 				if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - btagColl[ib].jet().eta())< small ) {
 					isbTagged = 1;
-					discriminator0 = btagInfo[ib].discriminator(0,1);
-					discriminator1 = btagInfo[ib].discriminator(1,1);
-					discriminator2 = btagInfo[ib].discriminator(2,1);
+					discriminator0 = btagInfo[ib].discriminator(1,0);
+					discriminator1 = btagInfo[ib].discriminator(2,0);
+					discriminator2 = btagInfo[ib].discriminator(3,0);
 					
 					break;
 				}
 			}
+
+			// get jet correction
+			fMySummary[ispl]->otherjetcorrection.push_back( acorrector->correction(*jet, iEvent, iSetup) );
 			fMySummary[ispl]->otherjet_btagged.push_back(isbTagged);
 			fMySummary[ispl]->otherbtag_discriminator0.push_back(discriminator0);
 			fMySummary[ispl]->otherbtag_discriminator1.push_back(discriminator1);

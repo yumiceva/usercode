@@ -6,7 +6,7 @@
  *
  * \author Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
  *
- * \version $Id: BTagAnalyzer.h,v 1.2 2007/01/22 04:48:40 yumiceva Exp $
+ * \version $Id: BTagAnalyzer.h,v 1.3 2007/05/09 03:31:08 yumiceva Exp $
  *
  */
 
@@ -93,7 +93,7 @@ private:
   std::string JetTrackAssociatorTags_;
   std::string MuonCollectionTags_;
   std::string CaloJetCollectionTags_;
-  std::string CorrCaloJetCollectionTags_;
+  //std::string CorrCaloJetCollectionTags_;
   std::string GenJetCollectionTags_;
   std::string SimTrkCollectionTags_;
   
