@@ -119,11 +119,11 @@ BTagAnalyzer::BTagAnalyzer(const ParameterSet& iConfig)
   TaggerList_ = iConfig.getUntrackedParameter<std::vector<std::string> >("TaggerList");
   int isample=0;
   for(std::vector<std::string>::iterator objectName = TaggerList_.begin(); objectName != TaggerList_.end(); ++objectName) {
-	  if ( *objectName == "TrackProbability" ) {
+	  if ( *objectName == "TrackCounting" ) {
 		  //std::cout << "in TrackCounting ini" << std::endl;
 		  isample=0;
-		  //moduleLabel_.push_back("trackCountingJetTags");
-		  moduleLabel_.push_back("trackProbabilityJetTags");
+		  moduleLabel_.push_back("trackCountingJetTags");
+		  //moduleLabel_.push_back("trackProbabilityJetTags");
 		  //std::cout << "in TrackCounting summary to be created" << std::endl;
 		  fMySummary[isample] = new BTagSummary();
 		  //std::cout << "in TrackCounting summary created" << std::endl;
