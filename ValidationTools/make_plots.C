@@ -40,7 +40,7 @@ TObject* getObject (TDirectory* fDir, const std::vector <std::string>& fObjectNa
       }
     }
     else {
-      std::cerr << "getObject-> Can not find (sub)dir/object " << fObjectName[i] << " in directory " << dir->GetName () << std::endl;
+      std::cerr << "[make_plots] getObject-> Can not find (sub)dir/object " << fObjectName[i] << " in directory " << dir->GetName () << std::endl;
       return 0;
     }
   }
