@@ -90,7 +90,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	TFile *arefFile;
 	if ( compare ) {
 	  arefFile = new TFile(compare_filename);
-	  if ( arefFile.IsZombie()) {
+	  if ( arefFile->IsZombie()) {
 		  cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
 		  compare = false;
 	  }

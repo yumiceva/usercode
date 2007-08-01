@@ -312,7 +312,7 @@ if __name__ == "__main__":
 
                         # check outuput file
                         if not os.path.exists(cmssw_version+"_validation.root"):
-                            print " Cannot find "+cmssw_version+"_validation.root Check filename output or output from analyzer"
+                            print " Cannot find "+cmssw_version+"_validation.root Check filename output or output from analyzer. Exit now."
                             sys.exit()
                         
                         os.system("mv "+cmssw_version+"_validation.root "+rootfilename)
