@@ -90,6 +90,10 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	TFile *arefFile;
 	if ( compare ) {
 	  arefFile = new TFile(compare_filename);
+	  if ( arefFile.IsZombie()) {
+		  cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
+		  compare = false;
+	  }
 	}
 	// get filename without extension
 	TString thename = root_filename.Remove(0,webpath.Length());

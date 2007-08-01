@@ -309,6 +309,11 @@ if __name__ == "__main__":
 		    
                         if not os.path.exists(folder):
 			    os.makedirs(folder)
+
+                        # check outuput file
+                        if not os.path.exists(cmssw_version+"_validation.root"):
+                            print " Cannot find "+cmssw_version+"_validation.root Check filename output or output from analyzer"
+                            sys.exit()
                         
                         os.system("mv "+cmssw_version+"_validation.root "+rootfilename)
                     
