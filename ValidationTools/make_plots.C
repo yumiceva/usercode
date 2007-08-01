@@ -87,13 +87,20 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	// get a file
 	TFile *afile = new TFile(root_filename);
 
-	TFile *arefFile;
+	TFile *arefFile = 0;
 	if ( compare ) {
-	  arefFile = new TFile(compare_filename);
-	  if ( arefFile->IsZombie()) {
-		  cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
-		  compare = false;
-	  }
+		Long_t *id =0; Long_t *size = 0; Long_t *flags=0; Long_t *mt=0;
+		if ( gSystem->GetPathInfo(compare_filename,id,size,flags,mt) ) {
+			
+			arefFile = new TFile(compare_filename);
+			if ( arefFile->IsZombie() ) {
+				cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
+				compare = false;
+			}
+		} else {
+			compare = false;
+			cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
+		}
 	}
 	// get filename without extension
 	TString thename = root_filename.Remove(0,webpath.Length());
