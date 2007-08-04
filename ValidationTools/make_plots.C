@@ -320,6 +320,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							dir2->GetObject (histKeys[ihist].c_str(), hist);
 				
 							if (hist) {
+								cout << "  histogram: " << hist->GetName() << endl;
+								
 								std::string cvname = hist->GetName();
 								
 								cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),
