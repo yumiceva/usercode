@@ -8,6 +8,7 @@
 #include "TCanvas.h"
 #include "TH1.h"
 #include "TKey.h"
+#include "TImageDump.h"
 
 #include <iostream>
 #include <string>
@@ -309,6 +310,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				for (unsigned idir2 = 0; idir2 < dirName2.size(); ++idir2) {
 					cout << " directory: " << dirName2[idir2] << endl;
 
+					//if ( dirName2[idir2] == "SoftLepton" ) continue;
+					
 					TDirectory* dir2 = 0;
 					dir1->GetObject (dirName2[idir2].c_str(), dir2);
 					if (dir2) {
@@ -320,7 +323,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							dir2->GetObject (histKeys[ihist].c_str(), hist);
 				
 							if (hist) {
-								cout << "  histogram: " << hist->GetName() << endl;
+								cout << "  histogram: " << hist->GetName() << " entries: " << hist->GetEntries() << endl;
 								
 								std::string cvname = hist->GetName();
 								
@@ -337,7 +340,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									if (logaxis) {
 									  cout << "  make log Y-axis scale" << endl;
 									  gPad->SetLogy();
-									  gPad->SetGrid();
+									  gPad->SetGrid(); 
 									}
 
 									cv_map["cv_"+cvname]->cd(2);
@@ -393,7 +396,18 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 
 								cv_map["cv_"+cvname]->cd();
 								cout << " print canvas" << endl;
+								// temporal fix to print gif
+								//TImageDump *di = new TImageDump(webpath+"/"+TString(cvname)+"."+extension);
+								//cv_map["cv_"+cvname]->Paint();
+								//di->Close();
+								//delete di;
+								
 								cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+								gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+								gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+								gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+								gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+								 
 								cout << " done"<<endl;
 							}
 							else {
