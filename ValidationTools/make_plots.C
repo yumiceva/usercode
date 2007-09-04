@@ -196,6 +196,11 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				hist->SetXTitle(hist->GetTitle());
 				hist->Draw();
 				label->Draw();
+				if (logaxis) {
+				  cout << "  make log Y-axis scale" << endl;
+				  gPad->SetLogy();
+				  gPad->SetGrid();
+				}
 			}
 
 
@@ -291,6 +296,11 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							hist->SetXTitle(hist->GetTitle());
 							hist->Draw();
 							label->Draw();
+							if (logaxis) {
+								cout << "  make log Y-axis scale" << endl;
+								gPad->SetLogy();
+								gPad->SetGrid();
+							}
 						}
 								
 
@@ -391,6 +401,11 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									hist->SetXTitle(hist->GetTitle());
 									hist->Draw();
 									label->Draw();
+									if (logaxis) {
+										cout << "  make log Y-axis scale" << endl;
+										gPad->SetLogy();
+										gPad->SetGrid();
+									}
 								}
 									
 
