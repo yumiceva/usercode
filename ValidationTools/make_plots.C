@@ -212,6 +212,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 			gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
 			gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
 			gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+			gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 			
 			cout << " done"<<endl;
 	    }
@@ -317,6 +318,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 						gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
 						gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
 						gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+						gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 						
 						cout << " done"<<endl;
 					}
@@ -433,7 +435,8 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 								gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
 								gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
 								gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-								 
+								gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+								
 								cout << " done"<<endl;
 							}
 							else {
