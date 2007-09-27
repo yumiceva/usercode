@@ -91,16 +91,16 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	TFile *arefFile = 0;
 	if ( compare ) {
 		Long_t *id =0; Long_t *size = 0; Long_t *flags=0; Long_t *mt=0;
-		if ( gSystem->GetPathInfo(compare_filename,id,size,flags,mt) ) {
+		if ( gSystem->GetPathInfo(compare_filename,id,size,flags,mt) == 0 ) {
 			
 			arefFile = new TFile(compare_filename);
 			if ( arefFile->IsZombie() ) {
-				cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
+				cout << "[make_plots] is zombie? Error opening file " << compare_filename << " will not compare plots." << endl;
 				compare = false;
 			}
 		} else {
 			compare = false;
-			cout << "[make_plots] Error opening file " << compare_filename << " will not compare plots." << endl;
+			cout << "[make_plots] file exists? Error opening file " << compare_filename << " will not compare plots." << endl;
 		}
 	}
 	// get filename without extension
