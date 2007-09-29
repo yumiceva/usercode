@@ -135,6 +135,9 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 														   "cv_"+TString(hist->GetName()),800,800);
 			
 			if (compare) {
+				// increase size of window
+				cv_map["cv_"+cvname]->SetWindowSize(800,1600);
+				
 				cv_map["cv_"+cvname]->Divide(1,2);
 				
 				cv_map["cv_"+cvname]->cd(1);
