@@ -1,0 +1,4 @@
+<use name=root>
+
+<library file=MakePlots.cc name=MakePlots>
+</library>
