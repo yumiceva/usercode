@@ -141,7 +141,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				cv_map["cv_"+cvname]->Divide(1,2);
 				
 				cv_map["cv_"+cvname]->cd(1);
-				hist->SetXTitle(hist->GetTitle());
+				//hist->SetXTitle(hist->GetTitle());
 				hist->Draw();
 				label->Draw();
 				if (logaxis) {
@@ -196,7 +196,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 					label->Draw();
 				}
 			} else {
-				hist->SetXTitle(hist->GetTitle());
+				//hist->SetXTitle(hist->GetTitle());
 				hist->Draw();
 				label->Draw();
 				if (logaxis) {
@@ -248,7 +248,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							cv_map["cv_"+cvname]->Divide(1,2);
 							
 							cv_map["cv_"+cvname]->cd(1);
-							hist->SetXTitle(hist->GetTitle());
+							//hist->SetXTitle(hist->GetTitle());
 							hist->Draw();
 							label->Draw();
 							if (logaxis) {
@@ -303,7 +303,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 								label->Draw();
 							}
 						} else {
-							hist->SetXTitle(hist->GetTitle());
+							//hist->SetXTitle(hist->GetTitle());
 							hist->Draw();
 							label->Draw();
 							if (logaxis) {
@@ -360,7 +360,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									cv_map["cv_"+cvname]->Divide(1,2);
 									
 									cv_map["cv_"+cvname]->cd(1);
-									hist->SetXTitle(hist->GetTitle());
+									//hist->SetXTitle(hist->GetTitle());
 									hist->Draw();
 									label->Draw();
 									if (logaxis) {
@@ -414,7 +414,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									}
 									
 								} else {
-									hist->SetXTitle(hist->GetTitle());
+									//hist->SetXTitle(hist->GetTitle());
 									hist->Draw();
 									label->Draw();
 									if (logaxis) {
