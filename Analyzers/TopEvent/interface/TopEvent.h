@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEvent.h,v 1.2 2007/05/25 19:35:34 yumiceva Exp $
+ version $Id: TopEvent.h,v 1.3 2007/06/12 11:15:40 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -41,6 +41,8 @@ class TopEvent : public TObject {
 	Int_t ngenjets;     // number of generated jets
 	Int_t ngenleptons;  // number of generated leptons
 
+	Int_t passfilter; // semi muonic filter
+	
 	//_____ jets ____________________________________
 	std::vector< TLorentzVector > twobody;
 	std::vector< TLorentzVector > threebody;
@@ -73,8 +75,15 @@ class TopEvent : public TObject {
 	std::vector< double > gennu_px;
 	std::vector< double > gennu_py;
 	std::vector< double > gennu_pz;
+	std::vector< double > gennu_e;
 	std::vector< int > gennu_pdg;
-
+	std::vector< double > genjet_px;
+	std::vector< double > genjet_py;
+	std::vector< double > genjet_pz;
+	std::vector< double > genjet_e;
+	std::vector< int > genjet_pdg;
+	std::vector< int > genjet_mother;
+	
 	//_____ MC jets _________________________________
 	std::vector< double > genjet_p;
 	std::vector< double > genjet_pt;

@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEvent.cc,v 1.2 2007/05/25 19:35:35 yumiceva Exp $
+ version $Id: TopEvent.cc,v 1.3 2007/06/12 11:15:40 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -43,6 +43,8 @@ void TopEvent::Reset() {
 	ngenjets    = -1;
 	ngenleptons = -1;
 
+	passfilter = -1;
+	
 	// jets
 	twobody.clear();
 	threebody.clear();

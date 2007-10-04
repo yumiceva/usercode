@@ -75,6 +75,10 @@ public:
 
   bool GenFilter(const edm::Event&, const edm::EventSetup&);
 
+  double KinFitChi2(TLorentzVector p4Jet0, TLorentzVector p4Jet1,
+					TLorentzVector p4Jet2, TLorentzVector p4Jet3,
+					TLorentzVector p4Muon, TLorentzVector p4Nu);
+
 
 private:
  
