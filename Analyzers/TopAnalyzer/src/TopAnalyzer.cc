@@ -313,7 +313,8 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 	// apply filter
 	bool passfilter = GenFilter(iEvent,iSetup);
 
-	if (passfilter) {
+	
+	//if (passfilter) {
 		
 		// initialize jet flavour tool
 		jetFlavourIdentifier_.readEvent(iEvent);
@@ -405,48 +406,72 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		fmyEvent->ngenjets = genJets.size();
 		fmyEvent->ngenleptons = simTrks.size();
 
-
+		fmyEvent->passfilter = int(passfilter);
+		
 		// generator stuff
 		HepMC::GenEvent * myGenEvent = new  HepMC::GenEvent(*(evtMC->GetEvent()));
 		for ( HepMC::GenEvent::particle_iterator p = myGenEvent->particles_begin();
 		      p != myGenEvent->particles_end(); ++p ) {
 		  // select ttbar
-		  if ( abs((*p)->pdg_id()) == 6 ) {
-			  fmyEvent->gentop_px.push_back((*p)->momentum().px());
-			  fmyEvent->gentop_py.push_back((*p)->momentum().py());
-			  fmyEvent->gentop_pz.push_back((*p)->momentum().pz());
-			  fmyEvent->gentop_e.push_back((*p)->momentum().e());
-			  fmyEvent->gentop_charge.push_back((*p)->pdg_id());
+			if ( abs((*p)->pdg_id()) == 6 ) {
+				fmyEvent->gentop_px.push_back((*p)->momentum().px());
+				fmyEvent->gentop_py.push_back((*p)->momentum().py());
+				fmyEvent->gentop_pz.push_back((*p)->momentum().pz());
+				fmyEvent->gentop_e.push_back((*p)->momentum().e());
+				fmyEvent->gentop_charge.push_back((*p)->pdg_id());
 			  
-			  std::vector<HepMC::GenParticle*> top_children;
-			  HepMC::GenVertex* outVertex=(*p)->end_vertex();
-			  for(HepMC::GenVertex::particles_out_const_iterator iter = outVertex->particles_out_const_begin(); iter != outVertex->particles_out_const_end(); ++iter)
-			    top_children.push_back(*iter);
+				std::vector<HepMC::GenParticle*> top_children;
+				HepMC::GenVertex* outVertex=(*p)->end_vertex();
+				for(HepMC::GenVertex::particles_out_const_iterator iter = outVertex->particles_out_const_begin(); iter != outVertex->particles_out_const_end(); ++iter)
+					top_children.push_back(*iter);
 
-			  std::vector<HepMC::GenParticle*>::const_iterator aDaughter;
-			  for (aDaughter = top_children.begin();aDaughter != top_children.end();aDaughter++) {
-			    //std::cout << " gen dau= " << (*aDaughter)->pdg_id() << std::endl;
-			    // get a W
-			    if ( abs((*aDaughter)->pdg_id()) == 24 ) {
-			      std::vector<HepMC::GenParticle*> w_children;
-			      HepMC::GenVertex* out2Vertex=(*aDaughter)->end_vertex();
-			      for(HepMC::GenVertex::particles_out_const_iterator iter2 = out2Vertex->particles_out_const_begin(); iter2 != out2Vertex->particles_out_const_end(); ++iter2)
-				w_children.push_back(*iter2);
+				std::vector<HepMC::GenParticle*>::const_iterator aDaughter;
+				for (aDaughter = top_children.begin();aDaughter != top_children.end(); ++aDaughter) {
+					//std::cout << " gen dau= " << (*aDaughter)->pdg_id() << std::endl;
+					// get a W
+					if ( abs((*aDaughter)->pdg_id()) == 24 ) {
+						std::vector<HepMC::GenParticle*> w_children;
+						HepMC::GenVertex* out2Vertex=(*aDaughter)->end_vertex();
+						for(HepMC::GenVertex::particles_out_const_iterator iter2 = out2Vertex->particles_out_const_begin(); iter2 != out2Vertex->particles_out_const_end(); ++iter2)
+							w_children.push_back(*iter2);
 
-			      std::vector<HepMC::GenParticle*>::const_iterator granDaughter;
-			      for (granDaughter = w_children.begin();granDaughter != w_children.end(); ++granDaughter) {
-				//std::cout << " gen grandau= " << (*granDaughter)->pdg_id() << std::endl;
-				// select neutrino
-				if ( abs((*granDaughter)->pdg_id()) == 12 || abs((*granDaughter)->pdg_id()) == 14 || abs((*granDaughter)->pdg_id()) == 16 ) {
-				  fmyEvent->gennu_px.push_back((*granDaughter)->momentum().px());
-				  fmyEvent->gennu_py.push_back((*granDaughter)->momentum().py());
-				  fmyEvent->gennu_pz.push_back((*granDaughter)->momentum().pz());
-				  fmyEvent->gennu_pdg.push_back((*granDaughter)->pdg_id());
+						std::vector<HepMC::GenParticle*>::const_iterator granDaughter;
+						for (granDaughter = w_children.begin();granDaughter != w_children.end(); ++granDaughter) {
+							//std::cout << " gen grandau= " << (*granDaughter)->pdg_id() << std::endl;
+							// select neutrino
+							if ( abs((*granDaughter)->pdg_id()) == 12 || abs((*granDaughter)->pdg_id()) == 14 || abs((*granDaughter)->pdg_id()) == 16 ) {
+								fmyEvent->gennu_px.push_back((*granDaughter)->momentum().px());
+								fmyEvent->gennu_py.push_back((*granDaughter)->momentum().py());
+								fmyEvent->gennu_pz.push_back((*granDaughter)->momentum().pz());
+								fmyEvent->gennu_e.push_back((*granDaughter)->momentum().e());
+								fmyEvent->gennu_pdg.push_back((*granDaughter)->pdg_id());
+							}
+							// select lepton
+							if ( abs((*granDaughter)->pdg_id()) == 11 || abs((*granDaughter)->pdg_id()) == 13 || abs((*granDaughter)->pdg_id()) == 15 ) {
+								
+							}
+							// select W jets
+							if ( abs((*granDaughter)->pdg_id()) < 5 && abs((*granDaughter)->pdg_id()) > 0 ) {
+								fmyEvent->genjet_px.push_back((	*granDaughter)->momentum().px());
+								fmyEvent->genjet_py.push_back((	*granDaughter)->momentum().py());
+								fmyEvent->genjet_pz.push_back((	*granDaughter)->momentum().pz());
+								fmyEvent->genjet_e.push_back((	*granDaughter)->momentum().e());
+								fmyEvent->genjet_pdg.push_back((	*granDaughter)->pdg_id());
+								fmyEvent->genjet_mother.push_back( (*p)->pdg_id() );
+							}
+						}
+					}
+					// get a b jet
+					if ( abs((*aDaughter)->pdg_id()) == 5 ) {
+						fmyEvent->genjet_px.push_back((	*aDaughter)->momentum().px());
+						fmyEvent->genjet_py.push_back((	*aDaughter)->momentum().py());
+						fmyEvent->genjet_pz.push_back((	*aDaughter)->momentum().pz());
+						fmyEvent->genjet_e.push_back((	*aDaughter)->momentum().e());
+						fmyEvent->genjet_pdg.push_back((*aDaughter)->pdg_id());
+						fmyEvent->genjet_mother.push_back( (*p)->pdg_id() );
+					}
 				}
-			      }
-			    }
-			  }
-		  }
+			}
 		}
 
 		//f ( fnAccepted < 3 ) {
@@ -483,8 +508,9 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 				fmyEvent->jet_pz.push_back(jet->pz());
 				fmyEvent->jet_e.push_back(jet->energy());
 
-
-
+				// flavour
+				fmyEvent->jet_flavour.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());
+				
 				//if ( fnAccepted ) {
 				//	  std::cout << " jet px= " << jet->px()
 				//    << " jet py= " << jet->py() << std::endl;
@@ -506,7 +532,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 				  if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - 
 													btagColl[ib].jet().eta())< small ) {
 				    
-				    discriminant = btagInfo[ib].discriminator(1,1);
+				    discriminant = btagInfo[ib].discriminator(2,0);
 				    
 				    break;
 				  }
@@ -535,7 +561,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 				if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - 
 																					  btagColl[ib].jet().eta())< small ) {
 				    
-				    discriminant = btagInfo[ib].discriminator(1,1);
+				    discriminant = btagInfo[ib].discriminator(2,0);
 				    
 				    break;
 				}
@@ -621,7 +647,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		// fill event
 		ftree->Fill();
 		
-	}// close filter
+		//}// close filter
 	
 }
 
