@@ -335,14 +335,14 @@ if __name__ == "__main__":
 		    gROOT->ProcessLine(".L make_plots.C++");
 		    ''')
 		    if not option.nocompare:
-			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"eps\",true,\""+ref_rootfilename+"\");}\n"
+			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",true,\""+ref_rootfilename+"\");}\n"
                             if option.logaxis:
-                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"eps\",true,\""+ref_rootfilename+"\",true);}\n"
+                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",true,\""+ref_rootfilename+"\",true);}\n"
 			    tmpbatchroot.write(tmpline)
 		    else:
-			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"eps\");}\n"
+			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\");}\n"
                             if option.logaxis:
-                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"eps\",false,\"\",true);}\n"
+                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",false,\"\",true);}\n"
 			    tmpbatchroot.write(tmpline)
 
                     tmpbatchroot.close()

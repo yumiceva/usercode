@@ -132,7 +132,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 			std::string cvname = hist->GetName();
 			
 			cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),
-														   "cv_"+TString(hist->GetName()),800,800);
+											   "cv_"+TString(hist->GetName()),800,800);
 			
 			if (compare) {
 				// increase size of window
@@ -211,12 +211,13 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 			cout << " print canvas" << endl;
 			cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
 
-			gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-			gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-			gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-			gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-			gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-			
+			if ( extension=="eps" ) {
+				gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+				gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+				gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+				gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+				gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+			}
 			cout << " done"<<endl;
 	    }
 	    else {
@@ -317,12 +318,13 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 						cv_map["cv_"+cvname]->cd();
 						cout << " print canvas" << endl;
 						cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-						gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-						gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-						gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-						gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-						gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-						
+						if ( extension=="eps" ) {
+							gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+							gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+							gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+							gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+							gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+						}
 						cout << " done"<<endl;
 					}
 					else {
@@ -434,12 +436,13 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 								//delete di;
 								
 								cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-								gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-								gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-								gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-								gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-								gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-								
+								if ( extension=="eps" ) {
+									gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+									gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+									gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+									gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+									gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+								}
 								cout << " done"<<endl;
 							}
 							else {
