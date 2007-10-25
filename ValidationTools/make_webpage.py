@@ -22,7 +22,7 @@ import fpformat
 import pwd
 import time
 import socket, string
-
+import webpage
 
 # define paths
 #____________________________________________________________
@@ -174,6 +174,7 @@ if __name__ == "__main__":
     os.system("cp -r img "+webpath)
     os.system("cp index_head.txt "+webpath)
     os.system("cp index_foot.txt "+webpath)
+    os.system("cp header.txt "+webpath)
     
     os.chdir(webpath)
 
@@ -215,9 +216,10 @@ if __name__ == "__main__":
     
     lpackages.sort()
 
-    total_list = {}
-
-    #class_array = []
+    total_list  = {}
+    package_list = lpackages
+    thepkglist = []
+    
     
     for ipkg in lpackages:
 	    
@@ -228,7 +230,8 @@ if __name__ == "__main__":
 
 	    ldirectories.sort()
 	    ldirectories.reverse()
-
+	    string_base1 = ipkg
+	    samples_list = []
 	    release_map = {}
 	    
 	    for idir in ldirectories:
@@ -242,8 +245,8 @@ if __name__ == "__main__":
 		    lsamples = get_list_files_ls(webpath+"/"+packagespath+"/"+ipkg+"/"+idir)
 		    lsamples.sort()
 		    print " total number of samples= " + str(len(lsamples))
-
 		    plots_map = {}
+		    string_base2 = string_base1+"_"+release
 		    
 		    for isample in lsamples:
 
@@ -252,15 +255,20 @@ if __name__ == "__main__":
 			    ldirplots.sort()
 			    print "    total number of plots= " + str(len(ldirplots))
 			    plots_map[isample] = ldirplots
+			    string = string_base2+"_"+isample
+			    samples_list.append(string)
 			    
 		    
 		    release_map[release] = plots_map
+	    
 		    
 	    total_list[ipkg] = release_map
-    
+	    thepkglist.append(samples_list)
     print " processing page"
+    webpage.make_index_page(package_list,thepkglist)
 
-    
+    print " processed main page"
+   
     for ipkg in total_list:
 
 	    print " Package: " + ipkg
@@ -308,40 +316,8 @@ if __name__ == "__main__":
 			    # complete header part of page
 	    
 			    output.write('''
-			    <!-- leftside BEGIN -->
-			    <div id="fedora-side-left">
-			    <div id="fedora-side-nav-label"></div>
-			    ''')
-			    for iipkg in total_list:
-				    output.write("<br>\n")
-				    output.write(iipkg)
-				    output.write("\n")
-				    output.write('''<ul id="fedora-side-nav">''')
-				    output.write("\n")
-				    for iirel in total_list[iipkg]:
-
-					    #strloc = idir.find("_validation")
-					    #tmprelease = idir[0:strloc]
-
-					    output.write("<li><font color=\"yellow\">"+iirel+"</font></li> \n")
-
-					    output.write('''<ul id="fedora-side-nav">''')
-
-					    tmprelease_map = total_list[iipkg]
-					    
-					    for iisample in tmprelease_map[iirel]:
-						    
-						    output.write("<li><a href=\""+"index_"+iipkg+"_"+iirel+"_"+iisample+".html\"><font size=1>"+iisample+"</font></a></li> \n")
-
-					    output.write("</ul>\n")
-				    output.write("</ul>\n")   
-
-			    output.write("</div>\n")
-			    output.write('''
-			    <!-- leftside END -->
-			    
+		    
 			    <!-- content BEGIN -->
-			    <div id="fedora-middle-two">
 			    <div class="fedora-corner-tr">&nbsp;</div>
 			    <div class="fedora-corner-tl">&nbsp;</div>
 			    <div id="fedora-content">
@@ -412,7 +388,7 @@ if __name__ == "__main__":
 
 
     # create default soft link
-    os.system("rm -f index.html")
-    os.system("ln -s "+defaultpage+" index.html")
+    #os.system("rm -f index.html")
+    #os.system("ln -s "+defaultpage+" index.html")
     
 
