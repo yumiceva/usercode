@@ -1,4 +1,5 @@
 <use name=root>
+<use name=PhysicsTools/KinFitter>
 
 <export>
    <lib name=AnalyzersTopTools>
