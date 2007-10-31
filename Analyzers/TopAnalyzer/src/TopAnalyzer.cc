@@ -71,7 +71,6 @@ using namespace reco;
 //
 TopAnalyzer::TopAnalyzer(const ParameterSet& iConfig)
 {
-
 	
    //now do what ever initialization is needed
   simG4_=iConfig.getParameter<edm::InputTag>( "simG4" );
@@ -400,12 +399,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		fmyEvent->event = iEvent.id().event();
 		fmyEvent->run = iEvent.id().run();
 		
-		// fill total number of objects
-		fmyEvent->njets = recoJets.size();
-		fmyEvent->nleptons = recoMuons.size();
-		fmyEvent->ngenjets = genJets.size();
-		fmyEvent->ngenleptons = simTrks.size();
-
+		
 		fmyEvent->passfilter = int(passfilter);
 		
 		// generator stuff
@@ -427,7 +421,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 				std::vector<HepMC::GenParticle*>::const_iterator aDaughter;
 				for (aDaughter = top_children.begin();aDaughter != top_children.end(); ++aDaughter) {
-					//std::cout << " gen dau= " << (*aDaughter)->pdg_id() << std::endl;
+					//std::cout << " gen top dau= " << (*aDaughter)->pdg_id() << std::endl;
 					// get a W
 					if ( abs((*aDaughter)->pdg_id()) == 24 ) {
 						std::vector<HepMC::GenParticle*> w_children;
@@ -437,7 +431,7 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 						std::vector<HepMC::GenParticle*>::const_iterator granDaughter;
 						for (granDaughter = w_children.begin();granDaughter != w_children.end(); ++granDaughter) {
-							//std::cout << " gen grandau= " << (*granDaughter)->pdg_id() << std::endl;
+							//std::cout << "   gen grandau= " << (*granDaughter)->pdg_id() << std::endl;
 							// select neutrino
 							if ( abs((*granDaughter)->pdg_id()) == 12 || abs((*granDaughter)->pdg_id()) == 14 || abs((*granDaughter)->pdg_id()) == 16 ) {
 								fmyEvent->gennu_px.push_back((*granDaughter)->momentum().px());
@@ -446,9 +440,14 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 								fmyEvent->gennu_e.push_back((*granDaughter)->momentum().e());
 								fmyEvent->gennu_pdg.push_back((*granDaughter)->pdg_id());
 							}
-							// select lepton
+							// Select lepton
 							if ( abs((*granDaughter)->pdg_id()) == 11 || abs((*granDaughter)->pdg_id()) == 13 || abs((*granDaughter)->pdg_id()) == 15 ) {
-								
+							//if ( abs((*granDaughter)->pdg_id()) == 13 ) {
+								fmyEvent->genmuon_px.push_back((*granDaughter)->momentum().px());
+								fmyEvent->genmuon_py.push_back((*granDaughter)->momentum().py());
+								fmyEvent->genmuon_pz.push_back((*granDaughter)->momentum().pz());
+								fmyEvent->genmuon_e.push_back((*granDaughter)->momentum().e());
+								fmyEvent->genmuon_pdg.push_back((*granDaughter)->pdg_id());
 							}
 							// select W jets
 							if ( abs((*granDaughter)->pdg_id()) < 5 && abs((*granDaughter)->pdg_id()) > 0 ) {
@@ -481,9 +480,9 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 		// define iterators
 		CaloJetCollection::const_iterator jet;
-		GenJetCollection::const_iterator genjet;
+		//GenJetCollection::const_iterator genjet;
 		reco::MuonCollection::const_iterator muon;
-		SimTrackContainer::const_iterator simmuon;
+		//SimTrackContainer::const_iterator simmuon;
 		//reco::JetTagCollection::iterator btagite;
 
 		// require at least 4 jets and at least 1 muon
@@ -491,163 +490,116 @@ TopAnalyzer::analyze(const Event& iEvent, const EventSetup& iSetup)
 		fnEvent_cut0++;
 
 		// Lorentz vectors
-		TLorentzVector p4Jet[4];
+		std::vector< TLorentzVector > Vp4Jet;
+		std::vector< double > Vcorr;
+		std::vector< int > Vflavor;
 		TLorentzVector twobody[6];
 		TLorentzVector threebody[12];
-		TLorentzVector p4Muon;
-		TVector3 p3MET;
+		std::vector< TLorentzVector > Vp4Muon;
+		TVector3 p3MET = TVector3(0,0,0);
 		
 		// loop over jets
-		int ijet = 0;
+		int njets = 0;
 		for( jet = recoJets.begin(); jet != recoJets.end(); ++jet ) {
 
-			if ( ijet < 4 ) {
-				p4Jet[ijet].SetXYZT(jet->px(),jet->py(),jet->pz(),jet->energy());
-				fmyEvent->jet_px.push_back(jet->px());
-				fmyEvent->jet_py.push_back(jet->py());
-				fmyEvent->jet_pz.push_back(jet->pz());
-				fmyEvent->jet_e.push_back(jet->energy());
+			double jetcorr = acorrector->correction(*jet, iEvent, iSetup);
+			TLorentzVector tmpJet;
+			TLorentzVector tmpJetcorr;
+			tmpJet.SetXYZT(jet->px(),jet->py(),jet->pz(),jet->energy());
+			tmpJetcorr.SetXYZT(jetcorr*jet->px(),jetcorr*jet->py(),jetcorr*jet->pz(),jetcorr*jet->energy());
 
-				// flavour
-				fmyEvent->jet_flavour.push_back(jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour());
+			// select only jets with pt>30 and eta<2.5
+			if ( ( tmpJetcorr.Pt() <= 30. ) || std::abs(tmpJetcorr.Eta()) >= 2.5 ) continue;
+
+			Vp4Jet.push_back( tmpJet );
+			Vcorr.push_back( jetcorr );
+			Vflavor.push_back( jetFlavourIdentifier_.identifyBasedOnPartons(*jet).flavour() );
+			p3MET += TVector3( tmpJetcorr.Px(), tmpJetcorr.Py(), 0. );
+			njets++;
+		}
+
+		// loop over muons
+		int nmuons = 0;
+		double mass_mu = 0.105658; // GeV/c
+		for (muon = recoMuons.begin(); muon != recoMuons.end(); ++muon) {
+
+			Track muonTrk = *muon->track();
+			Track combinedMuon = *(muon->combinedMuon());
+
+			double global_chi2 = combinedMuon.chi2();
+			double global_ndof = combinedMuon.ndof();
+			double mu_pt = combinedMuon.pt();
+			double normChi2 = global_chi2/global_ndof;
+			// select a good muon
+			if ( mu_pt <= 20 || normChi2 >= 5 || muonTrk.recHitsSize() < 8 ) continue;
+
+			nmuons++;
+			TLorentzVector p4Muon;
+			p4Muon.SetXYZT(muonTrk.px(), muonTrk.py(), muonTrk.pz(), TMath::Sqrt(muonTrk.p() * muonTrk.p() + mass_mu*mass_mu) );
+			Vp4Muon.push_back( p4Muon );
+			if ( njets >= 4 ) {
+				fmyEvent->muon_px.push_back( p4Muon.Px());
+				fmyEvent->muon_py.push_back( p4Muon.Py());
+				fmyEvent->muon_pz.push_back( p4Muon.Pz());
+				fmyEvent->muon_e.push_back( p4Muon.E());
+				fmyEvent->muon_normchi2.push_back( normChi2 );
+				fmyEvent->muon_nTrkrechits.push_back( muonTrk.recHitsSize() );
+				fmyEvent->muon_d0.push_back( muonTrk.d0() );
+				fmyEvent->muon_d0Error.push_back( muonTrk.d0Error() );
+				Track muonSA = *muon->standAloneMuon();
+				int nhit = muonSA.recHitsSize();
+				fmyEvent->muon_nSArechits.push_back( nhit );
+
+				// find a sim track
+				SimTrack genmuon = this->GetGenTrk(combinedMuon, simTrks );
+				fmyEvent->muon_mc_pdgid.push_back(genmuon.type());
+
+				p3MET += TVector3( p4Muon.Px(), p4Muon.Py(), 0. );
 				
-				//if ( fnAccepted ) {
-				//	  std::cout << " jet px= " << jet->px()
-				//    << " jet py= " << jet->py() << std::endl;
-				//  std::cout << " p4Jetx= " << p4Jet[ijet].Px()
-				//    << " p4Jety= " << p4Jet[ijet].Py() << std::endl;
-				  //}
+			}
+		}
+		
+		if ( njets >= 4 && nmuons > 0 ) {
 
-				// get jet correction
-				//fmyEvent->jet_correction.push_back( acorrector->correction(*jet, iEvent, iSetup) );
-
+			// fill total number of objects
+			fmyEvent->njets = njets;
+			fmyEvent->nleptons = nmuons;
+			fmyEvent->ngenjets = genJets.size();
+			fmyEvent->ngenleptons = simTrks.size();
+			fmyEvent->met.push_back( p3MET.Mag() );
+			
+			for( size_t ijet = 0; ijet != Vp4Jet.size(); ++ijet ) {
+			
+				fmyEvent->jet_px.push_back( Vp4Jet[ijet].Px());
+				fmyEvent->jet_py.push_back( Vp4Jet[ijet].Py());
+				fmyEvent->jet_pz.push_back( Vp4Jet[ijet].Pz());
+				fmyEvent->jet_e.push_back( Vp4Jet[ijet].E());
+				fmyEvent->jet_correction.push_back( Vcorr[ijet] );
+				fmyEvent->jet_flavour.push_back( Vflavor[ijet] );
+				
 				// b-tagging
-				/*
 				double small = 1.e-5;
 				double discriminant = -9999.;
 				
 				for (int ib = 0; ib != btagCollsize; ++ib ) {
 
-				  // simple way to check for similar jets
-				  if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - 
-													btagColl[ib].jet().eta())< small ) {
-				    
-				    discriminant = btagInfo[ib].discriminator(2,0);
-				    
-				    break;
-				  }
-				}
-				*/
-				//fmyEvent->jet_btag_discriminant.push_back( discriminant );
-
-				// MET
-				p3MET += TVector3(jet->px(),jet->py(),0.);
-				
-			}
-			ijet++;
-			fmyEvent->alljet_px.push_back(jet->px());
-			fmyEvent->alljet_py.push_back(jet->py());
-			fmyEvent->alljet_pz.push_back(jet->pz());
-			fmyEvent->alljet_e.push_back(jet->energy());
-			// get jet correction
-			fmyEvent->jet_correction.push_back( acorrector->correction(*jet, iEvent, iSetup) );
-			// b-tagging
-			double small = 1.e-5;
-			double discriminant = -9999.;
-				
-			for (int ib = 0; ib != btagCollsize; ++ib ) {
-
-				// simple way to check for similar jets
-				if ( std::abs(jet->pt() - btagColl[ib].jet().pt())< small && std::abs(jet->eta() - 
+					// simple way to check for similar jets
+					if ( std::abs( Vp4Jet[ijet].Pt() - btagColl[ib].jet().pt() )< small && std::abs( Vp4Jet[ijet].Eta() - 
 																					  btagColl[ib].jet().eta())< small ) {
 				    
-				    discriminant = btagInfo[ib].discriminator(2,0);
+						discriminant = btagInfo[ib].discriminator(3,0);
 				    
-				    break;
+						break;
+					}
 				}
-			}
-			fmyEvent->jet_btag_discriminant.push_back( discriminant );
+				
+				fmyEvent->jet_btag_discriminant.push_back( discriminant );
+				
+			}//end loop over jets
+
+			ftree->Fill();
 			
-			fmyEvent->alljet_et.push_back(jet->et());
-			fmyEvent->alljet_eta.push_back(jet->eta());
-			fmyEvent->alljet_phi.push_back(jet->phi());
-		}
-		
-		// loop over muons
-		double mass_mu = 0.105658; // GeV/c
-		int imuon = 0;
-		for (muon = recoMuons.begin(); muon != recoMuons.end(); ++muon) {
-		  
-		  Track combinedMuon = *(muon->combinedMuon());
-
-		  double global_chi2 = combinedMuon.chi2();
-		  double global_ndof = combinedMuon.ndof();
-		  double mu_pt = combinedMuon.pt();
-		  
-		  // find a sim track
-		  SimTrack genmuon = this->GetGenTrk(combinedMuon, simTrks );
-		  
-		  if ( mu_pt > 10 ) {
-		    p4Muon.SetXYZT(combinedMuon.px(), combinedMuon.py(), combinedMuon.pz(), TMath::Sqrt(combinedMuon.p() * combinedMuon.p() + mass_mu*mass_mu) );
-		    fmyEvent->muon_px.push_back(combinedMuon.px());
-		    fmyEvent->muon_py.push_back(combinedMuon.py());
-		    fmyEvent->muon_pz.push_back(combinedMuon.pz());
-		    fmyEvent->muon_e.push_back(p4Muon.E());
-
-		    //std::cout << " p4MuonPx= " << p4Muon.Px() 
-		    //      << " p4MuonPy= " << p4Muon.Py() << std::endl;
-
-			fmyEvent->muon_mc_pdgid.push_back(genmuon.type());
-			p3MET += TVector3(combinedMuon.px(),combinedMuon.py(),0.);
-		    imuon++;
-		  }
-		  fmyEvent->allmuon_pt.push_back(mu_pt);
-		  fmyEvent->allmuon_normchi2.push_back(global_chi2/global_ndof);
-		  fmyEvent->allmuon_d0.push_back(combinedMuon.d0());
-		  fmyEvent->allmuon_d0Error.push_back(combinedMuon.d0Error());
-		  fmyEvent->allmuon_nrechits.push_back(combinedMuon.recHitsSize());
-		  fmyEvent->allmuon_mc_pdgid.push_back( genmuon.type() );
-		  
-		}
-		//std::cout << "muons that passed selection: " << imuon << std::endl;
-
-		// set MET
-		fmyEvent->met.push_back(p3MET.Mag());
-		
-		// find masses
-		twobody[0] = p4Jet[0] + p4Jet[1];
-		twobody[1] = p4Jet[0] + p4Jet[2];
-		twobody[2] = p4Jet[0] + p4Jet[3];
-		twobody[3] = p4Jet[1] + p4Jet[2];
-		twobody[4] = p4Jet[1] + p4Jet[3];
-		twobody[5] = p4Jet[2] + p4Jet[3];
-		
-		for ( int i=0; i<6; i++ ) {
-		  fmyEvent->twobody.push_back( twobody[i] );
-		}
-
-		threebody[0] = twobody[0] + p4Jet[2];
-		threebody[1] = twobody[0] + p4Jet[3];
-		threebody[2] = twobody[1] + p4Jet[1];
-		threebody[3] = twobody[1] + p4Jet[3];
-		threebody[4] = twobody[2] + p4Jet[1];
-		threebody[5] = twobody[2] + p4Jet[2];
-		threebody[6] = twobody[3] + p4Jet[0];
-		threebody[7] = twobody[3] + p4Jet[3];
-		threebody[8] = twobody[4] + p4Jet[0];
-		threebody[9] = twobody[4] + p4Jet[2];
-		threebody[10] = twobody[5] + p4Jet[0];
-		threebody[11] = twobody[5] + p4Jet[1];
-		
-		for (int i=0; i<6; i++) {
-		  fmyEvent->threebody.push_back( threebody[i] );
-		}
-
-		
-		// fill event
-		ftree->Fill();
-		
-		//}// close filter
+		} // end selection
 	
 }
 
