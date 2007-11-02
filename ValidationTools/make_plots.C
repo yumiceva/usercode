@@ -78,6 +78,7 @@ TH1* HistoCompare(TH1 *h, TH1 *refHisto) {
   resHisto->Add( htemp, refHisto, 1., -1.);
 
   resHisto->SetTitle("Residuals");
+  resHisto->SetYTitle("");
   
   return resHisto;
   
