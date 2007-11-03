@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopHistograms.cc,v 1.9 2007/06/12 09:58:49 yumiceva Exp $
+ version $Id: TopHistograms.cc,v 1.10 2007/10/31 19:34:56 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -69,6 +69,7 @@ void TopHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["jet_et"+suffix1]  = new TH1D("jet_et"+suffix1,"Jet E_{T} [GeV/c]",80,0,300);
 		h1["jet_eta"+suffix1] = new TH1D("jet_eta"+suffix1,"Jet #eta",50,-3.,3.);
 		h1["jet_phi"+suffix1] = new TH1D("jet_phi"+suffix1,"Jet #phi",30,-3.15,3.15);
+		h2["jet_res_et"+suffix1]  = new TH2D("jet_res_et"+suffix1,"Jet E_{T} [GeV/c]",80,0,300,60,0,30.);
 	}
 	else if ( type == "muons") {
 		h1["muons"+suffix1]         = new TH1D("muons"+suffix1,"Number of muons",4,1,5);

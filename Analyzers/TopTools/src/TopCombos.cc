@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopCombos.cc,v 1.3 2007/06/12 09:58:49 yumiceva Exp $
+ version $Id: TopCombos.cc,v 1.4 2007/10/31 19:34:56 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -595,8 +595,8 @@ void TopCombos::KinFit(TopPair *apair) {
 		mHadp4(3,3) = pow( ResJets_->getObsRes(3, abin, p4Hadp.Et() ) , 2 ); //D
 		mHadp3(0,0) = pow( ResJets_->getObsRes(6, abin, p4Hadp.Et() )*blow, 2 ); //Et
 		//std::cout << " et res2= " << mHadp3(0,0) << " eta res2= " <<pow( ResJets_->getObsRes(7, abin, p4Hadp.Et() ) , 2 ) << " phi res2= "<< pow( ResJets_->getObsRes(5, abin, p4Hadp.Et() ) , 2 ) << std::endl;
-		mHadp3(1,1) = pow( ResJets_->getObsRes(7, abin, p4Hadp.Et() )*blow, 2 ); //eta
-		mHadp3(2,2) = pow( ResJets_->getObsRes(5, abin, p4Hadp.Et() )*blow, 2 ); //phi
+		mHadp3(1,1) = tiny;//pow( ResJets_->getObsRes(7, abin, p4Hadp.Et() )*blow, 2 ); //eta
+		mHadp3(2,2) = tiny;//pow( ResJets_->getObsRes(5, abin, p4Hadp.Et() )*blow, 2 ); //phi
 		
 
 		abin = ResJets_->getEtaBin( p4Hadq.Eta() );
@@ -609,8 +609,8 @@ void TopCombos::KinFit(TopPair *apair) {
 		mHadq4(3,3) = pow( ResJets_->getObsRes(3, abin, p4Hadq.Et() ) , 2 ); //D
 		mHadq3(0,0) = pow( ResJets_->getObsRes(6, abin, p4Hadq.Et() )*blow, 2 ); //Et
 		//std::cout << " et res2= " << mHadq3(0,0) << " eta res2= " <<pow( ResJets_->getObsRes(7, abin, p4Hadp.Et() ) , 2 ) << std::endl;
-		mHadq3(1,1) = pow( ResJets_->getObsRes(7, abin, p4Hadq.Et() )*blow, 2 ); //eta
-		mHadq3(2,2) = pow( ResJets_->getObsRes(5, abin, p4Hadq.Et() )*blow, 2 ); //phi
+		mHadq3(1,1) = tiny;//pow( ResJets_->getObsRes(7, abin, p4Hadq.Et() )*blow, 2 ); //eta
+		mHadq3(2,2) = tiny;//pow( ResJets_->getObsRes(5, abin, p4Hadq.Et() )*blow, 2 ); //phi
 		//std::cout << "[TopCombos] eta= "<< p4Hadb.Eta() << std::endl;
 		abin = ResbJets_->getEtaBin( p4Hadb.Eta() );
 		//std::cout << "[TopCombos] bin " << abin << std::endl;
@@ -795,12 +795,12 @@ void TopCombos::MyKinFit(TopPair *apair) {
   
   // error matrix
 
-  double acal = 3.0;//12.0;//3.0;//3.0;//1.0;
-  double bcal = 0.3;//1.2;//0.3;//0.3;//0.08;
-  afit.SetEj1Err( (bcal * bcal * pow( (apair->GetCand("p")).E(), 2) + acal * acal * (apair->GetCand("p")).E() ) );
-  afit.SetEj2Err( (bcal * bcal * pow( (apair->GetCand("q")).E(), 2) + acal * acal * (apair->GetCand("q")).E() ) );
-  afit.SetEbj2Err( (bcal * bcal * pow( (apair->GetCand("hadbjet")).E(), 2) + acal * acal * (apair->GetCand("hadbjet")).E() ) );
-  afit.SetEbj1Err( (bcal * bcal * pow( (apair->GetCand("lepbjet")).E(), 2) + acal * acal * (apair->GetCand("lepbjet")).E() ) );
+  double acal = 1.0;//12.0;//3.0;//3.0;//1.0;
+  double bcal = 0.08;//1.2;//0.3;//0.3;//0.08;
+  afit.SetEj1Err( (bcal * bcal * pow( (apair->GetCand("p")).Et(), 2) + acal * acal * (apair->GetCand("p")).Et() ) );
+  afit.SetEj2Err( (bcal * bcal * pow( (apair->GetCand("q")).Et(), 2) + acal * acal * (apair->GetCand("q")).Et() ) );
+  afit.SetEbj2Err( (bcal * bcal * pow( (apair->GetCand("hadbjet")).Et(), 2) + acal * acal * (apair->GetCand("hadbjet")).Et() ) );
+  afit.SetEbj1Err( (bcal * bcal * pow( (apair->GetCand("lepbjet")).Et(), 2) + acal * acal * (apair->GetCand("lepbjet")).Et() ) );
 
   afit.Fit();
 
