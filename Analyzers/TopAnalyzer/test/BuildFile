@@ -2,5 +2,5 @@
 <use name=Analyzers/TopEvent>
 <use name=Analyzers/TopTools>
 
-<library file=TopAnalysis.cc name=TopAnalysis>
+<library file=TopZpAnalysis.cc name=TopAnalysis>
 </library>

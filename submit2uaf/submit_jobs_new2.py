@@ -17,13 +17,21 @@ TemplatesPATH =  os.getcwd()
 #main_path   = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/CMSSW_1_2_0_pre3/src/RecoVertex/BeamSpotProducer/test/"
 main_path = os.getcwd() + "/"
 
-out_path      = main_path
-scripts_path  = main_path
+out_path      = main_path+"condorjobs/"
 
+scripts_path  = main_path+"condorjobs/"
 cfg_path      = scripts_path+"cfg/"
-condor_path   = scripts_path+"condor/"
+#condor_path   = scripts_path+"condor/"
 csh_path      = scripts_path+"csh/"
 logs_path     = scripts_path+"logs/"
+
+if not os.path.exists(cfg_path):
+    os.makedir(cfg_path)
+if not os.path.exists(csh_path):
+    os.mkdir(csh_path)
+if not os.path.exists(logs_path):
+    os.mkdir(logs_path)
+
 
 istest = "0"
 

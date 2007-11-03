@@ -1,4 +1,4 @@
-#include "Analyzers/TopAnalyzer/test/TopAnalysis.h"
+#include "Analyzers/TopAnalyzer/test/TopZpAnalysis.h"
 
 #ifdef __CINT__
 #pragma link off all globals;
@@ -6,5 +6,5 @@
 #pragma link off all functions;
 
 
-#pragma link C++ class TopAnalysis+;
+#pragma link C++ class TopZpAnalysis+;
 #endif
