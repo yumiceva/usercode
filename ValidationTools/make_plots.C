@@ -9,6 +9,7 @@
 #include "TH1.h"
 #include "TKey.h"
 #include "TImageDump.h"
+#include "TLegend.h"
 
 #include <iostream>
 #include <string>
@@ -107,7 +108,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	// get filename without extension
 	TString thename = root_filename.Remove(0,webpath.Length());
 	thename = thename.Remove(thename.Length()-5,thename.Length());
-	
+
 	gSystem->mkdir(webpath);
 	
 	TLatex *label = new TLatex(0.01,0.01,thename);
@@ -117,12 +118,15 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	
 	
 	std::map<std::string, TCanvas*> cv_map;
+	TString name1 = "_C_";
+	TString name2 = "_DUSG_";
 	
 	std::vector<std::string> dirName1 = getAllKeys ( afile , "TDirectory");
 	cout << "dirName1.size=" << dirName1.size() << endl;
 
 	if (dirName1.size()==0) {
 	  std::vector<std::string> histKeys = getAllKeys (gDirectory, "TH1F");
+
 
 	  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 	    TH1* hist = 0;
@@ -191,7 +195,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 				} else {
 					
 					cout << " no reference plot " << histKeys[ihist] << endl;
-					TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+					TLatex *label = new TLatex(0.2,0.05,"no reference plot available");
 					label->SetNDC();
 					label->SetTextSize(0.07);
 					label->Draw();
@@ -226,6 +230,60 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 	    }
 	  }
 
+	  std::vector<TH1*> histos_C;
+	  std::vector<TH1*> histos_DUSG;
+
+	  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
+	    TH1* hist = 0;
+	    gDirectory->GetObject (histKeys[ihist].c_str(), hist);
+	    TString  HistoName = hist->GetName() ;
+	    cout << " Histogram Name: " << HistoName << endl;	
+	    
+	    if ( HistoName.Contains(name1)) {histos_C.push_back(hist);}
+	    if ( HistoName.Contains(name2)) {histos_DUSG.push_back(hist);}
+	    cout << " Histos_C.size: " << histos_C.size() << endl;	
+	    cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
+	  }
+	  for (int i=0; i < histos_C.size(); ++i) {
+	    std::string cvname = histos_C[i]->GetName();
+	    cout << cvname << endl;
+	    cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
+	    if (logaxis) {
+	      cout << "  make log Y-axis scale" << endl;
+	      gPad->SetLogy();
+	      gPad->SetGrid();
+	    }
+	    TH1F *mytmp = (TH1F*) histos_C[i];
+	    mytmp->SetMaximum(1); 
+	    mytmp->SetMinimum(10e-4); 
+	    mytmp->Draw();
+	    TString title= mytmp->GetTitle();
+	    title = title.Remove(0,24);
+	    title = title.Remove(title.Length()-8, title.Length());
+	    cout << "title:" << title <<endl;
+	    mytmp->SetTitle(title);
+	    TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
+	    mytmp2->SetMarkerColor(kRed);
+	    mytmp2->Draw("same");
+	    TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
+	    leg1->SetTextSize(0.04);
+	    leg1->SetFillColor(0);
+	    leg1->AddEntry(mytmp,"c","P");
+	    leg1->AddEntry(mytmp2,"dusg","P");
+	    leg1->Draw();
+	    cout << "Drew Merged Histos " << endl;
+	    cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
+
+	    if ( extension=="eps" ) {
+	      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+	      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+	      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+	      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+	      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+	    }
+	    cout << " done merging "<<endl;
+	  }
+
 	} else {
     for (unsigned idir = 0; idir < dirName1.size(); ++idir) {
       cout << " directory: " << dirName1[idir] << endl;
@@ -234,9 +292,12 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 		if (dir1) {
 
 			std::vector<std::string> histKeys = getAllKeys (dir1, "TH1F");
+			std::vector<TH1*> histos_C;
+			std::vector<TH1*> histos_DUSG;
 
 			if ( histKeys.size() != 0 ) {
-				for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
+
+			  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 					TH1* hist = 0;
 					dir1->GetObject (histKeys[ihist].c_str(), hist);
 				
@@ -299,7 +360,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							} else {
 
 								cout << " no reference plot " << histKeys[ihist] << endl;
-								TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+								TLatex *label = new TLatex(0.2,0.05,"no reference plot available");
 								label->SetNDC();
 								label->SetTextSize(0.07);
 								label->Draw();
@@ -332,7 +393,57 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 						std::cerr << "Can not get histogram " << histKeys[ihist] << std::endl;
 					}
 				}
-			} else {
+			  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
+			    TH1* hist = 0;
+			    gDirectory->GetObject (histKeys[ihist].c_str(), hist);
+			    TString  HistoName = hist->GetName() ;
+			    cout << " Histogram Name: " << HistoName << endl;	
+	    
+			    if ( HistoName.Contains(name1)) {histos_C.push_back(hist);}
+			    if ( HistoName.Contains(name2)) {histos_DUSG.push_back(hist);}
+			    cout << " Histos_C.size: " << histos_C.size() << endl;	
+			    cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
+			  }
+			  for (int i=0; i < histos_C.size(); ++i) {
+			    std::string cvname = histos_C[i]->GetName();
+			    cout << cvname << endl;
+			    cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
+			    if (logaxis) {
+			      cout << "  make log Y-axis scale" << endl;
+			      gPad->SetLogy();
+			      gPad->SetGrid();
+			    }
+			    TH1F *mytmp = (TH1F*) histos_C[i];
+			    mytmp->Draw();
+			    mytmp->SetMaximum(1); 
+			    mytmp->SetMinimum(10e-4); 
+			    TString title= mytmp->GetTitle();
+			    title = title.Remove(0,24);
+			    title = title.Remove(title.Length()-8, title.Length());
+			    cout << "title:" << title <<endl;
+  			    mytmp->SetTitle(title);
+			    TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
+			    mytmp2->SetMarkerColor(kRed);
+			    mytmp2->Draw("same");
+			    TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
+			    leg1->SetFillColor(0);
+			    leg1->SetTextSize(0.04);
+			    leg1->AddEntry(mytmp,"c","P");
+			    leg1->AddEntry(mytmp2,"dusg","P");
+			    leg1->Draw();
+
+			    cout << "Drew Merged Histos " << endl;
+			    cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
+
+			    if ( extension=="eps" ) {
+			      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+			      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+			      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+			      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+			      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+			    }
+			    cout << " done merging "<<endl;
+			  }			} else {
 				
 				std::vector<std::string> dirName2 = getAllKeys (dir1, "TDirectory");
 				cout << "dirName2.size=" << dirName2.size() << endl;
@@ -346,7 +457,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 					if (dir2) {
 
 						std::vector<std::string> histKeys = getAllKeys (dir2, "TH1F");
-						
+
 						for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 							TH1* hist = 0;
 							dir2->GetObject (histKeys[ihist].c_str(), hist);
@@ -410,7 +521,7 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 									}else {
 
 										cout << " no reference plot " << histKeys[ihist] << endl;
-										TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+										TLatex *label = new TLatex(0.2,0.5 ,"no reference plot available");
 										label->SetNDC();
 										label->SetTextSize(0.07);
 										label->Draw();
@@ -449,6 +560,60 @@ void make_plots(TString root_filename, TString webpath, TString extension="png",
 							else {
 								std::cerr << "Can not get histogram " << histKeys[ihist] << std::endl;
 							}
+						}
+						std::vector<TH1*> histos_C;
+						std::vector<TH1*> histos_DUSG;
+
+						for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
+						  TH1* hist = 0;
+						  dir2->GetObject (histKeys[ihist].c_str(), hist);
+						  TString  HistoName = hist->GetName() ;
+						  cout << " Histogram Name: " << HistoName << endl;	
+	    
+						  if ( HistoName.Contains(name1)) {histos_C.push_back(hist);}
+						  if ( HistoName.Contains(name2)) {histos_DUSG.push_back(hist);}
+						  cout << " Histos_C.size: " << histos_C.size() << endl;	
+						  cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
+						}
+						for (int i=0; i < histos_C.size(); ++i) {
+						  std::string cvname = histos_C[i]->GetName();
+						  cout << cvname << endl;	 
+						  cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
+						  if (logaxis) {
+						    cout << "  make log Y-axis scale" << endl;
+						    gPad->SetLogy();
+						    gPad->SetGrid();
+						  }
+						  TH1F *mytmp = (TH1F*) histos_C[i];
+						  mytmp->SetMaximum(1); 
+						  mytmp->SetMinimum(10e-4); 
+						  TString title= mytmp->GetTitle();
+						  title = title.Remove(0,24);
+						  title = title.Remove(title.Length()-8, title.Length());
+						  cout << "title:" << title <<endl;
+						  mytmp->Draw();
+						  mytmp->SetTitle(title);
+						  TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
+						  mytmp2->SetMarkerColor(kRed);
+						  mytmp2->Draw("same");
+						  TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
+						  leg1->SetFillColor(0);
+						  leg1->SetTextSize(0.04);
+						  leg1->AddEntry(mytmp,"c","P");
+						  leg1->AddEntry(mytmp2,"dusg","P");
+						  leg1->Draw();
+
+						  cout << " Drew Histograms merged" << endl;
+						  cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
+
+						  if ( extension=="eps" ) {
+						    gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+						    gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+						    gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+						    gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+						    gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+						  }
+						  cout << " done merging "<<endl;
 						}
 					}
 				}
