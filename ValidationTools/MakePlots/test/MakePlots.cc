@@ -269,11 +269,11 @@ MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, 
       TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
       leg1->SetTextSize(0.04);
       leg1->SetFillColor(kWhite);
-      leg1->AddEntry(mytmp,"C","P");
-      leg1->AddEntry(mytmp2,"DUSG","P");
+      leg1->AddEntry(mytmp,"c","P");
+      leg1->AddEntry(mytmp2,"dusg","P");
       leg1->Draw();
       std::cout << "Drew Merged Histos " << std::endl;
-      cv_map["merged_"+cvname]->Print(webpath+"/"+"merged_"+TString(cvname)+"."+extension);
+      cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
       if ( extension=="eps" ) {
 	gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
@@ -428,12 +428,12 @@ MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, 
 	    TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
 	    leg1->SetFillColor(kWhite);
 	    leg1->SetTextSize(0.04);
-	    leg1->AddEntry(mytmp,"C","P");
-	    leg1->AddEntry(mytmp2,"DUSG","P");
+	    leg1->AddEntry(mytmp,"c","P");
+	    leg1->AddEntry(mytmp2,"dusg","P");
 	    leg1->Draw();
 
 	    std::cout << "Drew Merged Histos " << std::endl;
-	    cv_map["merged_"+cvname]->Print(webpath+"/"+"merged_"+TString(cvname)+"."+extension);
+	    cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
 	    if ( extension=="eps" ) {
 	      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
@@ -600,12 +600,12 @@ MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, 
 		TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
 		leg1->SetFillColor(kWhite);
 		leg1->SetTextSize(0.04);
-		leg1->AddEntry(mytmp,"C","P");
-		leg1->AddEntry(mytmp2,"DUSG","P");
+		leg1->AddEntry(mytmp,"c","P");
+		leg1->AddEntry(mytmp2,"dusg","P");
 		leg1->Draw();
 
 		std::cout << " Drew Histograms merged" << std::endl;
-		cv_map["merged_"+cvname]->Print(webpath+"/"+"merged_"+TString(cvname)+"."+extension);
+		cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
 		if ( extension=="eps" ) {
 		  gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
