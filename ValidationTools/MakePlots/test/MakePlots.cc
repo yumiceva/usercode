@@ -87,7 +87,16 @@ TH1* HistoCompare(TH1 *h, TH1 *refHisto) {
   
 }
 
-MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, bool compare, TString compare_filename, bool logaxis) {
+MakePlots::MakePlots() {
+
+	extension = "png";
+	compare = false;
+	compare_filename = "";
+	logaxis = false;
+	
+}
+
+void MakePlots::Draw() {
 
   // get a file
   TFile *afile = new TFile(root_filename);
@@ -245,7 +254,7 @@ MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, 
       //cout << " Histos_C.size: " << histos_C.size() << endl;	
       //cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
     }
-    for (int i=0; i < histos_C.size(); ++i) {
+    for (size_t i=0; i < histos_C.size(); ++i) {
       std::string cvname = histos_C[i]->GetName();
       //cout << cvname << endl;
       cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
@@ -404,7 +413,7 @@ MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, 
 	    //cout << " Histos_C.size: " << histos_C.size() << endl;	
 	    //cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
 	  }
-	  for (int i=0; i < histos_C.size(); ++i) {
+	  for (size_t i=0; i < histos_C.size(); ++i) {
 	    std::string cvname = histos_C[i]->GetName();
 	    //cout << cvname << endl;
 	    cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
@@ -576,7 +585,7 @@ MakePlots::MakePlots(TString root_filename, TString webpath, TString extension, 
 		//cout << " Histos_C.size: " << histos_C.size() << endl;	
 		//cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
 	      }
-	      for (int i=0; i < histos_C.size(); ++i) {
+	      for (size_t i=0; i < histos_C.size(); ++i) {
 		std::string cvname = histos_C[i]->GetName();
 		//cout << cvname << endl;	 
 		cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);

@@ -245,11 +245,11 @@ if __name__ == "__main__":
     
 
     # check if make_plots.C exits
-    if not os.path.isfile("make_plots.C"):
-        print "make_plots.C file does not exist in path, will get it from CVS..."
-        os.system("cvs co -d tmpdir UserCode/Yumiceva/ValidationTools/make_plots.C")
-        os.system("mv tmpdir/make_plots.C .")
-        os.system("rm -rf tmpdir")
+    #if not os.path.isfile("make_plots.C"):
+    #    print "make_plots.C file does not exist in path, will get it from CVS..."
+    #    os.system("cvs co -d tmpdir UserCode/Yumiceva/ValidationTools/make_plots.C")
+    #    os.system("mv tmpdir/make_plots.C .")
+    #    os.system("rm -rf tmpdir")
     
 
     
@@ -332,19 +332,22 @@ if __name__ == "__main__":
                     
 		    tmpbatchroot.write('''void tmpbatch() {
                     gROOT->SetStyle("Plain");
-		    gROOT->ProcessLine(".L make_plots.C++");
+                    gSystem->Load("libMakePlots.so");
+                    MakePlots plot;
 		    ''')
-		    if not option.nocompare:
-			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",true,\""+ref_rootfilename+"\");}\n"
-                            if option.logaxis:
-                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",true,\""+ref_rootfilename+"\",true);}\n"
-			    tmpbatchroot.write(tmpline)
-		    else:
-			    tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\");}\n"
-                            if option.logaxis:
-                                tmpline = "make_plots(\""+rootfilename+"\",\""+ folder +"\",\"png\",false,\"\",true);}\n"
-			    tmpbatchroot.write(tmpline)
 
+                    tmpbatchroot.write("plot.SetFilename(\""+rootfilename+"\");\n")
+                    tmpbatchroot.write("plot.SetWebPath(\""+folder+"\");\n")
+                    tmpbatchroot.write("plot.SetExtension(\"png\");\n")
+                                        
+		    if not option.nocompare:
+                        tmpbatchroot.write("plot.Compare(\"true\");\n")
+                        tmpbatchroot.write("plot.SetCompareFilename(\""+ref_rootfilename+"\");\n")
+
+                    if option.logaxis:
+                        tmpbatchroot.write("plot.SetLogAxis(\"true\");\n")
+
+                    tmpbatchroot.write("plot.Draw();\n")
                     tmpbatchroot.close()
                     
                     outputlog.write( runCommand2("root -l -b -q tmpbatch.C") )
