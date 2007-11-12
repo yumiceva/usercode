@@ -341,13 +341,15 @@ if __name__ == "__main__":
                     tmpbatchroot.write("plot.SetExtension(\"png\");\n")
                                         
 		    if not option.nocompare:
-                        tmpbatchroot.write("plot.Compare(\"true\");\n")
+                        tmpbatchroot.write("plot.Compare(true);\n")
                         tmpbatchroot.write("plot.SetCompareFilename(\""+ref_rootfilename+"\");\n")
 
                     if option.logaxis:
-                        tmpbatchroot.write("plot.SetLogAxis(\"true\");\n")
+                        tmpbatchroot.write("plot.SetLogAxis(true);\n")
 
                     tmpbatchroot.write("plot.Draw();\n")
+                    tmpbatchroot.write("}\n");
+                    
                     tmpbatchroot.close()
                     
                     outputlog.write( runCommand2("root -l -b -q tmpbatch.C") )
