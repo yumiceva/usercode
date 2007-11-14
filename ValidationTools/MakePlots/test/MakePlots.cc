@@ -299,14 +299,12 @@ void MakePlots::Draw() {
       TDirectory* dir1 = 0;
       afile->GetObject (dirName1[idir].c_str(), dir1);
       if (dir1) {
-
 	std::vector<std::string> histKeys = getAllKeys (dir1, "TH1F");
-	if ( histKeys.size() != 0 ) {
+        if ( histKeys.size() != 0 ) {
 
 	  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 	    TH1* hist = 0;
 	    dir1->GetObject (histKeys[ihist].c_str(), hist);
-				
 	    if (hist) {
 	      std::string cvname = hist->GetName();
 						
@@ -393,7 +391,7 @@ void MakePlots::Draw() {
 		gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
 		gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 	      }
-	      std::cout << " done"<<std::endl;
+	      std::cout << " done"<< ihist <<std::endl;
 	    }
 	    else {
 	      std::cerr << "Can not get histogram " << histKeys[ihist] << std::endl;
@@ -401,21 +399,19 @@ void MakePlots::Draw() {
 	  }
 	  std::vector<TH1*> histos_C;
 	  std::vector<TH1*> histos_DUSG;
-
 	  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 	    TH1* histo = 0;
-	    gDirectory->GetObject (histKeys[ihist].c_str(), histo);
+	    dir1->GetObject (histKeys[ihist].c_str(), histo);
 	    TString  HistoName = histo->GetName() ;
-	    //cout << " Histogram Name: " << HistoName << endl;	
-	    
+	    //std::cout << " Histogram Name: " << HistoName << std::endl;	
 	    if ( HistoName.Contains(name1)) {histos_C.push_back(histo);}
 	    if ( HistoName.Contains(name2)) {histos_DUSG.push_back(histo);}
-	    //cout << " Histos_C.size: " << histos_C.size() << endl;	
-	    //cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
+	    //std::cout << " Histos_C.size: " << histos_C.size() << std::endl;	
+	    //std::cout << " Histos_DUSG.size: " << histos_DUSG.size() << std::endl;
 	  }
 	  for (size_t i=0; i < histos_C.size(); ++i) {
 	    std::string cvname = histos_C[i]->GetName();
-	    //cout << cvname << endl;
+	    //std::cout << cvname << std::endl;
 	    cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
 	    if (logaxis) {
 	      std::cout << "  make log Y-axis scale" << std::endl;
@@ -451,7 +447,7 @@ void MakePlots::Draw() {
 	      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
 	      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 	    }
-	    std::cout << " done merging "<<std::endl;
+	    //std::cout << " done merging "<<std::endl;
 	  }	
 	} else {
 				
@@ -465,7 +461,7 @@ void MakePlots::Draw() {
 	    TDirectory* dir2 = 0;
 	    dir1->GetObject (dirName2[idir2].c_str(), dir2);
 	    if (dir2) {
-
+	      std::cout << "checking dir2" << std::endl;
 	      std::vector<std::string> histKeys = getAllKeys (dir2, "TH1F");
 	      for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 		TH1* hist = 0;
