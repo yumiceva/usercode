@@ -165,11 +165,11 @@ if __name__ == "__main__":
 		    usage()
 		    sys.exit()
 
-    outputfilelog = sys.argv[0].replace(".py",".log")
-    
+    outputfilelog = webpath+"/make_webpage.log"
+        
     print " working path: " + webpath
 
-    print " log file: " + webpath+"/"+outputfilelog
+    print " log file: " + outputfilelog
     
     print " copying base html files to "+ webpath
     os.system("cp -r css "+webpath)
