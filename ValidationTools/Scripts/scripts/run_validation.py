@@ -341,7 +341,7 @@ if __name__ == "__main__":
                     tmpbatchroot.write("plot.SetExtension(\"png\");\n")
                                         
 		    if not option.nocompare:
-                        tmpbatchroot.write("plot.Compare(true);\n")
+                        tmpbatchroot.write("plot.SetCompare(true);\n")
                         tmpbatchroot.write("plot.SetCompareFilename(\""+ref_rootfilename+"\");\n")
 
                     if option.logaxis:
