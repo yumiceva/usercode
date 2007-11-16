@@ -89,10 +89,10 @@ TH1* HistoCompare(TH1 *h, TH1 *refHisto) {
 
 MakePlots::MakePlots() {
 
-	extension = "png";
-	compare = false;
-	compare_filename = "";
-	logaxis = false;
+  extension = "png";
+  compare = false;
+  compare_filename = "";
+  logaxis = false;
 	
 }
 
@@ -131,7 +131,10 @@ void MakePlots::Draw() {
   std::map<std::string, TCanvas*> cv_map;
   TString name1 = "_C_";
   TString name2 = "_DUSG_";
-	
+  TString name3 = "discr_";
+  TString name4 = "GLOBALC";
+  TString name5 = "GLOBALDUSG";
+  	
 	
   std::vector<std::string> dirName1 = getAllKeys ( afile , "TDirectory");
   std::cout << "dirName1.size=" << dirName1.size() << std::endl;
@@ -146,7 +149,7 @@ void MakePlots::Draw() {
       if (hist) {
 
 	std::string cvname = hist->GetName();
-			
+	TString HistName   = hist->GetName();	
 	cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),"cv_"+TString(hist->GetName()),800,800);
 			
 	if (compare) {
@@ -210,28 +213,40 @@ void MakePlots::Draw() {
 	    label->SetTextSize(0.07);
 	    label->Draw();
 	  }
-	} else {
-	  //hist->SetXTitle(hist->GetTitle());
-	  hist->Draw();
-	  label->Draw();
-	  if (logaxis) {
-	    std::cout << "  make log Y-axis scale" << std::endl;
-	    gPad->SetLogy();
-	    gPad->SetGrid();
-	  }
-	}
-
-
-	cv_map["cv_"+cvname]->cd();
-	std::cout << " print canvas" << std::endl;
-	cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+	  cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
 			
-	if ( extension=="eps" ) {
-	  gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-	  gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-	  gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-	  gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-	  gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+	  if ( extension=="eps" ) {
+	    gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+	    gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+	    gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+	    gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+	    gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+	  }
+	} else {
+	  //std::cout << "  no comparison done" << std::endl;
+	  if (HistName.Contains(name1) || HistName.Contains(name2)|| HistName.Contains(name3) ) {
+	    //hist->SetXTitle(hist->GetTitle());
+	    //std::cout << "  HistName" << HistName << std::endl;
+	  } else {
+	    hist->Draw();
+	    label->Draw();
+	    if (logaxis) {
+	      std::cout << "  make log Y-axis scale" << std::endl;
+	      gPad->SetLogy();
+	      gPad->SetGrid();
+	    }
+	    cv_map["cv_"+cvname]->cd();
+	    std::cout << " print canvas" << std::endl;
+	    cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+			
+	    if ( extension=="eps" ) {
+	      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+	      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+	      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+	      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+	      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+	    }
+	  }
 	}
 	std::cout << " done"<<std::endl;
       }
@@ -242,6 +257,8 @@ void MakePlots::Draw() {
 
     std::vector<TH1*> histos_C;
     std::vector<TH1*> histos_DUSG;
+    std::vector<TH1*> discr_C;
+    std::vector<TH1*> discr_DUSG;
 
     for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
       TH1* histo = 0;
@@ -251,12 +268,15 @@ void MakePlots::Draw() {
 	    
       if ( HistoName.Contains(name1)) {histos_C.push_back(histo);}
       if ( HistoName.Contains(name2)) {histos_DUSG.push_back(histo);}
-      //cout << " Histos_C.size: " << histos_C.size() << endl;	
-      //cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
+      if ( HistoName.Contains(name3)){
+	if ( HistoName.Contains(name4)) {discr_C.push_back(histo);}
+	if ( HistoName.Contains(name5)) {discr_DUSG.push_back(histo);}
+      }
+      //std::cout << " discr_C.size: " << discr_C.size() << std::endl;	
+      //std::cout << " discr_DUSG.size: " << discr_DUSG.size() << std::endl;
     }
     for (size_t i=0; i < histos_C.size(); ++i) {
       std::string cvname = histos_C[i]->GetName();
-      //cout << cvname << endl;
       cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(histos_C[i]->GetName()),800,800);
       if (logaxis) {
 	std::cout << "  make log Y-axis scale" << std::endl;
@@ -269,8 +289,7 @@ void MakePlots::Draw() {
       mytmp->Draw();
       TString title= mytmp->GetTitle();
       title = title.Remove(0,24);
-      title = title.Remove(title.Length()-8, title.Length());
-      //cout << "title:" << title <<endl;
+      title = title.Remove(title.Length()-7, title.Length());
       mytmp->SetTitle(title);
       TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
       mytmp2->SetMarkerColor(kRed);
@@ -281,17 +300,56 @@ void MakePlots::Draw() {
       leg1->AddEntry(mytmp,"c","P");
       leg1->AddEntry(mytmp2,"dusg","P");
       leg1->Draw();
-      std::cout << "Drew Merged Histos " << std::endl;
+      //std::cout << "Drew Merged Histos " << std::endl;
       cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
       if ( extension=="eps" ) {
-	gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+	gSystem->Exec("cp "+webpath+"/"+"Amerged_"+TString(cvname)+"."+extension+" temp.eps");
 	gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-	gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+	gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+"Amerged_"+TString(cvname)+".gif");
 	gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-	gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+	gSystem->Exec("rm "+webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
       }
       std::cout << " done merging "<<std::endl;
+    }
+
+    for (size_t i=0; i < discr_C.size(); ++i) {
+      std::string cvname = discr_C[i]->GetName();
+      cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(discr_C[i]->GetName()),800,800);
+      if (logaxis) {
+	std::cout << "  make log Y-axis scale" << std::endl;
+	gPad->SetLogy();
+	gPad->SetGrid();
+      }
+      TH1F *mytmp = (TH1F*) discr_C[i];
+      //mytmp->SetMaximum(1); 
+      //mytmp->SetMinimum(10e-4); 
+      mytmp->Draw();
+      mytmp->SetMarkerColor(kBlack);
+      TString title= mytmp->GetTitle();
+      //title = title.Remove(0,14);
+      title = title.Remove(title.Length()-14, title.Length());
+      //std::cout << "title:" << title <<std::endl;
+      mytmp->SetTitle(title);
+      TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
+      mytmp2->SetMarkerColor(kRed);
+      mytmp2->Draw("same");
+      TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
+      leg1->SetTextSize(0.04);
+      leg1->SetFillColor(kWhite);
+      leg1->AddEntry(mytmp,"c","P");
+      leg1->AddEntry(mytmp2,"dusg","P");
+      leg1->Draw();
+      cv_map["merged_"+cvname]->Print(webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
+
+      if ( extension=="eps" ) {
+	gSystem->Exec("cp "+webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension+" temp.eps");
+	gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+	gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+"Dmerged_"+TString(cvname)+".gif");
+	gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+	gSystem->Exec("rm "+webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
+      }
+      std::cout << " done merging of discriminant "<<std::endl;
     }
   } else {
     for (unsigned idir = 0; idir < dirName1.size(); ++idir) {
@@ -307,7 +365,7 @@ void MakePlots::Draw() {
 	    dir1->GetObject (histKeys[ihist].c_str(), hist);
 	    if (hist) {
 	      std::string cvname = hist->GetName();
-						
+	      TString HistName =  hist->GetName();
 	      cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),
 						 "cv_"+TString(hist->GetName()),800,800);
 						
@@ -369,29 +427,40 @@ void MakePlots::Draw() {
 		  label->SetTextSize(0.07);
 		  label->Draw();
 		}
+		cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+		if ( extension=="eps" ) {
+		  gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+		  gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+		  gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+		  gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+		  gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+		}
 	      } else {
 		//hist->SetXTitle(hist->GetTitle());
-		hist->Draw();
-		label->Draw();
-		if (logaxis) {
-		  std::cout << "  make log Y-axis scale" << std::endl;
-		  gPad->SetLogy();
-		  gPad->SetGrid();
+		if ( HistName.Contains(name1) ||  HistName.Contains(name2) || HistName.Contains(name3) ) {
+		  std::cout << "  HistName:" << HistName << std::endl;
+		} else {
+		  hist->Draw();
+		  label->Draw();
+		  if (logaxis) {
+		    std::cout << "  make log Y-axis scale" << std::endl;
+		    gPad->SetLogy();
+		    gPad->SetGrid();
+		  }
+		  cv_map["cv_"+cvname]->cd();
+		  std::cout << " print canvas" << std::endl;
+		  cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+		  if ( extension=="eps" ) {
+		    gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+		    gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+		    gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+		    gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+		    gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+		  }
 		}
 	      }
 								
-
-	      cv_map["cv_"+cvname]->cd();
-	      std::cout << " print canvas" << std::endl;
-	      cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-	      if ( extension=="eps" ) {
-		gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-		gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-		gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-		gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-		gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-	      }
-	      std::cout << " done"<< ihist <<std::endl;
+	      std::cout << " done" << ihist <<std::endl;
 	    }
 	    else {
 	      std::cerr << "Can not get histogram " << histKeys[ihist] << std::endl;
@@ -399,15 +468,21 @@ void MakePlots::Draw() {
 	  }
 	  std::vector<TH1*> histos_C;
 	  std::vector<TH1*> histos_DUSG;
+	  std::vector<TH1*> discr_C;
+	  std::vector<TH1*> discr_DUSG;
+	  
 	  for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 	    TH1* histo = 0;
 	    dir1->GetObject (histKeys[ihist].c_str(), histo);
 	    TString  HistoName = histo->GetName() ;
-	    //std::cout << " Histogram Name: " << HistoName << std::endl;	
 	    if ( HistoName.Contains(name1)) {histos_C.push_back(histo);}
 	    if ( HistoName.Contains(name2)) {histos_DUSG.push_back(histo);}
-	    //std::cout << " Histos_C.size: " << histos_C.size() << std::endl;	
-	    //std::cout << " Histos_DUSG.size: " << histos_DUSG.size() << std::endl;
+	    if ( HistoName.Contains(name3)){
+	      if ( HistoName.Contains(name4)) {discr_C.push_back(histo);}
+	      if ( HistoName.Contains(name5)) {discr_DUSG.push_back(histo);}
+	    }
+	    // std::cout << " discr_C.size: " << discr_C.size() << std::endl;	
+	    //std::cout << " discr_DUSG.size: " << discr_DUSG.size() << std::endl;
 	  }
 	  for (size_t i=0; i < histos_C.size(); ++i) {
 	    std::string cvname = histos_C[i]->GetName();
@@ -424,7 +499,7 @@ void MakePlots::Draw() {
 	    mytmp->SetMinimum(10e-4); 
 	    TString title= mytmp->GetTitle();
 	    title = title.Remove(0,24);
-	    title = title.Remove(title.Length()-8, title.Length());
+	    title = title.Remove(title.Length()-7, title.Length());
 	    //cout << "title:" << title <<endl;
 	    mytmp->SetTitle(title);
 	    TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
@@ -437,18 +512,58 @@ void MakePlots::Draw() {
 	    leg1->AddEntry(mytmp2,"dusg","P");
 	    leg1->Draw();
 
-	    std::cout << "Drew Merged Histos " << std::endl;
+	    //std::cout << "Drew Merged Histos " << std::endl;
 	    cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
 	    if ( extension=="eps" ) {
-	      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+	      gSystem->Exec("cp "+webpath+"/"+"Amerged_"+TString(cvname)+"."+extension+" temp.eps");
 	      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-	      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+	      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+"Amerged_"+TString(cvname)+".gif");
 	      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-	      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+	      gSystem->Exec("rm "+webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 	    }
 	    //std::cout << " done merging "<<std::endl;
 	  }	
+ 
+	  for (size_t i=0; i < discr_C.size(); ++i) {
+	    std::string cvname = discr_C[i]->GetName();
+	    //cout << cvname << endl;
+	    cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(discr_C[i]->GetName()),800,800);
+	    if (logaxis) {
+	      std::cout << "  make log Y-axis scale" << std::endl;
+	      gPad->SetLogy();
+	      gPad->SetGrid();
+	    }
+	    TH1F *mytmp = (TH1F*) discr_C[i];
+	    //mytmp->SetMaximum(1); 
+	    //mytmp->SetMinimum(10e-4); 
+	    mytmp->Draw();
+	    mytmp->SetMarkerColor(kBlack);
+	    TString title= mytmp->GetTitle();
+	    //title = title.Remove(0,14);
+	    title = title.Remove(title.Length()-14, title.Length());
+	    mytmp->SetTitle(title);
+	    TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
+	    mytmp2->SetMarkerColor(kRed);
+	    mytmp2->Draw("same");
+	    TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
+	    leg1->SetTextSize(0.04);
+	    leg1->SetFillColor(kWhite);
+	    leg1->AddEntry(mytmp,"c","P");
+	    leg1->AddEntry(mytmp2,"dusg","P");
+	    leg1->Draw();
+	    //std::cout << "Drew Merged Discriminant " << std::endl;
+	    cv_map["merged_"+cvname]->Print(webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
+	    
+	    if ( extension=="eps" ) {
+	      gSystem->Exec("cp "+webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension+" temp.eps");
+	      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+	      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+"Dmerged_"+TString(cvname)+".gif");
+	      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+	      gSystem->Exec("rm "+webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
+	    }
+	    //std::cout << " done merging of discriminator "<<std::endl;
+	  }
 	} else {
 				
 	  std::vector<std::string> dirName2 = getAllKeys (dir1, "TDirectory");
@@ -461,7 +576,6 @@ void MakePlots::Draw() {
 	    TDirectory* dir2 = 0;
 	    dir1->GetObject (dirName2[idir2].c_str(), dir2);
 	    if (dir2) {
-	      std::cout << "checking dir2" << std::endl;
 	      std::vector<std::string> histKeys = getAllKeys (dir2, "TH1F");
 	      for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 		TH1* hist = 0;
@@ -471,6 +585,7 @@ void MakePlots::Draw() {
 		  std::cout << "  histogram: " << hist->GetName() << " entries: " << hist->GetEntries() << std::endl;
 								
 		  std::string cvname = hist->GetName();
+		  TString HistName = hist->GetName();
 								
 		  cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),
 						     "cv_"+TString(hist->GetName()),800,800);
@@ -532,35 +647,46 @@ void MakePlots::Draw() {
 		      label->Draw();
 		    }
 									
+		    cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+		    if ( extension=="eps" ) {
+		      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+		      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+		      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+		      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+		      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+		    }	
 		  } else {
-		    //hist->SetXTitle(hist->GetTitle());
-		    hist->Draw();
-		    label->Draw();
-		    if (logaxis) {
-		      std::cout << "  make log Y-axis scale" << std::endl;
-		      gPad->SetLogy();
-		      gPad->SetGrid();
+		    //std::cout << "  no comparison done" << std::endl;
+		    if (HistName.Contains(name1) || HistName.Contains(name2) ||HistName.Contains(name3)) {
+		      //std::cout << "  HistName:" << HistName << std::endl;
+		    } else {
+		      hist->Draw();
+		      label->Draw();
+		      if (logaxis) {
+			std::cout << "  make log Y-axis scale" << std::endl;
+			gPad->SetLogy();
+			gPad->SetGrid();
+		      }
+		      cv_map["cv_"+cvname]->cd();
+		      std::cout << " print canvas" << std::endl;
+		      cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
+		      if ( extension=="eps" ) {
+			gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+			gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+			gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+			gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+			gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+		      }	
 		    }
 		  }
 									
 
-		  cv_map["cv_"+cvname]->cd();
-		  std::cout << " print canvas" << std::endl;
 		  // temporal fix to print gif
 		  //TImageDump *di = new TImageDump(webpath+"/"+TString(cvname)+"."+extension);
 		  //cv_map["cv_"+cvname]->Paint();
 		  //di->Close();
 		  //delete di;
 								
-		  cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-		  if ( extension=="eps" ) {
-
-		    gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-		    gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-		    gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-		    gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-		    gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-		  }	
 		  std::cout << " done"<<std::endl;
 		}
 		else {
@@ -569,6 +695,8 @@ void MakePlots::Draw() {
 	      }
 	      std::vector<TH1*> histos_C;
 	      std::vector<TH1*> histos_DUSG;
+	      std::vector<TH1*> discr_C;
+	      std::vector<TH1*> discr_DUSG;
 
 	      for (unsigned ihist = 0; ihist < histKeys.size (); ++ihist) {
 		TH1* histo = 0;
@@ -578,9 +706,12 @@ void MakePlots::Draw() {
 	    
 		if ( HistoName.Contains(name1)) {histos_C.push_back(histo);}
 		if ( HistoName.Contains(name2)) {histos_DUSG.push_back(histo);}
-		//cout << " Histos_C.size: " << histos_C.size() << endl;	
-		//cout << " Histos_DUSG.size: " << histos_DUSG.size() << endl;
+		if ( HistoName.Contains(name4)) {discr_C.push_back(histo);}
+		if ( HistoName.Contains(name5)) {discr_DUSG.push_back(histo);}
 	      }
+	      //std::cout << " discr_C.size: " << discr_C.size() << std::endl;	
+	      //std::cout << " discr_DUSG.size: " << discr_DUSG.size() << std::endl;
+ 	    
 	      for (size_t i=0; i < histos_C.size(); ++i) {
 		std::string cvname = histos_C[i]->GetName();
 		//cout << cvname << endl;	 
@@ -595,7 +726,7 @@ void MakePlots::Draw() {
 		mytmp->SetMinimum(10e-4); 
 		TString title= mytmp->GetTitle();
 		title = title.Remove(0,24);
-		title = title.Remove(title.Length()-8, title.Length());
+		title = title.Remove(title.Length()-7, title.Length());
 		//cout << "title:" << title <<endl;
 		mytmp->Draw();
 		mytmp->SetTitle(title);
@@ -609,19 +740,58 @@ void MakePlots::Draw() {
 		leg1->AddEntry(mytmp2,"dusg","P");
 		leg1->Draw();
 
-		std::cout << " Drew Histograms merged" << std::endl;
+		//std::cout << " Drew Histograms merged" << std::endl;
 		cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
 		if ( extension=="eps" ) {
-		  gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
+		  gSystem->Exec("cp "+webpath+"/"+"Amerged_"+TString(cvname)+"."+extension+" temp.eps");
 		  gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-		  gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
+		  gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+"Amerged_"+TString(cvname)+".gif");
 		  gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-		  gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
+		  gSystem->Exec("rm "+webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 		}
-		std::cout << " done merging "<<std::endl;
+		//std::cout << " done merging "<<std::endl;
 	      }						
+	      for (size_t i=0; i < discr_C.size(); ++i) {
+		std::string cvname = discr_C[i]->GetName();
+		//cout << cvname << endl;
+		cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(discr_C[i]->GetName()),800,800);
+		if (logaxis) {
+		  std::cout << "  make log Y-axis scale" << std::endl;
+		  gPad->SetLogy();
+		  gPad->SetGrid();
+		}
+		TH1F *mytmp = (TH1F*) discr_C[i];
+		//mytmp->SetMaximum(1); 
+		//mytmp->SetMinimum(10e-4); 
+		mytmp->Draw();
+		mytmp->SetMarkerColor(kBlack);
+		TString title= mytmp->GetTitle();
+		//title = title.Remove(0,14);
+		title = title.Remove(title.Length()-14, title.Length());
+		//std::cout << "title:" << title <<std::endl;
+		mytmp->SetTitle(title);
+		TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
+		mytmp2->SetMarkerColor(kRed);
+		mytmp2->Draw("same");
+		TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
+		leg1->SetTextSize(0.04);
+		leg1->SetFillColor(kWhite);
+		leg1->AddEntry(mytmp,"c","P");
+		leg1->AddEntry(mytmp2,"dusg","P");
+		leg1->Draw();
+		//std::cout << "Drew Merged Discriminant " << std::endl;
+		cv_map["merged_"+cvname]->Print(webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
 
+		if ( extension=="eps" ) {
+		  gSystem->Exec("cp "+webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension+" temp.eps");
+		  gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
+		  gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+"Dmerged_"+TString(cvname)+".gif");
+		  gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
+		  gSystem->Exec("rm "+webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
+		}
+		//std::cout << " done merging "<<std::endl;
+	      }
 	    }
 	  }
 	}
