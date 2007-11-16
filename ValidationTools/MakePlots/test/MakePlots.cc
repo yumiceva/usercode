@@ -226,7 +226,7 @@ void MakePlots::Draw() {
 	  //std::cout << "  no comparison done" << std::endl;
 	  if (HistName.Contains(name1) || HistName.Contains(name2)|| HistName.Contains(name3) ) {
 	    //hist->SetXTitle(hist->GetTitle());
-	    //std::cout << "  HistName" << HistName << std::endl;
+	    std::cout << "  HistName" << HistName << std::endl;
 	  } else {
 	    hist->Draw();
 	    label->Draw();
@@ -658,7 +658,7 @@ void MakePlots::Draw() {
 		  } else {
 		    //std::cout << "  no comparison done" << std::endl;
 		    if (HistName.Contains(name1) || HistName.Contains(name2) ||HistName.Contains(name3)) {
-		      //std::cout << "  HistName:" << HistName << std::endl;
+		      std::cout << "  HistName:" << HistName << std::endl;
 		    } else {
 		      hist->Draw();
 		      label->Draw();
