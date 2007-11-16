@@ -22,6 +22,7 @@ class SimpleKinFit {
 	void SetPbj2(TLorentzVector pv) { pb2_ = pv; }
 	void SetPj1(TLorentzVector pv) { pj1_ = pv; }
 	void SetPj2(TLorentzVector pv) { pj2_ = pv; }
+	void SetMET(TLorentzVector pv) { p4met_ = pv; }
 	void SetPzNu(Double_t pznu) { pznu_ = pznu; }
 	
 	void SetElErr(Double_t err) { elErr_ = err; }
@@ -56,7 +57,8 @@ class SimpleKinFit {
 	TLorentzVector pb2_;
 	TLorentzVector pj1_;
 	TLorentzVector pj2_;
-
+	TLorentzVector p4met_;
+	
 	Double_t pznu_;
 	
 	Double_t elErr_;

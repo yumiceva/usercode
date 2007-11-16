@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopAnalysis.h,v 1.5 2007/06/07 14:10:23 yumiceva Exp $
+ version $Id: TopZpAnalysis.h,v 1.1 2007/11/03 00:00:27 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -49,6 +49,8 @@ class TopZpAnalysis {
 	void ApplyKinFit( bool option = true ) { fkinfit = option; };
 	void SetMinKFChi2( double value) { fminKFchi2 = value; };
 	void ApplyFilter( bool option = true ) { ffilter = option; };
+	void ApplyPartonMatching( bool option = true ) { ffilter = option; };
+	void SetJES( double value ) { fscale = value; };
 	void Weight( double value, int sample ) { fweight = value;fsample=sample;};
 	void SetPhiCut( double value) { fphicut = value; };
 	void Verbose(bool option=true) { fverbose = option; };

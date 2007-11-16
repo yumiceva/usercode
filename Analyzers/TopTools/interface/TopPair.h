@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopPair.h,v 1.2 2007/06/04 16:02:03 yumiceva Exp $
+ version $Id: TopPair.h,v 1.1 2007/10/31 19:34:56 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -40,6 +40,11 @@ class TopPair {
 		Vq.ResizeTo(4,4);
 		Vbh.ResizeTo(4,4);
 		Vbl.ResizeTo(4,4);
+		//Vp.ResizeTo(3,3);
+		//Vq.ResizeTo(3,3);
+		//Vbh.ResizeTo(3,3);
+		//Vbl.ResizeTo(3,3);
+		
 		Vl.ResizeTo(3,3);
 		Vn.ResizeTo(3,3);
 	};

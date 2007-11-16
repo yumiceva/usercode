@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopZpAnalysis.cc,v 1.6 2007/06/12 09:58:48 yumiceva Exp $
+ version $Id: TopZpAnalysis.cc,v 1.1 2007/11/03 00:00:27 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -40,7 +40,7 @@ TopZpAnalysis::TopZpAnalysis(TString filename) {
 	fverbose     = false;
 	fcorrections = true;
 	fkinfit      = false;
-	ffilter      = false;
+	ffilter      = true;
 	fPartonMatching= false;
 	ftopo        = true;
 	fminKFchi2   = 0.;
@@ -123,6 +123,8 @@ void TopZpAnalysis::Loop(int max_entry) {
 		nentries = (Long64_t) max_entry;
 		std::cout << " run over a maximum of "<< nentries << std::endl;
 	}
+
+	int npassevents = 0;
 	
 	//______ main loop over entries______
 	Long64_t nbytes = 0, nb = 0;
@@ -137,6 +139,8 @@ void TopZpAnalysis::Loop(int max_entry) {
 		// check filter
 		if ( ffilter && ( !fevent->passfilter) ) continue; 
 
+		npassevents++;
+		
 		// generator
 		TLorentzVector gent;
 		TLorentzVector genT;
@@ -194,7 +198,7 @@ void TopZpAnalysis::Loop(int max_entry) {
 			
 			h_->Fill1d(TString("muon_pt")+"_"+"cut0", pt_mu);
 			h_->Fill1d(TString("muon_normchi2")+"_"+"cut0",normchi2_mu);
-
+			if (TMath::Abs(tmpp4.Eta())< 2.4) h_->Fill1d(TString("muon_pt")+"_"+"cut1", pt_mu);
 			if (fverbose) std::cout << "done part one " << std::endl;
 			
 			int muid = fevent->muon_mc_pdgid[imu];
@@ -531,7 +535,8 @@ void TopZpAnalysis::Loop(int max_entry) {
 			std::vector< TopComposite > candZpTott;
 			candZpTott = ZpTott.GetComposites();
 			for (unsigned int i=0; i!= candZpTott.size(); ++i) {
-				h_->Fill1d(TString("topPair")+"_"+"cut0",candZpTott[i].M() );// 
+				h_->Fill1d(TString("topPair")+"_"+"cut0",candZpTott[i].M() );//
+				h_->Fill1d(TString("topPairRes_cut0"), (candZpTott[i].M() - genTopPair.M())/genTopPair.M() );
 			}
 			
 			// request back-to-back events in phi
@@ -539,7 +544,8 @@ void TopZpAnalysis::Loop(int max_entry) {
 			candtToWj.clear();
 			if (fkinfit) {
 				if (fverbose) std::cout << " setup kinfit" << std::endl;
-				tToWj.RemoveDuplicates(false);
+				//tToWj.RemoveDuplicates(false);
+				tToWj.RemoveDuplicates(true);
 				tToWj.DoKinFit(); // kinematic fit
 				tToWj.SetResJets( ResJets_ );
 				tToWj.SetResbJets( ResbJets_ );
@@ -718,8 +724,8 @@ void TopZpAnalysis::Loop(int max_entry) {
 		
 	} // end main loop
 
-	std::cout << " Total number of entries = " << fChain->GetEntries() << std::endl;
-	
+	std::cout << " Total number of entries = " << nentries << std::endl;
+	std::cout << " Entries analyzed        = " << npassevents << std::endl;
 }
 
 

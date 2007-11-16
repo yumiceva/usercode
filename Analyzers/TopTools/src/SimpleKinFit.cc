@@ -39,22 +39,27 @@ void SimpleKinFit::iteration(int i, int nf, int nm, int nx,
 		TMatrixD dum;
 		dum.ResizeTo(f);
 		dum = R;
+
+		//std::cout << "KinFit::iteration, calculate transpose of b:" << std::endl;
+		//b.Print();
 		
 		TMatrixD bt(4,4);
 		bt.Transpose(b);
-		//std::cout << "KinFit::iteration got transpose of b" << std::endl;
+		
 		
 		TMatrixD h(4,4);
-		h = b * GI * bt;
+		h = b * GI * bt;	
 		
 		TMatrixD si(4,4);
 		//std::cout << "h = " << std::endl;
 		//h.Print();
+		
 		//std::cout << "det(h)= " << h.Determinant() << std::endl;
 		Double_t deth;
 		si = h;
-		si.Invert(&deth);
-		//std::cout << "si inverted" << std::endl;
+		si.Invert();//si.Invert(&deth);
+		//std::cout << "si inverted:" << std::endl;
+		//si.Print();
 		
 		if (nx==0) {
 			TMatrixD at(1,4);
@@ -63,7 +68,7 @@ void SimpleKinFit::iteration(int i, int nf, int nm, int nx,
 			hh =  at * si * a;
 			Double_t dethh;
 			gxi_ = hh;
-			gxi_.Invert(&dethh);
+			gxi_.Invert(); //gxi_.Invert(&dethh);
 			dx_ = (-1.0)*gxi_*at*si*R;
 			dum = R + a * dx_;
 			
@@ -91,7 +96,7 @@ void SimpleKinFit::iteration(int i, int nf, int nm, int nx,
 		TMatrixD si(4,4);
 		Double_t deth;
 		si = h;
-		si.Invert(&deth);
+		si.Invert(); //si.Invert(&deth);
 						
 		TMatrixD hhh(4,4);
 		hhh = GI * bt * si * b * GI;
@@ -105,7 +110,7 @@ void SimpleKinFit::iteration(int i, int nf, int nm, int nx,
 			hh =  at * si * a;
 			Double_t detgi;
 			gxi_ = GI;
-			gxi_.Invert(&detgi);
+			gxi_.Invert();//gxi_.Invert(&detgi);
 			TMatrixD dum(4,4);
 			dum = GI * bt * si * a;
 			TMatrixD dumt(4,4);
@@ -122,13 +127,14 @@ void SimpleKinFit::Fit() {
 	int nf = 4; // mass of W and t
 	int nm = 4; // only energies poorly measured
 	int nx = 1; // longitudinal neutrino momentum
-	int kfl = 0; //failure flag for max steps, nstep > 10
+	int kfl = 0; //failure flag for max steps, nstep > maxnstep
 
 	// initial unknown wiggles and measured wiggles
 	//TMatrixD dx(nx,1);
 	dx_.Zero();
 	TMatrixD C(nm,1);
-
+	C.Zero();
+	
 	TMatrixD emo(4,1);
 	emo(0,0) = pj1_.E();
 	emo(1,0) = pj2_.E();
@@ -154,9 +160,13 @@ void SimpleKinFit::Fit() {
 	GI(1,1) = ej2Err_;
 	GI(2,2) = eb2Err_;
 	GI(3,3) = eb1Err_;
-	//std::cout << " GI= " <<std::endl;
-	//GI.Print();
 
+	//std::cout << "KinFit:: GI:" << std::endl;
+	//GI.Print();
+	
+	////
+	TLorentzVector p4Const = p4met_ + pj1_ + pj2_ + pb1_ + pb2_;// contains muon
+	
 	/*
 	// starting value of MET
 	TLorentzVector p4MET;
@@ -181,10 +191,12 @@ void SimpleKinFit::Fit() {
 	//TMatrixD gxi(nx,nx);
 	gxi_.Zero();
 	TMatrixD si(nf,nf);
-
+	si.Zero();
+	
 	int nstep = 0;
-	double flim = 0.20;
-	double fabs = 1.0;
+	double flim = 1.e-4;//1.e-2;//0.20;
+	double fabs = 1.0; // sum of abs of constraints, starting value to force first step
+	int maxnstep = 200;
 	
 	TMatrixD em(4,1);
 	TMatrixD f(nf,1);
@@ -202,7 +214,9 @@ void SimpleKinFit::Fit() {
 	  TLorentzVector tmpvecj2 = em(1,0)*Aj2;
 	  TLorentzVector tmpvecb2 = em(2,0)*Ab2;
 	  TLorentzVector tmpvecb1 = em(3,0)*Ab1;
-	  TLorentzVector tmpvecnu = (-1.0)* (pl_ + tmpvecj1 + tmpvecj2 + tmpvecb2 + tmpvecb1 );
+	  TLorentzVector tmpvecnu;// = (-1.0)* (pl_ + tmpvecj1 + tmpvecj2 + tmpvecb2 + tmpvecb1 );
+	  tmpvecnu.SetPx( p4Const.Px() - tmpvecj1.Px() - tmpvecj2.Px() - tmpvecb2.Px() - tmpvecb1.Px() );
+	  tmpvecnu.SetPy( p4Const.Py() - tmpvecj1.Py() - tmpvecj2.Py() - tmpvecb2.Py() - tmpvecb1.Py() );
 	  tmpvecnu.SetPz(x(0,0));
 	  tmpvecnu.SetE(tmpvecnu.P());
 	  
@@ -221,7 +235,10 @@ void SimpleKinFit::Fit() {
 	    fabs = fabs + TMath::Abs( f(j,0) );
 	  }
 	  nstep++;
-	  if ( nstep > 100 ) break;
+	  if ( nstep > maxnstep ) {
+		  //std::cout << " nstep = " << nstep << std::endl;
+		  break;
+	  }
 	  
 	  // loadup derivative matrices
 	  b.Zero();
@@ -235,9 +252,14 @@ void SimpleKinFit::Fit() {
 	  h(0,0) = 0.1; // 100 MeV step
 
 	  x = x + h;
-	  tmpvecnu = (-1.0)* (pl_ + tmpvecj1 + tmpvecj2 + tmpvecb2 + tmpvecb1 );
+	  tmpvecnu.SetPx( p4Const.Px() - tmpvecj1.Px() - tmpvecj2.Px() - tmpvecb2.Px() - tmpvecb1.Px() );
+	  tmpvecnu.SetPy( p4Const.Py() - tmpvecj1.Py() - tmpvecj2.Py() - tmpvecb2.Py() - tmpvecb1.Py() );
 	  tmpvecnu.SetPz(x(0,0));
 	  tmpvecnu.SetE(tmpvecnu.P());
+	  
+	  //tmpvecnu = (-1.0)* (pl_ + tmpvecj1 + tmpvecj2 + tmpvecb2 + tmpvecb1 );
+	  //tmpvecnu.SetPz(x(0,0));
+	  //tmpvecnu.SetE(tmpvecnu.P());
 	  
 	  double f00 = f(0,0);
 	  double f10 = f(1,0);
@@ -258,10 +280,14 @@ void SimpleKinFit::Fit() {
 		  tmpvecj1 = em(0,0)*Aj1;
 		  tmpvecj2 = em(1,0)*Aj2;
 		  tmpvecb2 = em(2,0)*Ab2;
-		  tmpvecb1 = em(3,0)*Ab1;		  
-		  tmpvecnu = (-1.0)* (pl_ + tmpvecj1 + tmpvecj2 + tmpvecb2 + tmpvecb1 );
+		  tmpvecb1 = em(3,0)*Ab1;
+		  tmpvecnu.SetPx( p4Const.Px() - tmpvecj1.Px() - tmpvecj2.Px() - tmpvecb2.Px() - tmpvecb1.Px() );
+		  tmpvecnu.SetPy( p4Const.Py() - tmpvecj1.Py() - tmpvecj2.Py() - tmpvecb2.Py() - tmpvecb1.Py() );
 		  tmpvecnu.SetPz(x(0,0));
 		  tmpvecnu.SetE(tmpvecnu.P());
+		  //tmpvecnu = (-1.0)* (pl_ + tmpvecj1 + tmpvecj2 + tmpvecb2 + tmpvecb1 );
+		  //tmpvecnu.SetPz(x(0,0));
+		  //tmpvecnu.SetE(tmpvecnu.P());
 		  
 		  tmpvec = tmpvecj1 + tmpvecj2;
 		  f00 = tmpvec.M() - MW_;
@@ -289,7 +315,7 @@ void SimpleKinFit::Fit() {
 
 	}/// while loop
 	
-	if ( nstep > 10 ) {
+	if ( nstep > maxnstep ) {
 		kfl = 1;
 	}
 	
@@ -301,12 +327,13 @@ void SimpleKinFit::Fit() {
 	fitEb1_ = em(3,0);
 	fitNuPz_ = x(0,0);
 
-	//fitNuPzErr_ = TMath::Sqrt( gxi_(0,0) );
+	fitNuPzErr_ = TMath::Sqrt( gxi_(0,0) );
 	fitEj1Err_ = TMath::Sqrt( gmfi_(0,0) );
 	fitEj2Err_ = TMath::Sqrt( gmfi_(1,0) );
 	fitEb2Err_ = TMath::Sqrt( gmfi_(2,0) );
 	fitEb1Err_ = TMath::Sqrt( gmfi_(3,0) );
-	
+
+	//std::cout << " nstep = " << nstep << std::endl;	
 }
 
 /*

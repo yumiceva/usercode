@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopCombos.cc,v 1.4 2007/10/31 19:34:56 yumiceva Exp $
+ version $Id: TopCombos.cc,v 1.5 2007/11/03 00:39:24 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -169,9 +169,9 @@ std::vector< TopComposite > TopCombos::TwoCombosMixed() {
 								apair->SetCand("lepbjet",ocand);
 
 								//std::cout << "[TopCombos] run KinFit" << std::endl;
-								KinFit(apair);
+								//KinFit(apair);
 								//my KinFit
-								//MyKinFit(apair);
+								MyKinFit(apair);
 
 								tcomp.SetKFChi2( chi2_ );
 								tcomp.SetKFndf( ndf_ );
@@ -508,16 +508,22 @@ void TopCombos::KinFit(TopPair *apair) {
 		TAbsFitParticle *fitLepb = new TFitParticleEMomDev("Jet4", "Jet4", 0, &empty4);
 		TAbsFitParticle *fitLepl = new TFitParticleEScaledMomDev("Lepton", "Lepton", 0, &empty3);
 		TAbsFitParticle *fitLepn = new TFitParticleEScaledMomDev("Neutrino", "Neutrino", 0, &empty3);
+
+		//TAbsFitParticle *fitConstMET = new TAbsFitParticle("ConstMET","ConstMET");
+		//TAbsFitParticle *nfitHadb = fitHadb->clone( TString("negative") + fitHadb->GetName() );
+		//TAbsFitParticle *nfitHadp = fitHadp->clone( TString("negative") + fitHadp->GetName() );
+		//TAbsFitParticle *nfitHadq = fitHadq->clone( TString("negative") + fitHadq->GetName() );
+		//TAbsFitParticle *nfitLepb = fitLepb->clone( TString("negative") + fitLepb->GetName() );
 		
 		// EtEtaPhi parametrization
-			/*
-		TAbsFitParticle *fitHadb = new TFitParticleEtEtaPhi("Jet1", "Jet1", 0, &empty3);
-		TAbsFitParticle *fitHadp = new TFitParticleEtEtaPhi("Jet2", "Jet2", 0, &empty3);
-		TAbsFitParticle *fitHadq = new TFitParticleEtEtaPhi("Jet3", "Jet3", 0, &empty3);
-		TAbsFitParticle *fitLepb = new TFitParticleEtEtaPhi("Jet4", "Jet4", 0, &empty3);
-		TAbsFitParticle *fitLepl = new TFitParticleEtEtaPhi("Lepton", "Lepton", 0, &empty3);
-		TAbsFitParticle *fitLepn = new TFitParticleEtEtaPhi("Neutrino", "Neutrino", 0, &empty3);
-			*/
+			
+		//TAbsFitParticle *fitHadb = new TFitParticleEtEtaPhi("Jet1", "Jet1", 0, &empty3);
+		//TAbsFitParticle *fitHadp = new TFitParticleEtEtaPhi("Jet2", "Jet2", 0, &empty3);
+		//TAbsFitParticle *fitHadq = new TFitParticleEtEtaPhi("Jet3", "Jet3", 0, &empty3);
+		//TAbsFitParticle *fitLepb = new TFitParticleEtEtaPhi("Jet4", "Jet4", 0, &empty3);
+		//TAbsFitParticle *fitLepl = new TFitParticleEtEtaPhi("Lepton", "Lepton", 0, &empty3);
+		//TAbsFitParticle *fitLepn = new TFitParticleEtEtaPhi("Neutrino", "Neutrino", 0, &empty3);
+			
 		// ESpher parametrization
 			/*
 		TAbsFitParticle *fitHadb = new TFitParticleESpher("Jet1", "Jet1", 0, &empty4);
@@ -532,12 +538,18 @@ void TopCombos::KinFit(TopPair *apair) {
 		cons1->addParticles1(fitHadp, fitHadq);
 		TFitConstraintM  *cons2 = new TFitConstraintM("MassConstraint", "Mass-Constraint", 0, 0 , 80.35);
 		cons2->addParticles1(fitLepl, fitLepn);
+		//cons2->addParticles1(fitLepl);
+		//cons2->addParticles2(fitConstMET,nfitHadb,nfitHadp,nfitHadb,nfitLepb);
+		
 		TFitConstraintM  *cons3 = new TFitConstraintM("MassConstraint", "Mass-Constraint", 0, 0, 175.);
 		cons3->addParticles1(fitHadp, fitHadq, fitHadb);
 		TFitConstraintM  *cons4 = new TFitConstraintM("MassConstraint", "Mass-Constraint", 0, 0, 175.);
 		cons4->addParticles1(fitLepl, fitLepn, fitLepb);
-		TFitConstraintM  *cons5 = new TFitConstraintM("MassConstraint", "Mass-Constraint", 0, 0, 0.);
-		cons5->addParticle1(fitLepn);
+		//cons4->addParticles1(fitLepb);
+		//cons4->addParticles2(fitLepl,fitConstMET,nfitHadb,nfitHadp,nfitHadb,nfitLepb)
+		
+		//TFitConstraintM  *cons5 = new TFitConstraintM("MassConstraint", "Mass-Constraint", 0, 0, 0.);
+		//cons5->addParticle1(fitLepn);
 
         //TFitConstraintEp *LepPxCons = new TFitConstraintEp("LepPx", "Px constraint", 0, TFitConstraintEp::pX, p4Muon.X() );
 		//LepPxCons->addParticle(fitLepl);
@@ -566,7 +578,10 @@ void TopCombos::KinFit(TopPair *apair) {
 		theFitter->addMeasParticle(fitLepb);
 		theFitter->addMeasParticle(fitLepl);
 		theFitter->addMeasParticle(fitLepn);
- 
+
+		
+
+		
 		theFitter->setMaxNbIter(200);
 		theFitter->setMaxDeltaS(5.e-5);
 		theFitter->setMaxF(1.e-4);
@@ -645,8 +660,9 @@ void TopCombos::KinFit(TopPair *apair) {
 		mMuon3(2,2) = pow( ResMuons_->getObsRes(2, abin, p4Muon.Et() ) , 2 ); //C
 		//mMuon3(0,0) = pow( ResMuons_->getObsRes(6, abin, p4Muon.Et() )*blow, 2 ); //Et
 		//std::cout << " et res2= " << mMuon3(0,0) << " eta res2= " <<pow( ResMuons_->getObsRes(7, abin, p4Muon.Et() ) , 2 ) << " phi res2= "<< pow( ResMuons_->getObsRes(5, abin, p4Muon.Et() ) , 2 ) << std::endl;
-		//mMuon3(1,1) = pow( ResMuons_->getObsRes(7, abin, p4Muon.Et() )*blow, 2 ); //eta
-		//mMuon3(2,2) = pow( ResMuons_->getObsRes(5, abin, p4Muon.Et() )*blow, 2 ); //phi
+		//mMuon3(1,1) = tiny;//pow( ResMuons_->getObsRes(7, abin, p4Muon.Et() )*blow, 2 ); //eta
+		//mMuon3(2,2) = tiny;//pow( ResMuons_->getObsRes(5, abin, p4Muon.Et() )*blow, 2 ); //phi
+		
 		mMuon4(0,0) = pow( ResMuons_->getObsRes(6, abin, p4Muon.Et() )*blow, 2 ); //Et
 		mMuon4(1,1) = tiny;
 		mMuon4(2,2) = tiny;
@@ -658,8 +674,9 @@ void TopCombos::KinFit(TopPair *apair) {
 		mNu3(2,2) = pow( ResMET_->getObsRes(2, abin, p4Nu.Et() ) , 2 ); //C
 		//mNu3(0,0) = pow( ResMET_->getObsRes(6, abin, p4Nu.Et() )*blow, 2 ); //Et
 		//std::cout << " et res2= " << mNu3(0,0) << " eta res2= " <<pow( ResMET_->getObsRes(7, abin, p4Nu.Et() ) , 2 ) << " phi res2= "<< pow( ResMET_->getObsRes(5, abin, p4Nu.Et() ) , 2 ) << std::endl;
-		//mNu3(1,1) = pow( ResMET_->getObsRes(7, abin, p4Nu.Et() )*blow, 2 ); //eta
-		//mNu3(2,2) = pow( ResMET_->getObsRes(5, abin, p4Nu.Et() )*blow, 2 ); //phi
+		//mNu3(1,1) = tiny;//pow( ResMET_->getObsRes(7, abin, p4Nu.Et() )*blow, 2 ); //eta
+		//mNu3(2,2) = tiny;//pow( ResMET_->getObsRes(5, abin, p4Nu.Et() )*blow, 2 ); //phi
+		
 		mNu4(0,0) = pow( ResMET_->getObsRes(6, abin, p4Nu.Et() )*blow, 2 ); //Et
 		mNu4(1,1) = tiny;
 		mNu4(2,2) = tiny;
@@ -716,6 +733,7 @@ void TopCombos::KinFit(TopPair *apair) {
 			TMatrixD Vq(4,4);  Vq  = (*fitHadq->getCovMatrixFit()); 
 			TMatrixD Vbh(4,4); Vbh = (*fitHadb->getCovMatrixFit()); 
 			TMatrixD Vbl(4,4); Vbl = (*fitLepb->getCovMatrixFit());
+			
 			//TMatrixD Vl(4,4); Vl = (*fitLepl->getCovMatrixFit());
 			//TMatrixD Vn(4,4); Vn = (*fitLepn->getCovMatrixFit());
 
@@ -723,6 +741,7 @@ void TopCombos::KinFit(TopPair *apair) {
 			//TMatrixD Vq(3,3);  Vq  = (*fitHadq->getCovMatrixFit()); 
 			//TMatrixD Vbh(3,3); Vbh = (*fitHadb->getCovMatrixFit()); 
 			//TMatrixD Vbl(3,3); Vbl = (*fitLepb->getCovMatrixFit());
+			
 			TMatrixD Vl(3,3); Vl = (*fitLepl->getCovMatrixFit());
 			TMatrixD Vn(3,3); Vn = (*fitLepn->getCovMatrixFit());
 			
@@ -791,16 +810,17 @@ void TopCombos::MyKinFit(TopPair *apair) {
   afit.SetPbj2( apair->GetCand("hadbjet") );
   afit.SetPbj1( apair->GetCand("lepbjet") );
   afit.SetPl( apair->GetCand("lepton") );
+  afit.SetMET( apair->GetCand("neutrino") );
   afit.SetPzNu( apair->GetCand("neutrino").Pz() );
   
   // error matrix
 
   double acal = 1.0;//12.0;//3.0;//3.0;//1.0;
   double bcal = 0.08;//1.2;//0.3;//0.3;//0.08;
-  afit.SetEj1Err( (bcal * bcal * pow( (apair->GetCand("p")).Et(), 2) + acal * acal * (apair->GetCand("p")).Et() ) );
-  afit.SetEj2Err( (bcal * bcal * pow( (apair->GetCand("q")).Et(), 2) + acal * acal * (apair->GetCand("q")).Et() ) );
-  afit.SetEbj2Err( (bcal * bcal * pow( (apair->GetCand("hadbjet")).Et(), 2) + acal * acal * (apair->GetCand("hadbjet")).Et() ) );
-  afit.SetEbj1Err( (bcal * bcal * pow( (apair->GetCand("lepbjet")).Et(), 2) + acal * acal * (apair->GetCand("lepbjet")).Et() ) );
+  afit.SetEj1Err( (bcal * bcal * pow( (apair->GetCand("p")).E(), 2) + acal * acal * (apair->GetCand("p")).E() ) );
+  afit.SetEj2Err( (bcal * bcal * pow( (apair->GetCand("q")).E(), 2) + acal * acal * (apair->GetCand("q")).E() ) );
+  afit.SetEbj2Err( (bcal * bcal * pow( (apair->GetCand("hadbjet")).E(), 2) + acal * acal * (apair->GetCand("hadbjet")).E() ) );
+  afit.SetEbj1Err( (bcal * bcal * pow( (apair->GetCand("lepbjet")).E(), 2) + acal * acal * (apair->GetCand("lepbjet")).E() ) );
 
   afit.Fit();
 
