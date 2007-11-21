@@ -51,41 +51,6 @@ TObject* getObject (TDirectory* fDir, const std::vector <std::string>& fObjectNa
   return result;
 }
 
-TH1* HistoCompare(TH1 *h, TH1 *refHisto) {
-
-  std::cout << "Comparing " << h->GetName() << " and " << refHisto->GetName() << std::endl;
-  std::cout << " entries " << h->GetEntries() << " and " << refHisto->GetEntries() << std::endl;
-
-  if (h->GetEntries() == 0) {
-    TH1 *resHisto = (TH1*) refHisto->Clone(TString("Reference"));
-    resHisto->SetTitle("Reference");
-    return resHisto;
-  }
-  //create a residual histogram
-  //if (resHisto_) delete resHisto_;
-  TH1 *resHisto = (TH1*) h->Clone(TString(h->GetName())+"_residuals");
-  resHisto->Reset();
-
-  // clone input histogram
-  TH1 *htemp = (TH1*) h->Clone(TString(h->GetName()));
-
-  
-  // normalize histograms
-  htemp->Sumw2();
-  refHisto->Sumw2();
-
-    
-  if (htemp->Integral() != 0 ) htemp->Scale(1./htemp->Integral());
-  if (refHisto->Integral() != 0) refHisto->Scale(1./refHisto->Integral());
-        
-  resHisto->Add( htemp, refHisto, 1., -1.);
-
-  resHisto->SetTitle("Residuals");
-  resHisto->SetYTitle("");
- 
-  return resHisto;
-  
-}
 
 MakePlots::MakePlots() {
 
@@ -93,6 +58,8 @@ MakePlots::MakePlots() {
   compare = false;
   compare_filename = "";
   logaxis = false;
+  release_version = "";
+  compare_version = "";
 	
 }
 
@@ -150,86 +117,19 @@ void MakePlots::Draw() {
 
 	std::string cvname = hist->GetName();
 	TString HistName   = hist->GetName();	
-	cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),"cv_"+TString(hist->GetName()),800,800);
-			
-	if (compare) {
-	  // increase size of window
-	  cv_map["cv_"+cvname]->SetWindowSize(800,1600);
-				
-	  cv_map["cv_"+cvname]->Divide(1,2);
-				
-	  cv_map["cv_"+cvname]->cd(1);
-	  //hist->SetXTitle(hist->GetTitle());
-	  hist->Draw();
-	  label->Draw();
-	  if (logaxis) {
-	    std::cout << "  make log Y-axis scale" << std::endl;
-	    gPad->SetLogy();
-	    gPad->SetGrid();
-	  }
-
-	  cv_map["cv_"+cvname]->cd(2);
-	  std::vector<std::string> histPathName;
-	  //histPathName.push_back (dirName1[idir]);
-	  //histPathName.push_back (dirName2[idir2]);
-	  histPathName.push_back (histKeys[ihist]);
-	  TH1* refhist = (TH1*) getObject (arefFile, histPathName);
-	  if (refhist) {
-	    double Chi2Test = 0.;
-	    double KGTest = 0.;
-	    Chi2Test = refhist->Chi2Test(hist,"UFOF");
-	    KGTest   = refhist->KolmogorovTest(hist,"UO");
-	    std::cout << "  chi2= " << Chi2Test << " KG= " << KGTest << std::endl;
-					
-	    TH1* reshist = HistoCompare(hist,refhist);
-					
-								
-	    //refhist->Draw();
-	    reshist->Draw();
-					
-	    //std::cout << " reshist= " << reshist->GetEntries() << std::endl;
-	    char buf[1024];
-	    sprintf (buf, "#chi^{2}= %1.2f", Chi2Test);
-	    TLatex *labelchi2 = new TLatex(0.4,0.91,buf);
-	    labelchi2->SetNDC();
-	    //if (Chi2Test<0.1) gPad->SetFillColor(2);
-	    labelchi2->SetTextSize(0.035);
-	    labelchi2->Draw();
-	    cv_map["cv_"+cvname]->Update();
-	    //std::cout << "print chi2 label"<<std::endl;
-	    sprintf (buf, "KG= %2.2f", KGTest);
-	    TLatex *labelkg = new TLatex(0.6,0.91,buf);
-	    labelkg->SetNDC();
-	    if (KGTest<0.8) gPad->SetFillColor(2);
-	    labelkg->SetTextSize(0.035);
-	    labelkg->Draw();
-	    //std::cout << " draw kg label"<<std::endl;
-					
-	  } else {
-					
-	    std::cout << " no reference plot " << histKeys[ihist] << std::endl;
-	    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
-	    label->SetNDC();
-	    label->SetTextSize(0.07);
-	    label->Draw();
-	  }
-	  cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-			
-	  if ( extension=="eps" ) {
-	    gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-	    gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-	    gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-	    gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-	    gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-	  }
-	} else {
+	cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),"cv_"+TString(hist->GetName()),800,800);	
 	  //std::cout << "  no comparison done" << std::endl;
 	  if (HistName.Contains(name1) || HistName.Contains(name2)|| HistName.Contains(name3) ) {
 	    //hist->SetXTitle(hist->GetTitle());
 	    std::cout << "  HistName" << HistName << std::endl;
 	  } else {
 	    hist->Draw();
-	    label->Draw();
+	    //label->Draw();
+	    TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+	    labelkg->SetNDC();
+	    labelkg->SetTextSize(0.035);
+	    labelkg->Draw();
+
 	    if (logaxis) {
 	      std::cout << "  make log Y-axis scale" << std::endl;
 	      gPad->SetLogy();
@@ -247,8 +147,7 @@ void MakePlots::Draw() {
 	      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 	    }
 	  }
-	}
-	std::cout << " done"<<std::endl;
+	  std::cout << " done"<<std::endl;
       }
       else {
 	std::cerr << "Can not get histogram " << histKeys[ihist] << std::endl;
@@ -293,14 +192,102 @@ void MakePlots::Draw() {
       mytmp->SetTitle(title);
       TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
       mytmp2->SetMarkerColor(kRed);
-      mytmp2->Draw("same");
+      mytmp2->SetLineColor(kRed);
+      mytmp2->Draw("same");   
+      if (compare) {
+	  TString dirname = "trackCounting";
+	  TString name_c= mytmp->GetName();
+	  TString name_dusg= mytmp2->GetName();
+	  name_c.Remove(name_c.Length()-15,name_c.Length());
+	  name_dusg.Remove(name_dusg.Length()-15,name_dusg.Length());
+	  TString HName_C = name_c+"JetTags_GLOBAL";
+	  TString HName_DUSG = name_dusg+"JetTags_GLOBAL";
+	  std::string HName_c(HName_C);
+	  std::string HName_dusg(HName_DUSG);
+	  std::vector<std::string> histPath_C;
+	  std::string dname = "TrackCounting";
+	  //histPath_C.push_back (dirName1[idir]);
+	  // if(name_c.Contains(dirname)){
+	  //    std::cout << " dir name contains Counting" << std::endl;
+	  //    histPath_C.push_back (dname);
+	  //      }else{
+	  //    histPath_C.push_back (dirName2[idir2]);
+	  //    std::cout << "directoryname" << dirName2[idir2] << std::endl;}
+	  histPath_C.push_back (HName_c);
+	  TH1* refhist_c = (TH1*) getObject (arefFile, histPath_C);
+	  if (refhist_c) {
+	    double KGTest = 0.;
+	    KGTest   = refhist_c->KolmogorovTest(mytmp,"UO");
+	    std::cout <<  " KG For C= " << KGTest << std::endl;
+	    refhist_c->Draw("same");
+	    refhist_c->SetMarkerStyle(25);
+	    refhist_c->SetMarkerColor(17);
+	    refhist_c->SetLineColor(17);
+	    //char buf[1024];
+	    //sprintf (buf, "KG[c]= %2.2f", KGTest);
+	    //TLatex *labelkg = new TLatex(0.3,0.91,buf);
+	    //labelkg->SetNDC();
+	    //if (KGTest<0.8) gPad->SetFillColor(2);
+	    //labelkg->SetTextSize(0.035);
+	    //labelkg->Draw();
+	    //std::cout << " draw kg label"<<std::endl;
+	  }else {
+	    std::cout << " no reference plot " << std::endl;
+	    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+	    label->SetNDC();
+	    label->SetTextSize(0.07);
+	    //label->Draw();
+	  }
+
+	  std::vector<std::string> histPath_DUSG;
+	  //histPath_DUSG.push_back (dirName1[idir]);
+	  //if(name_dusg.Contains(dirname)){
+	  //std::string dname = "TrackCounting";
+	  //histPath_DUSG.push_back (dname);
+	  //   }else{
+	  //     histPath_DUSG.push_back (dirName2[idir2]);}
+	  histPath_DUSG.push_back (HName_dusg);
+	  TH1* refhist_dusg = (TH1*) getObject (arefFile, histPath_DUSG);
+	  if (refhist_dusg) {
+	    double KGTest = 0.;
+	    KGTest   = refhist_dusg->KolmogorovTest(mytmp,"UO");
+	    //std::cout <<  " KG For DUSG= " << KGTest << std::endl;
+	    refhist_dusg->Draw("same");
+	    refhist_dusg->SetMarkerStyle(25);
+	    refhist_dusg->SetMarkerColor(46);
+	    refhist_dusg->SetLineColor(46);
+	    //char buf[1024];
+	    //sprintf (buf, "KG[dusg]= %2.2f", KGTest);
+	    //TLatex *labelkg = new TLatex(0.4,0.91,release_version+" Vs "+compare_version);
+	    //labelkg->SetNDC();
+	    //if (KGTest<0.8) gPad->SetFillColor(2);
+	    //labelkg->SetTextSize(0.035);
+	    //labelkg->Draw();
+	    //std::cout << " draw kg label"<<std::endl;
+	  }else {
+	    std::cout << " no reference plot " << std::endl;
+	    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+	    label->SetNDC();
+	    label->SetTextSize(0.07);
+	    //label->Draw();
+	  }
+      } 
       TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
       leg1->SetTextSize(0.04);
       leg1->SetFillColor(kWhite);
       leg1->AddEntry(mytmp,"c","P");
       leg1->AddEntry(mytmp2,"dusg","P");
       leg1->Draw();
-      //std::cout << "Drew Merged Histos " << std::endl;
+      TString labelv;
+      if (compare) {
+	labelv = release_version+" Vs "+compare_version;  
+      }else{
+	labelv = release_version;  
+      }
+      TLatex *labelkg = new TLatex(0.2,0.91,labelv);
+      labelkg->SetNDC();
+      labelkg->SetTextSize(0.035);
+      labelkg->Draw();
       cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
       if ( extension=="eps" ) {
@@ -316,11 +303,7 @@ void MakePlots::Draw() {
     for (size_t i=0; i < discr_C.size(); ++i) {
       std::string cvname = discr_C[i]->GetName();
       cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(discr_C[i]->GetName()),800,800);
-      if (logaxis) {
-	std::cout << "  make log Y-axis scale" << std::endl;
-	gPad->SetLogy();
-	gPad->SetGrid();
-      }
+      
       TH1F *mytmp = (TH1F*) discr_C[i];
       //mytmp->SetMaximum(1); 
       //mytmp->SetMinimum(10e-4); 
@@ -333,6 +316,7 @@ void MakePlots::Draw() {
       mytmp->SetTitle(title);
       TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
       mytmp2->SetMarkerColor(kRed);
+      mytmp2->SetLineColor(kRed);
       mytmp2->Draw("same");
       TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
       leg1->SetTextSize(0.04);
@@ -340,6 +324,10 @@ void MakePlots::Draw() {
       leg1->AddEntry(mytmp,"c","P");
       leg1->AddEntry(mytmp2,"dusg","P");
       leg1->Draw();
+      TLatex *labelkg = new TLatex(0.5,0.91,release_version);  
+      labelkg->SetNDC();
+      labelkg->SetTextSize(0.035);
+      labelkg->Draw();
       cv_map["merged_"+cvname]->Print(webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
 
       if ( extension=="eps" ) {
@@ -369,79 +357,17 @@ void MakePlots::Draw() {
 	      cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),
 						 "cv_"+TString(hist->GetName()),800,800);
 						
-	      if (compare) {
-		cv_map["cv_"+cvname]->Divide(1,2);
-							
-		cv_map["cv_"+cvname]->cd(1);
-		//hist->SetXTitle(hist->GetTitle());
-		hist->Draw();
-		label->Draw();
-		if (logaxis) {
-		  std::cout << "  make log Y-axis scale" << std::endl;
-		  gPad->SetLogy();
-		  gPad->SetGrid();
-		}
 
-		cv_map["cv_"+cvname]->cd(2);
-		std::vector<std::string> histPathName;
-		histPathName.push_back (dirName1[idir]);
-		//histPathName.push_back (dirName2[idir2]);
-		histPathName.push_back (histKeys[ihist]);
-		TH1* refhist = (TH1*) getObject (arefFile, histPathName);
-		if (refhist) {
-		  double Chi2Test = 0.;
-		  double KGTest = 0.;
-		  Chi2Test = refhist->Chi2Test(hist,"UFOF");
-		  KGTest   = refhist->KolmogorovTest(hist,"UO");
-		  std::cout << "  chi2= " << Chi2Test << " KG= " << KGTest << std::endl;
-								
-		  TH1* reshist = HistoCompare(hist,refhist);
-														
-								
-		  //refhist->Draw();
-		  reshist->Draw();
-								
-		  //std::cout << " reshist= " << reshist->GetEntries() << std::endl;
-		  char buf[1024];
-		  sprintf (buf, "#chi^{2}= %1.2f", Chi2Test);
-		  TLatex *labelchi2 = new TLatex(0.4,0.91,buf);
-		  labelchi2->SetNDC();
-		  //if (Chi2Test<0.1) gPad->SetFillColor(2);
-		  labelchi2->SetTextSize(0.035);
-		  labelchi2->Draw();
-		  cv_map["cv_"+cvname]->Update();
-		  //std::cout << "print chi2 label"<<std::endl;
-		  sprintf (buf, "KG= %2.2f", KGTest);
-		  TLatex *labelkg = new TLatex(0.6,0.91,buf);
-		  labelkg->SetNDC();
-		  if (KGTest<0.8) gPad->SetFillColor(2);
-		  labelkg->SetTextSize(0.035);
-		  labelkg->Draw();
-		  //std::cout << " draw kg label"<<std::endl;
-								
-		} else {
-
-		  std::cout << " no reference plot " << histKeys[ihist] << std::endl;
-		  TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
-		  label->SetNDC();
-		  label->SetTextSize(0.07);
-		  label->Draw();
-		}
-		cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-		if ( extension=="eps" ) {
-		  gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-		  gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-		  gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-		  gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-		  gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-		}
-	      } else {
-		//hist->SetXTitle(hist->GetTitle());
 		if ( HistName.Contains(name1) ||  HistName.Contains(name2) || HistName.Contains(name3) ) {
 		  std::cout << "  HistName:" << HistName << std::endl;
 		} else {
 		  hist->Draw();
-		  label->Draw();
+		  TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+		  labelkg->SetNDC();
+		  labelkg->SetTextSize(0.035);
+		  labelkg->Draw();
+		  //label->Draw();
+
 		  if (logaxis) {
 		    std::cout << "  make log Y-axis scale" << std::endl;
 		    gPad->SetLogy();
@@ -458,8 +384,7 @@ void MakePlots::Draw() {
 		    gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 		  }
 		}
-	      }
-								
+	      								
 	      std::cout << " done" << ihist <<std::endl;
 	    }
 	    else {
@@ -504,14 +429,102 @@ void MakePlots::Draw() {
 	    mytmp->SetTitle(title);
 	    TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
 	    mytmp2->SetMarkerColor(kRed);
+	    mytmp2->SetLineColor(kRed);
 	    mytmp2->Draw("same");
+		if (compare) {                  
+		  TString dirname = "trackCounting";
+		  TString name_c= mytmp->GetName();
+		  TString name_dusg= mytmp2->GetName();
+		  name_c.Remove(name_c.Length()-15,name_c.Length());
+		  name_dusg.Remove(name_dusg.Length()-15,name_dusg.Length());
+		  TString HName_C = name_c+"JetTags_GLOBAL";
+		  TString HName_DUSG = name_dusg+"JetTags_GLOBAL";
+                  std::string HName_c(HName_C);
+		  std::string HName_dusg(HName_DUSG);
+		  std::vector<std::string> histPath_C;
+		  std::string dname = "TrackCounting";
+		  histPath_C.push_back (dirName1[idir]);
+		  //if(name_c.Contains(dirname)){
+		  //  std::cout << " dir name contains Counting" << std::endl;
+		  //  histPath_C.push_back (dname);
+		  //    }else{
+		  //  histPath_C.push_back (dirName2[idir2]);
+		  //   std::cout << "directoryname" << dirName2[idir2] << std::endl;}
+		  histPath_C.push_back (HName_c);
+		  TH1* refhist_c = (TH1*) getObject (arefFile, histPath_C);
+		  if (refhist_c) {
+		    double KGTest = 0.;
+		    KGTest   = refhist_c->KolmogorovTest(mytmp,"UO");
+		    std::cout <<  " KG For C= " << KGTest << std::endl;
+		    refhist_c->Draw("same");
+		    refhist_c->SetMarkerStyle(25);
+		    refhist_c->SetMarkerColor(17);
+		    refhist_c->SetLineColor(17);
+		    //char buf[1024];
+		    //sprintf (buf, "KG[c]= %2.2f", KGTest);
+		    //TLatex *labelkg = new TLatex(0.3,0.91,buf);
+		    //labelkg->SetNDC();
+		    //if (KGTest<0.8) gPad->SetFillColor(2);
+		    //labelkg->SetTextSize(0.035);
+		    //labelkg->Draw();
+		    //std::cout << " draw kg label"<<std::endl;
+		  }else {
+		    std::cout << " no reference plot " << std::endl;
+		    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+		    label->SetNDC();
+		    label->SetTextSize(0.07);
+		    //label->Draw();
+		  }
+
+		  std::vector<std::string> histPath_DUSG;
+		  histPath_DUSG.push_back (dirName1[idir]);
+		  // if(name_dusg.Contains(dirname)){
+		  //   std::string dname = "TrackCounting";
+		  //   histPath_DUSG.push_back (dname);
+		  // }else{
+		  //    histPath_DUSG.push_back (dirName2[idir2]);}
+		  histPath_DUSG.push_back (HName_dusg);
+		  TH1* refhist_dusg = (TH1*) getObject (arefFile, histPath_DUSG);
+		  if (refhist_dusg) {
+		    double KGTest = 0.;
+		    KGTest   = refhist_dusg->KolmogorovTest(mytmp,"UO");
+		    std::cout <<  " KG For DUSG= " << KGTest << std::endl;
+		    refhist_dusg->Draw("same");
+		    refhist_dusg->SetMarkerStyle(25);
+		    refhist_dusg->SetMarkerColor(46);
+		    refhist_dusg->SetLineColor(46);
+		    //char buf[1024];
+		    //sprintf (buf, "KG[dusg]= %2.2f", KGTest);
+		    //TLatex *labelkg = new TLatex(0.4,0.91,release_version+" Vs "+compare_version);
+		    //labelkg->SetNDC();
+		    //if (KGTest<0.8) gPad->SetFillColor(2);
+		    //labelkg->SetTextSize(0.035);
+		    //labelkg->Draw();
+		    //std::cout << " draw kg label"<<std::endl;
+		  }else {
+		    std::cout << " no reference plot " << std::endl;
+		    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+		    label->SetNDC();
+		    label->SetTextSize(0.07);
+		    //label->Draw();
+		  }
+		} 
 	    TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
 	    leg1->SetFillColor(kWhite);
 	    leg1->SetTextSize(0.04);
 	    leg1->AddEntry(mytmp,"c","P");
 	    leg1->AddEntry(mytmp2,"dusg","P");
 	    leg1->Draw();
-
+	    TString labelv;
+	    if (compare) {
+	      labelv = release_version+" Vs "+compare_version;  
+	    }else{
+	      labelv = release_version;  
+	    }
+	    TLatex *labelkg = new TLatex(0.2,0.91,labelv);
+	    labelkg->SetNDC();
+	    labelkg->SetTextSize(0.035);
+	    labelkg->Draw();
 	    //std::cout << "Drew Merged Histos " << std::endl;
 	    cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
@@ -529,11 +542,7 @@ void MakePlots::Draw() {
 	    std::string cvname = discr_C[i]->GetName();
 	    //cout << cvname << endl;
 	    cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(discr_C[i]->GetName()),800,800);
-	    if (logaxis) {
-	      std::cout << "  make log Y-axis scale" << std::endl;
-	      gPad->SetLogy();
-	      gPad->SetGrid();
-	    }
+	    
 	    TH1F *mytmp = (TH1F*) discr_C[i];
 	    //mytmp->SetMaximum(1); 
 	    //mytmp->SetMinimum(10e-4); 
@@ -545,6 +554,7 @@ void MakePlots::Draw() {
 	    mytmp->SetTitle(title);
 	    TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
 	    mytmp2->SetMarkerColor(kRed);
+	    mytmp2->SetLineColor(kRed);
 	    mytmp2->Draw("same");
 	    TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
 	    leg1->SetTextSize(0.04);
@@ -552,7 +562,11 @@ void MakePlots::Draw() {
 	    leg1->AddEntry(mytmp,"c","P");
 	    leg1->AddEntry(mytmp2,"dusg","P");
 	    leg1->Draw();
-	    //std::cout << "Drew Merged Discriminant " << std::endl;
+	    TLatex *labelkg = new TLatex(0.5,0.91,release_version);
+	    labelkg->SetNDC();
+	    labelkg->SetTextSize(0.035);
+	    labelkg->Draw();
+
 	    cv_map["merged_"+cvname]->Print(webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
 	    
 	    if ( extension=="eps" ) {
@@ -589,79 +603,18 @@ void MakePlots::Draw() {
 								
 		  cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),
 						     "cv_"+TString(hist->GetName()),800,800);
-						
-		  if (compare) {
-		    cv_map["cv_"+cvname]->Divide(1,2);
-									
-		    cv_map["cv_"+cvname]->cd(1);
-		    //hist->SetXTitle(hist->GetTitle());
-		    hist->Draw();
-		    label->Draw();
-		    if (logaxis) {
-		      std::cout << "  make log Y-axis scale" << std::endl;
-		      gPad->SetLogy();
-		      gPad->SetGrid(); 
-		    }
 
-		    cv_map["cv_"+cvname]->cd(2);
-		    std::vector<std::string> histPathName;
-		    histPathName.push_back (dirName1[idir]);
-		    histPathName.push_back (dirName2[idir2]);
-		    histPathName.push_back (histKeys[ihist]);
-		    TH1* refhist = (TH1*) getObject (arefFile, histPathName);
-		    if (refhist) {
-		      double Chi2Test = 0.;
-		      double KGTest = 0.;
-		      Chi2Test = refhist->Chi2Test(hist,"UFOF");
-		      KGTest   = refhist->KolmogorovTest(hist,"UO");
-		      std::cout << "  chi2= " << Chi2Test << " KG= " << KGTest << std::endl;
-										
-		      TH1* reshist = HistoCompare(hist,refhist);
-										
-		      //refhist->Draw();
-		      reshist->Draw();
-		      //std::cout << " reshist= " << reshist->GetEntries() << std::endl;
-		      char buf[1024];
-		      sprintf (buf, "#chi^{2}= %1.2f", Chi2Test);
-		      TLatex *labelchi2 = new TLatex(0.4,0.91,buf);
-		      labelchi2->SetNDC();
-		      //if (Chi2Test<0.1) gPad->SetFillColor(2);
-		      labelchi2->SetTextSize(0.035);
-		      labelchi2->Draw();
-		      cv_map["cv_"+cvname]->Update();
-		      //std::cout << "print chi2 label"<<std::endl;
-		      sprintf (buf, "KG= %2.2f", KGTest);
-		      TLatex *labelkg = new TLatex(0.6,0.91,buf);
-		      labelkg->SetNDC();
-		      if (KGTest<0.8) gPad->SetFillColor(2);
-		      labelkg->SetTextSize(0.035);
-		      labelkg->Draw();
-		      //std::cout << " draw kg label"<<std::endl;
-								
-		    }else {
-
-		      std::cout << " no reference plot " << histKeys[ihist] << std::endl;
-		      TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
-		      label->SetNDC();
-		      label->SetTextSize(0.07);
-		      label->Draw();
-		    }
-									
-		    cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
-		    if ( extension=="eps" ) {
-		      gSystem->Exec("cp "+webpath+"/"+TString(cvname)+"."+extension+" temp.eps");
-		      gSystem->Exec("pstopnm -ppm -xborder 0 -yborder 0 -portrait temp.eps");
-		      gSystem->Exec("ppmtogif temp.eps001.ppm > "+webpath+"/"+TString(cvname)+".gif");
-		      gSystem->Exec("rm -rf temp.eps temp.eps001.ppm");
-		      gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
-		    }	
-		  } else {
 		    //std::cout << "  no comparison done" << std::endl;
 		    if (HistName.Contains(name1) || HistName.Contains(name2) ||HistName.Contains(name3)) {
 		      std::cout << "  HistName:" << HistName << std::endl;
 		    } else {
 		      hist->Draw();
-		      label->Draw();
+		      //label->Draw();
+		      TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+		      labelkg->SetNDC();
+		      labelkg->SetTextSize(0.035);
+		      labelkg->Draw();
+
 		      if (logaxis) {
 			std::cout << "  make log Y-axis scale" << std::endl;
 			gPad->SetLogy();
@@ -678,15 +631,7 @@ void MakePlots::Draw() {
 			gSystem->Exec("rm "+webpath+"/"+TString(cvname)+"."+extension);
 		      }	
 		    }
-		  }
-									
-
-		  // temporal fix to print gif
-		  //TImageDump *di = new TImageDump(webpath+"/"+TString(cvname)+"."+extension);
-		  //cv_map["cv_"+cvname]->Paint();
-		  //di->Close();
-		  //delete di;
-								
+		  						
 		  std::cout << " done"<<std::endl;
 		}
 		else {
@@ -732,14 +677,105 @@ void MakePlots::Draw() {
 		mytmp->SetTitle(title);
 		TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
 		mytmp2->SetMarkerColor(kRed);
+		mytmp2->SetLineColor(kRed);
 		mytmp2->Draw("same");
+						
+		if (compare) {
+                  
+		  TString dirname = "trackCounting";
+		  TString name_c= mytmp->GetName();
+		  TString name_dusg= mytmp2->GetName();
+		  name_c.Remove(name_c.Length()-15,name_c.Length());
+		  name_dusg.Remove(name_dusg.Length()-15,name_dusg.Length());
+		  TString HName_C = name_c+"JetTags_GLOBAL";
+		  TString HName_DUSG = name_dusg+"JetTags_GLOBAL";
+                  std::string HName_c(HName_C);
+		  std::string HName_dusg(HName_DUSG);
+		  std::vector<std::string> histPath_C;
+		  std::string dname = "TrackCounting";
+		  histPath_C.push_back (dirName1[idir]);
+		  if(name_c.Contains(dirname)){
+		    std::cout << " dir name contains Counting" << std::endl;
+		    histPath_C.push_back (dname);
+		      }else{
+		    histPath_C.push_back (dirName2[idir2]);
+		    std::cout << "directoryname" << dirName2[idir2] << std::endl;}
+		  histPath_C.push_back (HName_c);
+		  TH1* refhist_c = (TH1*) getObject (arefFile, histPath_C);
+		  if (refhist_c) {
+		    double KGTest = 0.;
+		    KGTest   = refhist_c->KolmogorovTest(mytmp,"UO");
+		    std::cout <<  " KG For C= " << KGTest << std::endl;
+		    refhist_c->Draw("same");
+		    refhist_c->SetMarkerStyle(25);
+		    refhist_c->SetMarkerColor(17);
+		    refhist_c->SetLineColor(17);
+		    //char buf[1024];
+		    //sprintf (buf, "KG[c]= %2.2f", KGTest);
+		    //TLatex *labelkg = new TLatex(0.3,0.91,buf);
+		    //labelkg->SetNDC();
+		    //if (KGTest<0.8) gPad->SetFillColor(2);
+		    //labelkg->SetTextSize(0.035);
+		    //labelkg->Draw();
+		    //std::cout << " draw kg label"<<std::endl;
+		  }else {
+		    std::cout << " no reference plot " << std::endl;
+		    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+		    label->SetNDC();
+		    label->SetTextSize(0.07);
+		    //label->Draw();
+		  }
+
+		  std::vector<std::string> histPath_DUSG;
+		  histPath_DUSG.push_back (dirName1[idir]);
+		   if(name_dusg.Contains(dirname)){
+		     std::string dname = "TrackCounting";
+		     histPath_DUSG.push_back (dname);
+		   }else{
+		     histPath_DUSG.push_back (dirName2[idir2]);}
+		  histPath_DUSG.push_back (HName_dusg);
+		  TH1* refhist_dusg = (TH1*) getObject (arefFile, histPath_DUSG);
+		  if (refhist_dusg) {
+		    double KGTest = 0.;
+		    KGTest   = refhist_dusg->KolmogorovTest(mytmp,"UO");
+		    std::cout <<  " KG For DUSG= " << KGTest << std::endl;
+		    refhist_dusg->Draw("same");
+		    refhist_dusg->SetMarkerStyle(25);
+		    refhist_dusg->SetMarkerColor(46);
+		    refhist_dusg->SetLineColor(46);
+
+		    //char buf[1024];
+		    //sprintf (buf, "KG[dusg]= %2.2f", KGTest);
+		    //TLatex *labelkg = new TLatex(0.4,0.91,release_version+" Vs "+compare_version);
+		    //labelkg->SetNDC();
+		    //if (KGTest<0.8) gPad->SetFillColor(2);
+		    //labelkg->SetTextSize(0.035);
+		    //labelkg->Draw();
+		    //std::cout << " draw kg label"<<std::endl;
+		  }else {
+		    std::cout << " no reference plot " << std::endl;
+		    TLatex *label = new TLatex(0.2,0.5,"no reference plot available");
+		    label->SetNDC();
+		    label->SetTextSize(0.07);
+		    //label->Draw();
+		  }
+		} 
 		TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
 		leg1->SetFillColor(kWhite);
 		leg1->SetTextSize(0.04);
 		leg1->AddEntry(mytmp,"c","P");
 		leg1->AddEntry(mytmp2,"dusg","P");
 		leg1->Draw();
-
+		TString labelv;
+		if (compare) {
+		labelv = release_version+" Vs "+compare_version;  
+		}else{
+		labelv = release_version;  
+		}
+		TLatex *labelkg = new TLatex(0.2,0.91,labelv);
+		labelkg->SetNDC();
+		labelkg->SetTextSize(0.035);
+		labelkg->Draw();
 		//std::cout << " Drew Histograms merged" << std::endl;
 		cv_map["merged_"+cvname]->Print(webpath+"/"+"Amerged_"+TString(cvname)+"."+extension);
 
@@ -756,11 +792,7 @@ void MakePlots::Draw() {
 		std::string cvname = discr_C[i]->GetName();
 		//cout << cvname << endl;
 		cv_map["merged_"+cvname] = new TCanvas("merged_"+TString(cvname), "merged_"+TString(discr_C[i]->GetName()),800,800);
-		if (logaxis) {
-		  std::cout << "  make log Y-axis scale" << std::endl;
-		  gPad->SetLogy();
-		  gPad->SetGrid();
-		}
+		
 		TH1F *mytmp = (TH1F*) discr_C[i];
 		//mytmp->SetMaximum(1); 
 		//mytmp->SetMinimum(10e-4); 
@@ -773,6 +805,7 @@ void MakePlots::Draw() {
 		mytmp->SetTitle(title);
 		TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
 		mytmp2->SetMarkerColor(kRed);
+		mytmp2->SetLineColor(kRed);
 		mytmp2->Draw("same");
 		TLegend *leg1 = new TLegend(0.1,0.75,0.25,0.85,"","NDC");
 		leg1->SetTextSize(0.04);
@@ -780,7 +813,11 @@ void MakePlots::Draw() {
 		leg1->AddEntry(mytmp,"c","P");
 		leg1->AddEntry(mytmp2,"dusg","P");
 		leg1->Draw();
-		//std::cout << "Drew Merged Discriminant " << std::endl;
+		TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+		labelkg->SetNDC();
+		labelkg->SetTextSize(0.035);
+		labelkg->Draw();
+  		//std::cout << "Drew Merged Discriminant " << std::endl;
 		cv_map["merged_"+cvname]->Print(webpath+"/"+"Dmerged_"+TString(cvname)+"."+extension);
 
 		if ( extension=="eps" ) {

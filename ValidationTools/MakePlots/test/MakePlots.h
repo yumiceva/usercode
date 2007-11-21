@@ -6,7 +6,7 @@
  *
  * \author Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
  *
- * \version $Id: MakePlots.h,v 1.1 2007/09/29 17:09:39 yumiceva Exp $
+ * \version $Id: MakePlots.h,v 1.2 2007/11/09 16:57:32 yumiceva Exp $
  *
  */
 
@@ -24,7 +24,8 @@ class MakePlots {
 	void SetCompare( bool option ) { compare = option; }
 	void SetCompareFilename(TString name) { compare_filename = name; }
 	void SetLogAxis( bool option) { logaxis = option; }
-	
+	void SetReleaseVer(TString name) {release_version = name;}
+	void SetCompareVer(TString name) {compare_version = name;}
   private:
 	TString root_filename;
 	TString webpath;
@@ -32,6 +33,9 @@ class MakePlots {
 	bool compare;
 	TString compare_filename;
 	bool logaxis;
+	TString release_version;
+	TString compare_version;
+
 	
 };
 

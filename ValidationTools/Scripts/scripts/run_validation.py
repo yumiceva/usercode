@@ -347,6 +347,8 @@ if __name__ == "__main__":
                     if option.logaxis:
                         tmpbatchroot.write("plot.SetLogAxis(true);\n")
 
+                    tmpbatchroot.write("plot.SetReleaseVer(\""+cmssw_version+"\");\n")
+                    tmpbatchroot.write("plot.SetCompareVer(\""+cmssw_reference+"\");\n")
                     tmpbatchroot.write("plot.Draw();\n")
                     tmpbatchroot.write("}\n");
                     
