@@ -17,6 +17,8 @@
    -l, --list   = LIST: file with list of files (dataset)
    -n, --njobs  = NJOBS: number of jobs
    -o, --output = OUTPUT: output path
+   -i, --initial= INITIAL:  number of initial job
+   -f, --final= FINAL: number of final job
    -t, --test : do not submit anything just show what I would do
 """
 
@@ -240,8 +242,13 @@ if __name__ =='__main__':
     
     number_of_jobs = option.njobs
     
-    run = 0
+    ini_run = 0
     fin_run = 0
+
+    if option.initial:
+        ini_run = int(option.initial)
+    if option.final:
+        fin_run = int(option.final)
     
     istest = option.test
     
@@ -277,12 +284,21 @@ if __name__ =='__main__':
     for ifile in inputfile:
         if len(subset) == filesperjob:
             njob = njob + 1
-            submit_jobs(njob,subset,ini_cfgfile,output_path)
+            if fin_run == 0 and njob >= ini_run:
+                submit_jobs(njob,subset,ini_cfgfile,output_path)
+            elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
+                submit_jobs(njob,subset,ini_cfgfile,output_path)
+            
             subset = []
 
         subset.append(ifile)
 
     if len(subset)>0:
         njob = njob + 1
-        submit_jobs(njob,subset,ini_cfgfile,output_path)
+        if fin_run == 0 and njob >= ini_run:
+            submit_jobs(njob,subset,ini_cfgfile,output_path)
+        elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
+            submit_jobs(njob,subset,ini_cfgfile,output_path)
+        
+        #submit_jobs(njob,subset,ini_cfgfile,output_path)
 
