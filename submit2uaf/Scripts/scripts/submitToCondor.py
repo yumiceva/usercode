@@ -282,16 +282,24 @@ if __name__ =='__main__':
 
     
     for ifile in inputfile:
-        if len(subset) == filesperjob:
-            njob = njob + 1
-            if fin_run == 0 and njob >= ini_run:
-                submit_jobs(njob,subset,ini_cfgfile,output_path)
-            elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
-                submit_jobs(njob,subset,ini_cfgfile,output_path)
-            
-            subset = []
+        ignoreline = 0
+        if ifile.find("replace")!=-1 or ifile.find("}")!=-1 or ifile.find("{")!=-1:
+            ignoreline = 1
 
-        subset.append(ifile)
+        if ignoreline==0:
+            ifile = ifile.strip("'")
+            ifile = ifile.strip('\',\n')
+            #ifile = ifile.strip("'")
+            if len(subset) == filesperjob:
+                njob = njob + 1
+                if fin_run == 0 and njob >= ini_run:
+                    submit_jobs(njob,subset,ini_cfgfile,output_path)
+                elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
+                    submit_jobs(njob,subset,ini_cfgfile,output_path)
+            
+                subset = []
+
+            subset.append(ifile)
 
     if len(subset)>0:
         njob = njob + 1
