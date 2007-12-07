@@ -101,7 +101,7 @@ void MakePlots::Draw() {
   TString name3 = "discr_";
   TString name4 = "GLOBALC";
   TString name5 = "GLOBALDUSG";
-  	
+  TString name6 = "effVsDiscrCut";	
 	
   std::vector<std::string> dirName1 = getAllKeys ( afile , "TDirectory");
   std::cout << "dirName1.size=" << dirName1.size() << std::endl;
@@ -119,16 +119,22 @@ void MakePlots::Draw() {
 	TString HistName   = hist->GetName();	
 	cv_map["cv_"+cvname] = new TCanvas("cv_"+TString(cvname),"cv_"+TString(hist->GetName()),800,800);	
 	  //std::cout << "  no comparison done" << std::endl;
-	  if (HistName.Contains(name1) || HistName.Contains(name2)|| HistName.Contains(name3) ) {
+	if (HistName.Contains(name1) || HistName.Contains(name2)|| HistName.Contains(name3) & !HistName.Contains(name6) ) {
 	    //hist->SetXTitle(hist->GetTitle());
 	    std::cout << "  HistName" << HistName << std::endl;
 	  } else {
-	    hist->Draw();
+	  std::string a = hist->GetName();
+	  Int_t na = a.find("_GLOBAL");
+	  Int_t nd = a.length()-na;
+	  TString title(a);
+	  title = title.Remove(title.Length()-nd,title.Length());
+	  hist->Draw();
+	  hist->SetTitle(title);
 	    //label->Draw();
-	    TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
-	    labelkg->SetNDC();
-	    labelkg->SetTextSize(0.035);
-	    labelkg->Draw();
+	  TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+	  labelkg->SetNDC();
+	  labelkg->SetTextSize(0.035);
+	  labelkg->Draw();
 
 	    if (logaxis) {
 	      std::cout << "  make log Y-axis scale" << std::endl;
@@ -167,7 +173,7 @@ void MakePlots::Draw() {
 	    
       if ( HistoName.Contains(name1)) {histos_C.push_back(histo);}
       if ( HistoName.Contains(name2)) {histos_DUSG.push_back(histo);}
-      if ( HistoName.Contains(name3)){
+      if ( HistoName.Contains(name3) & !HistoName.Contains(name6)){
 	if ( HistoName.Contains(name4)) {discr_C.push_back(histo);}
 	if ( HistoName.Contains(name5)) {discr_DUSG.push_back(histo);}
       }
@@ -186,9 +192,13 @@ void MakePlots::Draw() {
       mytmp->SetMaximum(1); 
       mytmp->SetMinimum(10e-4); 
       mytmp->Draw();
-      TString title= mytmp->GetTitle();
-      title = title.Remove(0,24);
-      title = title.Remove(title.Length()-7, title.Length());
+      std::string a= mytmp->GetName();
+      Int_t na = a.find("discr_");
+      Int_t nb = a.find("_GLOBAL");
+      Int_t nd = a.length()-nb;
+      TString title(a);
+      title = title.Remove(0,na+6);
+      title = title.Remove(title.Length()-nd, title.Length());
       mytmp->SetTitle(title);
       TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
       mytmp2->SetMarkerColor(kRed);
@@ -309,9 +319,13 @@ void MakePlots::Draw() {
       //mytmp->SetMinimum(10e-4); 
       mytmp->Draw();
       mytmp->SetMarkerColor(kBlack);
-      TString title= mytmp->GetTitle();
-      //title = title.Remove(0,14);
-      title = title.Remove(title.Length()-14, title.Length());
+      std::string a= mytmp->GetName();
+      Int_t na = a.find("discr_");
+      Int_t nb = a.find("_GLOBAL");
+      Int_t nd = a.length()-nb;
+      TString title(a);
+      title = title.Remove(0,na+6);
+      title = title.Remove(title.Length()-nd, title.Length());
       //std::cout << "title:" << title <<std::endl;
       mytmp->SetTitle(title);
       TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
@@ -358,14 +372,20 @@ void MakePlots::Draw() {
 						 "cv_"+TString(hist->GetName()),800,800);
 						
 
-		if ( HistName.Contains(name1) ||  HistName.Contains(name2) || HistName.Contains(name3) ) {
+	      if ( HistName.Contains(name1) ||  HistName.Contains(name2) || HistName.Contains(name3) & !HistName.Contains(name6) ) {
 		  std::cout << "  HistName:" << HistName << std::endl;
 		} else {
-		  hist->Draw();
-		  TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
-		  labelkg->SetNDC();
-		  labelkg->SetTextSize(0.035);
-		  labelkg->Draw();
+		std::string a = hist->GetName();
+		Int_t na = a.find("_GLOBAL");
+		Int_t nd = a.length()-na;
+		TString title(a);
+		title = title.Remove(title.Length()-nd,title.Length());
+		hist->Draw();
+		hist->SetTitle(title);
+		TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+		labelkg->SetNDC();
+		labelkg->SetTextSize(0.035);
+		labelkg->Draw();
 		  //label->Draw();
 
 		  if (logaxis) {
@@ -402,7 +422,7 @@ void MakePlots::Draw() {
 	    TString  HistoName = histo->GetName() ;
 	    if ( HistoName.Contains(name1)) {histos_C.push_back(histo);}
 	    if ( HistoName.Contains(name2)) {histos_DUSG.push_back(histo);}
-	    if ( HistoName.Contains(name3)){
+	    if ( HistoName.Contains(name3) & !HistoName.Contains(name6) ){
 	      if ( HistoName.Contains(name4)) {discr_C.push_back(histo);}
 	      if ( HistoName.Contains(name5)) {discr_DUSG.push_back(histo);}
 	    }
@@ -422,9 +442,13 @@ void MakePlots::Draw() {
 	    mytmp->Draw();
 	    mytmp->SetMaximum(1); 
 	    mytmp->SetMinimum(10e-4); 
-	    TString title= mytmp->GetTitle();
-	    title = title.Remove(0,24);
-	    title = title.Remove(title.Length()-7, title.Length());
+	    std::string a= mytmp->GetName();
+	    Int_t na = a.find("discr_");
+	    Int_t nb = a.find("_GLOBAL");
+	    Int_t nd = a.length()-nb;
+	    TString title(a);
+	    title = title.Remove(0,na+6);
+	    title = title.Remove(title.Length()-nd, title.Length());
 	    //cout << "title:" << title <<endl;
 	    mytmp->SetTitle(title);
 	    TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
@@ -547,10 +571,14 @@ void MakePlots::Draw() {
 	    //mytmp->SetMaximum(1); 
 	    //mytmp->SetMinimum(10e-4); 
 	    mytmp->Draw();
-	    mytmp->SetMarkerColor(kBlack);
-	    TString title= mytmp->GetTitle();
-	    //title = title.Remove(0,14);
-	    title = title.Remove(title.Length()-14, title.Length());
+	    mytmp->SetMarkerColor(kBlack); 
+	    std::string a= mytmp->GetName();
+	    Int_t na = a.find("discr_");
+	    Int_t nb = a.find("_GLOBAL");
+	    Int_t nd = a.length()-nb;
+	    TString title(a);
+	    title = title.Remove(0,na+6);
+	    title = title.Remove(title.Length()-nd, title.Length());
 	    mytmp->SetTitle(title);
 	    TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
 	    mytmp2->SetMarkerColor(kRed);
@@ -605,21 +633,27 @@ void MakePlots::Draw() {
 						     "cv_"+TString(hist->GetName()),800,800);
 
 		    //std::cout << "  no comparison done" << std::endl;
-		    if (HistName.Contains(name1) || HistName.Contains(name2) ||HistName.Contains(name3)) {
+		  if (HistName.Contains(name1) || HistName.Contains(name2) ||HistName.Contains(name3) & !HistName.Contains(name6)) {
 		      std::cout << "  HistName:" << HistName << std::endl;
 		    } else {
-		      hist->Draw();
+		    std::string a = hist->GetName();
+		    Int_t na = a.find("_GLOBAL");
+		    Int_t nd = a.length()-na;
+		    TString title(a);
+		    title = title.Remove(title.Length()-nd,title.Length());
+		    hist->Draw();
+		    hist->SetTitle(title);
 		      //label->Draw();
-		      TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
-		      labelkg->SetNDC();
-		      labelkg->SetTextSize(0.035);
-		      labelkg->Draw();
+		    TLatex *labelkg = new TLatex(0.3,0.91,release_version);  
+		    labelkg->SetNDC();
+		    labelkg->SetTextSize(0.035);
+		    labelkg->Draw();
 
-		      if (logaxis) {
-			std::cout << "  make log Y-axis scale" << std::endl;
-			gPad->SetLogy();
-			gPad->SetGrid();
-		      }
+		    if (logaxis) {
+		      std::cout << "  make log Y-axis scale" << std::endl;
+		      gPad->SetLogy();
+		      gPad->SetGrid();
+		    }
 		      cv_map["cv_"+cvname]->cd();
 		      std::cout << " print canvas" << std::endl;
 		      cv_map["cv_"+cvname]->Print(webpath+"/"+TString(cvname)+"."+extension);
@@ -669,10 +703,13 @@ void MakePlots::Draw() {
 		TH1F *mytmp = (TH1F*) histos_C[i];
 		mytmp->SetMaximum(1); 
 		mytmp->SetMinimum(10e-4); 
-		TString title= mytmp->GetTitle();
-		title = title.Remove(0,24);
-		title = title.Remove(title.Length()-7, title.Length());
-		//cout << "title:" << title <<endl;
+		std::string a= mytmp->GetName();
+		Int_t na = a.find("discr_");
+		Int_t nb = a.find("_GLOBAL");
+		Int_t nd = a.length()-nb;
+		TString title(a);
+		title = title.Remove(0,na+6);
+		title = title.Remove(title.Length()-nd, title.Length());
 		mytmp->Draw();
 		mytmp->SetTitle(title);
 		TH1F *mytmp2 = (TH1F*) histos_DUSG[i];
@@ -798,10 +835,13 @@ void MakePlots::Draw() {
 		//mytmp->SetMinimum(10e-4); 
 		mytmp->Draw();
 		mytmp->SetMarkerColor(kBlack);
-		TString title= mytmp->GetTitle();
-		//title = title.Remove(0,14);
-		title = title.Remove(title.Length()-14, title.Length());
-		//std::cout << "title:" << title <<std::endl;
+		std::string a= mytmp->GetName();
+		Int_t na = a.find("discr_");
+		Int_t nb = a.find("_GLOBAL");
+		Int_t nd = a.length()-nb;
+		TString title(a);
+		title = title.Remove(0,na+6);
+		title = title.Remove(title.Length()-nd, title.Length());
 		mytmp->SetTitle(title);
 		TH1F *mytmp2 = (TH1F*) discr_DUSG[i];
 		mytmp2->SetMarkerColor(kRed);
