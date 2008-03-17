@@ -15,11 +15,12 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/ParameterSet/interface/InputTag.h"
 
-#include "AnalysisDataFormats/TopObjects/interface/TopLepton.h" 
-#include "AnalysisDataFormats/TopObjects/interface/TopObject.h" 
-#include "AnalysisDataFormats/TopObjects/interface/TopParticle.h" 
-#include "AnalysisDataFormats/TopObjects/interface/TopMET.h" 
-#include "AnalysisDataFormats/TopObjects/interface/TopJet.h" 
+#include "DataFormats/PatCandidates/interface/PATObject.h"
+#include "DataFormats/PatCandidates/interface/Particle.h"
+#include "DataFormats/PatCandidates/interface/Lepton.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
+
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h" 
 #include "AnalysisDataFormats/TopObjects/interface/TtSemiEvtSolution.h" 
 
@@ -31,7 +32,7 @@
 #include <map>
 #include <string>
 #include <utility> 
-
+#include <fstream>
 
 class TtEventAnalysis : public edm::EDAnalyzer {
 
@@ -63,17 +64,25 @@ class TtEventAnalysis : public edm::EDAnalyzer {
 	TQAFHistograms *hdisp_;
 	
 	std::map<TString, TString> cut_map;
-
+	
     // TNtuple1 *tr_muon;
 
     // The file which will store the histos
     TFile *theFile;
 
+    // ascii output
+    std::ofstream fasciiFile;
+    std::string fasciiFileName;
+
+    // csa07 weights
+    bool fApplyWeights;
+
     // Switch for debug output
     bool debug;
-	bool ffilter;
-	bool fdisplayJets;
-	int feventToProcess;
+    bool ffilter;
+    bool fdisplayJets;
+    bool fwriteAscii;
+    int feventToProcess;
 	
     std::string rootFileName;
     std::string leptonFlavour;

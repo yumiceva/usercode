@@ -2,10 +2,8 @@
 <use name=Foundation/PluginManager>
 <use name=FWCore/ParameterSet>
 <use name=AnalysisDataFormats/TopObjects>
-<use name=Analyzers/TopTools>
-<use name=TopQuarkAnalysis/TopEventProducers>
 <use name=root>
 
 <library file=*.cc name=TtEventAnalysis>
-  <flags SEAL_PLUGIN_NAME="TtEventAnalysis">
+  <flags EDM_PLUGIN=1>
 </library>

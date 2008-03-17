@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.h,v 1.10 2007/10/31 19:34:56 yumiceva Exp $
+ version $Id: TQAFHistograms.h,v 1.1 2008/02/05 21:10:23 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -27,8 +27,8 @@ class TQAFHistograms {
 	~TQAFHistograms();
 
 	void Init(TString type, TString suffix1="", TString suffix2="");
-	void Fill1d(TString name, Double_t x );
-	void Fill2d(TString name, Double_t x, Double_t y, Double_t weight=1);
+	void Fill1d(TString name, Double_t x, Double_t weight = 1. );
+	void Fill2d(TString name, Double_t x, Double_t y, Double_t weight=1.);
 	void Print(TString extension="png", TString tag="");
 	void Save();
 	void SaveToFile(TString filename="Ttplots.root");

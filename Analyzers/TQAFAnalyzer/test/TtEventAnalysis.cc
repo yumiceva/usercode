@@ -11,7 +11,7 @@
      <Notes on implementation>
 */
 //
-// $Id: TtEventAnalysis.cc,v 1.1.2.1 2007/10/22 16:42:20 lowette Exp $
+// $Id: TtEventAnalysis.cc,v 1.1 2008/02/05 21:10:23 yumiceva Exp $
 //
 //
 
@@ -29,9 +29,11 @@
 #include "PhysicsTools/Utilities/interface/DeltaR.h"
 #include "Math/GenVector/VectorUtil.h"
 
-#include "TopQuarkAnalysis/TopEventProducers/interface/MEzCalculator.h"
+#include "MEzCalculator.h"
 
 #include "TLorentzVector.h"
+
+#include "CSA07EffAnalyser/CSA07EffAnalyser/interface/CSA07ProcessId.h"
 
 //
 // constructors and destructor
@@ -40,6 +42,9 @@ TtEventAnalysis::TtEventAnalysis(const edm::ParameterSet& iConfig)
 {
    //now do what ever initialization is needed
   debug             = iConfig.getUntrackedParameter<bool>   ("debug");
+  fwriteAscii       = iConfig.getUntrackedParameter<bool>   ("writeAscii");
+  fasciiFileName    = iConfig.getUntrackedParameter<std::string> ("asciiFileName");
+  fApplyWeights     = iConfig.getUntrackedParameter<bool>   ("applyWeights");
   rootFileName      = iConfig.getUntrackedParameter<std::string> ("rootFileName");
   genEvnSrc         = iConfig.getParameter<edm::InputTag> ("genEventSource");
   leptonFlavour     = iConfig.getParameter<std::string>   ("leptonFlavour"); 
@@ -54,7 +59,14 @@ TtEventAnalysis::TtEventAnalysis(const edm::ParameterSet& iConfig)
 
   feventToProcess   = iConfig.getUntrackedParameter<int> ("event");
   fdisplayJets      = iConfig.getUntrackedParameter<bool>   ("displayJets");
-  
+
+
+  // write ascii output
+  if (fwriteAscii) {
+    std::cout << " Results will be also saved in ascii file: " << fasciiFileName << std::endl;
+    fasciiFile.open(fasciiFileName.c_str());
+  }
+
   // Create the root file
   theFile = new TFile(rootFileName.c_str(), "RECREATE");
   theFile->mkdir("Generator");
@@ -77,7 +89,6 @@ TtEventAnalysis::TtEventAnalysis(const edm::ParameterSet& iConfig)
   //h_Jet   = new HTOP1("Jets_");
   //h_Mass  = new HTOP2("Mass_");
   //h_Other = new HTOP3("Other_");
-
   
   // initialize cuts
   cut_map["cut0"] = "Initial selection";
@@ -132,6 +143,8 @@ TtEventAnalysis::~TtEventAnalysis()
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
    if (debug) std::cout << "[TtEventAnalysis] Destructor called" << std::endl;
+   
+   if (fwriteAscii) fasciiFile.close();
 
    theFile->cd();
    theFile->cd("Muons");
@@ -176,6 +189,18 @@ void
 TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {	
 
+  double weight = 1.;
+
+  if (fApplyWeights) {
+
+    edm::Handle< double> weightHandle;
+    iEvent.getByLabel ("csaweightproducer","weight", weightHandle);
+    weight = * weightHandle;
+
+  }
+
+
+
 	//check if we process one event
 	bool processthis = false;
 	
@@ -196,26 +221,27 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
    }
 
    // retrieve the reco-objects
-   edm::Handle< std::vector<TopMuon> > muonHandle;
+   edm::Handle< std::vector<pat::Muon> > muonHandle;
    iEvent.getByLabel(muonSrc, muonHandle);
 
-   std::vector<TopMuon> muons = *muonHandle;
+   std::vector<pat::Muon> muons = *muonHandle;
    if (debug) std::cout << "got muons" << std::endl;
 //   edm::Handle< std::vector<TopElectron> > electrons;
 //   iEvent.getByLabel(electronSrc, electrons);
 
-   edm::Handle< std::vector<TopMET> > metHandle;
+   edm::Handle< std::vector<pat::MET> > metHandle;
    iEvent.getByLabel(metSrc, metHandle);
 
-   std::vector<TopMET> met = *metHandle;
+   std::vector<pat::MET> met = *metHandle;
    if (debug) std::cout << "got met" << std::endl;
 //   edm::Handle< std::vector<TopJet> > bjets;
 //   iEvent.getByLabel(bjetSrc, bjets);
 
-   edm::Handle< std::vector<TopJet> > jetHandle;
+   edm::Handle< std::vector<pat::Jet> > jetHandle;
    iEvent.getByLabel(ljetSrc, jetHandle);
-   std::vector<TopJet> jets = *jetHandle;
-
+   std::vector<pat::Jet> jets = *jetHandle;
+   if (debug) std::cout << "got jets" << std::endl;
+   
    // get the event solution
    /*
    edm::Handle< std::vector<TtSemiEvtSolution> > eSols; 
@@ -234,55 +260,65 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
    const reco::Candidate *genHadWq  = genEvent->hadronicDecayQuarkBar();
    const reco::Candidate *genHadb   = genEvent->hadronicDecayB();
    const reco::Candidate *genLepb   = genEvent->leptonicDecayB();
-   
-   
-   LorentzVector gentoppairP4 = genTop->p4() + genTopBar->p4();
-   hgen_->Fill1d("gen_toppair_mass", gentoppairP4.M() );
-   if (debug) std::cout << " gen top rapidities: t_y = " << genTop->y()
-						<< " tbar_y = " << genTopBar->y() << std::endl;
-   if (genHadWp && genHadWq && genMuon && genHadb && genLepb && genNu) {
-     hgen_->Fill2d("gentop_rapidities", genTop->y(), genTopBar->y() );
-     //std::cout << " done gen 1" << std::endl;
-     hgen_->Fill1d("gen_nu_pz", genNu->p4().Pz() );
-     //std::cout << " done gen 2" << std::endl; 
-     hgen_->Fill1d("gen_deltaR_qb", DeltaR<reco::Candidate>()(*genHadWq, *genHadb ) );
+
+   if (debug) std::cout << "got generator candidates" << std::endl;
+
+   if (genTop || genTopBar) {
+	   LorentzVector gentoppairP4;
+	   gentoppairP4 = genTop->p4() + genTopBar->p4();
+	   hgen_->Fill1d("gen_toppair_mass", gentoppairP4.M() );
+	   if (debug) std::cout << " gen top rapidities: t_y = " << genTop->y()
+							<< " tbar_y = " << genTopBar->y() << std::endl;
+	   if (genHadWp && genHadWq && genMuon && genHadb && genLepb && genNu) {
+		   hgen_->Fill2d("gentop_rapidities", genTop->y(), genTopBar->y() );
+		   //std::cout << " done gen 1" << std::endl;
+		   hgen_->Fill1d("gen_nu_pz", genNu->p4().Pz() );
+		   //std::cout << " done gen 2" << std::endl; 
+		   hgen_->Fill1d("gen_deltaR_qb", DeltaR<reco::Candidate>()(*genHadWq, *genHadb ) );
      //std::cout << " done gen 3" << std::endl; 
-     hgen_->Fill1d("gen_deltaR_pb", DeltaR<reco::Candidate>()(*genHadWp, *genHadb ) );
-     //std::cout << " done gen 4" << std::endl; 
-     hgen_->Fill1d("gen_deltaR_lb", DeltaR<reco::Candidate>()(*genMuon , *genLepb ) );
-     //std::cout << " done gen 5" << std::endl; 
-     hgen_->Fill1d("gen_deltaR_qLepb", DeltaR<reco::Candidate>()(*genHadWq , *genLepb ) );
-     //std::cout << " done gen 6" << std::endl; 
-     hgen_->Fill1d("gen_deltaR_qmu", DeltaR<reco::Candidate>()(*genHadWq , *genMuon ) );
+		   hgen_->Fill1d("gen_deltaR_pb", DeltaR<reco::Candidate>()(*genHadWp, *genHadb ) );
+		   hgen_->Fill1d("gen_deltaR_pq", DeltaR<reco::Candidate>()(*genHadWp, *genHadWq ) );
+		   //std::cout << " done gen 4" << std::endl; 
+		   hgen_->Fill1d("gen_deltaR_lb", DeltaR<reco::Candidate>()(*genMuon , *genLepb ) );
+		   //std::cout << " done gen 5" << std::endl; 
+		   hgen_->Fill1d("gen_deltaR_qLepb", DeltaR<reco::Candidate>()(*genHadWq , *genLepb ) );
+		   //std::cout << " done gen 6" << std::endl; 
+		   hgen_->Fill1d("gen_deltaR_qmu", DeltaR<reco::Candidate>()(*genHadWq , *genMuon ) );
+	   } else {
+		   std::cout << " No top decay generator info, what happen here?" << std::endl;
+		   if (!genHadWp) std::cout << " no genHadWp" << std::endl;
+		   if (!genHadWq) std::cout << " no genHadWq" << std::endl; 
+		   if (!genHadb) std::cout << " no genHadb" << std::endl; 
+		   if (!genLepb) std::cout << " no genLepb" << std::endl;
+		   if (!genMuon) std::cout << " no genMuon" << std::endl; 
+		   if (!genNu) std::cout << " no genNu" << std::endl;
+	   }
+	   if (debug) std::cout << "done gen histo" << std::endl;
    } else {
-     std::cout << " No generator info, what happen here?" << std::endl;
-     if (!genHadWp) std::cout << " no genHadWp" << std::endl;
-     if (!genHadWq) std::cout << " no genHadWq" << std::endl; 
-     if (!genHadb) std::cout << " no genHadb" << std::endl; 
-     if (!genLepb) std::cout << " no genLepb" << std::endl;
-     if (!genMuon) std::cout << " no genMuon" << std::endl; 
-     if (!genNu) std::cout << " no genNu" << std::endl;
+	   std::cout << "no ttbar in generator" << std::endl;
    }
-   if (debug) std::cout << "done gen histo" << std::endl;
 
    // MUONS
    bool found_goodmuon = false;
    int nmuons = muons.size();
-   hmuons_->Fill1d(TString("muons")+"_cut0",nmuons);
+   hmuons_->Fill1d(TString("muons")+"_cut0",nmuons, weight);
    for( size_t imu=0; imu != muons.size(); ++imu) {
 	   
-	   hmuons_->Fill1d(TString("muon_pt")+"_cut0", muons[imu].pt());
+	   hmuons_->Fill1d(TString("muon_pt")+"_cut0", muons[imu].pt(), weight);
 	   //hmuons_->Fill1d(TString("muon_normchi2")+"_"+"cut0",muons[imu].combinedMuon()->chi2()/muons[imu].combinedMuon()->ndof());
-	   hmuons_->Fill1d(TString("muon_caloIso")+"_"+"cut0",muons[imu].getCaloIso());
-	   hmuons_->Fill1d(TString("muon_trackIso")+"_"+"cut0",muons[imu].getTrackIso());  
+	   hmuons_->Fill1d(TString("muon_caloIso")+"_"+"cut0",muons[imu].caloIso(), weight);
+	   hmuons_->Fill1d(TString("muon_trackIso")+"_"+"cut0",muons[imu].trackIso(), weight);  
 	   //std::cout << "caloiso= " << muons[imu].getCaloIso() << std::endl;
 	   //std::cout << "trkiso= " << muons[imu].getTrackIso() << std::endl;
 	   found_goodmuon = true;
    }
 
    TLorentzVector muonP4;
-   if ( found_goodmuon) 
-     muonP4.SetPxPyPzE(muons[0].px(),muons[0].py(),muons[0].pz(),muons[0].energy());
+   int muonCharge = 0;
+   if ( found_goodmuon) {
+	   muonP4.SetPxPyPzE(muons[0].px(),muons[0].py(),muons[0].pz(),muons[0].energy());
+	   muonCharge = muons[0].charge();
+   }
    
    if (debug) std::cout << "muons done" << std::endl;
    
@@ -291,15 +327,15 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
    // met is corrected by muon momentum, how about muon energy?
    if (met.size() == 0 and debug ) std::cout << "MET size collection is zero!" << std::endl; 
    for( size_t imet=0; imet != met.size(); ++imet) {
-	   hmet_->Fill1d(TString("MET")+"_"+"cut0", met[imet].et() );
-	   hmet_->Fill1d(TString("MET_deltaR_muon")+"_"+"cut0", DeltaR<reco::Candidate>()( met[imet] , muons[0] )  );
+	   hmet_->Fill1d(TString("MET")+"_"+"cut0", met[imet].et(), weight );
+	   hmet_->Fill1d(TString("MET_deltaR_muon")+"_"+"cut0", DeltaR<reco::Candidate>()( met[imet] , muons[0] ), weight  );
    }
    if (debug) std::cout << "MET done" << std::endl;
    
    // JETS
    TLorentzVector jetP4[4];
    
-   hjets_->Fill1d(TString("jets")+"_"+"cut0", jets.size() );
+   hjets_->Fill1d(TString("jets")+"_"+"cut0", jets.size(), weight );
    for( size_t ijet=0; ijet != jets.size(); ++ijet) {
 
 	   TLorentzVector tmpP4;
@@ -307,8 +343,8 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 	   
 	   if(ijet==0) {
 		   if (debug) std::cout << "leading jet et: " << jets[ijet].et() << std::endl;
-		   hjets_->Fill1d(TString("jet0_et")+"_"+"cut0", jets[ijet].et() );
-		   hjets_->Fill1d(TString("jet0_eta")+"_"+"cut0", jets[ijet].eta() );
+		   hjets_->Fill1d(TString("jet0_et")+"_"+"cut0", jets[ijet].et(), weight );
+		   hjets_->Fill1d(TString("jet0_eta")+"_"+"cut0", jets[ijet].eta(), weight );
 		   jetP4[ijet] = tmpP4;
 		   // display jets//
 		   if (fdisplayJets) {
@@ -355,12 +391,12 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 		   }
 	   }
 
-	   hjets_->Fill1d(TString("jet_et")+"_"+"cut0", jets[ijet].et() );
-	   hjets_->Fill1d(TString("jet_eta")+"_"+"cut0", jets[ijet].eta() );
-	   hjets_->Fill1d(TString("jet_phi")+"_"+"cut0", jets[ijet].phi() );
+	   hjets_->Fill1d(TString("jet_et")+"_"+"cut0", jets[ijet].et(), weight );
+	   hjets_->Fill1d(TString("jet_eta")+"_"+"cut0", jets[ijet].eta(), weight );
+	   hjets_->Fill1d(TString("jet_phi")+"_"+"cut0", jets[ijet].phi(), weight );
 
 	   if (ijet<4)
-		   hjets_->Fill1d(TString("jet_deltaR_muon")+"_cut0",ROOT::Math::VectorUtil::DeltaR( tmpP4.Vect(), muonP4.Vect() ) );
+		   hjets_->Fill1d(TString("jet_deltaR_muon")+"_cut0",ROOT::Math::VectorUtil::DeltaR( tmpP4.Vect(), muonP4.Vect() ), weight );
 	   
 	   
    }
@@ -396,7 +432,7 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 			   
 			   mjetP4 = mjetP4 + tmpP4;
 			   listofmergedjets.push_back(ijet);
-			   hjets_->Fill1d(TString("Mjet_et_subjets")+"_"+"cut0", tmpP4.Et() );
+			   hjets_->Fill1d(TString("Mjet_et_subjets")+"_"+"cut0", tmpP4.Et(), weight );
 			   nmerged++;
 			   
 		   }
@@ -408,10 +444,10 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
    
    if ( found_Mjet ) {
 	   
-	   hjets_->Fill1d(TString("Mjet_et")+"_"+"cut0", mjetP4.Et() );
-	   hjets_->Fill1d(TString("Mjet_mass")+"_"+"cut0", mjetP4.M() );
-	   hjets_->Fill1d(TString("Mjet_deltaR_mu")+"_"+"cut0",ROOT::Math::VectorUtil::DeltaR( mjetP4.Vect(), muonP4.Vect() ) );
-	   hjets_->Fill1d(TString("Mjet_njets")+"_"+"cut0", nmerged );
+	   hjets_->Fill1d(TString("Mjet_et")+"_"+"cut0", mjetP4.Et(), weight );
+	   hjets_->Fill1d(TString("Mjet_mass")+"_"+"cut0", mjetP4.M(), weight );
+	   hjets_->Fill1d(TString("Mjet_deltaR_mu")+"_"+"cut0",ROOT::Math::VectorUtil::DeltaR( mjetP4.Vect(), muonP4.Vect() ), weight );
+	   hjets_->Fill1d(TString("Mjet_njets")+"_"+"cut0", nmerged, weight );
 	   
 	   // find b jet: another leading jet close to the muon
 	   TLorentzVector bjetP4;
@@ -443,8 +479,8 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 		   }
 	   }
 
-	   hjets_->Fill1d(TString("Mjet_deltaR_b")+"_"+"cut0",ROOT::Math::VectorUtil::DeltaR( mjetP4.Vect(), bjetP4.Vect() ) );
-	   hmuons_->Fill1d(TString("muon_deltaR_b")+"_cut0",ROOT::Math::VectorUtil::DeltaR(muonP4.Vect(), bjetP4.Vect()));
+	   hjets_->Fill1d(TString("Mjet_deltaR_b")+"_"+"cut0",ROOT::Math::VectorUtil::DeltaR( mjetP4.Vect(), bjetP4.Vect() ), weight );
+	   hmuons_->Fill1d(TString("muon_deltaR_b")+"_cut0",ROOT::Math::VectorUtil::DeltaR(muonP4.Vect(), bjetP4.Vect()), weight);
 
 	   // now find a good b candidate opposite to Mjet
 	   bool found_LepbJet = false;
@@ -469,9 +505,9 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 		   nuP4.SetPxPyPzE(met[0].px(), met[0].py(), neutrinoPz,
 						   sqrt(met[0].px()*met[0].px()+met[1].py()*met[1].py()+neutrinoPz*neutrinoPz) );
 		   
-		   hmuons_->Fill1d(TString("muon_deltaR_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaR( muonP4.Vect(), nuP4.Vect() ) );
-		   hmuons_->Fill1d(TString("muon_deltaPhi_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ) );
-		   hmet_->Fill1d(TString("nu_pz")+"_cut0",neutrinoPz);
+		   hmuons_->Fill1d(TString("muon_deltaR_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaR( muonP4.Vect(), nuP4.Vect() ), weight );
+		   hmuons_->Fill1d(TString("muon_deltaPhi_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ), weight );
+		   hmet_->Fill1d(TString("nu_pz")+"_cut0",neutrinoPz, weight);
 		   
 		   found_nu = true;
 		   
@@ -486,17 +522,47 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 		   TLorentzVector LepTopP4;
 		   LepTopP4 = muonP4 + nuP4 + bjetP4;
 		   
-		   hjets_->Fill1d(TString("bjet_mass")+"_cut1", LepTopP4.M() );
-		   hjets_->Fill1d(TString("bjet_et")+"_cut1", LepTopP4.Et() );
-		   hjets_->Fill1d(TString("Mjet_mass")+"_cut1", mjetP4.M() );
-		   hjets_->Fill1d(TString("Mjet_et")+"_cut1", mjetP4.Et() );
+		   hjets_->Fill1d(TString("bjet_mass")+"_cut1", LepTopP4.M(), weight );
+		   hjets_->Fill1d(TString("bjet_et")+"_cut1", LepTopP4.Et(), weight );
+		   hjets_->Fill1d(TString("Mjet_mass")+"_cut1", mjetP4.M(), weight );
+		   hjets_->Fill1d(TString("Mjet_et")+"_cut1", mjetP4.Et(), weight );
 		   
 		   TLorentzVector topPairP4 = mjetP4 + LepTopP4;
+		   TLorentzVector topPairP4CM;
+		   topPairP4CM.Boost(topPairP4.Px(),topPairP4.Py(),topPairP4.Pz());
 		   
-		   hjets_->Fill1d(TString("topPair_mass")+"_cut1", topPairP4.M() );
+		   hjets_->Fill1d(TString("topPair_mass")+"_cut1", topPairP4.M(), weight );
 		   //hjets_->Fill1d(TString("topPair_et")+"_"+"cut1", topPairP4.Et() );
 
+		   double CosThetaCM = 0;
+		   
+		   // top quark is leptonic jet
+		   if (muonCharge == 1 ) {
+			   TLorentzVector LepTopP4CM;
+			   LepTopP4CM.Boost(topPairP4.Px(),topPairP4.Py(),topPairP4.Pz());
+			   CosThetaCM = LepTopP4CM.Angle(topPairP4.Vect());
+		   }
+		   // anti-top quark is leptonic jet
+		   else if (muonCharge == -1 ) {
+			   TLorentzVector mjetP4CM;
+			   mjetP4CM.Boost(topPairP4.Px(),topPairP4.Py(),topPairP4.Pz());
+			   CosThetaCM = mjetP4CM.Angle(mjetP4CM.Vect());
+		   }			   
+		   
 		   if (debug) std::cout << "got all, and top pair." << std::endl;
+
+		   if (fwriteAscii) {
+		     // dump Muon
+		     fasciiFile << "-15 " << muonP4.Px() <<" "<< muonP4.Py() <<" "<< muonP4.Pz() << std::endl;
+		     // dump Neutrino
+		     fasciiFile << "-5 " << nuP4.Px() <<" "<< nuP4.Py() <<" "<< nuP4.Pz() << std::endl;
+		     // dump jets
+		     for( size_t ijet=0; ijet != jets.size(); ++ijet) {
+
+		       fasciiFile << jets[ijet].energy() <<" "<< jets[ijet].px() <<" "<<jets[ijet].py()<<" "<<jets[ijet].pz()<< std::endl;
+		       
+		     }
+		   }
 	   }
 
    }

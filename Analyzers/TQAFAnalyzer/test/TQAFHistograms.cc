@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.cc,v 1.11 2007/11/03 00:39:24 yumiceva Exp $
+ version $Id: TQAFHistograms.cc,v 1.1 2008/02/05 21:10:23 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -196,9 +196,9 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 }
 
 //_______________________________________________________________
-void TQAFHistograms::Fill1d(TString name, Double_t x) {
+void TQAFHistograms::Fill1d(TString name, Double_t x, Double_t weight) {
 
-	h1[name]->Fill(x);
+	h1[name]->Fill(x,weight);
 }
 
 //_______________________________________________________________
