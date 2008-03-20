@@ -1,0 +1,29 @@
+# my analyzer
+
+  module MyEventAnalysis = TtEventAnalysis {
+
+    # Switch on/off verbosity
+    untracked bool debug     = false
+    # Switch on/off ASCII output of four-vector candidates
+    untracked bool writeAscii = false
+    # Filename of ASCII output file
+    untracked string asciiFileName = 'TableOutput.txt'
+    # Switch on/off to apply CSA07 weights
+    untracked bool applyWeights = false
+    # Event filter, -1 = no filter
+    untracked int32 event    = -1
+    # Create lego plots of CaloJets, used with event filter
+    untracked bool displayJets = false
+    # Collections:
+    InputTag genEventSource  = genEvt
+    InputTag muonSource      = selectedLayer1Muons
+    InputTag electronSource  = selectedLayer1Electrons
+    InputTag metSource       = selectedLayer1METs
+    InputTag bjetSource      = selectedLayer1Jets
+    InputTag ljetSource      = selectedLayer1Jets
+    InputTag EvtSolution     = solutions::TEST
+    string leptonFlavour = 'muon'    //electron or muon
+    # Name of the root file which will contain the output histograms
+    untracked string rootFileName = 'MyEventAnalysis.root'
+
+  }

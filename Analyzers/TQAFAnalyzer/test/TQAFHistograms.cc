@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.cc,v 1.1 2008/02/05 21:10:23 yumiceva Exp $
+ version $Id: TQAFHistograms.cc,v 1.2 2008/03/17 15:26:17 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -70,6 +70,10 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["gen_deltaR_qLepb"] = new TH1D("gen_deltaR_qLepb","#Delta R(q,Lep-b)",35,0.,7.);
 		h1["gen_deltaR_qmu"] = new TH1D("gen_deltaR_qmu","#Delta R(q,#mu)",35,0.,7.);
 		h1["gen_nu_pz"] = new TH1D("gen_nu_pz","Neutrino p_{z} [GeV/c]",50,-500.0,500.0);
+		h1["gen_MoverE_pq"] = new TH1D("gen_theta_pq","2m/E",50,0,6.);
+		h2["gen_MoverEvstoprapidity_pq"] = new TH2D("gen_MoverEvstoprapidity_pq","2m/E vs y_{top}",50,0,6., 50, -2.5,2.5);
+		
+		
 	}
 	else if ( type == "Jets") {
 		h1["jets"+suffix1]     = new TH1D("jets"+suffix1,"Number of jets",11,4,15);
@@ -109,9 +113,10 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 
 	}
 	else if ( type == "Muons") {
-		h1["muons"+suffix1]         = new TH1D("muons"+suffix1,"Number of muons",4,1,5);
-		h1["muon_normchi2"+suffix1] = new TH1D("muon_normchi2"+suffix1,"#chi^{2}/ndof",40,0,30);
-		h1["muon_pt"+suffix1]       = new TH1D("muon_pt"+suffix1,"Muon p_{T} [GeV/c]",80,0.0,200.0);
+		h2["muons_vsJets"+suffix1]         = new TH2D("muons_vsJets"+suffix1,"Number of muons vs Jets",4,1,5,4,0,4);
+		h1["muons"+suffix1]                = new TH1D("muons"+suffix1,"Number of muons",4,1,5);
+		h1["muon_normchi2"+suffix1]        = new TH1D("muon_normchi2"+suffix1,"#chi^{2}/ndof",40,0,30);
+		h1["muon_pt"+suffix1]              = new TH1D("muon_pt"+suffix1,"Muon p_{T} [GeV/c]",80,0.0,200.0);
 		h1["muon_caloIso"+suffix1]       = new TH1D("muon_caloIso"+suffix1,"caloIsolation",80,0.0,300.0);
 		h1["muon_trackIso"+suffix1]       = new TH1D("muon_trackIso"+suffix1,"trackIsolation",80,0.0,100.0);
 		h1["muon_deltaR_nu"+suffix1]  = new TH1D("muon_deltaR_nu"+suffix1, "#Delta R(#mu,#nu)",35,0,5);
@@ -119,10 +124,13 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["muon_deltaR_b"+suffix1]  = new TH1D("muon_deltaR_b"+suffix1, "#Delta R(#mu,b)",35,0,5);
 	}
 	else if ( type == "MET") {
+
+		h2["MET_vsJets"+suffix1] = new TH2D("MET_vsJets"+suffix1,"MET [GeV] vs Jets",100,0.0,1500.0,4,0,4);
 		h1["MET"+suffix1] = new TH1D("MET"+suffix1,"MET [GeV]",100,0.0,1500.0);
 		h1["MET_deltaR_muon"+suffix1] = new TH1D("MET_deltaR_muon"+suffix1,"#DeltaR(MET,#mu)",35,0.,7.);
 		//h1["METcomplex"+suffix1] = new TH1D("METcomplex"+suffix1,"MET [GeV]",80,0.0,300.0);
 		h1["nu_pz"+suffix1] = new TH1D("nu_pz"+suffix1,"Neutrino p_{z} [GeV/c]",50,-500.0,500.0);	
+		h1["delta_nu_pz"+suffix1] = new TH1D("delta_nu_pz"+suffix1,"Neutrino #Delta(p_{z}-p^{gen}_{z}) [GeV/c]",50,-50.0,50.0);	
 
 	}
 	else if ( type == "Mass") {
@@ -206,6 +214,16 @@ void TQAFHistograms::Fill2d(TString name, Double_t x, Double_t y, Double_t weigh
 
 	h2[name]->Fill(x,y,weight);
 	
+}
+
+//_______________________________________________________________
+void TQAFHistograms::FillvsJets2d(TString name, Double_t x, std::vector<pat::Jet> jets, Double_t weight ) {
+
+	if (jets.size() == 1 ) h2[name]->Fill(x,1,weight);
+	if (jets.size() == 2 ) h2[name]->Fill(x,2,weight);
+	if (jets.size() == 3 ) h2[name]->Fill(x,3,weight);
+	if (jets.size() >= 4 ) h2[name]->Fill(x,4,weight);
+		
 }
 
 //_______________________________________________________________

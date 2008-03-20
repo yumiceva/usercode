@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.h,v 1.1 2008/02/05 21:10:23 yumiceva Exp $
+ version $Id: TQAFHistograms.h,v 1.2 2008/03/17 15:26:17 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -18,6 +18,8 @@ ________________________________________________________________**/
 #include "TH2.h"
 #include "TCanvas.h"
 #include "TFile.h"
+
+#include "DataFormats/PatCandidates/interface/Jet.h"
 
 class TQAFHistograms {
 
@@ -29,6 +31,7 @@ class TQAFHistograms {
 	void Init(TString type, TString suffix1="", TString suffix2="");
 	void Fill1d(TString name, Double_t x, Double_t weight = 1. );
 	void Fill2d(TString name, Double_t x, Double_t y, Double_t weight=1.);
+	void FillvsJets2d(TString name, Double_t x, std::vector<pat::Jet> jets, Double_t weight = 1.);
 	void Print(TString extension="png", TString tag="");
 	void Save();
 	void SaveToFile(TString filename="Ttplots.root");

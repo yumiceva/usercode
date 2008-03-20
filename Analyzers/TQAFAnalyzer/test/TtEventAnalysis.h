@@ -64,24 +64,23 @@ class TtEventAnalysis : public edm::EDAnalyzer {
 	TQAFHistograms *hdisp_;
 	
 	std::map<TString, TString> cut_map;
-	
-    // TNtuple1 *tr_muon;
-
+	    
     // The file which will store the histos
     TFile *theFile;
 
     // ascii output
     std::ofstream fasciiFile;
     std::string fasciiFileName;
-
+	bool fwriteAscii;
+	
     // csa07 weights
     bool fApplyWeights;
 
     // Switch for debug output
     bool debug;
-    bool ffilter;
-    bool fdisplayJets;
-    bool fwriteAscii;
+	
+	bool fdisplayJets;
+    
     int feventToProcess;
 	
     std::string rootFileName;
