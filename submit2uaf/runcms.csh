@@ -9,7 +9,8 @@
 
 echo "Configuring CMS environment...."
 
-source /afs/fnal.gov/exp/cms/setup/cshrc uaf
+#source /afs/fnal.gov/exp/cms/setup/cshrc uaf
+source /uscmst1/prod/sw/cms/cshrc uaf
 
 cd /uscmst1b_scratch/lpc1/cmsroc/yumiceva/CMSSW_1_2_0_pre3/src/RecoVertex/BeamSpotProducer/test/scripts
 eval `scramv1 runtime -csh`
