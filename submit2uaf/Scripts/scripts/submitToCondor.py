@@ -11,11 +11,17 @@
    Submit jobs to condor. It will create directories in the output path
    to store configuration files and log files.
    e.g. submitToCondor.py -c ZprimeEventsReco_full.cfg -l datasets/zp1Tev.txt -n 10 -o /uscms_data/d1/yumiceva/CMSSW_1_3_6/TQAFAnalyzer/
+
+   To Generate MC: In your cfg file you need to add the keywords SEED1,...,SEED6, {OUTPUT_FILENAME}
+
+   To run over reco samples: you need in the cfg file the keywords {FILENAME}, {OUTPUT_FILENAME}
    
    usage: %prog
+   -m, --mc   : to generate MC.
+   -e, --events = EVENTS: number of events to generate MC. If -m flag is turned on.
    -c, --cfg    = CFG: configuration file
    -l, --list   = LIST: file with list of files (dataset)
-   -n, --njobs  = NJOBS: number of jobs
+   -n, --njobs  = NJOBS: number of jobs.
    -o, --output = OUTPUT: output path
    -i, --initial= INITIAL:  number of initial job
    -f, --final= FINAL: number of final job
@@ -23,7 +29,7 @@
 """
 
 
-import os, string, re,sys
+import os, string, re,sys, random
 from time import gmtime, localtime, strftime
 
 #_______________OPTIONS__________________________________
@@ -88,12 +94,22 @@ logs_path     = scripts_path+"logs/"
 
 
 istest = 0
+isMC   = 0
+Nevents = "1"
 
 #
 # Path to the input/output data:
 #
 
 cfg_tags        = ["{FILENAME}",
+                   "{OUTPUT_FILENAME}"]
+
+cfg_tags_mc     = ["{SEED1}",
+                   "{SEED2}",
+                   "{SEED3}",
+                   "{SEED4}",
+                   "{SEED5}",
+                   "{SEED6}",
                    "{OUTPUT_FILENAME}"]
 
 scripts_tags    = ["{PATHTOOUT}",
@@ -135,6 +151,10 @@ def change(infile,outfile,changearray,filearray):
     fin  = open(infile)
     fout = open(outfile,"w")
     for line in fin.readlines():
+        # make sure we run over all events in each job
+        if line.find("untracked")!=-1 and line.find("PSet")!=-1 and line.find("maxEvents")!=-1:
+            line = "untracked PSet maxEvents = {untracked int32 input = "+str(Nevents)+"}\n"
+                    
         for change in changearray:
             if change[0] == "{FILENAME}" and line.find(change[0])!=-1:
                 line=line.replace(change[0] ,"")
@@ -178,11 +198,25 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
     #
         
     changearray=[]
-    #changearray.append((cfg_tags[0],sirun))     
-    changearray.append((cfg_tags[0],""))
-    changearray.append((cfg_tags[1],outfilename_root))
-    change(template_fnames["cfg"],outfilename_cfg,changearray,array)
-    print outfilename_cfg + " has been written.\n"
+
+    if isMC:
+        random.seed(njob)
+        changearray.append((cfg_tags_mc[0],str(random.randint(1,987654321) ) ))
+        changearray.append((cfg_tags_mc[1],str(random.randint(1,987654321) ) ))
+        changearray.append((cfg_tags_mc[2],str(random.randint(1,987654321) ) ))
+        changearray.append((cfg_tags_mc[3],str(random.randint(1,987654321) ) ))
+        changearray.append((cfg_tags_mc[4],str(random.randint(1,987654321) ) ))
+        changearray.append((cfg_tags_mc[5],str(random.randint(1,987654321) ) ))
+        changearray.append((cfg_tags_mc[6],outfilename_root))
+        change(template_fnames["cfg"],outfilename_cfg,changearray,array)
+        print outfilename_cfg + " has been written.\n"
+
+    else:
+        changearray.append((cfg_tags[0],""))
+        changearray.append((cfg_tags[1],outfilename_root))
+        change(template_fnames["cfg"],outfilename_cfg,changearray,array)
+        print outfilename_cfg + " has been written.\n"
+    
     
     #
     # now create the script to process the file:
@@ -230,16 +264,19 @@ if __name__ =='__main__':
     option,args = parse(__doc__)
     if not args and not option: exit()
 
-    if not option.cfg or not option.njobs or not option.list:
+    if not option.mc and (not option.cfg or not option.njobs or not option.list):
         print " you need to provide configuration file, list of files, number of jobs"
         optionparse.exit()
-
+        
     ini_cfgfile = option.cfg
     
     template_fnames["cfg"]          =  ini_cfgfile
 
-    list_of_files = option.list
-    
+    if not option.mc:
+        list_of_files = option.list
+    else:
+        Nevents = str(option.events)
+                      
     number_of_jobs = option.njobs
     
     ini_run = 0
@@ -251,6 +288,7 @@ if __name__ =='__main__':
         fin_run = int(option.final)
     
     istest = option.test
+    isMC   = option.mc
     
     output_path = ""
     
@@ -260,13 +298,6 @@ if __name__ =='__main__':
     cfg_path  = output_path+ "cfg/"
     csh_path  = output_path+ "csh/"
     logs_path = output_path+ "logs/"
-    
-    inputfile = open(list_of_files)
-    totalfiles = len(inputfile.readlines())
-    inputfile.seek(0,0)
-
-    filesperjob = float(totalfiles)/float(number_of_jobs)
-    filesperjob = int(filesperjob)
 
     subset = []
     njob = 0
@@ -279,34 +310,51 @@ if __name__ =='__main__':
     if not os.path.exists(logs_path):
         _mkdir(logs_path)
     
-
     
-    for ifile in inputfile:
-        ignoreline = 0
-        if ifile.find("replace")!=-1 or ifile.find("}")!=-1 or ifile.find("{")!=-1:
-            ignoreline = 1
-
-        if ignoreline==0:
-            ifile = ifile.strip("'")
-            ifile = ifile.strip('\',\n')
-            #ifile = ifile.strip("'")
-            if len(subset) == filesperjob:
-                njob = njob + 1
-                if fin_run == 0 and njob >= ini_run:
-                    submit_jobs(njob,subset,ini_cfgfile,output_path)
-                elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
-                    submit_jobs(njob,subset,ini_cfgfile,output_path)
+    #filesperjob = 0
+    #inputfile = []
+    if not option.mc:
+        inputfile = open(list_of_files)
+        totalfiles = len(inputfile.readlines())
+        inputfile.seek(0,0)
+        filesperjob = float(totalfiles)/float(number_of_jobs)
+        filesperjob = int(filesperjob)
+    
+    
+        for ifile in inputfile:
+            ignoreline = 0
+            if ifile.find("replace")!=-1 or ifile.find("}")!=-1 or ifile.find("{")!=-1:
+                ignoreline = 1
             
-                subset = []
+            if ignoreline==0:
+                ifile = ifile.strip("'")
+                ifile = ifile.strip('\',\n')
+                #ifile = ifile.strip("'")
+                if len(subset) == filesperjob:
+                    njob = njob + 1
+                    if fin_run == 0 and njob >= ini_run:
+                        submit_jobs(njob,subset,ini_cfgfile,output_path)
+                    elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
+                        submit_jobs(njob,subset,ini_cfgfile,output_path)
+            
+                    subset = []
 
-            subset.append(ifile)
-
-    if len(subset)>0:
-        njob = njob + 1
-        if fin_run == 0 and njob >= ini_run:
-            submit_jobs(njob,subset,ini_cfgfile,output_path)
-        elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
-            submit_jobs(njob,subset,ini_cfgfile,output_path)
+                subset.append(ifile)
+        
+        if len(subset)>0:
+            njob = njob + 1
+            if fin_run == 0 and njob >= ini_run:
+                submit_jobs(njob,subset,ini_cfgfile,output_path)
+            elif fin_run > 0 and njob <= fin_run and njob >= ini_run:
+                submit_jobs(njob,subset,ini_cfgfile,output_path)
         
         #submit_jobs(njob,subset,ini_cfgfile,output_path)
+
+    else:
+        ijob = 1
+        while ijob <= int(number_of_jobs):
+            submit_jobs(ijob,subset,ini_cfgfile,output_path)
+            ijob = ijob + 1
+
+
 
