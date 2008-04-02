@@ -28,6 +28,7 @@
 #include "Analyzers/TQAFAnalyzer/test/TQAFHistograms.h"
 
 #include "TFile.h"
+#include "TLorentzVector.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -47,6 +48,8 @@ class TtEventAnalysis : public edm::EDAnalyzer {
     /// Perform the real analysis
     void analyze(const edm::Event & iEvent, const edm::EventSetup& iSetup);
 
+	double Psi(TLorentzVector p1, TLorentzVector p2, double mass);
+	
 	typedef math::XYZTLorentzVector LorentzVector;
 	
   private: 
@@ -96,7 +99,7 @@ class TtEventAnalysis : public edm::EDAnalyzer {
     edm::InputTag evtsols;
 
 	int nevents;
-	
+	int nWcomplex;
 
 };
 

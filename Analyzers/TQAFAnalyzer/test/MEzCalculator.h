@@ -6,7 +6,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MEzCalculator.h,v 1.1 2007/07/17 13:16:13 yumiceva Exp $
+ version $Id: MEzCalculator.h,v 1.1 2008/03/17 15:26:17 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -16,6 +16,7 @@ ________________________________________________________________**/
 #include "DataFormats/PatCandidates/interface/Particle.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 
+#include "TLorentzVector.h"
 
 class MEzCalculator {
 
@@ -27,6 +28,10 @@ class MEzCalculator {
 	~MEzCalculator();
 	/// Set MET
 	void SetMET(const pat::MET &MET) { MET_ = MET; } ;
+	void SetMET(TLorentzVector MET) {
+		pat::Particle::LorentzVector p(MET.Px(),MET.Py(),MET.Pz(),MET.E());
+		MET_.setP4(p);
+	}
     /// Set Muon
 	void SetMuon(const pat::Particle &lepton) { lepton_ = lepton; };
     /// Calculate MEz

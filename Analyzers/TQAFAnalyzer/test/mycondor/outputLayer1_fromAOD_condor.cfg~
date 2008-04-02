@@ -13,13 +13,7 @@ process TQAFL1 = {
 
   source = PoolSource {
    untracked vstring fileNames = {
-     # from /CSA07Muon/CMSSW_1_6_7-CSA07-Chowder-A3-PDMuon-ReReco-100pb-Skims4-topSemiLepMuon/USER
-     '/store/CSA07/skim/2008/1/17/CSA07-CSA07Muon-Chowder-A3-PDMuon-ReReco-100pb-Skims4/0000/08A0A10B-25C5-DC11-BE27-001617C3B6B4.root',
-     '/store/CSA07/skim/2008/1/17/CSA07-CSA07Muon-Chowder-A3-PDMuon-ReReco-100pb-Skims4/0000/22192F93-27C5-DC11-89F3-001617C3B6FE.root',
-     '/store/CSA07/skim/2008/1/17/CSA07-CSA07Muon-Chowder-A3-PDMuon-ReReco-100pb-Skims4/0000/4E680789-24C5-DC11-A8CF-000423D985B0.root',
-     '/store/CSA07/skim/2008/1/17/CSA07-CSA07Muon-Chowder-A3-PDMuon-ReReco-100pb-Skims4/0000/5E9D178B-27C5-DC11-874B-000423D94E1C.root',
-     '/store/CSA07/skim/2008/1/17/CSA07-CSA07Muon-Chowder-A3-PDMuon-ReReco-100pb-Skims4/0000/789717F2-24C5-DC11-A591-0019DB29C5FC.root'
-
+{FILENAME}
    }
 
    untracked uint32 debugVerbosity = 10
@@ -32,19 +26,12 @@ process TQAFL1 = {
 
   # TQAF Layer 1 TopObject production (this also runs layer0)
   include "TopQuarkAnalysis/TopObjectProducers/data/TQAFLayer1.cff"
-  //default: muons L1: "pt > 10. & abs(eta) < 2.4 & trackIso < 3 & caloIso < 5"
-  // my chages:
+  // muons L1: "pt > 10. & abs(eta) < 2.4 & trackIso < 3 & caloIso < 5"
+
   replace minLayer1Muons.minNumber = 1
-  // before this line, we need to comment the same line in 
-  // $CMSSW_BASE/src/TopQuarkAnalysis/TopObjectProducers/data/TQAFLayer1_Muons.cff
-  replace selectedLayer1Muons.cut = "pt > 10. & abs(eta) < 2.4"
 
-  // default jets  selectedLayer1Jets: "et > 30. & abs(eta) < 2.4 & nConstituents > 0"
-  // my changes:
-  // comment line in $CMSSW_BASE/src/TopQuarkAnalysis/TopObjectProducers/data/TQAFLayer1_Jets.cff
-  replace selectedLayer1Jets.cut  = "et > 30. & abs(eta) < 2.4  & nConstituents > 0"
-
-  // minimum 2 jets in minLayer1Jets
+  // jets  L1: "et > 30. & abs(eta) < 2.4 & nConstituents > 0"
+  // minimum 2 jets
   	  
   ### CSA07 weights ###
   module csaweightproducer = CSA07EventWeightProducer {
@@ -60,7 +47,7 @@ process TQAFL1 = {
   ### Output ###
 
   path p = {
-    csaweightproducer,
+    #csaweightproducer,
     tqafLayer1
   }
 
@@ -72,7 +59,7 @@ process TQAFL1 = {
   }
 
   module out = PoolOutputModule {
-    untracked string fileName = "TQAFLayer1Output_AOD.root"
+    untracked string fileName = "{OUTPUT_FILENAME}"
     using EventSelection
     untracked vstring outputCommands = {
       "drop *",
@@ -82,7 +69,6 @@ process TQAFL1 = {
       #"keep recoTracks_gsWithMaterialTracks_*_*",
       "keep double_genEventScale_*_*",
       "keep double_genEventWeight_*_*",
-      "keep double_genEventRunInfo_*_*",
       "keep *_genEventProcID_*_*",
       "keep *_csaweightproducer_*_*",
       "keep *_genParticles_*_*",

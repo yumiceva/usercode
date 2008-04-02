@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.cc,v 1.2 2008/03/17 15:26:17 yumiceva Exp $
+ version $Id: TQAFHistograms.cc,v 1.3 2008/03/20 18:40:59 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -70,13 +70,13 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["gen_deltaR_qLepb"] = new TH1D("gen_deltaR_qLepb","#Delta R(q,Lep-b)",35,0.,7.);
 		h1["gen_deltaR_qmu"] = new TH1D("gen_deltaR_qmu","#Delta R(q,#mu)",35,0.,7.);
 		h1["gen_nu_pz"] = new TH1D("gen_nu_pz","Neutrino p_{z} [GeV/c]",50,-500.0,500.0);
-		h1["gen_MoverE_pq"] = new TH1D("gen_theta_pq","2m/E",50,0,6.);
-		h2["gen_MoverEvstoprapidity_pq"] = new TH2D("gen_MoverEvstoprapidity_pq","2m/E vs y_{top}",50,0,6., 50, -2.5,2.5);
+		h2["gen_toprapidity_vs_psi_pq"] = new TH2D("gen_toprapidity_vs_psi_pq","y_{top} vs #psi(p,q)",50, -2.5,2.5,50,0.,1.6);
+		h2["gen_toprapidity_vs_deltaR_pq"] = new TH2D("gen_toprapidity_vs_deltaR_pq","y_{top} vs #Delta R(p,q)",50, -2.5,2.5,50,0,7.);
 		
 		
 	}
 	else if ( type == "Jets") {
-		h1["jets"+suffix1]     = new TH1D("jets"+suffix1,"Number of jets",11,4,15);
+		h1["jets"+suffix1]     = new TH1D("jets"+suffix1,"Number of jets",15,0,15);
 		h1["jet0_et"+suffix1]  = new TH1D("jet0_et"+suffix1,"Jet #1 E_{T} [GeV]",100,0,2500);
 		h1["jet1_et"+suffix1]  = new TH1D("jet1_et"+suffix1,"Jet #2 E_{T} [GeV]",100,0,2500);
 		h1["jet2_et"+suffix1]  = new TH1D("jet2_et"+suffix1,"Jet #3 E_{T} [GeV]",100,0,2500);
@@ -84,6 +84,7 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["jet0_eta"+suffix1]  = new TH1D("jet0_eta"+suffix1,"Jet #1 #eta [GeV]",50,-3.,3.);
 		h1["jet_et"+suffix1]  = new TH1D("jet_et"+suffix1,"Jet E_{T} [GeV]",100,0,2000);
 		h1["jet_eta"+suffix1] = new TH1D("jet_eta"+suffix1,"Jet #eta",50,-3.,3.);
+		h2["jet_ptVseta"+suffix1] = new TH2D("jet_ptVseta"+suffix1,"Jet E_{T} vs #eta",100,0,2000,50,-3.,3.);
 		h1["jet_phi"+suffix1] = new TH1D("jet_phi"+suffix1,"Jet #phi",30,-3.15,3.15);
 		h2["jet_res_et"+suffix1]  = new TH2D("jet_res_et"+suffix1,"Jet E_{T} [GeV]",80,0,300,60,0,30.);
 		h1["Mjet_mass"+suffix1] = new TH1D("Mjet_mass"+suffix1, "MJet mass [GeV/c^{2}]",80,0,500);
@@ -97,6 +98,11 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["topPair_mass"+suffix1] = new TH1D("topPair_mass"+suffix1, "top pair mass [GeV/c^{2}]",100,100,4500);
 		//h1["topPair_et"+suffix1] = new TH1D("Mjet_et"+suffix1, "MJet E_{T} [GeV/c^{2}]",100,0,2500);
 		h1["jet_deltaR_muon"+suffix1] = new TH1D("jet_deltaR_muon"+suffix1, "#Delta R(Jet,#mu)",35,0,5);
+		h1["jet_deltaR_LeptonicW"+suffix1] = new TH1D("jet_deltaR_LeptonicW"+suffix1, "#Delta R(Jet,W_{#mu+#nu})",35,0,5);
+		h1["LeptonicTop_psi"+suffix1] = new TH1D("LeptonicTop_psi"+suffix1, "#psi(jet+W_{#mu+#nu})",100,0.,12.);
+		h1["HadronicTop_psi"+suffix1] = new TH1D("HadronicTop_psi"+suffix1, "#psi(jet+leading-jet)",100,0,12.);
+		h1["LeptonicTop_pt"+suffix1] = new TH1D("LeptonicTop_pt"+suffix1, "p_{T} (jet+W_{#mu+#nu}) [GeV/c]",100,0,4500.);
+		h1["HadronicTop_pt"+suffix1] = new TH1D("HadronicTop_pt"+suffix1, "p_{T} (jet+leading-jet) [GeV/c]",100,0,4500.);
 	}
 	else if ( type == "DisplayJets") {
 		//h2["jet0_calotowerI"+suffix1]  = new TH2D("jet0_calotowerI"+suffix1,"Jet #1 CaloTowers [GeV/c]",40,-1.740,1.740,72,0.,3.141);
@@ -109,11 +115,11 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		//h2["jet0_calotowerII"+suffix1]  = new TH2D("jet0_calotowerII"+suffix1,"Jet #1 CaloTowers [GeV/c]",7,caloEta,36,0.,3.141);
 		//h2["jet1_calotowerII"+suffix1]  = new TH2D("jet1_calotowerII"+suffix1,"Jet #2 CaloTowers [GeV/c]",7,caloEta,36,0.,3.141);
 		//h2["jet2_calotowerII"+suffix1]  = new TH2D("jet2_calotowerII"+suffix1,"Jet #3 CaloTowers [GeV/c]",7,caloEta,36,0.,3.141);
-		//h2["jet3_calotowerII"+suffix1]  = new TH2D("jet3_calotowerII"+suffix1,"Jet #4 CaloTowers [GeV/c]",7,caloEta,36,0.,3.141);
-
+		//h2["jet3_calotowerII"+suffix1]  = new TH2D("jet3_calotowerII"+suffix1,"Jet #4 CaloTowers [GeV/c]",7,caloEta,36,0.,3.141);	
+		
 	}
 	else if ( type == "Muons") {
-		h2["muons_vsJets"+suffix1]         = new TH2D("muons_vsJets"+suffix1,"Number of muons vs Jets",4,1,5,4,0,4);
+		h2["muons_vsJets"+suffix1]         = new TH2D("muons_vsJets"+suffix1,"Number of muons vs Jets",4,1,5,4,1,5);
 		h1["muons"+suffix1]                = new TH1D("muons"+suffix1,"Number of muons",4,1,5);
 		h1["muon_normchi2"+suffix1]        = new TH1D("muon_normchi2"+suffix1,"#chi^{2}/ndof",40,0,30);
 		h1["muon_pt"+suffix1]              = new TH1D("muon_pt"+suffix1,"Muon p_{T} [GeV/c]",80,0.0,200.0);
@@ -127,13 +133,19 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 
 		h2["MET_vsJets"+suffix1] = new TH2D("MET_vsJets"+suffix1,"MET [GeV] vs Jets",100,0.0,1500.0,4,0,4);
 		h1["MET"+suffix1] = new TH1D("MET"+suffix1,"MET [GeV]",100,0.0,1500.0);
+		h1["myMET"+suffix1] = new TH1D("myMET"+suffix1,"MET [GeV]",100,0.0,1500.0);
 		h1["MET_deltaR_muon"+suffix1] = new TH1D("MET_deltaR_muon"+suffix1,"#DeltaR(MET,#mu)",35,0.,7.);
 		//h1["METcomplex"+suffix1] = new TH1D("METcomplex"+suffix1,"MET [GeV]",80,0.0,300.0);
 		h1["nu_pz"+suffix1] = new TH1D("nu_pz"+suffix1,"Neutrino p_{z} [GeV/c]",50,-500.0,500.0);	
-		h1["delta_nu_pz"+suffix1] = new TH1D("delta_nu_pz"+suffix1,"Neutrino #Delta(p_{z}-p^{gen}_{z}) [GeV/c]",50,-50.0,50.0);	
+		h1["delta_nu_pz"+suffix1] = new TH1D("delta_nu_pz"+suffix1,"Neutrino #Delta(p_{z}-p^{gen}_{z}) [GeV/c]",50,-1000.0,1000.0);
+		h1["LeptonicW_psi"+suffix1] = new TH1D("LeptonicW_psi"+suffix1, "#psi(#mu + #nu)",100,0.,12.);
 
 	}
 	else if ( type == "Mass") {
+
+		h1["LeptonicTop_mass"+suffix1] = new TH1D("LeptonicTop_mass"+suffix1, "Mass (jet+W_{#mu+#nu} [GeV/c^{2}]",100,0.,4500.0);
+		h1["HadronicTop_mass"+suffix1] = new TH1D("HadronicTop_mass"+suffix1, "Mass (jet+leading-jet) [GeV/c^{2}]",100,0,4500.0);
+		h1["LeptonicW_mass"+suffix1] = new TH1D("LeptonicW_mass"+suffix1, "Mass(#mu + #nu)",100,0,500);
 
 		h1["WTolnu"+suffix1] = new TH1D("WTolnu"+suffix1,"(#mu + #nu) mass [GeV/c^{2}]",80,0.0,300.0);
 		h1["tToWlnuj"+suffix1] = new TH1D("tToWlnuj"+suffix1,"(W_{l#nu} + jet) mass [GeV/c^{2}]",50,0.0,500.0);

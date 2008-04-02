@@ -1,0 +1,7 @@
+rm RESULTS_L2/Zp*_all.root
+
+hadd RESULTS_L2/Zp1Tev_outputLayer2_fromLayer1_condor_all.root RESULTS_L2/Zp1Tev_outputLayer2_fromLayer1_condor_000*.root
+hadd RESULTS_L2/Zp2Tev_outputLayer2_fromLayer1_condor_all.root RESULTS_L2/Zp2Tev_outputLayer2_fromLayer1_condor_000*.root
+hadd RESULTS_L2/Zp3Tev_outputLayer2_fromLayer1_condor_all.root RESULTS_L2/Zp3Tev_outputLayer2_fromLayer1_condor_000*.root
+hadd RESULTS_L2/Zp4Tev_outputLayer2_fromLayer1_condor_all.root RESULTS_L2/Zp4Tev_outputLayer2_fromLayer1_condor_000*.root
+

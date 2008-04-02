@@ -11,7 +11,7 @@
      <Notes on implementation>
 */
 //
-// $Id: TtEventAnalysis.cc,v 1.2 2008/03/17 15:26:17 yumiceva Exp $
+// $Id: TtEventAnalysis.cc,v 1.3 2008/03/20 18:40:59 yumiceva Exp $
 //
 //
 
@@ -90,7 +90,7 @@ TtEventAnalysis::TtEventAnalysis(const edm::ParameterSet& iConfig)
   
   // initialize cuts
   cut_map["cut0"] = "Initial selection";
-  //cut_map["cut1"] = "Min Muon pt";
+  //  cut_map["cut1"] = "cut1";
   //cut_map["cut2"] = "Min Jet Et";
   //cut_map["cut3"] = "Min MET";
   //cut_map["cut4"] = "";
@@ -124,11 +124,12 @@ TtEventAnalysis::TtEventAnalysis(const edm::ParameterSet& iConfig)
   hmass_->Init("Mass","cut2");
 
   hjets_->Init("Jets","cut1");
-   
+  hmet_->Init("MET","cut1");
+
   if (fdisplayJets) hdisp_->Init("DisplayJets","cut0");
   
   nevents = 0;
-  
+  nWcomplex = 0;
 
 }
 
@@ -137,6 +138,7 @@ TtEventAnalysis::~TtEventAnalysis()
 {
 
 	std::cout << "[TtEventAnalysis] Total events analyzed = " << nevents << std::endl;
+	std::cout << "[TtEventAnalysis] Number of complex solutions = " << nevents << std::endl;
 	
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
@@ -182,6 +184,23 @@ TtEventAnalysis::~TtEventAnalysis()
    if (debug) std::cout << "************* Finished writing histograms to file" << std::endl;
 
 }
+
+double
+TtEventAnalysis::Psi(TLorentzVector p1, TLorentzVector p2, double mass) {
+
+	TLorentzVector ptot = p1 + p2;
+	Double_t theta1 = TMath::ACos( (p1.Vect().Dot(ptot.Vect()))/(p1.P()*ptot.P()) );
+	Double_t theta2 = TMath::ACos( (p2.Vect().Dot(ptot.Vect()))/(p2.P()*ptot.P()) );
+	//Double_t sign = 1.;
+	//if ( (theta1+theta2) > (TMath::Pi()/2) ) sign = -1.;
+	double th1th2 = theta1 + theta2;
+	double psi = (p1.P()+p2.P())*TMath::Abs(TMath::Sin(th1th2))/(2.* mass );
+	if ( th1th2 > (TMath::Pi()/2) )
+		psi = (p1.P()+p2.P())*( 1. + TMath::Abs(TMath::Cos(th1th2)))/(2.* mass );
+	
+	return psi;
+}
+
 
 void
 TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
@@ -295,8 +314,16 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 		   hgen_->Fill1d("gen_deltaR_qLepb", DeltaR<reco::Candidate>()(*genHadWq , *genLepb ) );
 		   hgen_->Fill1d("gen_deltaR_qmu", DeltaR<reco::Candidate>()(*genHadWq , *genMuon ) );
 		   LorentzVector tmpgentop = genEvent->hadronicDecayTop()->p4();
-		   hgen_->Fill1d("gen_MoverE_pq", 2.*tmpgentop.M()/tmpgentop.E() );
-		   hgen_->Fill2d("gen_MoverEvstoprapidity_pq", 2.*tmpgentop.M()/tmpgentop.E(), tmpgentop.Rapidity() );
+		   LorentzVector tmpgenW = genEvent->hadronicDecayW()->p4();
+		   LorentzVector tmpgenWp= genEvent->hadronicDecayQuark()->p4();
+		   LorentzVector tmpgenWq= genEvent->hadronicDecayQuarkBar()->p4();
+		   TVector3 genp1(tmpgenWp.Px(),tmpgenWp.Py(),tmpgenWp.Pz());
+		   TVector3 genp2(tmpgenWq.Px(),tmpgenWq.Py(),tmpgenWq.Pz());
+		   TVector3 genptot(tmpgenW.Px(),tmpgenW.Py(),tmpgenW.Pz());
+		   Double_t tmptheta1 = TMath::ACos( (genp1.Dot(genptot))/(tmpgenWp.P()*tmpgenW.P()) );
+		   Double_t tmptheta2 = TMath::ACos( (genp2.Dot(genptot))/(tmpgenWq.P()*tmpgenW.P()) );
+		   hgen_->Fill2d("gen_toprapidity_vs_psi_pq",tmpgentop.Rapidity(), (tmpgenWp.P()+tmpgenWq.P())*TMath::Sin(tmptheta1+tmptheta2)/(2.*tmpgentop.M() ));
+		   hgen_->Fill2d("gen_toprapidity_vs_deltaR_pq",tmpgentop.Rapidity(),DeltaR<reco::Candidate>()(*genHadWp, *genHadWq )  );
 		   
 		   
 	   } else {
@@ -316,12 +343,15 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
    //**** JETS ****//
    TLorentzVector jetP4[4];
+   TLorentzVector myMETP4;
    
    hjets_->Fill1d(TString("jets")+"_"+"cut0", jets.size(), weight );
    for( size_t ijet=0; ijet != jets.size(); ++ijet) {
 
 	   TLorentzVector tmpP4;
 	   tmpP4.SetPxPyPzE(jets[ijet].px(),jets[ijet].py(),jets[ijet].pz(),jets[ijet].energy());
+
+	   if (jets[ijet].pt() > 20. ) myMETP4 = myMETP4 + TLorentzVector(jets[ijet].px(),jets[ijet].py(),0,jets[ijet].pt());
 	   
 	   if(ijet==0) {
 		   if (debug) std::cout << "leading jet et: " << jets[ijet].et() << std::endl;
@@ -376,12 +406,12 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 	   hjets_->Fill1d(TString("jet_et")+"_"+"cut0", jets[ijet].et(), weight );
 	   hjets_->Fill1d(TString("jet_eta")+"_"+"cut0", jets[ijet].eta(), weight );
 	   hjets_->Fill1d(TString("jet_phi")+"_"+"cut0", jets[ijet].phi(), weight );
-	   	   
+	   hjets_->Fill2d(TString("jet_ptVseta")+"_cut0", jets[ijet].et(),jets[ijet].eta(), weight);
 	   
    }
    if (debug) std::cout << "got leading jets" << std::endl;
 
-
+   
    
    // MUONS
    bool found_goodmuon = false;
@@ -415,15 +445,25 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
    if (debug) std::cout << "muons done" << std::endl;
    
    if ( found_goodmuon ) {
+
+	   // plot my MET
+	   hmet_->Fill1d(TString("myMET")+"_cut0", myMETP4.Pt());
+	   // correct my MET
+	   myMETP4 = myMETP4 + TLorentzVector(muonP4.Px(),muonP4.Py(),0,muonP4.Pt());
+	   hmet_->Fill1d(TString("myMET")+"_cut1", myMETP4.Pt());
    // MET
    // met is corrected by muon momentum, how about muon energy?
-   if (met.size() == 0 and debug ) std::cout << "MET size collection is zero!" << std::endl; 
+   if (met.size() == 0 and debug ) std::cout << "MET size collection is zero!" << std::endl;
+   if (debug) std::cout << " MET size = " << met.size() << std::endl;
+   
    for( size_t imet=0; imet != met.size(); ++imet) {
 	   hmet_->Fill1d(TString("MET")+"_"+"cut0", met[imet].et(), weight );
 	   hmet_->Fill1d(TString("MET_deltaR_muon")+"_"+"cut0", DeltaR<reco::Candidate>()( met[imet] , muons[0] ), weight  );
+	   hmet_->FillvsJets2d(TString("MET_vsJets")+"_cut0",met[imet].et(), jets, weight );
    }
    if (debug) std::cout << "MET done" << std::endl;
    
+   myMETP4 = (-1)*myMETP4;
    
 
    // Solving for neutrino Pz from W->mu+nu
@@ -431,25 +471,46 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
    TLorentzVector nuP4;
    bool found_nu = false;
    bool found_goodMET = false;
+  
    if ( met.size()>0 && muons.size()>0 ) {
 	   MEzCalculator zcalculator;
+	   // ok let's use myMET
 	   zcalculator.SetMET( met[0] );
+	   //zcalculator.SetMET(myMETP4);
 	   zcalculator.SetMuon( muons[0] );
-	   neutrinoPz = zcalculator.Calculate();
+	   neutrinoPz = zcalculator.Calculate(1);// closest to the lepton Pz
+	   if (zcalculator.IsComplex()) nWcomplex += 1;
+	   
 	   if (debug) std::cout << " reconstructed neutrino Pz = " << neutrinoPz << std::endl;
 	   nuP4.SetPxPyPzE(met[0].px(), met[0].py(), neutrinoPz,
-					   sqrt(met[0].px()*met[0].px()+met[1].py()*met[1].py()+neutrinoPz*neutrinoPz) );
+	   		   sqrt(met[0].px()*met[0].px()+met[1].py()*met[1].py()+neutrinoPz*neutrinoPz) );
+	   //nuP4 = myMETP4 + TLorentzVector(0,0,neutrinoPz,neutrinoPz);
 	   
 	   hmuons_->Fill1d(TString("muon_deltaR_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaR( muonP4.Vect(), nuP4.Vect() ), weight );
 	   hmuons_->Fill1d(TString("muon_deltaPhi_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ), weight );
 	   hmet_->Fill1d(TString("nu_pz")+"_cut0",neutrinoPz, weight);
 	   hmet_->Fill1d(TString("delta_nu_pz")+"_cut0",(neutrinoPz - genNupz), weight);
 	   found_nu = true;
-		   
-	   if ( ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ) < 0.75 ) found_goodMET = true;
+
+	   hmass_->Fill1d(TString("LeptonicW_mass")+"_cut1",(muonP4+nuP4).M(), weight );
+	   
+	   // apply psi cut to MET
+	   double LepW_psi = Psi(muonP4, nuP4, 80.4);
+	   hmet_->Fill1d(TString("LeptonicW_psi")+"_cut0",LepW_psi, weight);
+
+	   // select good MET
+	   //if ( ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ) < 0.75 ) found_goodMET = true;
+	   if ( (muonP4+nuP4).M() < 100. && LepW_psi < 2 ) {
+		   found_goodMET = true;
+		   hmet_->Fill1d(TString("delta_nu_pz")+"_cut1",(neutrinoPz - genNupz), weight);
+	   }
+	   
+	   
    }
    if (debug) std::cout << "got neutrino? " << found_nu << std::endl;
    if (debug) std::cout << "got good MET? " << found_goodMET << std::endl;
+
+   
    
    // write ASCII file if requested
    if (fwriteAscii) {
@@ -467,493 +528,103 @@ TtEventAnalysis::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 		       
 	   }
    }
-   
-   
-   // find Mega jet opposite to muon
-   TLorentzVector mjetP4;
-   int nmerged = 0;
-   int tmp_mjet = -1;
-   for ( int ij=0; ij<4; ++ij) {
 
-	   double deltaR = ROOT::Math::VectorUtil::DeltaR( jetP4[ij].Vect(), muonP4.Vect() );
-	   double maxdeltaR = 0;
-	   if (debug) std::cout << " deltaR(jet,muon) = " << deltaR << std::endl;
-	   if ( deltaR > 2.5 ) {
-		   maxdeltaR = deltaR;
-		   tmp_mjet = ij;
-		   break;
-	   }
-   }
-   bool found_Mjet = false;
-   // merge jets into mega jet
-   std::vector<int> listofmergedjets;
-   if ( tmp_mjet != -1 ) {
+   // find delta R of leptonic W with other jets
+   bool found_leadingJet = false;
+   size_t ith_leadingJet = 0;
+   TLorentzVector leadingP4;
+   TLorentzVector hadTopP4;
+   TLorentzVector lepTopP4;
+   
+			   
+   if ( found_goodMET) {
 
-	   mjetP4 = jetP4[tmp_mjet];
+	   TLorentzVector lepWP4 = muonP4 + nuP4;
+	   lepTopP4 = lepTopP4 + lepWP4;
+	   
 	   for( size_t ijet=0; ijet != jets.size(); ++ijet) {
 
+		   if (jets[ijet].pt() <= 20. ) continue;
+		   
 		   TLorentzVector tmpP4;
 		   tmpP4.SetPxPyPzE(jets[ijet].px(),jets[ijet].py(),jets[ijet].pz(),jets[ijet].energy());
-		   double deltaR = ROOT::Math::VectorUtil::DeltaR( tmpP4.Vect(), mjetP4.Vect() );
-		   if ( ijet != tmp_mjet && deltaR < 1.6 ) {
+
+		   double deltaR_jLepW = ROOT::Math::VectorUtil::DeltaR( tmpP4.Vect(), lepWP4.Vect() );
+		   hjets_->Fill1d(TString("jet_deltaR_LeptonicW")+"_cut0", deltaR_jLepW ,weight);
+
+		   if ( !found_leadingJet && deltaR_jLepW>2. ) {
+			   found_leadingJet = true;
+			   leadingP4 = tmpP4;
+			   ith_leadingJet = ijet;
+			   if (debug) std::cout << "found leading jet" <<std::endl;
+		   }
+
+	   }
+
+	   if (debug) std::cout << "leading jet ("<<leadingP4.Px() <<","<<leadingP4.Py()<<","<<leadingP4.Pz()<<","<<leadingP4.E()<<")"<<std::endl;
+	   if (debug) std::cout << "lepW jet ("<<lepWP4.Px() <<","<<lepWP4.Py()<<","<<lepWP4.Pz()<<","<<lepWP4.E()<<")"<<std::endl;
+	   
+	   if ( found_leadingJet ) {
+	     //add leading jet to hadronic top
+	     hadTopP4 += leadingP4;
+
+		   for( size_t ijet=0; ijet != jets.size(); ++ijet) {
+
+			   if (jets[ijet].pt() <= 20. ) continue;
 			   
-			   mjetP4 = mjetP4 + tmpP4;
-			   listofmergedjets.push_back(ijet);
-			   hjets_->Fill1d(TString("Mjet_et_subjets")+"_"+"cut0", tmpP4.Et(), weight );
-			   nmerged++;
+		     if (ith_leadingJet != ijet) {
+			   TLorentzVector tmpP4;
+			   tmpP4.SetPxPyPzE(jets[ijet].px(),jets[ijet].py(),jets[ijet].pz(),jets[ijet].energy());
 			   
-		   }
-	   }
-
-	   found_Mjet = true;
-   }
-   if (debug) std::cout << "got Mjet?" << found_Mjet << " Et = " << mjetP4.Et() << " with listofmergedjets.size = " << listofmergedjets.size() << std::endl;
-   
-   if ( found_Mjet ) {
-	   
-	   hjets_->Fill1d(TString("Mjet_et")+"_"+"cut0", mjetP4.Et(), weight );
-	   hjets_->Fill1d(TString("Mjet_mass")+"_"+"cut0", mjetP4.M(), weight );
-	   hjets_->Fill1d(TString("Mjet_deltaR_mu")+"_"+"cut0",ROOT::Math::VectorUtil::DeltaR( mjetP4.Vect(), muonP4.Vect() ), weight );
-	   hjets_->Fill1d(TString("Mjet_njets")+"_"+"cut0", nmerged, weight );
-	   
-	   // find b jet: another leading jet close to the muon
-	   TLorentzVector bjetP4;
-	   bool bfound = false;
-	   for( size_t ijet=0; ijet < 4; ++ijet) {
-
-		   if (debug) std::cout << " ijet = " << ijet << std::endl;
-		   if (bfound) break;
-
-		   if ( listofmergedjets.size() == 0 && ( (int)ijet)!= tmp_mjet) {
-
-			   bjetP4 = jetP4[ijet];
-			   if (debug) std::cout << " bjet ijet = " << ijet << std::endl;
-			   bfound = true;
-			   break;
-		   }
-		   else {
-			   for ( size_t imerged = 0; imerged!= listofmergedjets.size(); ++imerged) {
-
-				   if (debug) std::cout << "   merged jet list = " << listofmergedjets[imerged]  << std::endl;
+			   double psi_LepTop = Psi(tmpP4, lepWP4, 175.0 );
+			   if (debug) std::cout << "psi_LepTop= " << psi_LepTop << std::endl;
+			   double psi_HadTop = Psi(tmpP4, leadingP4, 175.0 );
+			   if (debug) std::cout << "psi_HadTop= " << psi_HadTop << std::endl;
 			   
-				   if ( ijet != listofmergedjets[imerged] && ( (int)ijet)!= tmp_mjet ) {
-					   bjetP4 = jetP4[ijet];
-					   if (debug) std::cout << " bjet ijet = " << ijet << std::endl;
-					   bfound = true;
-					   break;
-				   }
-			   }
+			   hjets_->Fill1d(TString("LeptonicTop_psi")+"_cut0", psi_LepTop, weight);
+			   hjets_->Fill1d(TString("HadronicTop_psi")+"_cut0", psi_HadTop, weight);
+
+			   if ( psi_LepTop < psi_HadTop ) lepTopP4 += tmpP4;
+			   else hadTopP4 += tmpP4;
+			   
+			   //if ( psi_LepTop>=0 && psi_HadTop>=0) {
+			   // if ( psi_LepTop < psi_HadTop ) lepTopP4 += tmpP4;
+			   // else hadTopP4 += tmpP4;
+			   //}
+			   //if ( psi_LepTop < 0 && psi_HadTop >= 0 ) hadTopP4 += tmpP4;
+			   //if ( psi_LepTop >= 0 && psi_HadTop < 0 ) lepTopP4 += tmpP4;
+		     }
 		   }
 	   }
 
-	   hjets_->Fill1d(TString("Mjet_deltaR_b")+"_"+"cut0",ROOT::Math::VectorUtil::DeltaR( mjetP4.Vect(), bjetP4.Vect() ), weight );
-	   hmuons_->Fill1d(TString("muon_deltaR_b")+"_cut0",ROOT::Math::VectorUtil::DeltaR(muonP4.Vect(), bjetP4.Vect()), weight);
-
-	   // now find a good b candidate opposite to Mjet
-	   bool found_LepbJet = false;
-	   if ( ROOT::Math::VectorUtil::DeltaR( muonP4.Vect(), bjetP4.Vect() ) < 0.75 ) { 
-	     // before was deltaR(mjet,bjet) > 1 ?
-		   //hjets_->Fill1d(TString("Mjet_mass")+"_"+"cut1", mjetP4.M() );
-		   //hjets_->Fill1d(TString("Mjet_et")+"_"+"cut1", mjetP4.Et() );
-		   found_LepbJet = true;
+	   if (debug) {
+		   std::cout << "leptonic top pt= " << lepTopP4.Pt() << " mass= " << lepTopP4.M() << std::endl;
+		   std::cout << "hadronic top pt= " << hadTopP4.Pt() << " mass= " << hadTopP4.M() <<std::endl;
 	   }
-
 	   
-	   //// Solving for neutrino Pz from W->mu+nu
-	   /*
-	   double neutrinoPz = -999999.;
-	   TLorentzVector nuP4;
-	   bool found_nu = false;
-	   bool found_goodMET = false;
-	   if ( met.size()>0 && muons.size()>0 ) {
-		   MEzCalculator zcalculator;
-		   zcalculator.SetMET( met[0] );
-		   zcalculator.SetMuon( muons[0] );
-		   neutrinoPz = zcalculator.Calculate();
-		   
-		   nuP4.SetPxPyPzE(met[0].px(), met[0].py(), neutrinoPz,
-						   sqrt(met[0].px()*met[0].px()+met[1].py()*met[1].py()+neutrinoPz*neutrinoPz) );
-		   
-		   hmuons_->Fill1d(TString("muon_deltaR_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaR( muonP4.Vect(), nuP4.Vect() ), weight );
-		   hmuons_->Fill1d(TString("muon_deltaPhi_nu")+"_cut0",ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ), weight );
-		   hmet_->Fill1d(TString("nu_pz")+"_cut0",neutrinoPz, weight);
-		   
-		   found_nu = true;
-		   
-		   if ( ROOT::Math::VectorUtil::DeltaPhi( muonP4.Vect(), nuP4.Vect() ) < 0.75 ) found_goodMET = true;
-	   }
-	   if (debug) std::cout << "got neutrino? " << found_nu << std::endl;
-	   if (debug) std::cout << "got good MET? " << found_goodMET << std::endl;
-	   */
+	   hjets_->Fill1d(TString("LeptonicTop_pt")+"_cut0", lepTopP4.Pt(), weight);
+	   hjets_->Fill1d(TString("HadronicTop_pt")+"_cut0", hadTopP4.Pt(), weight);
+	   if (debug) std::cout << "done pt" << std::endl;
 	   
-	   if ( found_LepbJet && found_nu && found_goodMET ) {
-		   
-		   TLorentzVector LepTopP4;
-		   LepTopP4 = muonP4 + nuP4 + bjetP4;
-		   
-		   hjets_->Fill1d(TString("bjet_mass")+"_cut1", LepTopP4.M(), weight );
-		   hjets_->Fill1d(TString("bjet_et")+"_cut1", LepTopP4.Et(), weight );
-		   hjets_->Fill1d(TString("Mjet_mass")+"_cut1", mjetP4.M(), weight );
-		   hjets_->Fill1d(TString("Mjet_et")+"_cut1", mjetP4.Et(), weight );
-		   
-		   TLorentzVector topPairP4 = mjetP4 + LepTopP4;
-		   TLorentzVector topPairP4CM;
-		   topPairP4CM.Boost(topPairP4.Px(),topPairP4.Py(),topPairP4.Pz());
-		   
-		   hjets_->Fill1d(TString("topPair_mass")+"_cut1", topPairP4.M(), weight );
-		   //hjets_->Fill1d(TString("topPair_et")+"_"+"cut1", topPairP4.Et() );
-
-		   double CosThetaCM = 0;
-		   
-		   // top quark is leptonic jet
-		   if (muonCharge == 1 ) {
-			   TLorentzVector LepTopP4CM;
-			   LepTopP4CM.Boost(topPairP4.Px(),topPairP4.Py(),topPairP4.Pz());
-			   CosThetaCM = LepTopP4CM.Angle(topPairP4.Vect());
-		   }
-		   // anti-top quark is leptonic jet
-		   else if (muonCharge == -1 ) {
-			   TLorentzVector mjetP4CM;
-			   mjetP4CM.Boost(topPairP4.Px(),topPairP4.Py(),topPairP4.Pz());
-			   CosThetaCM = mjetP4CM.Angle(mjetP4CM.Vect());
-		   }			   
-		   
-		   if (debug) std::cout << "got all, and top pair." << std::endl;
-
-		   
-	   }
-
-   }
-	
-   // SOLUTONS
-   // are jets treated massless?
-   TLorentzVector recjetP4[4];
-   TLorentzVector recHadtP4;
-   TLorentzVector recLeptP4;
-   TLorentzVector recHadWP4;
-   TLorentzVector recLepWP4;
-   TLorentzVector rectPairP4;
-
-   TLorentzVector fitjetP4[4];
-   TLorentzVector fitHadtP4;
-   TLorentzVector fitLeptP4;
-   TLorentzVector fittPairP4;
+	   hmass_->Fill1d(TString("LeptonicTop_mass")+"_cut1", lepTopP4.M(), weight);
+	   hmass_->Fill1d(TString("HadronicTop_mass")+"_cut1", hadTopP4.M(), weight);
+	   if (debug) std::cout << "done mass" << std::endl;
+	   
+	   TLorentzVector topPairP4 = hadTopP4+lepTopP4;
+	   
+	   hmass_->Fill1d(TString("topPair")+"_cut1", topPairP4.M(), weight);
+	   
+	   if (debug) std::cout << "done." << std::endl;
+	   
+   }// found good MET
   
-   //if (debug) std::cout << "sol.size = " << sols.size() << std::endl;
-	
-   /*
-   for( size_t isol=0; isol != sols.size(); ++isol) {
-	   
-	   // all solutions
-	   recjetP4[0].SetPtEtaPhiE(sols[isol].getCalHadp().pt(),
-								sols[isol].getCalHadp().eta(),
-								sols[isol].getCalHadp().phi(),
-								sols[isol].getCalHadp().energy());
-	   recjetP4[1].SetPtEtaPhiE(sols[isol].getCalHadq().pt(),
-								sols[isol].getCalHadq().eta(),
-								sols[isol].getCalHadq().phi(),
-								sols[isol].getCalHadq().energy());
-	   recjetP4[2].SetPtEtaPhiE(sols[isol].getCalHadb().pt(),
-								sols[isol].getCalHadb().eta(),
-								sols[isol].getCalHadb().phi(),
-								sols[isol].getCalHadb().energy());
-	   recjetP4[3].SetPtEtaPhiE(sols[isol].getCalLepb().pt(),
-								sols[isol].getCalLepb().eta(),
-								sols[isol].getCalLepb().phi(),
-								sols[isol].getCalLepb().energy());
-	   recHadtP4.SetPtEtaPhiE(sols[isol].getCalHadt().pt(),
-								 sols[isol].getCalHadt().eta(),
-								 sols[isol].getCalHadt().phi(),
-								 sols[isol].getCalHadt().energy());
-	   recLeptP4.SetPtEtaPhiE(sols[isol].getCalLept().pt(),
-								 sols[isol].getCalLept().eta(),
-								 sols[isol].getCalLept().phi(),
-								 sols[isol].getCalLept().energy());
-	   
-	   rectPairP4 = recHadtP4 + recLeptP4;
-
-	   fitHadtP4.SetPtEtaPhiE(sols[isol].getFitHadt().pt(),
-								 sols[isol].getFitHadt().eta(),
-								 sols[isol].getFitHadt().phi(),
-								 sols[isol].getFitHadt().energy());
-	   fitLeptP4.SetPtEtaPhiE(sols[isol].getFitLept().pt(),
-								 sols[isol].getFitLept().eta(),
-								 sols[isol].getFitLept().phi(),
-								 sols[isol].getFitLept().energy());
-	   
-	   fittPairP4 = fitHadtP4 + fitLeptP4;
-
-	   //hmass_->Fill1d(TString("nu_pz")+"_"+"cut0", sols[isol].getNeutrinoPz());
-	   
-	   hmass_->Fill1d(TString("WTolnu")+"_"+"cut0", sols[isol].getCalLepW().mass());
-	   hmass_->Fill1d(TString("tToWlnuj")+"_"+"cut0", sols[isol].getCalLept().mass());
-	   
-	   hmass_->Fill1d(TString("WTojj")+"_"+"cut0", sols[isol].getCalHadW().mass());
-	   hmass_->Fill1d(TString("tTojjj")+"_"+"cut0", sols[isol].getCalHadt().mass());
-	   	   
-	   hmass_->Fill1d(TString("kinfit_probchi2")+"_"+"cut0", sols[isol].getProbChi2() );
-	   hmass_->Fill1d(TString("topPair")+"_"+"cut0", rectPairP4.M() );
-	   hmass_->Fill1d(TString("fittopPair")+"_"+"cut0", fittPairP4.M() );
-	   hmass_->Fill1d(TString("topPairRes")+"_"+"cut0", (rectPairP4.M() - gentoppairP4.M())/gentoppairP4.M() );
-	   hmass_->Fill1d(TString("fittopPairRes")+"_"+"cut0", (fittPairP4.M() - gentoppairP4.M())/gentoppairP4.M() );
-
-	   if (sols[isol].getProbChi2() > 0 ) {
-		   hmass_->Fill1d(TString("EtpPull")+"_"+"cut0",(sols[isol].getFitHadp().et() - sols[isol].getCalHadp().et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("fitEtpPull")+"_"+"cut0",(sols[isol].getFitHadp().et() - sols[isol].getGenHadp()->et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("EtlbPull")+"_"+"cut0",(sols[isol].getFitLepb().et() - sols[isol].getCalLepb().et() )/sqrt(sols[isol].getFitLepb().getCovM()[0]) );
-		   hmass_->Fill1d(TString("fitEtlbPull")+"_"+"cut0",(sols[isol].getFitLepb().et() - sols[isol].getGenLepb()->et() )/sqrt(sols[isol].getFitLepb().getCovM()[0]) );
-	   }
-   }
-
-   if (sols.size() > 0) {
-
-	   int isol = sols[0].getMCBestJetComb();
-
-	   if (isol >= 0 ) {
-	   
-	   recjetP4[0].SetPtEtaPhiE(sols[isol].getCalHadp().pt(),
-								sols[isol].getCalHadp().eta(),
-								sols[isol].getCalHadp().phi(),
-								sols[isol].getCalHadp().energy());
-	   recjetP4[1].SetPtEtaPhiE(sols[isol].getCalHadq().pt(),
-								sols[isol].getCalHadq().eta(),
-								sols[isol].getCalHadq().phi(),
-								sols[isol].getCalHadq().energy());
-	   recjetP4[2].SetPtEtaPhiE(sols[isol].getCalHadb().pt(),
-								sols[isol].getCalHadb().eta(),
-								sols[isol].getCalHadb().phi(),
-								sols[isol].getCalHadb().energy());
-	   recjetP4[3].SetPtEtaPhiE(sols[isol].getCalLepb().pt(),
-								sols[isol].getCalLepb().eta(),
-								sols[isol].getCalLepb().phi(),
-								sols[isol].getCalLepb().energy());
-	   recHadtP4.SetPtEtaPhiE(sols[isol].getCalHadt().pt(),
-								 sols[isol].getCalHadt().eta(),
-								 sols[isol].getCalHadt().phi(),
-								 sols[isol].getCalHadt().energy());
-	   recLeptP4.SetPtEtaPhiE(sols[isol].getCalLept().pt(),
-								 sols[isol].getCalLept().eta(),
-								 sols[isol].getCalLept().phi(),
-								 sols[isol].getCalLept().energy());
-	   
-	   rectPairP4 = recHadtP4 + recLeptP4;
-
-	   fitHadtP4.SetPtEtaPhiE(sols[isol].getFitHadt().pt(),
-								 sols[isol].getFitHadt().eta(),
-								 sols[isol].getFitHadt().phi(),
-								 sols[isol].getFitHadt().energy());
-	   fitLeptP4.SetPtEtaPhiE(sols[isol].getFitLept().pt(),
-								 sols[isol].getFitLept().eta(),
-								 sols[isol].getFitLept().phi(),
-								 sols[isol].getFitLept().energy());
-	   
-	   fittPairP4 = fitHadtP4 + fitLeptP4;
-
-	   //hmass_->Fill1d(TString("nu_pz")+"_"+"cut1", sols[isol].getNeutrinoPz());
-	   
-	   hmass_->Fill1d(TString("WTolnu")+"_"+"cut1", sols[isol].getCalLepW().mass());
-	   hmass_->Fill1d(TString("tToWlnuj")+"_"+"cut1", sols[isol].getCalLept().mass());
-	   
-	   hmass_->Fill1d(TString("WTojj")+"_"+"cut1", sols[isol].getCalHadW().mass());
-	   hmass_->Fill1d(TString("tTojjj")+"_"+"cut1", sols[isol].getCalHadt().mass());
-
-	   hmass_->Fill1d(TString("kinfit_probchi2")+"_"+"cut1", sols[isol].getProbChi2() );
-	   hmass_->Fill1d(TString("topPair")+"_"+"cut1", rectPairP4.M() );
-	   hmass_->Fill1d(TString("fittopPair")+"_"+"cut1", fittPairP4.M() );
-	   hmass_->Fill1d(TString("topPairRes")+"_"+"cut1", (rectPairP4.M() - gentoppairP4.M())/gentoppairP4.M() );
-	   hmass_->Fill1d(TString("fittopPairRes")+"_"+"cut1", (fittPairP4.M() - gentoppairP4.M())/gentoppairP4.M() );
-
-	   if (sols[isol].getProbChi2() > 0 ) {
-		   hmass_->Fill1d(TString("EtpPull")+"_"+"cut1",(sols[isol].getFitHadp().et() - sols[isol].getCalHadp().et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("fitEtpPull")+"_"+"cut1",(sols[isol].getFitHadp().et() - sols[isol].getGenHadp()->et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("EtlbPull")+"_"+"cut1",(sols[isol].getFitLepb().et() - sols[isol].getCalLepb().et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("fitEtlbPull")+"_"+"cut1",(sols[isol].getFitLepb().et() - sols[isol].getGenLepb()->et() )/sqrt(sols[isol].getFitLepb().getCovM()[0]) );
-	   }
-	   }
-	   //  
-	   //
-	   isol = sols[0].getSimpleBestJetComb();
-	   if (isol >= 0 ) {
-	   
-	   recjetP4[0].SetPtEtaPhiE(sols[isol].getCalHadp().pt(),
-								sols[isol].getCalHadp().eta(),
-								sols[isol].getCalHadp().phi(),
-								sols[isol].getCalHadp().energy());
-	   recjetP4[1].SetPtEtaPhiE(sols[isol].getCalHadq().pt(),
-								sols[isol].getCalHadq().eta(),
-								sols[isol].getCalHadq().phi(),
-								sols[isol].getCalHadq().energy());
-	   recjetP4[2].SetPtEtaPhiE(sols[isol].getCalHadb().pt(),
-								sols[isol].getCalHadb().eta(),
-								sols[isol].getCalHadb().phi(),
-								sols[isol].getCalHadb().energy());
-	   recjetP4[3].SetPtEtaPhiE(sols[isol].getCalLepb().pt(),
-								sols[isol].getCalLepb().eta(),
-								sols[isol].getCalLepb().phi(),
-								sols[isol].getCalLepb().energy());
-	   recHadtP4.SetPtEtaPhiE(sols[isol].getCalHadt().pt(),
-								 sols[isol].getCalHadt().eta(),
-								 sols[isol].getCalHadt().phi(),
-								 sols[isol].getCalHadt().energy());
-	   recLeptP4.SetPtEtaPhiE(sols[isol].getCalLept().pt(),
-								 sols[isol].getCalLept().eta(),
-								 sols[isol].getCalLept().phi(),
-								 sols[isol].getCalLept().energy());
-	   
-	   rectPairP4 = recHadtP4 + recLeptP4;
-
-	   fitHadtP4.SetPtEtaPhiE(sols[isol].getFitHadt().pt(),
-								 sols[isol].getFitHadt().eta(),
-								 sols[isol].getFitHadt().phi(),
-								 sols[isol].getFitHadt().energy());
-	   fitLeptP4.SetPtEtaPhiE(sols[isol].getFitLept().pt(),
-								 sols[isol].getFitLept().eta(),
-								 sols[isol].getFitLept().phi(),
-								 sols[isol].getFitLept().energy());
-	   
-	   fittPairP4 = fitHadtP4 + fitLeptP4;
-
-	   //hmass_->Fill1d(TString("nu_pz")+"_"+"cut2", sols[isol].getNeutrinoPz());
-	   
-	   hmass_->Fill1d(TString("WTolnu")+"_"+"cut2", sols[isol].getCalLepW().mass());
-	   hmass_->Fill1d(TString("tToWlnuj")+"_"+"cut2", sols[isol].getCalLept().mass());
-	   
-	   hmass_->Fill1d(TString("WTojj")+"_"+"cut2", sols[isol].getCalHadW().mass());
-	   hmass_->Fill1d(TString("tTojjj")+"_"+"cut2", sols[isol].getCalHadt().mass());
-
-	   hmass_->Fill1d(TString("kinfit_probchi2")+"_"+"cut2", sols[isol].getProbChi2() );
-	   hmass_->Fill1d(TString("topPair")+"_"+"cut2", rectPairP4.M() );
-	   hmass_->Fill1d(TString("fittopPair")+"_"+"cut2", fittPairP4.M() );
-	   hmass_->Fill1d(TString("topPairRes")+"_"+"cut2", (rectPairP4.M() - gentoppairP4.M())/gentoppairP4.M() );
-	   hmass_->Fill1d(TString("fittopPairRes")+"_"+"cut2", (fittPairP4.M() - gentoppairP4.M())/gentoppairP4.M() );
-
-	   if (sols[isol].getProbChi2() > 0 ) {
-		   hmass_->Fill1d(TString("EtpPull")+"_"+"cut2",(sols[isol].getFitHadp().et() - sols[isol].getCalHadp().et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("fitEtpPull")+"_"+"cut2",(sols[isol].getFitHadp().et() - sols[isol].getGenHadp()->et() )/sqrt(sols[isol].getFitHadp().getCovM()[0]) );
-		   hmass_->Fill1d(TString("EtlbPull")+"_"+"cut2",(sols[isol].getFitLepb().et() - sols[isol].getCalLepb().et() )/sqrt(sols[isol].getFitLepb().getCovM()[0]) );
-		   hmass_->Fill1d(TString("fitEtlbPull")+"_"+"cut2",(sols[isol].getFitLepb().et() - sols[isol].getGenLepb()->et() )/sqrt(sols[isol].getFitLepb().getCovM()[0]) );
-	   }
-	   }
-	   
-   }
-
-   */
    
-   /*
-   if ( sols.size() > 0 ) 
-
-   if ( (sols[0].getGenEvent()->isSemiLeptonic()     ) && 
-        (sols[0].getGenEvent()->numberOfBQuarks()==2 ) ){ 
-
-      int bestSol = sols[0].getMCBestJetComb();
-      histo1 = h_Jet;
-      histo3 = h_Other;
-
-      jET_g[0] = ((sols[bestSol]).getGenHadp())->et();
-      jET_g[1] = ((sols[bestSol]).getGenHadq())->et();
-      jET_g[2] = ((sols[bestSol]).getGenHadb())->et();
-      jET_g[3] = ((sols[bestSol]).getGenLepb())->et();
-      jh_g[0]  = ((sols[bestSol]).getGenHadp())->eta();
-      jh_g[1]  = ((sols[bestSol]).getGenHadq())->eta();
-      jh_g[2]  = ((sols[bestSol]).getGenHadb())->eta();
-      jh_g[3]  = ((sols[bestSol]).getGenLepb())->eta();
-
-      jET_r[0] = ((sols[bestSol]).getRecHadp()).et();
-      jET_r[1] = ((sols[bestSol]).getRecHadq()).et();
-      jET_r[2] = ((sols[bestSol]).getRecHadb()).et();
-      jET_r[3] = ((sols[bestSol]).getRecLepb()).et();
-      jh_r[0]  = ((sols[bestSol]).getRecHadp()).eta();
-      jh_r[1]  = ((sols[bestSol]).getRecHadq()).eta();
-      jh_r[2]  = ((sols[bestSol]).getRecHadb()).eta();
-      jh_r[3]  = ((sols[bestSol]).getRecLepb()).eta();
-
-      jET_c[0] = ((sols[bestSol]).getCalHadp()).et();
-      jET_c[1] = ((sols[bestSol]).getCalHadq()).et();
-      jET_c[2] = ((sols[bestSol]).getCalHadb()).et();
-      jET_c[3] = ((sols[bestSol]).getCalLepb()).et();
-      jh_c[0]  = ((sols[bestSol]).getCalHadp()).eta();
-      jh_c[1]  = ((sols[bestSol]).getCalHadq()).eta();
-      jh_c[2]  = ((sols[bestSol]).getCalHadb()).eta();
-      jh_c[3]  = ((sols[bestSol]).getCalLepb()).eta();
-
-      for (int i=0; i<4; i++){
-          histo1->Fill1a(jET_g[i],jh_g[i]);
-          histo1->Fill1b(jET_r[i],jh_r[i]);
-          histo1->Fill1c(jET_c[i],jh_c[i]);
-      }
-
-      if ( sols[bestSol].getProbChi2()>0 ) {
-         jET_f[0] = ((sols[bestSol]).getFitHadp()).et();
-         jET_f[1] = ((sols[bestSol]).getFitHadq()).et();
-         jET_f[2] = ((sols[bestSol]).getFitHadb()).et();
-         jET_f[3] = ((sols[bestSol]).getFitLepb()).et();
-         jh_f[0]  = ((sols[bestSol]).getFitHadp()).eta();
-         jh_f[1]  = ((sols[bestSol]).getFitHadq()).eta();
-         jh_f[2]  = ((sols[bestSol]).getFitHadb()).eta();
-         jh_f[3]  = ((sols[bestSol]).getFitLepb()).eta();
-	 for (int i=0; i<4; i++){
-             histo1->Fill1d(jET_f[i],jh_f[i]);
-         }
-         histo3->Fill3a( (sols[bestSol]).getProbChi2() );
-      }
-      histo3->Fill3b( (sols[bestSol]).getMCBestSumAngles() );
-
-      mth[0] = ((sols[bestSol]).getRecHadt()).mass();
-      mth[1] = ((sols[bestSol]).getCalHadt()).mass();
-      mth[2] = ((sols[bestSol]).getFitHadt()).mass();
-
-      mtl[0] = ((sols[bestSol]).getRecLept()).mass();
-      mtl[1] = ((sols[bestSol]).getCalLept()).mass();
-      mtl[2] = ((sols[bestSol]).getFitLept()).mass();
-
-      mWh[0] = ((sols[bestSol]).getRecHadW()).mass();
-      mWh[1] = ((sols[bestSol]).getCalHadW()).mass();
-      mWh[2] = ((sols[bestSol]).getFitHadW()).mass();
-
-      mWl[0] = ((sols[bestSol]).getRecLepW()).mass();
-      mWl[1] = ((sols[bestSol]).getFitLepW()).mass();
-      histo2 = h_Mass;
-      histo2->Fill2(mth[0],mth[1],mth[2],mtl[0],mtl[1],mtl[2],mWh[0],mWh[1],mWh[2],mWl[0],mWl[1]);
-
-      // Fill jet calibration check plots
-      if( (sols[bestSol].getMCChangeWQ() == 0) || (sols[bestSol].getMCChangeWQ() == 1) ){
  
-        histo1->Fill1e(jET_r[0],jET_r[0]/jET_g[0],jET_c[0]/jET_g[0]);
-        histo1->Fill1e(jET_r[1],jET_r[1]/jET_g[1],jET_c[1]/jET_g[1]);
-
-        if(sols[bestSol].getProbChi2()>0){
-          histo1->Fill1f(jET_r[0],jET_f[0]/jET_g[0]);
-          histo1->Fill1f(jET_r[1],jET_f[1]/jET_g[1]);
-        }
-      }
-
-   }
-   */
-   
-   /*
-   for (std::vector<TopMuon>::const_iterator mu_i = muons->begin(); mu_i != muons->end(); mu_i++)
-   {
-       std::cout <<"mu eta = "<<(*mu_i).eta()<<" mother = "<<(*mu_i).mother()<<std::endl;
-   }
-
-   for (std::vector<TopElectron>::const_iterator e_i = electrons->begin(); e_i != electrons->end(); e_i++)
-   {
-       std::cout <<"e eta = "<<(*e_i).eta()<<" mother = "<<(*e_i).mother()<<std::endl;
-   }
-
-   for (std::vector<TopMET>::const_iterator met_i = met->begin(); met_i != met->end(); met_i++)
-   {
-       std::cout <<"met eta = "<<(*met_i).eta()<<" mother = "<<(*met_i).mother()<<std::endl;
-   }
-
-   for (std::vector<TopJet>::const_iterator jet_i = bjets->begin(); jet_i != bjets->end(); jet_i++)
-   {
-       std::cout <<"bjet eta = "<<(*jet_i).eta()<<" mother = "<<(*jet_i).mother()<<std::endl;
-   }
-
-   std::cout <<" ============================ " <<std::endl;
-   */
-   }
+   //if (debug) std::cout << "got Mjet?" << found_Mjet << " Et = " << mjetP4.Et() << " with listofmergedjets.size = " << listofmergedjets.size() << std::endl;
+ 
+	  
+  
+   }// good muon
 	}
 
    nevents++;
