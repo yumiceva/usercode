@@ -17,7 +17,7 @@
    To run over reco samples: you need in the cfg file the keywords {FILENAME}, {OUTPUT_FILENAME}
    
    usage: %prog
-   -m, --mc   : to generate MC.
+   -m, --mc   : to generate MC. it will handle random numbers.
    -e, --events = EVENTS: number of events to generate MC. If -m flag is turned on.
    -c, --cfg    = CFG: configuration file
    -l, --list   = LIST: file with list of files (dataset)
@@ -25,6 +25,7 @@
    -o, --output = OUTPUT: output path
    -i, --initial= INITIAL:  number of initial job
    -f, --final= FINAL: number of final job
+   -s, --short : for short jobs that need high priority
    -t, --test : do not submit anything just show what I would do
 """
 
@@ -96,6 +97,7 @@ logs_path     = scripts_path+"logs/"
 istest = 0
 isMC   = 0
 Nevents = "1"
+isshort = 0
 
 #
 # Path to the input/output data:
@@ -244,6 +246,11 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
     changearray.append((condor_tags[3],logfiles))
     changearray.append((condor_tags[4],"yumiceva@fnal.gov"))
     change(template_fnames["condor"],outfilename_condor,changearray,0)
+    if isshort:
+        fout = open(outfilename_condor,"a")
+        fout.write("+LENGTH=\"SHORT\"\n")
+        fout.close()
+    
     print outfilename_condor + " has been written.\n"
 
     submitcommand ="/opt/condor/bin/condor_submit  "+outfilename_condor
@@ -289,6 +296,7 @@ if __name__ =='__main__':
     
     istest = option.test
     isMC   = option.mc
+    isshort = option.short
     
     output_path = ""
     
