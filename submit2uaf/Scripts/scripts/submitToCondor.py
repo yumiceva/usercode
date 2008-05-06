@@ -39,7 +39,24 @@
 """
 
 
-import os, string, re,sys, random
+import os,sys
+try:
+    import random
+except:
+    # now fix PYTHONPATH for the damn cmslpc python configuration
+    atemp = os.getenv("PYTHONPATH")
+    atempl = atemp.split(":")
+    natemp = ""
+    for iatemp in atempl:
+        if iatemp.find("python2.3") == -1:
+            natemp = natemp + iatemp
+    print "\n FIX PYTHONPATH environment variable, try:\n"
+    print "setenv PYTHONPATH "+ natemp
+    sys.exit()
+    #os.putenv("PYTHONPATH",natemp)
+    # PYTHONPATH fixed
+
+import string, re
 from time import gmtime, localtime, strftime
 
 #_______________OPTIONS__________________________________
