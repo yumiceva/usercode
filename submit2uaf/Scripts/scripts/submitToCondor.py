@@ -270,7 +270,7 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
     changearray.append((condor_tags[1],stdout))
     changearray.append((condor_tags[2],stderr))
     changearray.append((condor_tags[3],logfiles))
-    changearray.append((condor_tags[4],"yumiceva@fnal.gov"))
+    changearray.append((condor_tags[4],os.getenv("USER")+"@fnal.gov"))
     change(template_fnames["condor"],outfilename_condor,changearray,0)
     if isshort:
         fout = open(outfilename_condor,"a")
