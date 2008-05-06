@@ -10,11 +10,18 @@
 """
    Submit jobs to condor. It will create directories in the output path
    to store configuration files and log files.
+   
    e.g. submitToCondor.py -c ZprimeEventsReco_full.cfg -l datasets/zp1Tev.txt -n 10 -o /uscms_data/d1/yumiceva/CMSSW_1_3_6/TQAFAnalyzer/
 
-   To Generate MC: In your cfg file you need to add the keywords SEED1,...,SEED6, {OUTPUT_FILENAME}
-
-   To run over reco samples: you need in the cfg file the keywords {FILENAME}, {OUTPUT_FILENAME}
+   where ZprimeEventsReco_full.cfg is the configuration file. The configuration file
+   needs to be modified a bit: (1) remove all input files in the PoolSource and add a
+   keyword {FILENAME} you need also the brackets. The filename of the output file should
+   be changed to another keyword called {OUTPUT_FILENAME}.
+   
+   To Generate MC: In your cfg file you need to add also the keywords {SEED1},...,{SEED6} for
+   the random seeds which are going to be modified by the script using PYTHON random numbers,
+   you also need to change the output filename to {OUTPUT_FILENAME} All keywords need to have
+   brackets.
    
    usage: %prog
    -m, --mc   : to generate MC. it will handle random numbers.
@@ -27,6 +34,8 @@
    -f, --final= FINAL: number of final job
    -s, --short : for short jobs that need high priority
    -t, --test : do not submit anything just show what I would do
+
+   Author: Francisco Yumiceva (yumiceva@fnal.gov)
 """
 
 
