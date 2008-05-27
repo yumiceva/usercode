@@ -122,7 +122,7 @@ logs_path     = scripts_path+"logs/"
 
 istest = 0
 isMC   = 0
-Nevents = "1"
+Nevents = "-1"
 isshort = 0
 
 #
