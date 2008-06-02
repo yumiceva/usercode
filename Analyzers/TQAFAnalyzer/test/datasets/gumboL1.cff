@@ -1,0 +1,18 @@
+replace PoolSource.fileNames = {
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_1.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_10.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_11.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_12.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_13.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_14.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_15.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_16.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_2.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_3.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_4.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_5.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_6.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_7.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_8.root',
+'dcache:/pnfs/cms/WAX/resilient/yumiceva/TQAF/2008_May_15/Gumbo_100pb_topSemiLepMuon_L1//TQAFLayer1Output_AOD_9.root'
+}

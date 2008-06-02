@@ -14,6 +14,30 @@
 
 using namespace std;
 
+
+bool normalize( TH1* lh, TH1* rh ) {
+
+		lh->Scale(1./lh->Integral());
+		rh->Scale(1./rh->Integral());
+		
+	return lh->GetMaximum() > rh->GetMaximum();
+}
+
+void PlotNormalized( std::vector< TH1* > *vec ) {
+
+	//std::cout << " PlotNormalized" << std::endl;
+	
+	std::sort(vec->begin(), vec->end(), normalize);
+
+	for ( std::vector< TH1* >::size_type ith =0; ith != vec->size(); ++ith ) {
+		TH1 *tmph = (TH1*) (*vec)[ith];
+		tmph->SetYTitle("a.u.");
+		
+		if (ith==0) tmph->Draw();
+		else tmph->Draw("same");
+	}
+}
+
 void plots(bool print=false) {
 
         gROOT->SetStyle("CMS");
@@ -29,7 +53,7 @@ void plots(bool print=false) {
 		map<TString, TCanvas*> cv_map;
 		map<TString, TH1* > h1z1,h1z2,h1z3,h1z4;
 		map<TString, TH2* > h2z1,h2z2,h2z3,h2z4;
-
+				
 		map<TString, int> color;
 		color["black"] = 1;
 		color["zp1"] = 2;
@@ -42,28 +66,43 @@ void plots(bool print=false) {
 		Zp1->cd();
 		h2z1["gen_toprapidity_vs_deltaR_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_deltaR_pq");
 		h2z1["gen_toprapidity_vs_psi_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_psi_pq");
+		h2z1["gen_toprapidity_vs_dminij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dminij_pq");
+		h2z1["gen_toprapidity_vs_dmaxij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dmaxij_pq");
 		Zp2->cd();
 		h2z2["gen_toprapidity_vs_deltaR_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_deltaR_pq");
 		h2z2["gen_toprapidity_vs_psi_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_psi_pq");
+		h2z2["gen_toprapidity_vs_dminij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dminij_pq");
+		h2z2["gen_toprapidity_vs_dmaxij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dmaxij_pq");
 		Zp3->cd();
 		h2z3["gen_toprapidity_vs_deltaR_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_deltaR_pq");
 		h2z3["gen_toprapidity_vs_psi_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_psi_pq");
+		h2z3["gen_toprapidity_vs_dminij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dminij_pq");
+		h2z3["gen_toprapidity_vs_dmaxij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dmaxij_pq");
 		Zp4->cd();
 		h2z4["gen_toprapidity_vs_deltaR_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_deltaR_pq");
 		h2z4["gen_toprapidity_vs_psi_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_psi_pq");
-
+		h2z4["gen_toprapidity_vs_dminij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dminij_pq");
+		h2z4["gen_toprapidity_vs_dmaxij_pq"] = (TH2D*) gDirectory->Get("Generator/gen_toprapidity_vs_dmaxij_pq");
 
 		TProfile *pdeltar_zp1 = h2z1["gen_toprapidity_vs_deltaR_pq"]->ProfileX("pdeltar_zp1");
 		TProfile *ppsi_zp1 = h2z1["gen_toprapidity_vs_psi_pq"]->ProfileX("ppsi_zp1");
+		TProfile *pdmin_zp1 = h2z1["gen_toprapidity_vs_dminij_pq"]->ProfileX("pdmin_zp1");
+		TProfile *pdmax_zp1 = h2z1["gen_toprapidity_vs_dmaxij_pq"]->ProfileX("pdmax_zp1");
 
 		TProfile *pdeltar_zp2 = h2z2["gen_toprapidity_vs_deltaR_pq"]->ProfileX("pdeltar_zp2");
 		TProfile *ppsi_zp2 = h2z2["gen_toprapidity_vs_psi_pq"]->ProfileX("ppsi_zp2");
+		TProfile *pdmin_zp2 = h2z2["gen_toprapidity_vs_dminij_pq"]->ProfileX("pdmin_zp2");
+		TProfile *pdmax_zp2 = h2z2["gen_toprapidity_vs_dmaxij_pq"]->ProfileX("pdmax_zp2");
 
 		TProfile *pdeltar_zp3 = h2z3["gen_toprapidity_vs_deltaR_pq"]->ProfileX("pdeltar_zp3");
 		TProfile *ppsi_zp3 = h2z3["gen_toprapidity_vs_psi_pq"]->ProfileX("ppsi_zp3");
+		TProfile *pdmin_zp3 = h2z3["gen_toprapidity_vs_dminij_pq"]->ProfileX("pdmin_zp3");
+		TProfile *pdmax_zp3 = h2z3["gen_toprapidity_vs_dmaxij_pq"]->ProfileX("pdmax_zp3");
 
 		TProfile *pdeltar_zp4 = h2z4["gen_toprapidity_vs_deltaR_pq"]->ProfileX("pdeltar_zp4");
 		TProfile *ppsi_zp4 = h2z4["gen_toprapidity_vs_psi_pq"]->ProfileX("ppsi_zp4");
+		TProfile *pdmin_zp4 = h2z4["gen_toprapidity_vs_dminij_pq"]->ProfileX("pdmin_zp4");
+		TProfile *pdmax_zp4 = h2z4["gen_toprapidity_vs_dmaxij_pq"]->ProfileX("pdmax_zp4");
 
 		pdeltar_zp1->SetLineColor(color["zp1"]);
 		ppsi_zp1->SetLineColor(color["zp1"]);
@@ -73,7 +112,7 @@ void plots(bool print=false) {
 		ppsi_zp3->SetLineColor(color["zp3"]);
 		pdeltar_zp4->SetLineColor(color["zp4"]);
 		ppsi_zp4->SetLineColor(color["zp4"]);
-
+		
 		pdeltar_zp1->SetMarkerColor(color["zp1"]);
 		ppsi_zp1->SetMarkerColor(color["zp1"]);
 		pdeltar_zp2->SetMarkerColor(color["zp2"]);
@@ -83,6 +122,23 @@ void plots(bool print=false) {
 		pdeltar_zp4->SetMarkerColor(color["zp4"]);
 		ppsi_zp4->SetMarkerColor(color["zp4"]);
 
+		pdmin_zp1->SetLineColor(color["zp1"]);
+		pdmin_zp1->SetMarkerColor(color["zp1"]);
+		pdmax_zp1->SetLineColor(color["zp1"]);
+		pdmax_zp1->SetMarkerColor(color["zp1"]);
+		pdmin_zp2->SetLineColor(color["zp2"]);
+		pdmin_zp2->SetMarkerColor(color["zp2"]);
+		pdmax_zp2->SetLineColor(color["zp2"]);
+		pdmax_zp2->SetMarkerColor(color["zp2"]);
+		pdmin_zp3->SetLineColor(color["zp3"]);
+		pdmin_zp3->SetMarkerColor(color["zp3"]);
+		pdmax_zp3->SetLineColor(color["zp3"]);
+		pdmax_zp3->SetMarkerColor(color["zp3"]);
+		pdmin_zp4->SetLineColor(color["zp4"]);
+		pdmin_zp4->SetMarkerColor(color["zp4"]);
+		pdmax_zp4->SetLineColor(color["zp4"]);
+		pdmax_zp4->SetMarkerColor(color["zp4"]);
+		
 		cv_map["gen_deltar"] = new TCanvas("gen_deltar","gen_deltar",700,700);
 
 		pdeltar_zp1->SetMinimum(0.1);
@@ -97,8 +153,8 @@ void plots(bool print=false) {
 
 		cv_map["gen_psi"] = new TCanvas("gen_psi","gen_psi",700,700);
 
-		//ppsi_zp1->SetMinimum(0.1);
-		//ppsi_zp1->SetMaximum(1.8);
+		ppsi_zp1->SetMinimum(0.2);
+		ppsi_zp1->SetMaximum(0.55);
 		ppsi_zp1->SetXTitle("Top rapidity");
 		ppsi_zp1->SetYTitle("#psi(W(p,q))");
 		
@@ -107,6 +163,30 @@ void plots(bool print=false) {
 		ppsi_zp3->Draw("same");
 		ppsi_zp4->Draw("same");
 
+		cv_map["gen_dmin"] = new TCanvas("gen_dmin","gen_dmin",700,700);
+
+		pdmin_zp1->SetMinimum(0.01);
+		pdmin_zp1->SetMaximum(0.023);
+		pdmin_zp1->SetXTitle("Top rapidity");
+		pdmin_zp1->SetYTitle("d_{min}(p,q)");
+		
+		pdmin_zp1->Draw();
+		pdmin_zp2->Draw("same");
+		pdmin_zp3->Draw("same");
+		pdmin_zp4->Draw("same");
+
+		cv_map["gen_dmax"] = new TCanvas("gen_dmax","gen_dmax",700,700);
+
+		pdmax_zp1->SetMinimum(0.05);
+		pdmax_zp1->SetMaximum(0.31);
+		pdmax_zp1->SetXTitle("Top rapidity");
+		pdmax_zp1->SetYTitle("d_{max}(p,q)");
+		
+		pdmax_zp1->Draw();
+		pdmax_zp2->Draw("same");
+		pdmax_zp3->Draw("same");
+		pdmax_zp4->Draw("same");
+		
 		// muons
 		Zp1->cd();
 		h2z1["muons_vsJets_cut0"]  = (TH2D*) gDirectory->Get("Muons/muons_vsJets_cut0");
@@ -127,11 +207,21 @@ void plots(bool print=false) {
 		h1z2["muon_pt_cut0"]->SetLineColor(color["zp2"]);
 		h1z3["muon_pt_cut0"]->SetLineColor(color["zp3"]);
 		h1z4["muon_pt_cut0"]->SetLineColor(color["zp4"]);
+
 		
-		h1z1["muon_pt_cut0"]->Draw();
-		h1z2["muon_pt_cut0"]->Draw("same");
-		h1z3["muon_pt_cut0"]->Draw("same");
-		h1z4["muon_pt_cut0"]->Draw("same");
+		std::vector< TH1* > *hnormmuonpt = new std::vector< TH1* >;
+		
+		hnormmuonpt->push_back(h1z1["muon_pt_cut0"]);
+		hnormmuonpt->push_back(h1z2["muon_pt_cut0"]);
+		hnormmuonpt->push_back(h1z3["muon_pt_cut0"]);
+		hnormmuonpt->push_back(h1z4["muon_pt_cut0"]);
+		
+		PlotNormalized(hnormmuonpt);
+			
+		//h1z1["muon_pt_cut0"]->Draw();
+		//h1z2["muon_pt_cut0"]->Draw("same");
+		//h1z3["muon_pt_cut0"]->Draw("same");
+		//h1z4["muon_pt_cut0"]->Draw("same");
 		
 		cv_map["muons"] = new TCanvas("muons","muons",700,700);
 
@@ -145,15 +235,23 @@ void plots(bool print=false) {
 		muonsz3->SetLineColor(color["zp3"]);
 		muonsz4->SetLineColor(color["zp4"]);
 
-		muonsz1->GetXaxis()->SetBinLabel(1,"1 Jet");
-		muonsz1->GetXaxis()->SetBinLabel(2,"2 Jet");
-		muonsz1->GetXaxis()->SetBinLabel(3,"3 Jet");
-		muonsz1->GetXaxis()->SetBinLabel(4,"#geq4 Jet");
+		muonsz4->GetXaxis()->SetBinLabel(1,"1 Jet");
+		muonsz4->GetXaxis()->SetBinLabel(2,"2 Jet");
+		muonsz4->GetXaxis()->SetBinLabel(3,"3 Jet");
+		muonsz4->GetXaxis()->SetBinLabel(4,"#geq4 Jet");
 
-		muonsz1->Draw();
-		muonsz2->Draw("same");
-		muonsz3->Draw("same");
-		muonsz4->Draw("same");
+		std::vector< TH1* > *hnormmuons = new std::vector< TH1* >;
+		hnormmuons->push_back(muonsz1);
+		hnormmuons->push_back(muonsz2);
+		hnormmuons->push_back(muonsz3);
+		hnormmuons->push_back(muonsz4);
+
+		PlotNormalized(hnormmuons);
+		
+		//muonsz1->Draw();
+		//muonsz2->Draw("same");
+		//muonsz3->Draw("same");
+		//muonsz4->Draw("same");
 		
 		
 		// jet et, eta, n
@@ -200,11 +298,19 @@ void plots(bool print=false) {
 		h1z2["jet_et_cut0"]->SetLineColor(color["zp2"]);
 		h1z3["jet_et_cut0"]->SetLineColor(color["zp3"]);
 		h1z4["jet_et_cut0"]->SetLineColor(color["zp4"]);
+
+		std::vector< TH1* > *hnormjet_et = new std::vector< TH1* >;
+		hnormjet_et->push_back(h1z1["jet_et_cut0"]);
+		hnormjet_et->push_back(h1z2["jet_et_cut0"]);
+		hnormjet_et->push_back(h1z3["jet_et_cut0"]);
+		hnormjet_et->push_back(h1z4["jet_et_cut0"]);
+
+		PlotNormalized(hnormjet_et);
 		
-		h1z1["jet_et_cut0"]->Draw();
-		h1z2["jet_et_cut0"]->Draw("same");
-		h1z3["jet_et_cut0"]->Draw("same");
-		h1z4["jet_et_cut0"]->Draw("same");
+		//h1z1["jet_et_cut0"]->Draw();
+		//h1z2["jet_et_cut0"]->Draw("same");
+		//h1z3["jet_et_cut0"]->Draw("same");
+		//h1z4["jet_et_cut0"]->Draw("same");
 
 		cv_map["jet_eta_cut0"] = new TCanvas("jet_eta_cut0","jet_eta_cut0",700,700);
 
@@ -212,11 +318,19 @@ void plots(bool print=false) {
 		h1z2["jet_eta_cut0"]->SetLineColor(color["zp2"]);
 		h1z3["jet_eta_cut0"]->SetLineColor(color["zp3"]);
 		h1z4["jet_eta_cut0"]->SetLineColor(color["zp4"]);
+
+		std::vector< TH1* > *hnormjet_eta = new std::vector< TH1* >;
+		hnormjet_eta->push_back(h1z1["jet_eta_cut0"]);
+		hnormjet_eta->push_back(h1z2["jet_eta_cut0"]);
+		hnormjet_eta->push_back(h1z3["jet_eta_cut0"]);
+		hnormjet_eta->push_back(h1z4["jet_eta_cut0"]);
+
+		PlotNormalized(hnormjet_eta);
 		
-		h1z1["jet_eta_cut0"]->Draw();
-		h1z2["jet_eta_cut0"]->Draw("same");
-		h1z3["jet_eta_cut0"]->Draw("same");
-		h1z4["jet_eta_cut0"]->Draw("same");
+		//h1z1["jet_eta_cut0"]->Draw();
+		//h1z2["jet_eta_cut0"]->Draw("same");
+		//h1z3["jet_eta_cut0"]->Draw("same");
+		//h1z4["jet_eta_cut0"]->Draw("same");
 
 		cv_map["jets_cut0"] = new TCanvas("jets_cut0","jets_cut0",700,700);
 
@@ -224,11 +338,19 @@ void plots(bool print=false) {
 		h1z2["jets_cut0"]->SetLineColor(color["zp2"]);
 		h1z3["jets_cut0"]->SetLineColor(color["zp3"]);
 		h1z4["jets_cut0"]->SetLineColor(color["zp4"]);
+
+		std::vector< TH1* > *hnormjets = new std::vector< TH1* >;
+		hnormjets->push_back(h1z1["jets_cut0"]);
+		hnormjets->push_back(h1z2["jets_cut0"]);
+		hnormjets->push_back(h1z3["jets_cut0"]);
+		hnormjets->push_back(h1z4["jets_cut0"]);
+
+		PlotNormalized(hnormjets);
 		
-		h1z1["jets_cut0"]->Draw();
-		h1z2["jets_cut0"]->Draw("same");
-		h1z3["jets_cut0"]->Draw("same");
-		h1z4["jets_cut0"]->Draw("same");
+		//h1z1["jets_cut0"]->Draw();
+		//h1z2["jets_cut0"]->Draw("same");
+		//h1z3["jets_cut0"]->Draw("same");
+		//h1z4["jets_cut0"]->Draw("same");
 
 		cv_map["LeptonicTop_psi_cut0"] = new TCanvas("LeptonicTop_psi_cut0","LeptonicTop_psi_cut0",700,700);
 
@@ -236,6 +358,7 @@ void plots(bool print=false) {
 		h1z2["LeptonicTop_psi_cut0"]->SetLineColor(color["zp2"]);
 		h1z3["LeptonicTop_psi_cut0"]->SetLineColor(color["zp3"]);
 		h1z4["LeptonicTop_psi_cut0"]->SetLineColor(color["zp4"]);
+
 		
 		h1z1["LeptonicTop_psi_cut0"]->Draw();
 		h1z2["LeptonicTop_psi_cut0"]->Draw("same");
@@ -331,10 +454,18 @@ void plots(bool print=false) {
 										  
 		cv_map["MET"] = new TCanvas("MET","MET",700,700);
 
-		h1z1["MET_cut0"]->Draw();
-		h1z2["MET_cut0"]->Draw("same");
-		h1z3["MET_cut0"]->Draw("same");
-		h1z4["MET_cut0"]->Draw("same");
+		std::vector< TH1* > *hnormMET = new std::vector< TH1* >;
+		hnormMET->push_back(h1z1["MET_cut0"]);
+		hnormMET->push_back(h1z2["MET_cut0"]);
+		hnormMET->push_back(h1z3["MET_cut0"]);
+		hnormMET->push_back(h1z4["MET_cut0"]);
+
+		PlotNormalized(hnormMET);
+		
+		//h1z1["MET_cut0"]->Draw();
+		//h1z2["MET_cut0"]->Draw("same");
+		//h1z3["MET_cut0"]->Draw("same");
+		//h1z4["MET_cut0"]->Draw("same");
 
 		cv_map["delta_nu_pz"] = new TCanvas("delta_nu_pz","delta_nu_pz",700,700);
 

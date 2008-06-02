@@ -6,7 +6,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MEzCalculator.h,v 1.1 2008/03/17 15:26:17 yumiceva Exp $
+ version $Id: MEzCalculator.h,v 1.2 2008/04/02 20:14:29 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -44,6 +44,7 @@ class MEzCalculator {
 	///           if complex roots, use only the real part.
 	/// type = 2: if real roots, choose the most central solution.
 	///           if complex roots, use only the real part.
+	/// type = 3: if real roots, pick the largest value of the cosine*
 	double Calculate(int type = 0);
     /// check for complex root
 	bool IsComplex() const { return isComplex_; };

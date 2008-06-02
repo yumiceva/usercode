@@ -49,6 +49,8 @@ class TtEventAnalysis : public edm::EDAnalyzer {
     void analyze(const edm::Event & iEvent, const edm::EventSetup& iSetup);
 
 	double Psi(TLorentzVector p1, TLorentzVector p2, double mass);
+	double dij(TLorentzVector p1, TLorentzVector p2, double mass, bool min = true);
+	double PtRel(TLorentzVector p, TLorentzVector paxis);
 	
 	typedef math::XYZTLorentzVector LorentzVector;
 	
@@ -99,6 +101,7 @@ class TtEventAnalysis : public edm::EDAnalyzer {
     edm::InputTag evtsols;
 
 	int nevents;
+	int nbadmuons;
 	int nWcomplex;
 
 };

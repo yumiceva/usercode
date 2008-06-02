@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.cc,v 1.3 2008/03/20 18:40:59 yumiceva Exp $
+ version $Id: TQAFHistograms.cc,v 1.4 2008/04/02 20:14:29 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -61,19 +61,39 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 	if (suffix2 != "") suffix1 += "_" + suffix2;
 
 	if ( type == "generator") {
+		h1["gen_top_pt"] = new TH1D("gen_top_pt","top quark p_{T} [GeV/c]",80,0,1200);
+		h1["gen_top_eta"] = new TH1D("gen_top_eta","top quark #eta",80,-4,4);
+		h1["gen_top_eta1"] = new TH1D("gen_top_eta1","top quark #eta",80,-4,4);
+		h1["gen_top_eta2"] = new TH1D("gen_top_eta2","top quark #eta",80,-4,4);
+		h1["gen_top_eta3"] = new TH1D("gen_top_eta3","top quark #eta",80,-4,4);
+		
+		
 		h2["gentop_rapidities"] = new TH2D("gentop_rapidities","y_{t} vs y_{T}",50,-3,3,50,-3,3);
 		h1["gen_toppair_mass"] = new TH1D("gen_toppair_mass","top pair Mass [Gev/c^{2}]",100,100,4500);
+		h1["gen_toppair_pt"] = new TH1D("gen_toppair_pt","top pair p_{T} [Gev/c]",80,0,500.);
+		
 		h1["gen_deltaR_qb"] = new TH1D("gen_deltaR_qb","#Delta R(q,Had-b)",35,0.,7.);
 		h1["gen_deltaR_pb"] = new TH1D("gen_deltaR_pb","#Delta R(p,Had-b)",35,0.,7.);
 		h1["gen_deltaR_pq"] = new TH1D("gen_deltaR_pq","#Delta R(p,q)",35,0.,7.);
 		h1["gen_deltaR_lb"] = new TH1D("gen_deltaR_lb","#Delta R(#mu,Lep-b)",35,0.,7.);
 		h1["gen_deltaR_qLepb"] = new TH1D("gen_deltaR_qLepb","#Delta R(q,Lep-b)",35,0.,7.);
 		h1["gen_deltaR_qmu"] = new TH1D("gen_deltaR_qmu","#Delta R(q,#mu)",35,0.,7.);
+		h1["gen_deltaR_muLepb"] = new TH1D("gen_deltaR_muLepb","#Delta R(#mu,Lep-b)",35,0.,7.);
+		h2["gen_deltaR_pq_vs_toppt"] = new TH2D("gen_deltaR_pq_vs_toppt","#Delta R(p,q) vs top quark p_{T}",35,0.,7,80,0,1200);
+		h2["gen_deltaR_qb_vs_toppt"] = new TH2D("gen_deltaR_qb_vs_toppt","#Delta R(q,Had-b) vs top quark p_{T}",35,0.,7,80,0,1200);
+		h2["gen_deltaR_muLepb_vs_toppt"] = new TH2D("gen_deltaR_muLepb_vs_toppt","#Delta R(#mu,Lep-b) vs top quark p_{T}",35,0.,7,80,0,1200);
+
+		
 		h1["gen_nu_pz"] = new TH1D("gen_nu_pz","Neutrino p_{z} [GeV/c]",50,-500.0,500.0);
-		h2["gen_toprapidity_vs_psi_pq"] = new TH2D("gen_toprapidity_vs_psi_pq","y_{top} vs #psi(p,q)",50, -2.5,2.5,50,0.,1.6);
+		h2["gen_toprapidity_vs_psi_pq"] = new TH2D("gen_toprapidity_vs_psi_pq","y_{top} vs #psi(p,q)",50, -2.5,2.5,50,0.,5);
 		h2["gen_toprapidity_vs_deltaR_pq"] = new TH2D("gen_toprapidity_vs_deltaR_pq","y_{top} vs #Delta R(p,q)",50, -2.5,2.5,50,0,7.);
+		h2["gen_toprapidity_vs_dminij_pq"] = new TH2D("gen_toprapidity_vs_dminij_pq","y_{top} vs d_{min}(p,q)",50, -2.5,2.5,50,0.,0.5);
+		h2["gen_toprapidity_vs_dmaxij_pq"] = new TH2D("gen_toprapidity_vs_dmaxij_pq","y_{top} vs d_{max}(p,q)",50, -2.5,2.5,50,0.,0.5);
+
+		h2["gen_Hadb_pT_vs_pL"] = new TH2D("gen_Hadb_pT_vs_pL","p_{T} vs p_{L}",80,-400,400,80,-500,2000);
+		h2["gen_HadW_pT_vs_pL"] = new TH2D("gen_HadW_pT_vs_pL","p_{T} vs p_{L}",80,-400,400,80,-500,2000);
 		
-		
+		h2["gen_cosCM_vs_psi"] = new TH2D("gen_cosCM_vs_psi","cos #theta* vs \psi",80,0,1,50,0,5);
 	}
 	else if ( type == "Jets") {
 		h1["jets"+suffix1]     = new TH1D("jets"+suffix1,"Number of jets",15,0,15);
@@ -123,6 +143,8 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h1["muons"+suffix1]                = new TH1D("muons"+suffix1,"Number of muons",4,1,5);
 		h1["muon_normchi2"+suffix1]        = new TH1D("muon_normchi2"+suffix1,"#chi^{2}/ndof",40,0,30);
 		h1["muon_pt"+suffix1]              = new TH1D("muon_pt"+suffix1,"Muon p_{T} [GeV/c]",80,0.0,200.0);
+		h1["muon_eta"+suffix1]              = new TH1D("muon_eta"+suffix1,"Muon #eta",50,-3.,3.);
+		h1["muon_phi"+suffix1]              = new TH1D("muon_phi"+suffix1,"Muon #phi",30,-3.15,3.15);
 		h1["muon_caloIso"+suffix1]       = new TH1D("muon_caloIso"+suffix1,"caloIsolation",80,0.0,300.0);
 		h1["muon_trackIso"+suffix1]       = new TH1D("muon_trackIso"+suffix1,"trackIsolation",80,0.0,100.0);
 		h1["muon_deltaR_nu"+suffix1]  = new TH1D("muon_deltaR_nu"+suffix1, "#Delta R(#mu,#nu)",35,0,5);
@@ -133,12 +155,16 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 
 		h2["MET_vsJets"+suffix1] = new TH2D("MET_vsJets"+suffix1,"MET [GeV] vs Jets",100,0.0,1500.0,4,0,4);
 		h1["MET"+suffix1] = new TH1D("MET"+suffix1,"MET [GeV]",100,0.0,1500.0);
+		h1["MET_eta"+suffix1] = new TH1D("MET_eta"+suffix1,"#eta_{MET}",50,-3.,3.);
+		h1["MET_phi"+suffix1] = new TH1D("MET_phi"+suffix1,"#phi_{MET}",30,-3.15,3.15);
 		h1["myMET"+suffix1] = new TH1D("myMET"+suffix1,"MET [GeV]",100,0.0,1500.0);
 		h1["MET_deltaR_muon"+suffix1] = new TH1D("MET_deltaR_muon"+suffix1,"#DeltaR(MET,#mu)",35,0.,7.);
 		//h1["METcomplex"+suffix1] = new TH1D("METcomplex"+suffix1,"MET [GeV]",80,0.0,300.0);
-		h1["nu_pz"+suffix1] = new TH1D("nu_pz"+suffix1,"Neutrino p_{z} [GeV/c]",50,-500.0,500.0);	
+		h1["nu_pz"+suffix1] = new TH1D("nu_pz"+suffix1,"Neutrino p_{z} [GeV/c]",50,-500.0,500.0);
+		h1["nu_eta"+suffix1] = new TH1D("nu_eta"+suffix1,"Neutrino #eta",50,-3.,3.);
 		h1["delta_nu_pz"+suffix1] = new TH1D("delta_nu_pz"+suffix1,"Neutrino #Delta(p_{z}-p^{gen}_{z}) [GeV/c]",50,-1000.0,1000.0);
 		h1["LeptonicW_psi"+suffix1] = new TH1D("LeptonicW_psi"+suffix1, "#psi(#mu + #nu)",100,0.,12.);
+		h1["LeptonicW_dij"+suffix1] = new TH1D("LeptonicW_dij"+suffix1, "d_{ij}(#mu,#nu)",100,0.,0.1);
 
 	}
 	else if ( type == "Mass") {

@@ -35,32 +35,48 @@ MEzCalculator::Calculate(int type) {
         if (tmproot<0) {
                 isComplex_= true;
                 if (type==0) pznu = - B/(2*A); // take real part of complex roots
-	}
+		}
         else {
-                isComplex_ = false;
-                double tmpsol1 = (-B + TMath::Sqrt(tmproot))/(2.0*A);
-                double tmpsol2 = (-B - TMath::Sqrt(tmproot))/(2.0*A);
+			isComplex_ = false;
+			double tmpsol1 = (-B + TMath::Sqrt(tmproot))/(2.0*A);
+			double tmpsol2 = (-B - TMath::Sqrt(tmproot))/(2.0*A);
 
-                if (type == 0 ) {
-                        // two real roots, pick the one closest to pz of muon
-                        if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
-                        else pznu = tmpsol1;
-			// if pznu is > 300 pick the most central root
-			if ( pznu > 300. ) {
-			  if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) pznu = tmpsol1;
-			  else pznu = tmpsol2;
+			if (type == 0 ) {
+				// two real roots, pick the one closest to pz of muon
+				if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
+				else pznu = tmpsol1;
+				// if pznu is > 300 pick the most central root
+				if ( pznu > 300. ) {
+					if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) pznu = tmpsol1;
+					else pznu = tmpsol2;
+				}
 			}
-		}
-		if (type == 1 ) {
-		  // two real roots, pick the one closest to pz of muon
-		  if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
-		  else pznu = tmpsol1;
-		}
-		if (type == 2 ) {
-		  // pick the most central root.
-		  if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) pznu = tmpsol1;
-		  else pznu = tmpsol2;
-		}
+			if (type == 1 ) {
+				// two real roots, pick the one closest to pz of muon
+				if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
+				else pznu = tmpsol1;
+			}
+			if (type == 2 ) {
+				// pick the most central root.
+				if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) pznu = tmpsol1;
+				else pznu = tmpsol2;
+			}
+			if (type == 3 ) {
+				// pick the largest value of the cosine
+				TVector3 p3w = TVector3(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol1);
+				TVector3 p3mu= TVector3(pxmu, pymu, pzmu );
+				
+				double sinthcm1 = 2.*(p3mu.Perp(p3w))/M_W;
+				p3w = TVector3(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol2);
+				double sinthcm2 = 2.*(p3mu.Perp(p3w))/M_W;
+
+				double costhcm1 = TMath::Sqrt(1. - sinthcm1);
+				double costhcm2 = TMath::Sqrt(1. - sinthcm2);
+
+				if ( costhcm1 > costhcm2 ) pznu = tmpsol1;
+				else pznu = tmpsol2;
+			}
+		
         }
 
         //Particle neutrino;
