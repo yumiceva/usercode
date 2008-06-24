@@ -6,7 +6,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MEzCalculator.h,v 1.2 2008/04/02 20:14:29 yumiceva Exp $
+ version $Id: MEzCalculator.h,v 1.3 2008/06/02 20:16:01 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -34,6 +34,10 @@ class MEzCalculator {
 	}
     /// Set Muon
 	void SetMuon(const pat::Particle &lepton) { lepton_ = lepton; };
+	void SetMuon(TLorentzVector lepton) {
+		pat::Particle::LorentzVector p(lepton.Px(), lepton.Py(), lepton.Pz(), lepton.E() );
+		lepton_.setP4(p);
+	}
     /// Calculate MEz
 	/// options to choose roots from quadratic equation:
 	/// type = 0 (defalut): if real roots, pick the one nearest to
@@ -48,7 +52,12 @@ class MEzCalculator {
 	double Calculate(int type = 0);
     /// check for complex root
 	bool IsComplex() const { return isComplex_; };
-		
+
+	void Print() {
+		std::cout << " MEzCalculator: pxmu = " << lepton_.px() << " pzmu= " << lepton_.pz() << std::endl;
+		std::cout << " MEzCalculator: pxnu = " << MET_.px() << " pynu= " << MET_.py() << std::endl;
+	}
+	
   private:
 
 	bool isComplex_;

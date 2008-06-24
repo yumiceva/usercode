@@ -25,6 +25,7 @@ MEzCalculator::Calculate(int type) {
         double pynu = MET_.py();
         double pznu = 0.;
 
+		
         double a = M_W*M_W - M_mu*M_mu + 2.0*pxmu*pxnu + 2.0*pymu*pynu;
         double A = 4.0*(emu*emu - pzmu*pzmu);
         double B = -4.0*a*pzmu;
@@ -35,12 +36,16 @@ MEzCalculator::Calculate(int type) {
         if (tmproot<0) {
                 isComplex_= true;
                 if (type==0) pznu = - B/(2*A); // take real part of complex roots
+
+				std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
 		}
         else {
 			isComplex_ = false;
 			double tmpsol1 = (-B + TMath::Sqrt(tmproot))/(2.0*A);
 			double tmpsol2 = (-B - TMath::Sqrt(tmproot))/(2.0*A);
 
+			std::cout << " Neutrino Solutions: " << tmpsol1 << ", " << tmpsol2 << std::endl;
+			
 			if (type == 0 ) {
 				// two real roots, pick the one closest to pz of muon
 				if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
@@ -63,15 +68,16 @@ MEzCalculator::Calculate(int type) {
 			}
 			if (type == 3 ) {
 				// pick the largest value of the cosine
-				TVector3 p3w = TVector3(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol1);
-				TVector3 p3mu= TVector3(pxmu, pymu, pzmu );
+				TVector3 p3w, p3mu;
+				p3w.SetXYZ(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol1);
+				p3mu.SetXYZ(pxmu, pymu, pzmu );
 				
 				double sinthcm1 = 2.*(p3mu.Perp(p3w))/M_W;
-				p3w = TVector3(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol2);
+				p3w.SetXYZ(pxmu+pxnu, pymu+pynu, pzmu+ tmpsol2);
 				double sinthcm2 = 2.*(p3mu.Perp(p3w))/M_W;
 
-				double costhcm1 = TMath::Sqrt(1. - sinthcm1);
-				double costhcm2 = TMath::Sqrt(1. - sinthcm2);
+				double costhcm1 = TMath::Sqrt(1. - sinthcm1*sinthcm1);
+				double costhcm2 = TMath::Sqrt(1. - sinthcm2*sinthcm2);
 
 				if ( costhcm1 > costhcm2 ) pznu = tmpsol1;
 				else pznu = tmpsol2;

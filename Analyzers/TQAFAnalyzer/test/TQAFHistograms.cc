@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TQAFHistograms.cc,v 1.4 2008/04/02 20:14:29 yumiceva Exp $
+ version $Id: TQAFHistograms.cc,v 1.5 2008/06/02 20:16:01 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -93,7 +93,7 @@ void TQAFHistograms::Init(TString type, TString suffix1, TString suffix2) {
 		h2["gen_Hadb_pT_vs_pL"] = new TH2D("gen_Hadb_pT_vs_pL","p_{T} vs p_{L}",80,-400,400,80,-500,2000);
 		h2["gen_HadW_pT_vs_pL"] = new TH2D("gen_HadW_pT_vs_pL","p_{T} vs p_{L}",80,-400,400,80,-500,2000);
 		
-		h2["gen_cosCM_vs_psi"] = new TH2D("gen_cosCM_vs_psi","cos #theta* vs \psi",80,0,1,50,0,5);
+		h2["gen_cosCM_vs_psi"] = new TH2D("gen_cosCM_vs_psi","cos #theta* vs #psi",80,0,1,50,0,5);
 	}
 	else if ( type == "Jets") {
 		h1["jets"+suffix1]     = new TH1D("jets"+suffix1,"Number of jets",15,0,15);
