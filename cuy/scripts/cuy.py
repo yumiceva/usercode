@@ -19,8 +19,10 @@
 
    usage: %prog -x <XML configuration file>
    -b, --batch : run script in batch mode.
-   -e, --example = EXAMPLE: generate an example xml file 
-   -x, --xml     = XML: xml configuration file
+   -e, --example = EXAMPLE: generate an example xml file.
+   -l, --list    = LIST: list of objects in the ROOT file. 
+   -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
+   -x, --xml     = XML: xml configuration file.
 
    Francisco Yumiceva (yumiceva@fnal.gov)
    Fermilab 2008
@@ -49,6 +51,8 @@ from ROOT import THStack
 
 from xml.sax import saxutils, make_parser, handler
 from xml.sax.handler import feature_namespaces
+
+import Inspector
 
 #_______________OPTIONS________________
 import optparse
@@ -186,6 +190,7 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[aname].SetLogy = attrs.get('SetLogy',None)
 	    self.superimpose[aname].SetGrid = attrs.get('SetGrid',None)
 	    self.superimpose[aname].Normalize = attrs.get('Normalize',None)
+	    self.superimpose[aname].Stack     = attrs.get('Stack',None)
 	    self.superimpose[aname].YTitle = attrs.get('YTitle',None)
 	    self.superimpose[aname].XTitle = attrs.get('XTitle',None)
 	    self.superimpose[aname].projection = attrs.get('Projection',None)
@@ -246,11 +251,25 @@ if __name__ == '__main__':
     ROOT.gStyle.cd()
     ROOT.gROOT.ForceStyle()
 
+    printCanvas = False
+    printFormat = "png"
     # check options
     option,args = parse(__doc__)
     if not args and not option: exit()
+
+    if option.list:
+	ins = Inspector.Inspector()
+	ins.SetFilename(option.list)
+	ins.GetListObjects()
+	sys.exit()
+
     if not option.xml: exit()
+    if option.prt: 
+	printCanvas = True
+	printFormat = option.prt
+
     
+
     # check xml file
     try:
 	xmlfile = open(option.xml)
@@ -329,7 +348,7 @@ if __name__ == '__main__':
 	for ihname in listname:
 	    aweight = 1
 	    if listweight[ihnameIt]:
-		aweight = listweight[ihnameIt]
+		aweight = float(listweight[ihnameIt])
 	    for jkey in thedata:
 		tmpkeys = thedata[jkey].histos.keys()
 		for tmpname in tmpkeys:
@@ -338,15 +357,15 @@ if __name__ == '__main__':
 			if ath is None:
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			    exit(0)
-			print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " wedith= " + str(aweight)
+			print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
 
 			if isFirst:
 			    newth = ath.Clone()
-			    newth.Scale(1/aweight)
+			    newth.Scale(aweight)
 			    isFirst = False
 			else:
 			    atmpth = ath.Clone()
-			    atmpth.Scale(1/aweight)
+			    atmpth.Scale(aweight)
 			    newth.Add( atmpth )
 	    ihnameIt = ihnameIt + 1
 
@@ -359,6 +378,9 @@ if __name__ == '__main__':
 	    newth.Draw(theaddition[ikey].Option)
 	else:
 	    newth.Draw()
+
+	cv[theaddition[ikey].name].Update()
+
 	# add new histogram to the list
 	newth.SetName(theaddition[ikey].name)
 	newTH1list.append(newth.GetName())
@@ -374,6 +396,7 @@ if __name__ == '__main__':
 	listcolor = thesuper[ikey].color
 	listmarker = thesuper[ikey].marker
 	listlegend = thesuper[ikey].legend
+	listweight = thesuper[ikey].weight
 	dolegend = True
 	for il in listlegend:
 	    if il==None: dolegend = False
@@ -433,8 +456,15 @@ if __name__ == '__main__':
 			    newthpy = ath.ProfileY(ath.GetName()+"_py",0,-1,"e")
 			    newth = newthpy.Clone()
 			
+			# get weight
+			aweight = 1
+			if listweight[ii]:
+			    aweight = float( listweight[ii] )
+
 			# clone original histogram
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
+
+			newth.Scale(aweight)
 
 			# check if we have color
 			if not listcolor[ii]:
@@ -475,7 +505,10 @@ if __name__ == '__main__':
 			#    newth.Draw("same")
 			if dolegend: aleg.AddEntry(newth,listlegend[ii],"P")
 	    ii = ii + 1
-	astack.Draw("nostack")
+	if thesuper[ikey].Stack != None:
+	    astack.Draw()
+	else:
+	    astack.Draw("nostack")
 	if thesuper[ikey].XTitle != None:
 	    astack.GetHistogram().SetXTitle(thesuper[ikey].XTitle)
 	if thesuper[ikey].YTitle != None:
@@ -487,16 +520,28 @@ if __name__ == '__main__':
 	if thesuper[ikey].SetGrid == "true":
 	    cv[thesuper[ikey].name].SetGrid()
 	
+	cv[thesuper[ikey].name].Update()
 	#cv[thesuper[ikey].name].Print("test.png")
 
-    
+    if printCanvas:
+	
+	for ikey in theaddition:
+	    cv[theaddition[ikey].name].Print(theaddition[ikey].name + "." + printFormat)
+	for ikey in thesuper:
+	    cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat)
+	
     
     if not option.batch:
 	rep = ''
-	while not rep in [ 'q', 'Q', '.q', 'qq' ]:
-	    rep = raw_input( '\nenter "q" or ".q" to quit: ' )
-	    if 2 < len(rep):
-		rep = rep[0]
-
+	while not rep in [ 'q', 'Q', '.q', 'qq' 'p']:
+	    rep = raw_input( '\nenter: ["q",".q" to quit] ["p" or "print" to print all canvas]: ' )
+	    if 0<len(rep):
+		if rep=='quit': rep = 'q'
+		if rep=='p' or rep=='print':
+		    for ikey in theaddition:
+			cv[theaddition[ikey].name].Print(theaddition[ikey].name + "." + printFormat)
+		    for ikey in thesuper:
+			cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat) 
+    
 
 
