@@ -415,7 +415,7 @@ if __name__ == '__main__':
 	if thesuper[ikey].Fill == "true": doFill = True
 	print doFill
 	#create canvas
-	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].name,700,700)
+	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
 	#legend
 	aleg = TLegend(0.6,0.2,0.8,0.4)
 	SetOwnership( aleg, 0 ) 
@@ -427,7 +427,7 @@ if __name__ == '__main__':
 	isFirst = 1
 	ii = 0
 
-	stacklist[thesuper[ikey].title] = THStack("astack"+thesuper[ikey].title,thesuper[ikey].title)
+	stacklist[thesuper[ikey].title] = THStack("astack"+thesuper[ikey].name,thesuper[ikey].title)
 	astack = stacklist[thesuper[ikey].title]
 	for ihname in listname:
 	
