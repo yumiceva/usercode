@@ -427,8 +427,8 @@ if __name__ == '__main__':
 	isFirst = 1
 	ii = 0
 
-	stacklist[thesuper[ikey].title] = THStack("astack"+thesuper[ikey].name,thesuper[ikey].title)
-	astack = stacklist[thesuper[ikey].title]
+	stacklist[thesuper[ikey].name] = THStack("astack"+thesuper[ikey].name,thesuper[ikey].title)
+	astack = stacklist[thesuper[ikey].name]
 	for ihname in listname:
 	
 	    for jkey in thedata:
@@ -464,6 +464,7 @@ if __name__ == '__main__':
 			# clone original histogram
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
 
+                        newth.Sumw2()
 			newth.Scale(aweight)
 
 			# check if we have color
