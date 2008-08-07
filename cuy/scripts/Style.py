@@ -15,7 +15,7 @@ import ROOT
 
 class Style:
 
-    def SetStyle(self):
+    def SetStyle(self,value):
 
 	ROOT.gStyle.SetFrameBorderMode(0)
 	ROOT.gStyle.SetCanvasBorderMode(0)
@@ -50,7 +50,7 @@ class Style:
     #ROOT.gStyle.SetLineStyleString(2,"[12 12]") // postscript dashes
 
 	# do not display any of the standard histogram decorations
-	ROOT.gStyle.SetOptTitle(0)
+	#ROOT.gStyle.SetOptTitle(0)
 	ROOT.gStyle.SetOptStat(0) #("m")
 	ROOT.gStyle.SetOptFit(0)
     
