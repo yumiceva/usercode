@@ -15,7 +15,7 @@ import ROOT
 
 class Style:
 
-    def SetStyle(self,value):
+    def SetStyle(self):
 
 	ROOT.gStyle.SetFrameBorderMode(0)
 	ROOT.gStyle.SetCanvasBorderMode(0)
