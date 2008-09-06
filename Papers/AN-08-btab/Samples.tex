@@ -1,8 +1,42 @@
 \section{Selection Criteria and Simulation Datasets}
 \label{sec:samples}
 
-samples.
+This study is based on three different Monte Carlo samples denoted QCD, 
+inclusive $t\bar{t}+0$jets and $pp\rightarrow \mu +X$. The QCD sample 
+was generated in different $\hat{p}_T $ bins at generator level. All
+samples were generated with PYTHIA, except for the $t\bar{t} $ sample 
+that was generated with ALPGEN. All samples were simulated with 
+CMSSW\_1\_4\_X and reconstructed with CMSSW\_1\_5\_2 as part of the CSA07
+production. The $pp\rightarrow \mu +X $ sample is QCD minbias events with
+muon $p_T > 3 $.
 
+The analysis is based on samples that have at least two reconstructed jets 
+and a non-isolated muon close to one of the jets. The jets are reconstructed 
+using the iterativeCone5 algorithm and corrected by a generator to 
+reconstruction calibration factor. The jets and the muons in the event are
+selected using the criteria described in the CMS Analysis 
+Note~\cite{ref:btag_oldnote}.
+
+Two samples are used in the analysis, defined as follows:
+\begin{itemize} 
+\item The  muon-in-jet+away-jet sample contains two reconstructed jets
+and a non-isolated muon with $\Delta R(\mu,{\rm jet})<0.4$. In case 
+more than one muon is found within a cone of $\Delta R<0.4$ of the jet, the 
+muon with the highest $p_T$ is taken. For this study, the jet containing the 
+muon will be denoted ``muon-jet",  and the other jet will be denoted the 
+``away-jet''. If in a given event both jets contain muons, both will be 
+counted as muon-jet. 
+\item The muon-in-jet+tagged-away-jet sample is a subset of the 
+muon-in-jet+away-jet sample, where the away-jet is tagged as a $b$ jet. 
+\end{itemize}
+
+Table~\ref{tab:samples} summarizes the samples used, and the number 
+of events avilable.
+For muon-jets the \ptrel is defined as the transverse momentum of the muon 
+relative to the direction of the total muon-jet momentum vector, 
+\begin{equation}
+p_{Trel}=\frac{p^{\mu} \times p^{\mu + {\rm jet}}}{|p^{\mu + {\rm jet}}|}.
+\end{equation}
 
 \begin{table}[bth]
  \begin{center}
@@ -22,7 +56,7 @@ QCD $\hat{p_T}$ 470-600  & 1226113&   90975    &      66464 \\
 QCD $\hat{p_T}$ 600-800  & 546080 &  44122     &     33859 \\
 QCD $\hat{p_T}$ 800-1000  & 717958  &   63664  &        50699 \\ \hline
 inclusive $t\bar{t}+0$jets& 1511164 &    339947 &       259662 \\ \hline
-$pp\rightarrow #mu+X$    & 18664210 &    611771 &      71519 \\ \hline
+$pp\rightarrow \mu +X$    & 18664210 &    611771 &      71519 \\ \hline
 
  \end{tabular}
  \end{center}
