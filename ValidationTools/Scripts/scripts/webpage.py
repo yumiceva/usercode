@@ -42,7 +42,7 @@ def make_index_page(package_list,thepkglist):
              </option>''')
 
              for lpkg in thepkglist[i]:         
-                 outfile.write('''<option value ="http://nippon.fnal.gov/lpc1/cmsroc/yumiceva/validation/index_'''+lpkg+'''.html">'''+ lpkg + '''</option>''')
+                 outfile.write('''<option value ="http://nippon.fnal.gov:8888/lpc1/cmsroc/yumiceva/validation/index_'''+lpkg+'''.html">'''+ lpkg + '''</option>''')
                  continue
              
              outfile.write('''</select><input type="button" value="Find" onClick="jump(this.form)">
