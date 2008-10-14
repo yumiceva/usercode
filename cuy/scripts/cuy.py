@@ -107,11 +107,11 @@ class ValElement:
 	self.histos = {}
 	self.TH1s = {}
 
-class DivideElement:
+class divideElement:
     def __init__(self):
 	self.name = ""
-	self.N = None
-	self.D = None
+	self.numerator = None
+	self.denominator = None
 
 class plotElement:
     def __init__(self):
@@ -166,7 +166,7 @@ class FindIssue(handler.ContentHandler):
 	    #print attrs.get('source',None)
 	if name == 'divide':
 	    aname = attrs.get('name',None)
-	    #self.divide[aname] = divideElement()
+	    self.divide[aname] = divideElement()
 	    self.divide[aname].name = aname
 	    self.divide[aname].numerator = attrs.get('numerator',None)
 	    self.divide[aname].denominator = attrs.get('denominator',None)
@@ -320,9 +320,9 @@ if __name__ == '__main__':
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			    exit(0)
 			print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
-
+			#ath.Print("all")
 			if isFirst:
-			    newth = ath.Clone()
+			    newth = ath.Clone(theaddition[ikey].name)
 			    newth.Scale(aweight)
 			    isFirst = False
 			else:
@@ -349,6 +349,66 @@ if __name__ == '__main__':
 	thedata[newth.GetName()] = ValElement()
 	thedata[newth.GetName()].TH1s[newth.GetName()] = newth
 	thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
+
+    
+    print "= Create ratio histograms:"
+    
+    thedivition = dh.divide
+    for ikey in thedivition:
+	print "== plot name: \""+thedivition[ikey].name+"\" title: \""+"\""
+	numerator = thedivition[ikey].numerator
+	denominator = thedivition[ikey].denominator
+
+	#create canvas
+	cv[thedivition[ikey].name] = TCanvas(thedivition[ikey].name,thedivition[ikey].name,700,700)
+
+	ihnameIt = 0
+	for ihname in listname:
+	    aweight = 1
+	    #if listweight[ihnameIt]:
+		#aweight = float(listweight[ihnameIt])
+	    for jkey in thedata:
+		tmpkeys = thedata[jkey].histos.keys()
+		for tmpname in tmpkeys:
+		    if tmpname == numerator:
+			numeratorth = thedata[jkey].TH1s[tmpname]
+			if numeratorth is None:
+			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
+			    exit(0)
+			#print "=== numerator histogram: "+numeratorth.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(numeratorth.GetMean(),2) + " weight= " + str(aweight)
+
+		    if tmpname == denominator:
+			denominatorth = thedata[jkey].TH1s[tmpname]
+			if denominatorth is None:
+			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
+			    exit(0)
+			#print "=== denominator histogram: "+denominatorth.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(denominatorth.GetMean(),2) + " weight= " + str(aweight)
+
+
+	    ihnameIt = ihnameIt + 1
+
+	newth = numeratorth.Clone()
+	newth.Clear()
+	newth.Divide(numeratorth,denominatorth)
+#	if theaddition[ikey].XTitle != None:
+#	    newth.SetXTitle(theaddition[ikey].XTitle)
+#	if theaddition[ikey].YTitle != None:
+#	    newth.SetYTitle(theaddition[ikey].YTitle)
+
+#	if theaddition[ikey].Option:
+#	    newth.Draw(theaddition[ikey].Option)
+#	else:
+	newth.Draw("HIST")
+
+	cv[thedivition[ikey].name].Update()
+
+	# add new histogram to the list
+	#newth.SetName(theaddition[ikey].name)
+	#newTH1list.append(newth.GetName())
+	#thedata[newth.GetName()] = ValElement()
+	#thedata[newth.GetName()].TH1s[newth.GetName()] = newth
+	#thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
+
 
     thesuper = dh.superimpose
     print "= Create superimpose histograms:"
@@ -468,9 +528,10 @@ if __name__ == '__main__':
 			#    newth.Draw("same")
 			if dolegend: aleg.AddEntry(newth,listlegend[ii],"P")
 	    ii = ii + 1
-	if thesuper[ikey].Stack != None:
+	if thesuper[ikey].Stack == "true":
 	    astack.Draw()
-	else:
+	if thesuper[ikey].Stack == "false" or thesuper[ikey].Stack == None:
+	    astack.Draw()
 	    astack.Draw("nostack")
 	if thesuper[ikey].XTitle != None:
 	    astack.GetHistogram().SetXTitle(thesuper[ikey].XTitle)
