@@ -260,6 +260,9 @@ if __name__ == '__main__':
     afilelist = {}
     stacklist = {}
 
+    # root output file
+    outputroot = TFile("cuy.root","RECREATE")
+
     # new histograms
     newTH1list = []
 
@@ -350,7 +353,9 @@ if __name__ == '__main__':
 	thedata[newth.GetName()].TH1s[newth.GetName()] = newth
 	thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
 
-    
+	outputroot.cd()
+	newth.Write()
+	
     print "= Create ratio histograms:"
     
     thedivition = dh.divide
@@ -401,7 +406,8 @@ if __name__ == '__main__':
 	newth.Draw("HIST")
 
 	cv[thedivition[ikey].name].Update()
-
+	
+	newth.Write()
 	# add new histogram to the list
 	#newth.SetName(theaddition[ikey].name)
 	#newTH1list.append(newth.GetName())
@@ -555,6 +561,9 @@ if __name__ == '__main__':
 	    cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat)
 	
     
+    #outputroot.Write()
+    outputroot.Close()
+
     if not option.batch:
 	rep = ''
 	while not rep in [ 'q', 'Q', '.q', 'qq' 'p']:
