@@ -6,13 +6,14 @@ analysis rely on the extended lifetime of B hadrons. In particular, the
 TrackCounting and the JetProbability taggers rely on tracks with large impact 
 parameters with respect to the interaction point. 
 
-The TrackCounting tagger (TC) computes the impact parameter significance 
-$IP/\sigma_{IP}$ for each selected track in a jet. The jet is tagged as a 
+The TrackCounting tagger (TC) computes the 3D impact parameter significance 
+$IP/\sigma_{IP}$ for each selected track in a jet with respect to
+the primary vertex. The jet is tagged as a 
 $b$ jet if the number of tracks with an $IP/\sigma_{IP}$ exceeding a given 
 cut is greater than a value which can be optimized for high efficiency or
 high purity in the resulting sample. Tracks are ordered in decreasing 
 impact parameter significance $IP/\sigma_{IP}$. The significance of the track
-impact parameter of the $N^{th} $ track serves as the discriminator for this 
+impact parameter of the $N_{th} $ track serves as the discriminator for this 
 algorithm.
 In this note, two discriminants were chosen for the TrackCounting tagger by 
 requiring second ($TCHE$) or third ($TCHP$) track with a 3D $IP/\sigma_{IP}$ 
@@ -35,12 +36,12 @@ the definition of the operating points.
 
 \begin{figure}[htbp]
   \begin{center}
-    \includegraphics[width=60mm]{Figures/Performance_plot_TC.png}
-    \includegraphics[width=60mm]{Figures/Performance_plot_TP.png}
+    \includegraphics[width=80mm]{Figures/Performance_plot_TC.png}
+    \includegraphics[width=80mm]{Figures/Performance_plot_TP.png}
   \end{center}
   \caption{b-tagging performance measured using the MC truth information 
 on the QCD sample with $80<\hat{p_T}<120\;{\rm GeV}/c$ for the TrackCounting 
-(left) and the JetProbability tagger(right).}
+(top) and the JetProbability tagger(bottom).}
   \label{fig:Performance_plots}
 \end{figure}
 
@@ -60,3 +61,5 @@ Tight  (TCT)      &  $TCHP>4.7$   & Tight  (JPT)   &  $>0.76$\\
  determined  from MC truth, for jets with $p_T>20$~\gevc and $|\eta|<2.5$.}
  \end{center}
 \end{table}
+
+\clearpage

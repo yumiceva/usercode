@@ -4,15 +4,18 @@
 This study is based on three different Monte Carlo samples denoted QCD, 
 inclusive $t\bar{t}+0$jets and $pp\rightarrow \mu +X$. The QCD sample 
 was generated in different $\hat{p}_T $ bins at generator level. All
-samples were generated with PYTHIA, except for the $t\bar{t} $ sample 
-that was generated with ALPGEN. All samples were simulated with 
+samples were generated with PYTHIA~\cite{ref:pythia}, except for the $t\bar{t} $ sample 
+that was generated with ALPGEN~\cite{ref:alpgen}. All samples were simulated with 
 CMSSW\_1\_4\_X and reconstructed with CMSSW\_1\_5\_2 as part of the CSA07
 production. The $pp\rightarrow \mu +X $ sample is QCD minbias events with
-muon $p_T > 3 $.
+muon $p_T > 3$~GeV/c. The muon is selected at the generator level. This
+sample does not include muons produced by pion or kaon decays or by
+punch-through events. Thus, the light flavor jet contribution is much
+lower that the inclusive QCD sample.
 
 The analysis is based on samples that have at least two reconstructed jets 
 and a non-isolated muon close to one of the jets. The jets are reconstructed 
-using the iterativeCone5 algorithm and corrected by a generator to 
+using the ITERATIVECONE5 algorithm~\cite{ref:iterativecone5} and corrected by a generator to 
 reconstruction calibration factor. The jets and the muons in the event are
 selected using the criteria described in the CMS Analysis 
 Note~\cite{ref:btag_oldnote}.
@@ -33,9 +36,10 @@ muon-in-jet+away-jet sample, where the away-jet is tagged as a $b$ jet.
 Table~\ref{tab:samples} summarizes the samples used, and the number 
 of events avilable.
 For muon-jets the \ptrel is defined as the transverse momentum of the muon 
-relative to the direction of the total muon-jet momentum vector, 
+relative to the direction of the total muon-jet momentum vector,
+ 
 \begin{equation}
-p_{Trel}=\frac{p^{\mu} \times p^{\mu + {\rm jet}}}{|p^{\mu + {\rm jet}}|}.
+p_{Trel}=\frac{|\vec{p^{\mu}} \times \vec{p^{\mu + {\rm jet}}}|}{|p^{\mu + {\rm jet}}|}.
 \end{equation}
 
 \begin{table}[bth]
@@ -60,7 +64,7 @@ $pp\rightarrow \mu +X$    & 18664210 &    611771 &      71519 \\ \hline
 
  \end{tabular}
  \end{center}
-\caption[]{Summary of the total number of events.}
+\caption[]{Summary of the total number of events from the CSA07 MC samples.}
 \label{tab:samples}
 \end{table}
 

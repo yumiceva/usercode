@@ -1,18 +1,26 @@
 \section{Introduction}
 
-The measurement of the b-tagging performance using a sample of muon-in-jets is described
+The measurement of the $b$-tagging performance using a sample of muon-in-jets is described
 in the CMS Analysis Note~\cite{ref:btag_oldnote}. Three methods were
 studied in detail in Ref.~\cite{ref:btag_oldnote}: System8, $p_{Trel}$,
-and counting. The System8 method is based in the use of two weakly correlated
-b-taggers and two sets of a muon-in-jet sample. One sample is a subset of the
-muon-in-jet sample where an away-jet is tagged as a b-jet. The correlations
-between the two b-taggers and between the two samples are estimated
-from Monte Carlo (MC). The flavor contributions are written for 
+and counting. The methods parametrize the $b$-tagging efficiency and mistagging rate 
+as a function of jet $p_T$ or jet $\eta$. These efficiencies can be applied to analyses which
+rely on $b$-tagging and Monte Carlo studies (MC).
+
+In this note, the System8 will be described in more detail. This method is based in the use of two weakly correlated
+$b$-taggers and two sets of a muon-in-jet sample. One sample is a subset of the
+muon-in-jet sample where an away-jet is tagged as a $b$-jet. The correlations
+between the two $b$-taggers and between the two samples are estimated
+from Monte Carlo. The flavor contributions are written for 
 each combination of sample and tagger producing a system of eight
 equations. The results of the system-of-equation are the
-efficiencies and c+light mistagging 
+$b$-tagging efficiencies and charm+light quark and gluon mistagging 
 for the two tagger applied on the samples. 
 
-This note describes the improvements developed since the analysis in Ref.~\cite{ref:btag_oldnote}. The analysis was done using the CMSSW 1.6.X release and the
-CSA07 samples.
+This note also describes the improvements developed since the analysis in Ref.~\cite{ref:btag_oldnote}. The System8 method has been extended to consider correlations for the soft
+muon tagger. In this case the soft muon tagger is a simple tagger based only in the $p_{Trel}$
+distribution. We also study the System8 convergency and developed options to choose the best
+solution in case of multiple solutions. As a results, the convergency range in jet $p_T$ of this
+method has been extended compared to the previous analysis~\cite{ref:btag_oldnote}. The analysis was done using the CMSSW 1.6.X release and the
+CSA07 MC samples~\cite[ref:csa07].
  
