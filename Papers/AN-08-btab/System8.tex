@@ -9,7 +9,7 @@ improved to include the correlation factors for the soft muon tagger:
 For the current implementation of the System8 method, 
 two data samples are used: the muon-in-jet+away-jet sample, and the 
 muon-in-jet+tagged-away-jet sample. The lifetime tag (TrackCounting or 
-JetProbability) and the Soft Muon Tag requiring muon  \ptrel > 0.8 \gevc 
+JetProbability) and the Soft Muon Tag requiring muon  \ptrel $ > 0.8 $\gevc 
 are applied individually or together, and labelled ``tag'', and ``$p_{Trel}$ '',
  respectively. The jets are also divided in two categories: 
 $b$ jets, and $c+$light ($cl$) jets. 
@@ -31,7 +31,7 @@ n^{\rm{tag},p_{Trel}} &=&
 \kappa_{cl} \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^{p_{Trel}} n_{cl} \nonumber\\
 p^{\rm{tag},p_{Trel}} &=&
 \kappa_b \; \beta \; \delta \; \varepsilon_b^{\rm{tag}} \varepsilon_b^{p_{Trel}} p_b +
-\kappa_{cl} \; \alpha \; \gamma \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^p_{Trel}}} p_{cl} \;.\nonumber
+\kappa_{cl} \; \alpha \; \gamma \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^{p_{Trel}} p_{cl} \;.\nonumber
 \end{eqnarray}
 
 The terms on the left hand side represent the total number of muon-in-jets
@@ -54,11 +54,13 @@ the correlation between the lifetime tag and the muon requirement for $b$ jets
 ($\kappa_b$) and $c+$light jets ($\kappa_{cl}$), respectively. 
 They are defined as
 \begin{eqnarray}
+begin{eqnarray}
 \kappa_b = \frac{\varepsilon_b^{\rm{tag},p_{Trel}}}
-{\varepsilon_b^{\rm{tag}}\varepsilon_b^{p_{Trel}}}} \;\; \rm{and} \;\; 
-\kappa_{cl} =
-\frac{\varepsilon_{cl}^{\rm{tag},p_{Trel}}}{\varepsilon_{cl}^{\rm{tag}}\varepsilon_{cl}^{p_{Trel}}}\,.
+{\varepsilon_b^{\rm{tag}}\varepsilon_b^{p_{Trel}}} \;\; {\rm{and}} \;\;
+{\kappa_{cl} =
+\frac{\varepsilon_{cl}^{\rm{tag},p_{Trel}}}{\varepsilon_{cl}^{\rm{tag}}\varepsilon_{cl}^{p_{Trel}}}}\,.
 \end{eqnarray}
+
 The parameters $\beta$ and $\alpha$ represent the ratio of the lifetime tagging efficiencies
 for $b$ and $c+$light jets, respectively, corresponding
 to the two data samples used to solve System8.
