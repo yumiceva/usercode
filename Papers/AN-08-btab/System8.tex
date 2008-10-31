@@ -1,16 +1,17 @@
 \section{System8 Method}
 \label{sec:system8}
 
-The System8 method has been used to measure the $b$-tagging 
-efficiencies from real data~\cite{ref:btag_oldnote}. Since then it has been 
+The System8 method was initialy studied within CMS in~\cite{ref:btag_oldnote}. Since then it has been 
 improved to include the correlation factors for the soft muon tagger:
- $\delta $ and $\gamma$.
+ $\delta $ and $\gamma$. In the case of multiple real solutions when 
+We have also included a criteria to choose the best solution 
+When solving the system of equations with a iterative procedure
  
 For the current implementation of the System8 method, 
 two data samples are used: the muon-in-jet+away-jet sample, and the 
 muon-in-jet+tagged-away-jet sample. The lifetime tag (TrackCounting or 
 JetProbability) and the Soft Muon Tag requiring muon  \ptrel $ > 0.8 $\gevc 
-are applied individually or together, and labelled ``tag'', and ``$p_{Trel}$ '',
+are applied individually or together, and labelled ``tag'', and ``SLT '',
  respectively. The jets are also divided in two categories: 
 $b$ jets, and $c+$light ($cl$) jets. 
 
@@ -23,27 +24,26 @@ n^{\rm{tag}} &=&
 \varepsilon_b^{\rm{tag}} n_b + \varepsilon_{cl}^{\rm{tag}} n_{cl} \nonumber\\
 p^{\rm{tag}} &=&
 \beta \; \varepsilon_b^{\rm{tag}} p_b + \alpha \; \varepsilon_{cl}^{\rm{tag}} p_{cl} \nonumber\\
-n^{p_{Trel}} &=&
-\varepsilon_b^{p_{Trel}} n_b + \varepsilon_{cl}^{p_{Trel}} n_{cl} \nonumber \\
-p^{p_{Trel}} &=& \delta \; \varepsilon_b^{p_{Trel}} p_b + \gamma \; \varepsilon_{cl}^{p_{Trel}} p_{cl} \nonumber\\
-n^{\rm{tag},p_{Trel}} &=&
-\kappa_b \; \varepsilon_b^{\rm{tag}} \varepsilon_b^{p_{Trel}} n_b +
-\kappa_{cl} \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^{p_{Trel}} n_{cl} \nonumber\\
-p^{\rm{tag},p_{Trel}} &=&
-\kappa_b \; \beta \; \delta \; \varepsilon_b^{\rm{tag}} \varepsilon_b^{p_{Trel}} p_b +
-\kappa_{cl} \; \alpha \; \gamma \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^{p_{Trel}} p_{cl} \;.\nonumber
+n^{SLT} &=&
+\varepsilon_b^{SLT} n_b + \varepsilon_{cl}^{SLT} n_{cl} \nonumber \\
+p^{SLT} &=& \delta \; \varepsilon_b^{SLT} p_b + \gamma \; \varepsilon_{cl}^{SLT} p_{cl} \nonumber\\
+n^{\rm{tag},SLT} &=&
+\kappa_b \; \varepsilon_b^{\rm{tag}} \varepsilon_b^{SLT} n_b +
+\kappa_{cl} \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^{SLT} n_{cl} \nonumber\\
+p^{\rm{tag},SLT} &=&
+\kappa_b \; \beta \; \delta \; \varepsilon_b^{\rm{tag}} \varepsilon_b^{SLT} p_b +
+\kappa_{cl} \; \alpha \; \gamma \; \varepsilon_{cl}^{\rm{tag}} \varepsilon_{cl}^{SLT} p_{cl} \;.\nonumber
 \end{eqnarray}
 
 The terms on the left hand side represent the total number of muon-in-jets
 in each sample before tagging ($n$, $p$) and after tagging with
-a lifetime tagger ($n^{\rm{tag}}, p^{\rm{tag}}$), the soft muon tag 
-($\ptrel $ cut ) ($n^{p_{Trel}}}, p^{p_{Trel}}$), and both ($n^{\rm{tag},p_{Trel}},
- p^{\rm{tag},p_{Trel}}$). The eight unknowns on the right hand side of the 
+a lifetime tagger ($n^{\rm{tag}}, p^{\rm{tag}}$), the soft muon tagger ($n^{SLT}}, p^{SLT}$), and both ($n^{\rm{tag},SLT},
+ p^{\rm{tag},SLT}$). The eight unknowns on the right hand side of the 
 equations consist of the number of $b$ and $c+$light jets in the two samples 
 ($n_b$, $n_{cl}$, $p_b$, $p_{cl}$),  and the tagging efficiencies for
 $b$ and $c+$light jets for the lifetime tag and the soft muon tag
-($\varepsilon_b^{\rm{tag}}, \varepsilon_b^{p_{Trel}}},
-\varepsilon_{cl}^{\rm{tag}}, \varepsilon_{cl}^{p_{Trel}}}$).
+($\varepsilon_b^{\rm{tag}}, \varepsilon_b^{SLT}},
+\varepsilon_{cl}^{\rm{tag}}, \varepsilon_{cl}^{SLT}}$).
 The method assumes that the efficiency for tagging a jet with both the 
 lifetime tag and the  soft muon tag (muon \ptrel  cut) can be calculated 
 as the product of the individual efficiencies.
@@ -54,11 +54,10 @@ the correlation between the lifetime tag and the muon requirement for $b$ jets
 ($\kappa_b$) and $c+$light jets ($\kappa_{cl}$), respectively. 
 They are defined as
 \begin{eqnarray}
-begin{eqnarray}
-\kappa_b = \frac{\varepsilon_b^{\rm{tag},p_{Trel}}}
-{\varepsilon_b^{\rm{tag}}\varepsilon_b^{p_{Trel}}} \;\; {\rm{and}} \;\;
+\kappa_b = \frac{\varepsilon_b^{\rm{tag},SLT}}
+{\varepsilon_b^{\rm{tag}}\varepsilon_b^{SLT}} \;\; {\rm{and}} \;\;
 {\kappa_{cl} =
-\frac{\varepsilon_{cl}^{\rm{tag},p_{Trel}}}{\varepsilon_{cl}^{\rm{tag}}\varepsilon_{cl}^{p_{Trel}}}}\,.
+\frac{\varepsilon_{cl}^{\rm{tag},SLT}}{\varepsilon_{cl}^{\rm{tag}}\varepsilon_{cl}^{SLT}}}\,.
 \end{eqnarray}
 
 The parameters $\beta$ and $\alpha$ represent the ratio of the lifetime tagging efficiencies
@@ -78,12 +77,12 @@ tagging efficiencies for $b$ and $c+$light jets, respectively, corresponding
 to the two data samples used to solve System8.
 They are defined as
 \begin{eqnarray}
-\delta =\frac{ \varepsilon_b^{p_{Trel}} \mbox{from muon-in-jet+tagged-away-jet sample} } 
-{ \varepsilon_b^{p_{Trel}} \mbox{from muon-in-jet+away-jet sample} }\, ,
+\delta =\frac{ \varepsilon_b^{SLT} \mbox{from muon-in-jet+tagged-away-jet sample} } 
+{ \varepsilon_b^{SLT} \mbox{from muon-in-jet+away-jet sample} }\, ,
 \end{eqnarray}
 \begin{eqnarray}
-\gamma =\frac{ \varepsilon_{cl}^{p_{Trel}} \mbox{from muon-in-jet+tagged-away-jet sample} } 
-{ \varepsilon_{cl}^{p_{Trel}} \mbox{from muon-in-jet+away-jet sample} }\, .
+\gamma =\frac{ \varepsilon_{cl}^{SLT} \mbox{from muon-in-jet+tagged-away-jet sample} } 
+{ \varepsilon_{cl}^{SLT} \mbox{from muon-in-jet+away-jet sample} }\, .
 \end{eqnarray}
 
 The correlation factors have been measured for three operating points of the 
