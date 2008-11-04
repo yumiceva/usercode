@@ -19,9 +19,11 @@
 
    usage: %prog -x <XML configuration file>
    -b, --batch : run script in batch mode.
+   -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
    -l, --list    = LIST: list of objects in the ROOT file. 
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
+   -t, --tag     = TAG: tag name for XML configuration file.
    -x, --xml     = XML: xml configuration file.
 
    Francisco Yumiceva (yumiceva@fnal.gov)
@@ -221,8 +223,20 @@ if __name__ == '__main__':
 
     if option.list:
 	ins = Inspector.Inspector()
+	ins.Verbose(True)
+	ins.createXML(False)
 	ins.SetFilename(option.list)
 	ins.GetListObjects()
+	sys.exit()
+
+    if option.create:
+	createXML = Inspector.Inspector()
+	createXML.Verbose(False)
+	createXML.createXML(True)
+	if option.tag:
+	    createXML.SetTag(option.tag)
+	createXML.SetFilename(option.create)
+	createXML.GetListObjects()
 	sys.exit()
 
     if not option.xml: exit()
@@ -356,6 +370,7 @@ if __name__ == '__main__':
 	outputroot.cd()
 	newth.Write()
 	
+    
     print "= Create ratio histograms:"
     
     thedivition = dh.divide
@@ -552,6 +567,10 @@ if __name__ == '__main__':
 	
 	cv[thesuper[ikey].name].Update()
 	#cv[thesuper[ikey].name].Print("test.png")
+
+	# pause
+	if not option.batch:
+	    raw_input( 'Press ENTER to continue\n ' )
 
     if printCanvas:
 	
