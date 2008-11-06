@@ -18,7 +18,7 @@
     A very simple way to make plots with ROOT via an XML file.
 
    usage: %prog -x <XML configuration file>
-   -b, --batch : run script in batch mode.
+   -b, --batch : Pause script after plotting a new superposition of histograms.
    -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
    -l, --list    = LIST: list of objects in the ROOT file. 
@@ -172,6 +172,7 @@ class FindIssue(handler.ContentHandler):
 	    self.divide[aname].name = aname
 	    self.divide[aname].numerator = attrs.get('numerator',None)
 	    self.divide[aname].denominator = attrs.get('denominator',None)
+	    self.divide[aname].Option = attrs.get('Option',None)
 	if name == 'addition':
 	    aname = attrs.get('name',None)
 	    self.addition[aname] = additionElement()
@@ -244,7 +245,6 @@ if __name__ == '__main__':
 	printCanvas = True
 	printFormat = option.prt
 
-    
 
     # check xml file
     try:
@@ -367,6 +367,7 @@ if __name__ == '__main__':
 	thedata[newth.GetName()].TH1s[newth.GetName()] = newth
 	thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
 
+	# write new histograms to file
 	outputroot.cd()
 	newth.Write()
 	
@@ -382,34 +383,28 @@ if __name__ == '__main__':
 	#create canvas
 	cv[thedivition[ikey].name] = TCanvas(thedivition[ikey].name,thedivition[ikey].name,700,700)
 
-	ihnameIt = 0
-	for ihname in listname:
-	    aweight = 1
-	    #if listweight[ihnameIt]:
-		#aweight = float(listweight[ihnameIt])
-	    for jkey in thedata:
-		tmpkeys = thedata[jkey].histos.keys()
-		for tmpname in tmpkeys:
-		    if tmpname == numerator:
-			numeratorth = thedata[jkey].TH1s[tmpname]
-			if numeratorth is None:
-			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
-			    exit(0)
+	for jkey in thedata:
+	    tmpkeys = thedata[jkey].histos.keys()
+	    for tmpname in tmpkeys:
+		if tmpname == numerator:
+		    numeratorth = thedata[jkey].TH1s[tmpname]
+		    if numeratorth is None:
+			print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
+			exit(0)
 			#print "=== numerator histogram: "+numeratorth.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(numeratorth.GetMean(),2) + " weight= " + str(aweight)
 
-		    if tmpname == denominator:
-			denominatorth = thedata[jkey].TH1s[tmpname]
-			if denominatorth is None:
-			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
-			    exit(0)
+		if tmpname == denominator:
+		    denominatorth = thedata[jkey].TH1s[tmpname]
+		    if denominatorth is None:
+			print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
+			exit(0)
 			#print "=== denominator histogram: "+denominatorth.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(denominatorth.GetMean(),2) + " weight= " + str(aweight)
 
 
-	    ihnameIt = ihnameIt + 1
-
+	
 	newth = numeratorth.Clone()
 	newth.Clear()
-	newth.Divide(numeratorth,denominatorth)
+	newth.Divide(numeratorth,denominatorth,1.,1.thedivition[ikey].Option)
 #	if theaddition[ikey].XTitle != None:
 #	    newth.SetXTitle(theaddition[ikey].XTitle)
 #	if theaddition[ikey].YTitle != None:
@@ -422,7 +417,10 @@ if __name__ == '__main__':
 
 	cv[thedivition[ikey].name].Update()
 	
+	# write new histograms to file
+	outputroot.cd()
 	newth.Write()
+
 	# add new histogram to the list
 	#newth.SetName(theaddition[ikey].name)
 	#newTH1list.append(newth.GetName())
@@ -569,7 +567,7 @@ if __name__ == '__main__':
 	#cv[thesuper[ikey].name].Print("test.png")
 
 	# pause
-	if not option.batch:
+	if option.batch:
 	    raw_input( 'Press ENTER to continue\n ' )
 
     if printCanvas:
@@ -583,17 +581,17 @@ if __name__ == '__main__':
     #outputroot.Write()
     outputroot.Close()
 
-    if not option.batch:
-	rep = ''
-	while not rep in [ 'q', 'Q', '.q', 'qq' 'p']:
-	    rep = raw_input( '\nenter: ["q",".q" to quit] ["p" or "print" to print all canvas]: ' )
-	    if 0<len(rep):
-		if rep=='quit': rep = 'q'
-		if rep=='p' or rep=='print':
-		    for ikey in theaddition:
-			cv[theaddition[ikey].name].Print(theaddition[ikey].name + "." + printFormat)
-		    for ikey in thesuper:
-			cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat) 
-    
+#    if not option.batch:
+    rep = ''
+    while not rep in [ 'q', 'Q', '.q', 'qq' 'p']:
+	rep = raw_input( '\nenter: ["q",".q" to quit] ["p" or "print" to print all canvas]: ' )
+	if 0<len(rep):
+	    if rep=='quit': rep = 'q'
+	    if rep=='p' or rep=='print':
+		for ikey in theaddition:
+		    cv[theaddition[ikey].name].Print(theaddition[ikey].name + "." + printFormat)
+		for ikey in thesuper:
+		    cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat) 
 
+		    
 
