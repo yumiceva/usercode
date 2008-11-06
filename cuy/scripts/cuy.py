@@ -172,6 +172,7 @@ class FindIssue(handler.ContentHandler):
 	    self.divide[aname].name = aname
 	    self.divide[aname].numerator = attrs.get('numerator',None)
 	    self.divide[aname].denominator = attrs.get('denominator',None)
+	    self.divide[aname].DivideOption = attrs.get('DivideOption',None)
 	    self.divide[aname].Option = attrs.get('Option',None)
 	if name == 'addition':
 	    aname = attrs.get('name',None)
@@ -404,19 +405,19 @@ if __name__ == '__main__':
 	
 	newth = numeratorth.Clone()
 	newth.Clear()
-	if thedivition[ikey].Option is None:
+	if thedivition[ikey].DivideOption is None:
 	    newth.Divide(numeratorth,denominatorth)
 	else:
-	    newth.Divide(numeratorth,denominatorth,1.,1.,thedivition[ikey].Option)
+	    newth.Divide(numeratorth,denominatorth,1.,1.,thedivition[ikey].DivideOption)
 #	if theaddition[ikey].XTitle != None:
 #	    newth.SetXTitle(theaddition[ikey].XTitle)
 #	if theaddition[ikey].YTitle != None:
 #	    newth.SetYTitle(theaddition[ikey].YTitle)
 
-#	if theaddition[ikey].Option:
-#	    newth.Draw(theaddition[ikey].Option)
-#	else:
-	newth.Draw("HIST")
+	if thedivition[ikey].Option:
+	    newth.Draw(theaddition[ikey].Option)
+	else:
+	    newth.Draw()
 
 	cv[thedivition[ikey].name].Update()
 	
