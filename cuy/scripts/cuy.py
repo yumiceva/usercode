@@ -404,7 +404,10 @@ if __name__ == '__main__':
 	
 	newth = numeratorth.Clone()
 	newth.Clear()
-	newth.Divide(numeratorth,denominatorth,1.,1.thedivition[ikey].Option)
+	if thedivition[ikey].Option is None:
+	    newth.Divide(numeratorth,denominatorth)
+	else:
+	    newth.Divide(numeratorth,denominatorth,1.,1.,thedivition[ikey].Option)
 #	if theaddition[ikey].XTitle != None:
 #	    newth.SetXTitle(theaddition[ikey].XTitle)
 #	if theaddition[ikey].YTitle != None:
