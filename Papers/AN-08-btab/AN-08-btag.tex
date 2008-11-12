@@ -1,6 +1,6 @@
 % CVS info
-\RCS$Revision: 1.6 $
-\RCS$Date: 2008/10/20 19:30:31 $
+\RCS$Revision: 1.7 $
+\RCS$Date: 2008/10/28 20:02:21 $
 %%%%%%%%%%%%% ptdr definitions %%%%%%%%%%%%%%%%%%%%%
 
 %------------------------------------------------------------------------------
@@ -51,14 +51,14 @@
 
 \title{\bf Measurement of the $b$ tagging Performance using a Muon in Jets Sample: Update of the System8 Method with the CSA07 MC samples.}
 
-\author[iphc]{J\'er\'emy Andrea, Daniel Bloch, Denis Gel\'e, Pierre Juillot}
-\author[uic]{V\'ictor E. Bazterra, Cecilia E. Gerber}
-\author[brown] {Meenakshi Narain}
+%\author[iphc]{J\'er\'emy Andrea, Daniel Bloch, Denis Gel\'e, Pierre Juillot}
+%\author[uic]{V\'ictor E. Bazterra, Cecilia E. Gerber}
+%\author[brown] {Meenakshi Narain}
 \author[purdue]{Pratima Jindal}
-\author[fnal]{Ping Tan, Francisco Yumiceva}
-\address[uic]{University of Illinois at Chicago, Chicago, IL 60607, USA}
-\address[iphc]{Institut Pluridisciplinaire Hubert Curien, Universit\'e Louis Pasteur, CNRS/IN2P3, Strasbourg, France}
-\address[brown]{Brown University, Providence, RI 02912, USA}
+\author[fnal]{Francisco Yumiceva}
+%\address[uic]{University of Illinois at Chicago, Chicago, IL 60607, USA}
+%\address[iphc]{Institut Pluridisciplinaire Hubert Curien, Universit\'e Louis Pasteur, CNRS/IN2P3, Strasbourg, France}
+%\address[brown]{Brown University, Providence, RI 02912, USA}
 \address[fnal]{Fermi National Accelerator Laboratory, Batavia, Illinois USA}  
 \address[purdue]{Purdue University Calumet, Hammond, Indiana, USA}
 \date{\today}
@@ -104,41 +104,54 @@ pdfkeywords={CMS, physics, btagging, muon,b}}
 \clearpage
 \input{System8}
 \label{sec:system8}
+
+\input{SLTefficiency}
+\clearpage
 \input{Average_results}
 \label{sec:avg_results}
+\clearpage
 \input{BinnedResults}
 \label{sec:binned_results}
-
-\clearpage
-\input{SLTefficiency}
 
 \input{Conclusions}
 \label{sec:conclusions}
 
 \section{Acknowledgment} 
-We would like to thank ...
+We would like to thank Daniel Bloch and J\'er\'emy Andrea for their comments and for providing
+us with the tools to solve System8. Meenakshi Narain for her advise on this analysis. Last but not
+least we would like to thank Cecilia Gerber for her detail comments on the note and her
+advise.
 
 \appendix
-%DB \input{Correlations}
+\input{ExtraDistributions}
 %DB \label{sec:correlations}
 
 \begin{thebibliography}{99}
 
 \bibitem{ref:btag_oldnote}
 M.~Narain, P.~Tan, F.~Yumiceva, J~.Andrea, D.~Bloch, D.~Gel\'e, P.~Juillot
-V.~Bazterra, C.~Gerber, ``Performance Measurement of $b$ tagging Algorithms Using Data containing Muons within Jets'', CMS AN-2007/046 (2007).
+V.~Bazterra, C.~Gerber, ``Performance Measurement of $b$ tagging Algorithms Using Data containing Muons within Jets'', 
+{\bf CMS AN-2007/046 (2007)}.
 
 \bibitem{ref:csa07}
 https://twiki.cern.ch/twiki/bin/view/Main/AlpgenSummer07.
 
 \bibitem{ref:pythia}
-T.~Sj{\"o}strand, L.~Lonnblad and S.~Mrenna, hep-ph/0108264 (2001).
+T.~Sj{\"o}strand, L.~Lonnblad and S.~Mrenna, 
+{\bf hep-ph/0108264} (2001).
 
 \bibitem{ref:alpgen}
-M.~L.~Mangano, M.~Moretti, F.~Piccinini, R.~Pittau, and A.~D.~Polosa, ``ALPGEN, a generator for hard multiparton processes in hadronic collisions''. JHEP 07 (2003) 001, arXiv:hep-ph/0206293.
+M.~L.~Mangano, M.~Moretti, F.~Piccinini, R.~Pittau, and A.~D.~Polosa, ``ALPGEN, a generator for hard multiparton processes in hadronic collisions''. 
+{\bf JHEP 07 (2003) 001, arXiv:hep-ph/0206293}.
 
 \bibitem{ref:iterativecone5}
-P.~Schieferdecker et al., ``Performance of Jet Algorithms in CMS''. CMS Analysis Note 2008/001 (2008).
+P.~Schieferdecker et al., ``Performance of Jet Algorithms in CMS''. 
+{\bf CMS Analysis Note 2008/001 (2008)}.
+
+\bibitem{ref:cmsip} 
+    A.~Rizzi, F.~Palla, G.~Segneri,
+    {\em Track impact parameter based b-tagging with CMS}, 
+    {\bf CMS Note 2006/019}. 
  
 \bibitem{ref:root}
 ROOT analysis system 
