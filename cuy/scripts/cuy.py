@@ -18,12 +18,12 @@
     A very simple way to make plots with ROOT via an XML file.
 
    usage: %prog -x <XML configuration file>
-   -b, --batch : Pause script after plotting a new superposition of histograms.
    -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
    -l, --list    = LIST: list of objects in the ROOT file. 
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
    -t, --tag     = TAG: tag name for XML configuration file.
+   -w, --wait : Pause script after plotting a new superposition of histograms.
    -x, --xml     = XML: xml configuration file.
 
    Francisco Yumiceva (yumiceva@fnal.gov)
@@ -571,7 +571,7 @@ if __name__ == '__main__':
 	#cv[thesuper[ikey].name].Print("test.png")
 
 	# pause
-	if option.batch:
+	if option.wait:
 	    raw_input( 'Press ENTER to continue\n ' )
 
     if printCanvas:
@@ -585,7 +585,7 @@ if __name__ == '__main__':
     #outputroot.Write()
     outputroot.Close()
 
-#    if not option.batch:
+#    if not option.wait:
     rep = ''
     while not rep in [ 'q', 'Q', '.q', 'qq' 'p']:
 	rep = raw_input( '\nenter: ["q",".q" to quit] ["p" or "print" to print all canvas]: ' )
