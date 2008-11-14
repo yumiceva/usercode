@@ -1,19 +1,20 @@
 \section{System8 Method}
 \label{sec:system8}
 
-The System8 method was initialy studied within CMS in~\cite{ref:btag_oldnote}. Since then it has been 
-improved to include the correlation factors for the soft muon tagger:
- $\delta $ and $\gamma$. In the case of multiple real solutions when 
-We have also included a criteria to choose the best solution 
-When solving the system of equations with a iterative procedure
+The System8 method was initialy studied within CMS in~\cite{ref:btag_oldnote}. 
+Since then it has been 
+improved to include the correlation factors for the Soft Lepton tagger:
+ $\delta $ and $\gamma$. In the case of multiple real solutions we have also 
+included a criteria to choose the best solution 
+when solving the system of equations with an iterative procedure.
  
 For the current implementation of the System8 method, 
 two data samples are used: the muon-in-jet+away-jet sample, and the 
 muon-in-jet+tagged-away-jet sample. The lifetime tag (TrackCounting or 
-JetProbability) and the Soft Muon Tag requiring muon  \ptrel $ > 0.8 $\gevc 
+JetProbability) and the Soft Lepton Tag requiring muon  \ptrel $ > 0.8 $\gevc 
 are applied individually or together, and labelled ``tag'', and ``SLT '',
  respectively. The jets are also divided in two categories: 
-$b$ jets, and charm+$light ($cl$) jets. 
+$b$ jets, and charm+light ($cl$) jets. 
 
 The following system of eight equations is then obtained:
 
@@ -37,15 +38,15 @@ p^{\rm{tag},SLT} &=&
 
 The terms on the left hand side represent the total number of muon-in-jets
 in each sample before tagging ($n$, $p$) and after tagging with
-a lifetime tagger ($n^{\rm{tag}}, p^{\rm{tag}}$), the soft muon tagger ($n^{SLT}}, p^{SLT}$), and both ($n^{\rm{tag},SLT},
+a lifetime tagger ($n^{\rm{tag}}, p^{\rm{tag}}$), the soft lepton tagger ($n^{SLT}}, p^{SLT}$), and both ($n^{\rm{tag},SLT},
  p^{\rm{tag},SLT}$). The eight unknowns on the right hand side of the 
 equations consist of the number of $b$ and $c+$light jets in the two samples 
 ($n_b$, $n_{cl}$, $p_b$, $p_{cl}$),  and the tagging efficiencies for
-$b$ and $c+$light jets for the lifetime tag and the soft muon tag
+$b$ and $c+$light jets for the lifetime tag and the soft lepton tag
 ($\varepsilon_b^{\rm{tag}}, \varepsilon_b^{SLT}},
 \varepsilon_{cl}^{\rm{tag}}, \varepsilon_{cl}^{SLT}}$).
 The method assumes that the efficiency for tagging a jet with both the 
-lifetime tag and the  soft muon tag (muon \ptrel  cut) can be calculated 
+lifetime tag and the  soft lepton tag (muon \ptrel  cut) can be calculated 
 as the product of the individual efficiencies.
 Six additional parameters are needed to solve the system of equations:
 $\kappa_b$, $\kappa_{cl}$, $\alpha$, $\beta$, $\delta$ and $\gamma$. 
