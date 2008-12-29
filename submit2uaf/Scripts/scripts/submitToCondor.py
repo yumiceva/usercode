@@ -11,7 +11,7 @@
    Submit jobs to condor. It will create directories in the output path
    to store configuration files and log files.
    
-   e.g. submitToCondor.py -c ZprimeEventsReco_full.cfg -l datasets/zp1Tev.txt -n 10 -o /uscms_data/d1/yumiceva/CMSSW_1_3_6/TQAFAnalyzer/
+   e.g. submitToCondor.py -c ZprimeEventsReco_full.py -l datasets/zp1Tev.txt -n 10 -o /uscms_data/d1/yumiceva/CMSSW_1_3_6/TQAFAnalyzer/
 
    where ZprimeEventsReco_full.cfg is the configuration file. The configuration file
    needs to be modified a bit: (1) remove all input files in the PoolSource and add a
@@ -26,7 +26,7 @@
    usage: %prog
    -m, --mc   : to generate MC. it will handle random numbers.
    -e, --events = EVENTS: number of events to generate MC. If -m flag is turned on.
-   -c, --cfg    = CFG: configuration file
+   -c, --cfg    = CFG: python configuration file
    -l, --list   = LIST: file with list of files (dataset)
    -n, --njobs  = NJOBS: number of jobs.
    -o, --output = OUTPUT: output path
@@ -178,29 +178,49 @@ def _mkdir(newdir):
 def change(infile,outfile,changearray,filearray):
     fin  = open(infile)
     fout = open(outfile,"w")
+    
+    #if line.find("untracked")!=-1 and line.find("PSet")!=-1 and line.find("maxEvents")!=-1:
+    #        line = "untracked PSet maxEvents = {untracked int32 input = "+str(Nevents)+"}\n"
+
     for line in fin.readlines():
-        # make sure we run over all events in each job
-        if line.find("untracked")!=-1 and line.find("PSet")!=-1 and line.find("maxEvents")!=-1:
-            line = "untracked PSet maxEvents = {untracked int32 input = "+str(Nevents)+"}\n"
-                    
         for change in changearray:
-            if change[0] == "{FILENAME}" and line.find(change[0])!=-1:
-                line=line.replace(change[0] ,"")
-                itmp=0
-                for ifile in filearray:
-                    ifile = ifile.strip("\n")
-                    itmp = itmp + 1
-                    suffix = "\","
-                    if itmp == len(filearray):
-                        suffix = "\""
-                    fout.write("\""+ifile+suffix+"\n")
+            #if change[0] == "{FILENAME}" and line.find(change[0])!=-1:
+            #    line=line.replace(change[0] ,"")
+            #    itmp=0
+             #   for ifile in filearray:
+             #       ifile = ifile.strip("\n")
+             #       itmp = itmp + 1
+             #       suffix = "\","
+             #       if itmp == len(filearray):
+             #           suffix = "\""
+             #       fout.write("\""+ifile+suffix+"\n")
                     
-            else:
+            #else:
                 
-                line=line.replace(change[0] ,change[1])
+            line=line.replace(change[0] ,change[1])
         
         fout.write(line)
 
+    # 
+    if outfile.find(".py")!=-1:
+        fout.write('''
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1) )
+
+process.source = cms.Source("PoolSource",
+fileNames = cms.untracked.vstring(
+''')
+        itmp=0
+        for ifile in filearray:
+            ifile = ifile.strip("\n")
+            itmp = itmp + 1
+            suffix = "\","
+            if itmp == len(filearray):
+                suffix = "\""
+            fout.write("\""+ifile+suffix+"\n")
+
+        fout.write("))")
+
+                                                                                                
 
 def submit_jobs(njob,array,ini_cfgfile,output_path):
     
@@ -210,11 +230,11 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
     while len(njobstr)<4:
         njobstr = "0"+njobstr
     
-    outfilename_cfg   = cfg_path  + cfgfile.replace(".cfg","_"+njobstr+".cfg")
-    outfilename_root = output_path+ cfgfile.replace(".cfg","_"+njobstr+".root")
-    outfilename_log   = logs_path + cfgfile.replace(".cfg","_"+njobstr+".log")
-    outfilename_csh   = csh_path  + cfgfile.replace(".cfg","_"+njobstr+".csh")
-    outfilename_condor= csh_path  + cfgfile.replace(".cfg","_"+njobstr+".condor")
+    outfilename_cfg   = cfg_path  + cfgfile.replace(".py","_"+njobstr+".py")
+    outfilename_root = output_path+ cfgfile.replace(".py","_"+njobstr+".root")
+    outfilename_log   = logs_path + cfgfile.replace(".py","_"+njobstr+".log")
+    outfilename_csh   = csh_path  + cfgfile.replace(".py","_"+njobstr+".csh")
+    outfilename_condor= csh_path  + cfgfile.replace(".py","_"+njobstr+".condor")
     
     if  os.path.isfile(outfilename_root):
         print "Not submitting into condor batch farm since rootoutput already exists"
@@ -237,13 +257,13 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
         changearray.append((cfg_tags_mc[5],str(random.randint(1,987654321) ) ))
         changearray.append((cfg_tags_mc[6],outfilename_root))
         change(template_fnames["cfg"],outfilename_cfg,changearray,array)
-        print outfilename_cfg + " has been written.\n"
+        #print outfilename_cfg + " has been written.\n"
 
     else:
         changearray.append((cfg_tags[0],""))
         changearray.append((cfg_tags[1],outfilename_root))
         change(template_fnames["cfg"],outfilename_cfg,changearray,array)
-        print outfilename_cfg + " has been written.\n"
+        #print outfilename_cfg + " has been written.\n"
     
     
     #
@@ -257,7 +277,7 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
     changearray.append((scripts_tags[4],output_path))
     change(template_fnames["csh"],outfilename_csh,changearray,0)
     os.chmod(outfilename_csh,0775)
-    print outfilename_csh + " has been written.\n"
+    #print outfilename_csh + " has been written.\n"
     
     #
     # finally create the condor job description file:
@@ -277,7 +297,7 @@ def submit_jobs(njob,array,ini_cfgfile,output_path):
         fout.write("+LENGTH=\"SHORT\"\n")
         fout.close()
     
-    print outfilename_condor + " has been written.\n"
+    #print outfilename_condor + " has been written.\n"
 
     submitcommand ="/opt/condor/bin/condor_submit  "+outfilename_condor
     print submitcommand+"\n"
@@ -356,11 +376,17 @@ if __name__ =='__main__':
     
     
         for ifile in inputfile:
+            #print "ifile: "+ifile
             ignoreline = 0
-            if ifile.find("replace")!=-1 or ifile.find("}")!=-1 or ifile.find("{")!=-1:
+            #if ifile.find("replace")!=-1 or ifile.find("}")!=-1 or ifile.find("{")!=-1:
+            #    ignoreline = 1
+            if ifile.find("import")!=-1 or ifile.find("cms.untracked")!=-1 or ifile.find("cms.Source")!=-1:
+                ignoreline = 1
+            if ifile.find(") )")!=-1:
                 ignoreline = 1
             
             if ignoreline==0:
+                #print "count line, where len subset is " +str(len(subset)) +"/"+str(filesperjob)
                 ifile = ifile.strip("'")
                 ifile = ifile.strip('\',\n')
                 #ifile = ifile.strip("'")
@@ -372,8 +398,11 @@ if __name__ =='__main__':
                         submit_jobs(njob,subset,ini_cfgfile,output_path)
             
                     subset = []
-
+                #print "add line: " + ifile
                 subset.append(ifile)
+
+        #print " len = " + str(len(subset))+" subset = "
+        #print subset
         
         if len(subset)>0:
             njob = njob + 1

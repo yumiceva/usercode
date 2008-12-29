@@ -1,7 +1,8 @@
 universe = vanilla
 Executable = {EXECUTABLE}
 Requirements   =  OpSys == "LINUX" && (Arch =="INTEL" || Arch =="x86_64")
-Should_Transfer_Files = NO
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
 Output = {OUTPUT}
 Error  = {ERROR}
 Log    = {LOG}
