@@ -1,0 +1,75 @@
+<cuy>
+
+  <validation type="Incl5Pt50" file="/uscms/home/pratima/PerformanceMeasurements/CMSSW_2_2_2/src/RecoBTag/PerformanceMeasurements/test/results_InclusiveMu5Pt50.root" release="X.Y.Z">
+    <TH1 name="jet_ptIncl5Pt50" source="/Histograms/MCtruth/jet_pt"></TH1>
+    <TH1 name="jet_pt_bIncl5Pt50" source="/Histograms/MCtruth/jet_pt_b"></TH1>
+    <TH1 name="jet_pt_cIncl5Pt50" source="/Histograms/MCtruth/jet_pt_c"></TH1>
+    <TH1 name="jet_pt_udsgIncl5Pt50" source="/Histograms/MCtruth/jet_pt_udsg"></TH1>
+
+    <TH1 name="jet_etaIncl5Pt50" source="/Histograms/MCtruth/jet_eta"></TH1>
+    <TH1 name="jet_eta_bIncl5Pt50" source="/Histograms/MCtruth/jet_eta_b"></TH1>
+    <TH1 name="jet_eta_cIncl5Pt50" source="/Histograms/MCtruth/jet_eta_c"></TH1>
+    <TH1 name="jet_eta_udsgIncl5Pt50" source="/Histograms/MCtruth/jet_eta_udsg"></TH1>
+
+    <TH1 name="jet_ptrelIncl5Pt50" source="/Histograms/ptrel/jet_ptrel"></TH1>
+    <TH1 name="jet_ptrel_bIncl5Pt50" source="/Histograms/ptrel/jet_ptrel_b"></TH1>
+    <TH1 name="jet_ptrel_cIncl5Pt50" source="/Histograms/ptrel/jet_ptrel_c"></TH1>
+    <TH1 name="jet_ptrel_udsgIncl5Pt50" source="/Histograms/ptrel/jet_ptrel_udsg"></TH1>
+
+  </validation>
+  <validation type="qcd80_120" file="/uscms/home/pratima/PerformanceMeasurements/CMSSW_2_2_2/src/RecoBTag/PerformanceMeasurements/test/results_QCD_80_120.root" release="X.Y.Z">
+    <TH1 name="jet_pt80_120" source="/Histograms/MCtruth/jet_pt"></TH1>
+    <TH1 name="jet_pt_b80_120" source="/Histograms/MCtruth/jet_pt_b"></TH1>
+    <TH1 name="jet_pt_c80_120" source="/Histograms/MCtruth/jet_pt_c"></TH1>
+    <TH1 name="jet_pt_udsg80_120" source="/Histograms/MCtruth/jet_pt_udsg"></TH1>
+
+    <TH1 name="jet_eta80_120" source="/Histograms/MCtruth/jet_eta"></TH1>
+    <TH1 name="jet_eta_b80_120" source="/Histograms/MCtruth/jet_eta_b"></TH1>
+    <TH1 name="jet_eta_c80_120" source="/Histograms/MCtruth/jet_eta_c"></TH1>
+    <TH1 name="jet_eta_udsg80_120" source="/Histograms/MCtruth/jet_eta_udsg"></TH1>
+
+    <TH1 name="jet_ptrel80_120" source="/Histograms/ptrel/jet_ptrel"></TH1>
+    <TH1 name="jet_ptrel_b80_120" source="/Histograms/ptrel/jet_ptrel_b"></TH1>
+    <TH1 name="jet_ptrel_c80_120" source="/Histograms/ptrel/jet_ptrel_c"></TH1>
+    <TH1 name="jet_ptrel_udsg80_120" source="/Histograms/ptrel/jet_ptrel_udsg"></TH1>
+
+  </validation>
+
+  <superimpose name="jet_pt" title="jet_pt" SetLogy="true" SetGrid="false" XTitle="jet p_{T} [GeV/c]" YTitle="Events">
+<!--    <superimposeItem name="jet_pt15" color="1" MarkerStyle="8" legend="#hat{p_{T}} 15-20"></superimposeItem>
+    <superimposeItem name="jet_pt20" color="2" MarkerStyle="21" legend="#hat{p_{T}} 20-30"></superimposeItem>
+    <superimposeItem name="jet_pt30" color="3" MarkerStyle="22" legend="#hat{p_{T}} 30-50"></superimposeItem>
+    <superimposeItem name="jet_pt50" color="4" MarkerStyle="23" legend="#hat{p_{T}} 50-80"></superimposeItem>-->
+    <superimposeItem name="jet_pt80_120" color="1" MarkerStyle="8" legend="#hat{p_{T}} 80-120"></superimposeItem>
+    <superimposeItem name="jet_ptIncl5Pt50" color="2" MarkerStyle="21" legend="InclusiveMu5Pt50"></superimposeItem>
+
+        
+  </superimpose>
+
+  <superimpose name="jet_eta" title="jet_eta" SetLogy="true" SetGrid="false" XTitle="jet |#eta|" YTitle="Events">
+    <superimposeItem name="jet_eta80_120" color="1" MarkerStyle="8" legend="#hat{p_{T}} 80-120"></superimposeItem>
+    <superimposeItem name="jet_etaIncl5Pt50" color="2" MarkerStyle="21" legend="InclusiveMu5Pt50"></superimposeItem>
+        
+  </superimpose>
+
+  <superimpose name="jet_ptrel" title="jet_ptrel" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+    <superimposeItem name="jet_ptrel_b80_120" color="1" MarkerStyle="8" legend="b-jets 80-120"></superimposeItem>
+    <superimposeItem name="jet_ptrel_bIncl5Pt50" color="2" MarkerStyle="21" legend="b-jets InclMu5Pt50"></superimposeItem>
+
+  </superimpose>
+
+
+  <superimpose name="jet_ptrelc" title="jet_ptrelc" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+    <superimposeItem name="jet_ptrel_c80_120" color="1" MarkerStyle="8" legend="c-jets 80-120"></superimposeItem>
+    <superimposeItem name="jet_ptrel_cIncl5Pt50" color="2" MarkerStyle="21" legend="c-jets InclMu5Pt50"></superimposeItem>
+
+  </superimpose>
+
+  <superimpose name="jet_ptreludsg" title="jet_ptreludsg" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+    <superimposeItem name="jet_ptrel_udsg80_120" color="1" MarkerStyle="8" legend="udsg-jets 80-120"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsgIncl5Pt50" color="2" MarkerStyle="21" legend="udsg-jets InclMu5Pt50"></superimposeItem>
+     
+  </superimpose>
+
+
+</cuy>
