@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="Incl5Pt50" file="/uscms/home/pratima/PerformanceMeasurements/CMSSW_2_2_2/src/RecoBTag/PerformanceMeasurements/test/results_InclusiveMu5Pt50.root" release="X.Y.Z">
+  <validation type="Incl5Pt50" file="results_InclusiveMu5Pt50.root" release="X.Y.Z">
     <TH1 name="jet_ptIncl5Pt50" source="/Histograms/MCtruth/jet_pt"></TH1>
     <TH1 name="jet_pt_bIncl5Pt50" source="/Histograms/MCtruth/jet_pt_b"></TH1>
     <TH1 name="jet_pt_cIncl5Pt50" source="/Histograms/MCtruth/jet_pt_c"></TH1>
@@ -17,7 +17,25 @@
     <TH1 name="jet_ptrel_udsgIncl5Pt50" source="/Histograms/ptrel/jet_ptrel_udsg"></TH1>
 
   </validation>
-  <validation type="qcd80_120" file="/uscms/home/pratima/PerformanceMeasurements/CMSSW_2_2_2/src/RecoBTag/PerformanceMeasurements/test/results_QCD_80_120.root" release="X.Y.Z">
+
+  <validation type="InclPt15" file="results_InclusiveMuPt15.root" release="X.Y.Z">
+    <TH1 name="jet_ptInclPt15" source="/Histograms/MCtruth/jet_pt"></TH1>
+    <TH1 name="jet_pt_bInclPt15" source="/Histograms/MCtruth/jet_pt_b"></TH1>
+    <TH1 name="jet_pt_cInclPt15" source="/Histograms/MCtruth/jet_pt_c"></TH1>
+    <TH1 name="jet_pt_udsgInclPt15" source="/Histograms/MCtruth/jet_pt_udsg"></TH1>
+
+    <TH1 name="jet_etaInclPt15" source="/Histograms/MCtruth/jet_eta"></TH1>
+    <TH1 name="jet_eta_bInclPt15" source="/Histograms/MCtruth/jet_eta_b"></TH1>
+    <TH1 name="jet_eta_cInclPt15" source="/Histograms/MCtruth/jet_eta_c"></TH1>
+    <TH1 name="jet_eta_udsgInclPt15" source="/Histograms/MCtruth/jet_eta_udsg"></TH1>
+
+    <TH1 name="jet_ptrelInclPt15" source="/Histograms/ptrel/jet_ptrel"></TH1>
+    <TH1 name="jet_ptrel_bInclPt15" source="/Histograms/ptrel/jet_ptrel_b"></TH1>
+    <TH1 name="jet_ptrel_cInclPt15" source="/Histograms/ptrel/jet_ptrel_c"></TH1>
+    <TH1 name="jet_ptrel_udsgInclPt15" source="/Histograms/ptrel/jet_ptrel_udsg"></TH1>
+
+  </validation>
+  <validation type="qcd80_120" file="results_QCDDijet80to120.root" release="X.Y.Z">
     <TH1 name="jet_pt80_120" source="/Histograms/MCtruth/jet_pt"></TH1>
     <TH1 name="jet_pt_b80_120" source="/Histograms/MCtruth/jet_pt_b"></TH1>
     <TH1 name="jet_pt_c80_120" source="/Histograms/MCtruth/jet_pt_c"></TH1>
@@ -35,41 +53,134 @@
 
   </validation>
 
-  <superimpose name="jet_pt" title="jet_pt" SetLogy="true" SetGrid="false" XTitle="jet p_{T} [GeV/c]" YTitle="Events">
-<!--    <superimposeItem name="jet_pt15" color="1" MarkerStyle="8" legend="#hat{p_{T}} 15-20"></superimposeItem>
-    <superimposeItem name="jet_pt20" color="2" MarkerStyle="21" legend="#hat{p_{T}} 20-30"></superimposeItem>
-    <superimposeItem name="jet_pt30" color="3" MarkerStyle="22" legend="#hat{p_{T}} 30-50"></superimposeItem>
-    <superimposeItem name="jet_pt50" color="4" MarkerStyle="23" legend="#hat{p_{T}} 50-80"></superimposeItem>-->
-    <superimposeItem name="jet_pt80_120" color="1" MarkerStyle="8" legend="#hat{p_{T}} 80-120"></superimposeItem>
+  <validation type="qcdpt30" file="results_QCDpt30.root" release="X.Y.Z">
+    <TH1 name="jet_pt30" source="/Histograms/MCtruth/jet_pt"></TH1>
+    <TH1 name="jet_pt_b30" source="/Histograms/MCtruth/jet_pt_b"></TH1>
+    <TH1 name="jet_pt_c30" source="/Histograms/MCtruth/jet_pt_c"></TH1>
+    <TH1 name="jet_pt_udsg30" source="/Histograms/MCtruth/jet_pt_udsg"></TH1>
+
+    <TH1 name="jet_eta30" source="/Histograms/MCtruth/jet_eta"></TH1>
+    <TH1 name="jet_eta_b30" source="/Histograms/MCtruth/jet_eta_b"></TH1>
+    <TH1 name="jet_eta_c30" source="/Histograms/MCtruth/jet_eta_c"></TH1>
+    <TH1 name="jet_eta_udsg30" source="/Histograms/MCtruth/jet_eta_udsg"></TH1>
+
+    <TH1 name="jet_ptrel30" source="/Histograms/ptrel/jet_ptrel"></TH1>
+    <TH1 name="jet_ptrel_b30" source="/Histograms/ptrel/jet_ptrel_b"></TH1>
+    <TH1 name="jet_ptrel_c30" source="/Histograms/ptrel/jet_ptrel_c"></TH1>
+    <TH1 name="jet_ptrel_udsg30" source="/Histograms/ptrel/jet_ptrel_udsg"></TH1>
+
+  </validation>
+
+  <validation type="ttbar" file="results_TauolaTTbar.root" release="X.Y.Z">
+    <TH1 name="jet_ptttbar" source="/Histograms/MCtruth/jet_pt"></TH1>
+    <TH1 name="jet_pt_bttbar" source="/Histograms/MCtruth/jet_pt_b"></TH1>
+    <TH1 name="jet_pt_cttbar" source="/Histograms/MCtruth/jet_pt_c"></TH1>
+    <TH1 name="jet_pt_udsgttbar" source="/Histograms/MCtruth/jet_pt_udsg"></TH1>
+
+    <TH1 name="jet_etattbar" source="/Histograms/MCtruth/jet_eta"></TH1>
+    <TH1 name="jet_eta_bttbar" source="/Histograms/MCtruth/jet_eta_b"></TH1>
+    <TH1 name="jet_eta_cttbar" source="/Histograms/MCtruth/jet_eta_c"></TH1>
+    <TH1 name="jet_eta_udsgttbar" source="/Histograms/MCtruth/jet_eta_udsg"></TH1>
+
+    <TH1 name="jet_ptrelttbar" source="/Histograms/ptrel/jet_ptrel"></TH1>
+    <TH1 name="jet_ptrel_bttbar" source="/Histograms/ptrel/jet_ptrel_b"></TH1>
+    <TH1 name="jet_ptrel_cttbar" source="/Histograms/ptrel/jet_ptrel_c"></TH1>
+    <TH1 name="jet_ptrel_udsgttbar" source="/Histograms/ptrel/jet_ptrel_udsg"></TH1>
+
+  </validation>
+
+  <superimpose name="jet_pt" title="jet_pt" SetLogy="false" SetGrid="false" XTitle="jet p_{T} [GeV/c]" YTitle="a.u." Normalize="true">
+<!--    <superimposeItem name="jet_pt15" color="1" MarkerStyle="8" legend=" 15-20"></superimposeItem>
+    <superimposeItem name="jet_pt20" color="2" MarkerStyle="21" legend=" 20-30"></superimposeItem>
+    <superimposeItem name="jet_pt30" color="3" MarkerStyle="22" legend=" 30-50"></superimposeItem>
+    <superimposeItem name="jet_pt50" color="4" MarkerStyle="23" legend=" 50-80"></superimposeItem>-->
+    <superimposeItem name="jet_pt80_120" color="1" MarkerStyle="8" legend=" QCD 80-120"></superimposeItem>
     <superimposeItem name="jet_ptIncl5Pt50" color="2" MarkerStyle="21" legend="InclusiveMu5Pt50"></superimposeItem>
-
-        
+    <superimposeItem name="jet_ptInclPt15" color="3" MarkerStyle="22" legend="InclusiveMuPt15"></superimposeItem>
+    <superimposeItem name="jet_pt30" color="4" MarkerStyle="23" legend=" QCD pt30"></superimposeItem>
+    <superimposeItem name="jet_ptttbar" color="6" MarkerStyle="24" legend="t\bar{t}"></superimposeItem>
+       
   </superimpose>
 
-  <superimpose name="jet_eta" title="jet_eta" SetLogy="true" SetGrid="false" XTitle="jet |#eta|" YTitle="Events">
-    <superimposeItem name="jet_eta80_120" color="1" MarkerStyle="8" legend="#hat{p_{T}} 80-120"></superimposeItem>
+  <superimpose name="jet_ptl" title="jet_ptl" SetLogy="false" SetGrid="false" XTitle="jet p_{T} [GeV/c]" YTitle="a.u." Normalize="true">
+<!--    <superimposeItem name="jet_pt15" color="1" MarkerStyle="8" legend=" 15-20"></superimposeItem>
+    <superimposeItem name="jet_pt20" color="2" MarkerStyle="21" legend=" 20-30"></superimposeItem>
+    <superimposeItem name="jet_pt30" color="3" MarkerStyle="22" legend=" 30-50"></superimposeItem>
+    <superimposeItem name="jet_pt50" color="4" MarkerStyle="23" legend=" 50-80"></superimposeItem>-->
+    <superimposeItem name="jet_pt_udsg80_120" color="1" MarkerStyle="8" legend=" QCD 80-120"></superimposeItem>
+    <superimposeItem name="jet_pt_udsgIncl5Pt50" color="2" MarkerStyle="21" legend="InclusiveMu5Pt50"></superimposeItem>
+    <superimposeItem name="jet_pt_udsgInclPt15" color="3" MarkerStyle="22" legend="InclusiveMuPt15"></superimposeItem>
+    <superimposeItem name="jet_pt_udsg30" color="4" MarkerStyle="23" legend=" QCD pt30"></superimposeItem>
+    <superimposeItem name="jet_pt_udsgttbar" color="6" MarkerStyle="24" legend="t\bar{t}"></superimposeItem>
+       
+  </superimpose>
+
+  <superimpose name="jet_eta" title="jet_eta" SetLogy="false" SetGrid="false" XTitle="jet |#eta|" YTitle="a.u." Normalize="true">
+    <superimposeItem name="jet_eta80_120" color="1" MarkerStyle="8" legend=" QCD 80-120"></superimposeItem>
     <superimposeItem name="jet_etaIncl5Pt50" color="2" MarkerStyle="21" legend="InclusiveMu5Pt50"></superimposeItem>
-        
+    <superimposeItem name="jet_etaInclPt15" color="3" MarkerStyle="22" legend="InclusiveMuPt15"></superimposeItem>
+    <superimposeItem name="jet_eta30" color="4" MarkerStyle="23" legend=" QCD pt30"></superimposeItem>
+    <superimposeItem name="jet_etattbar" color="6" MarkerStyle="24" legend="t\bar{t}"></superimposeItem>    
   </superimpose>
 
-  <superimpose name="jet_ptrel" title="jet_ptrel" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
-    <superimposeItem name="jet_ptrel_b80_120" color="1" MarkerStyle="8" legend="b-jets 80-120"></superimposeItem>
+  <superimpose name="jet_ptrelb" title="jet_ptrelb" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+    <superimposeItem name="jet_ptrel_b80_120" color="1" MarkerStyle="8" legend="b-jets QCD 80-120"></superimposeItem>
     <superimposeItem name="jet_ptrel_bIncl5Pt50" color="2" MarkerStyle="21" legend="b-jets InclMu5Pt50"></superimposeItem>
-
+    <superimposeItem name="jet_ptrel_bInclPt15" color="3" MarkerStyle="22" legend="b-jetsInclusiveMuPt15"></superimposeItem>
+    <superimposeItem name="jet_ptrel_b30" color="4" MarkerStyle="23" legend="b-jets QCD pt30"></superimposeItem>
+    <superimposeItem name="jet_ptrel_bttbar" color="6" MarkerStyle="24" legend="b-jets t\bar{t}"></superimposeItem>
   </superimpose>
 
 
   <superimpose name="jet_ptrelc" title="jet_ptrelc" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
-    <superimposeItem name="jet_ptrel_c80_120" color="1" MarkerStyle="8" legend="c-jets 80-120"></superimposeItem>
+    <superimposeItem name="jet_ptrel_c80_120" color="1" MarkerStyle="8" legend="c-jets QCD 80-120"></superimposeItem>
     <superimposeItem name="jet_ptrel_cIncl5Pt50" color="2" MarkerStyle="21" legend="c-jets InclMu5Pt50"></superimposeItem>
-
+    <superimposeItem name="jet_ptrel_cInclPt15" color="3" MarkerStyle="22" legend="c-jetsInclusiveMuPt15"></superimposeItem>
+    <superimposeItem name="jet_ptrel_c30" color="4" MarkerStyle="23" legend="c-jets QCD pt30"></superimposeItem>
+    <superimposeItem name="jet_ptrel_cttbar" color="6" MarkerStyle="24" legend="c-jets t\bar{t}"></superimposeItem>
   </superimpose>
 
   <superimpose name="jet_ptreludsg" title="jet_ptreludsg" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
-    <superimposeItem name="jet_ptrel_udsg80_120" color="1" MarkerStyle="8" legend="udsg-jets 80-120"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsg80_120" color="1" MarkerStyle="8" legend="udsg-jets QCD 80-120"></superimposeItem>
     <superimposeItem name="jet_ptrel_udsgIncl5Pt50" color="2" MarkerStyle="21" legend="udsg-jets InclMu5Pt50"></superimposeItem>
-     
+    <superimposeItem name="jet_ptrel_udsgInclPt15" color="3" MarkerStyle="22" legend="udsg-jetsInclusiveMuPt15"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsg30" color="4" MarkerStyle="23" legend="udsg-jets QCD pt30"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsgttbar" color="6" MarkerStyle="24" legend="udsg-jets t\bar{t}"></superimposeItem> 
   </superimpose>
 
+  <superimpose name="jet_ptrel80_120" title="jet_ptrel80_120" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+    <superimposeItem name="jet_ptrel80_120" color="1" MarkerStyle="8" legend="all jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_b80_120" color="2" MarkerStyle="21" legend="b-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_c80_120" color="3" MarkerStyle="22" legend="c-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsg80_120" color="4" MarkerStyle="23" legend="udsg-jets"></superimposeItem>
+  </superimpose>
+
+  <superimpose name="jet_ptrelIncl5Pt50" title="jet_ptrelIncl5Pt50" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+    <!--<superimposeItem name="jet_ptrelIncl5Pt50" color="1" MarkerStyle="8" legend="all jets"></superimposeItem>-->
+    <superimposeItem name="jet_ptrel_bIncl5Pt50" color="2" MarkerStyle="21" legend="b-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_cIncl5Pt50" color="3" MarkerStyle="22" legend="c-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsgIncl5Pt50" color="4" MarkerStyle="23" legend="udsg-jets"></superimposeItem>
+  </superimpose>
+
+  <superimpose name="jet_ptrelInclPt15" title="jet_ptrelInclPt15" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+<!--    <superimposeItem name="jet_ptrelInclPt15" color="1" MarkerStyle="8" legend="all jets"></superimposeItem>-->
+    <superimposeItem name="jet_ptrel_bInclPt15" color="2" MarkerStyle="21" legend="b-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_cInclPt15" color="3" MarkerStyle="22" legend="c-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsgInclPt15" color="4" MarkerStyle="23" legend="udsg-jets"></superimposeItem>
+  </superimpose>
+
+  <superimpose name="jet_ptrelttbar" title="jet_ptrelttbar" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+<!--    <superimposeItem name="jet_ptrelttbar" color="1" MarkerStyle="8" legend="all jets"></superimposeItem>-->
+    <superimposeItem name="jet_ptrel_bttbar" color="2" MarkerStyle="21" legend="b-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_cttbar" color="3" MarkerStyle="22" legend="c-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsgttbar" color="4" MarkerStyle="23" legend="udsg-jets"></superimposeItem>
+  </superimpose>
+
+  <superimpose name="jet_ptrel30" title="jet_ptrel30" SetLogy="false" SetGrid="false" XTitle="jet p_{Trel} [GeV/c]" YTitle="a.u." Normalize="true">
+<!--    <superimposeItem name="jet_ptrel30" color="1" MarkerStyle="8" legend="all jets"></superimposeItem>-->
+    <superimposeItem name="jet_ptrel_b30" color="2" MarkerStyle="21" legend="b-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_c30" color="3" MarkerStyle="22" legend="c-jets"></superimposeItem>
+    <superimposeItem name="jet_ptrel_udsg30" color="4" MarkerStyle="23" legend="udsg-jets"></superimposeItem>
+  </superimpose>
 
 </cuy>
