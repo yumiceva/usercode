@@ -36,10 +36,10 @@ process.TopAnalyzer.rootFilename = '{OUTPUT_FILENAME}'
 process.BooTopHLTFilter.HLTPaths = [''] # do not filter
 
 # source
-from TopQuarkAnalysis.TopPairBSM.L1_TTJets_madgraph_Summer08 import source
+#from TopQuarkAnalysis.TopPairBSM.L1_TTJets_madgraph_Summer08 import source
 
-process.source = source
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10) )
+#process.source = source
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10) )
 
 
 

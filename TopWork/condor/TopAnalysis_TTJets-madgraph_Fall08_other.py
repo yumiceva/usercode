@@ -25,9 +25,13 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 # load sequences
 process.load("TopQuarkAnalysis.TopPairBSM.TopAnalysis_sequences")
 
+# decaychain for madgraph samples
+from TopQuarkAnalysis.TopEventProducers.producers.TopDecaySubset_cfi import *
+process.decaySubset.genType = cms.uint32(1)
+
 # setup path
-process.p = cms.Path( process.TopAnalysisMuFilter ) # with muonic generator filter
-#process.p = cms.Path( process.TopAnalysisNoMuFilter ) # with generator filter on all but muonci decays
+#process.p = cms.Path( process.TopAnalysisMuFilter ) # with muonic generator filter
+process.p = cms.Path( process.TopAnalysisNoMuFilter ) # with generator filter on all but muonic decays
 #process.p = cms.Path( process.TopAnalysis ) # no generator filter at all
 
 

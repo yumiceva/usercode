@@ -26,20 +26,20 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("TopQuarkAnalysis.TopPairBSM.TopAnalysis_sequences")
 
 # setup path
-process.p = cms.Path( process.TopAnalysisMuFilter ) # with muonic generator filter
+#process.p = cms.Path( process.TopAnalysisMuFilter ) # with muonic generator filter
 #process.p = cms.Path( process.TopAnalysisNoMuFilter ) # with generator filter on all but muonci decays
-#process.p = cms.Path( process.TopAnalysis ) # no generator filter at all
-
+process.p = cms.Path( process.TopAnalysis ) # no generator filter at all
 
 # change defaults
+process.TopAnalyzer.IsMCTop    = cms.bool( False )
 process.TopAnalyzer.rootFilename = '{OUTPUT_FILENAME}'
 process.BooTopHLTFilter.HLTPaths = [''] # do not filter
 
 # source
-#from TopQuarkAnalysis.TopPairBSM.L1_TTJets_madgraph_Summer08 import source
+#from TopQuarkAnalysis.TopPairBSM.L1_WJets_madgraph_Fall08 import source
 
 #process.source = source
-#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10) )
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1) )
 
 
 
