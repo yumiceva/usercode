@@ -32,7 +32,7 @@
 """
 
 
-import os, string, re, sys
+import os, string, re, sys, math
 
 try:
     import ROOT
@@ -511,7 +511,7 @@ if __name__ == '__main__':
 
                         newth.Sumw2()
 			newth.Scale(aweight)
-
+			
 			# check if we have color
 			if not listcolor[ii]:
 			    listcolor[ii] = 1
@@ -542,6 +542,9 @@ if __name__ == '__main__':
 			if isFirst==1:
 			    newth.GetPainter().PaintStat(ROOT.gStyle.GetOptStat(),0);
 			    isFirst=0
+			    tmpsumth = newth.Clone()
+			else:
+			    tmpsumth.Add(newth)
 			#    newth.SetTitle(thesuper[ikey].title)
 			#    if thesuper[ikey].YTitle != None:
 			#	newth.SetYTitle(thesuper[ikey].YTitle)
@@ -549,7 +552,10 @@ if __name__ == '__main__':
 			#    isFirst=0
 			#else:
 			#    newth.Draw("same")
-			if dolegend: aleg.AddEntry(newth,listlegend[ii],"P")
+			if dolegend and doFill: 
+			    aleg.AddEntry(newth,listlegend[ii],"F")
+			elif dolegend:
+			    aleg.AddEntry(newth,listlegend[ii],"P")
 	    ii = ii + 1
 	if thesuper[ikey].Stack == "true":
 	    astack.Draw()
@@ -567,6 +573,17 @@ if __name__ == '__main__':
 	if thesuper[ikey].SetGrid == "true":
 	    cv[thesuper[ikey].name].SetGrid()
 	
+	# test smearing
+	#rn = ROOT.TRandom(12345)
+	#for iibin in range(0,tmpsumth.GetNbinsX()):
+	#    tmpsumth.SetBinContent(iibin, rn.Poisson(tmpsumth.GetBinContent(iibin)) )
+	#    if tmpsumth.GetBinContent(iibin) == 0:
+	#	tmpsumth.SetBinError(iibin, 0 )
+	#    else:
+	#	tmpsumth.SetBinError(iibin, 1/math.sqrt(tmpsumth.GetBinContent(iibin)) )
+			
+	#tmpsumth.Draw("same E1")
+
 	cv[thesuper[ikey].name].Update()
 	#cv[thesuper[ikey].name].Print("test.png")
 
