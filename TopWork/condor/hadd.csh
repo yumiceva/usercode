@@ -1,0 +1,4 @@
+hadd /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_TTJets-madgraph_Fall08_all_all.root /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_TTJets-madgraph_Fall08_all_00*.root
+hadd /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_WJets_madgraph_Fall08_all.root /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_WJets_madgraph_Fall08_00*.root
+hadd /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_ZJets_madgraph_Fall08_all.root /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_ZJets_madgraph_Fall08_00*.root
+hadd /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_InclusiveMuPt15_Summer08_all.root /uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_5/LowMass_analysis/TopAnalysis_InclusiveMuPt15_Summer08_00*.root

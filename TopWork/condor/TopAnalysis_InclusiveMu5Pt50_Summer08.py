@@ -31,6 +31,8 @@ process.load("TopQuarkAnalysis.TopPairBSM.TopAnalysis_sequences")
 process.p = cms.Path( process.TopAnalysis ) # no generator filter at all
 
 # change defaults
+#process.TopAnalyzer.METCuts        = cms.bool(True)
+#process.TopAnalyzer.jetSource      = cms.InputTag('selectedLayer1JetsJPT')
 process.TopAnalyzer.IsMCTop    = cms.bool( False )
 process.TopAnalyzer.rootFilename = '{OUTPUT_FILENAME}'
 process.BooTopHLTFilter.HLTPaths = [''] # do not filter

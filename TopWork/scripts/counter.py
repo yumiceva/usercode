@@ -22,30 +22,26 @@ def get_list_files(directory,pattern = ""):
 
 
 def main():
-
-    tags = { 'Pre-Selection':1,
-             'only jets p_{T}>65,40,40,40 GeV/c':5,
-             'only muons p_{T}>30 GeV/c':6,
-             'only isolated muons':7,
-             'Njets>3, one isolated muon':8,
-             '\Delta R(\mu,jets)>0.3':9 }
     
     if len(sys.argv) < 2:
-        print" [usage] conter.py <directory> "
+        print" [usage] conter.py <directory> <pattern> <root file destination>"
         sys.exit()
 
     directory = sys.argv[1]
+    pattern = sys.argv[2]
+    out = sys.argv[3]
 
-    files = get_list_files(directory,"_all")
+    outfile = TFile(out, "UPDATE")
 
-    data = {}
-
-    sortedtags = tags.values()
-    sortedtags.sort()
+    files = get_list_files(directory, pattern)
     
+    nfiles = 0
+
+    hall = TH1F("hall","hall",10,0,1)
+
     for f in files:
 
-        alist = []
+	#print nfiles
         
         tf = TFile(f);
 
@@ -53,65 +49,43 @@ def main():
 
         #h.Print("all")
 
-        for iltags in sortedtags:
+	labelsize = 0
 
-            for key,value in tags.items():
+	if nfiles == 0:
+	    labels = h.GetXaxis().GetLabels()
+	    labelsize = len(labels)
+	    hall = h.Clone("hall")
+	    hall.Reset()
+	    hall.SetDirectory(0)
 
-                if value == iltags:
-                    
-                    alist.append(h.GetBinContent(value+1))
-        
-        # extract name
-        aname = tf.GetName()
-        tmplist = aname.split('/')
-        aname = tmplist[len(tmplist) -1]
-        aname = aname.strip('.root')
-        data[aname] = alist
+	#hall.Print("all")
 
-    # print all
+	for ibin in range(1, h.GetNbinsX() ):
 
-    # sort filenames
-    thekeys = data.keys()
-    thekeys.sort()
+	    #print ibin
+	    hall.SetBinContent( ibin, (hall.GetBinContent(ibin) + h.GetBinContent(ibin)) )
+
+	    axislabel = h.GetXaxis().GetLabels()
+	    if ibin < labelsize:
+
+		if labels[ibin] != axislabel[ibin]:
+		    print "no matched labels!!"
+
+	nfiles = nfiles+1
+	tf.Close()
+
+    finallabels = hall.GetXaxis().GetLabels()
+    print "total number of files read = " + str(nfiles)
+
+    ihall = 1;
+    for i in finallabels:
+	print str(i) + " = " + str( hall.GetBinContent(ihall) )
+	ihall = ihall+1
+
+    outfile.cd()
+    hall.SetName("CounterGood")
+    hall.Write()
     
-    line0 = '\\begin{tabular}{|l'
-    for i in range(0,len(data)):
-        line0 = line0 + "|c"
-    else:
-        line0 = line0 + "|} \hline"
-
-    title = " Selection "
-    for i in thekeys:
-        title = title+" & " + i
-
-    title = title + "\hline"
-    
-    print line0
-    print title
-
-    
-    irow = 0
-        
-    for iltags in sortedtags:
-    
-        for i,value in tags.items():
-
-            if value == iltags:
-                
-                row = i
-
-                for j in thekeys:
-
-                    row = row + " & " + str(data[j][irow])
-
-                row = row + " \\\\"
-                print row
-                irow = irow +1
-    
-
-    endtable = '\end{tabular}'
-    print endtable
-
 
 if __name__ =='__main__':
     sys.exit(main())

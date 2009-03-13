@@ -1,0 +1,406 @@
+<cuy>
+
+  <validation type="tT0j" file="nominalJPT/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" release="X.Y.Z">
+    <!-- generator -->
+    <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
+    <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
+    
+    <!-- jets -->
+    <TH1 name="tT0j_jet_et_cut0" source="/Jets/jet_et_cut0"/>
+    <TH1 name="tT0j_jet_eta_cut0" source="/Jets/jet_eta_cut0"/>
+    <TH1 name="tT0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="tT0j_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="tT0j_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="tT0j_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="tT0j_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+    <TH1 name="tT0j_jet_deltaR_muon_cut1" source="/Jets/jet_deltaR_muon_cut1"/>
+    <TH1 name="tT0j_jet_pTrel_muon_cut0" source="/Jets/jet_pTrel_muon_cut0"/>
+    <TH1 name="tT0j_jet_pTrel_muon_b_cut0" source="/Jets/jet_pTrel_muon_b_cut0"/>
+    <TH1 name="tT0j_jet_pTrel_muon_c_cut0" source="/Jets/jet_pTrel_muon_c_cut0"/>
+    <TH1 name="tT0j_jet_pTrel_muon_udsg_cut0" source="/Jets/jet_pTrel_muon_udsg_cut0"/>
+    <TH1 name="tT0j_jet_flavor_closest_muon_cut0" source="/Jets/jet_flavor_closest_muon_cut0"/>
+    <TH1 name="tT0j_jet_flavor_closest_muon_cut1" source="/Jets/jet_flavor_closest_muon_cut1"/>
+    <TH1 name="tT0j_jet_pT_closest_muon_cut0" source="/Jets/jet_pT_closest_muon_cut0"/>
+    <TH1 name="tT0j_jet_pTrel_muon_cut1" source="/Jets/jet_pTrel_muon_cut1"/>
+    <TH1 name="tT0j_jet_pT_closest_muon_cut1" source="/Jets/jet_pT_closest_muon_cut1"/>
+    <TH1 name="tT0j_jets_cut1" source="/Jets/jets_cut1"/>
+
+    <!-- muon -->
+    <TH1 name="tT0j_muons" source="/Muons/muons_cut0"/>
+    <TH1 name="tT0j_muon_pt_nohlt" source="/Muons/muon_pt_nohlt"/>
+    <TH1 name="tT0j_muon_pt_nohltgood" source="/Muons/muon_pt_nohltgood"/>
+    <TH1 name="tT0j_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
+    <TH1 name="tT0j_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
+    <TH1 name="tT0j_muon_eta_cut0" source="/Muons/muon_eta_cut0"/>
+    <TH1 name="tT0j_muon_eta_cut1" source="/Muons/muon_eta_cut1"/>
+    <TH1 name="tT0j_muon_pt_cut0" source="/Muons/muon_pt_cut0"/>
+    <TH1 name="tT0j_muon_pt_cut1" source="/Muons/muon_pt_cut1"/>
+    <TH1 name="tT0j_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
+    <TH1 name="tT0j_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
+    <TH1 name="tT0j_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="tT0j_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="tT0j_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <TH1 name="tT0j_muon_caloIso_cut0" source="/Muons/muon_caloIso_cut0"/>
+    <TH1 name="tT0j_muon_trackIso_cut0" source="/Muons/muon_trackIso_cut0"/>
+    <TH1 name="tT0j_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
+    <TH1 name="tT0j_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
+    <TH1 name="tT0j_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
+    <!-- mass -->
+    <TH1 name="tT0j_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="tT0j_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="tT0j_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="tT0j_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="tT0j_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="tT0j_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="tT0j_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="tT0j_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="tT0j_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="tT0j_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="tT0j_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="tT0j_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="tT0j_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="tT0j_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="tT0j_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="tT0j_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="tT0j_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="tT0j_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="tT0j_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="tT0j_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+    <TH1 name="tT0j_combinations_NormChi2_cut4" source="/Jets/jet_combinations_NormChi2_cut4"/>
+    <TH1 name="tT0j_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="tT0j_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="tT0j_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
+    <TH1 name="tT0j_combinations_NormChi2_cut5" source="/Jets/jet_combinations_NormChi2_cut5"/>
+
+    <TH1 name="tT0j_HadTop_vs_HadW_cut0" source="/Mass/HadTop_vs_HadW_cut0"/>
+    <TH1 name="tT0j_HadTop_vs_HadW_cut1" source="/Mass/HadTop_vs_HadW_cut1"/>
+    <TH1 name="tT0j_HadTop_vs_HadW_cut2" source="/Mass/HadTop_vs_HadW_cut2"/>
+    <TH1 name="tT0j_LepTop_vs_LepW_cut0" source="/Mass/LepTop_vs_LepW_cut0"/>
+    <TH1 name="tT0j_LepTop_vs_LepW_cut1" source="/Mass/LepTop_vs_LepW_cut1"/>
+    <TH1 name="tT0j_LepTop_vs_LepW_cut2" source="/Mass/LepTop_vs_LepW_cut2"/>
+
+    <TH1 name="tT0j_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+
+  <validation type="tT0jo" file="all/TopAnalysis_TTJets-madgraph_Summer08_other_all.root" release="X.Y.Z">
+
+    <!-- mass -->
+    <TH1 name="tT0jo_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="tT0jo_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="tT0jo_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="tT0jo_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="tT0jo_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="tT0jo_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="tT0jo_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="tT0jo_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="tT0jo_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="tT0jo_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="tT0jo_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="tT0jo_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="tT0jo_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="tT0jo_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="tT0jo_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="tT0jo_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="tT0jo_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="tT0jo_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="tT0jo_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="tT0jo_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+    <TH1 name="tT0jo_combinations_NormChi2_cut4" source="/Jets/jet_combinations_NormChi2_cut4"/>
+    <TH1 name="tT0jo_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="tT0jo_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="tT0jo_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
+    <TH1 name="tT0jo_combinations_NormChi2_cut5" source="/Jets/jet_combinations_NormChi2_cut5"/>
+
+    <TH1 name="tT0jo_HadTop_vs_HadW_cut0" source="/Mass/HadTop_vs_HadW_cut0"/>
+    <TH1 name="tT0jo_HadTop_vs_HadW_cut1" source="/Mass/HadTop_vs_HadW_cut1"/>
+    <TH1 name="tT0jo_HadTop_vs_HadW_cut2" source="/Mass/HadTop_vs_HadW_cut2"/>
+    <TH1 name="tT0jo_LepTop_vs_LepW_cut0" source="/Mass/LepTop_vs_LepW_cut0"/>
+    <TH1 name="tT0jo_LepTop_vs_LepW_cut1" source="/Mass/LepTop_vs_LepW_cut1"/>
+    <TH1 name="tT0jo_LepTop_vs_LepW_cut2" source="/Mass/LepTop_vs_LepW_cut2"/>
+
+  </validation>
+
+  <validation type="W0j" file="nominalJPT/TopAnalysis_WJets_madgraph_Fall08_all.root" release="X.Y.Z">
+
+    <TH1 name="W0j_jets_cut1" source="/Jets/jets_cut1"/>
+    <TH1 name="W0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="W0j_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="W0j_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="W0j_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="W0j_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+
+    <TH1 name="W0j_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
+    <TH1 name="W0j_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
+    <TH1 name="W0j_muon_eta_cut0" source="/Muons/muon_eta_cut0"/>
+    <TH1 name="W0j_muon_eta_cut1" source="/Muons/muon_eta_cut1"/>
+    <TH1 name="W0j_muon_pt_nohlt" source="/Muons/muon_pt_nohlt"/>
+    <TH1 name="W0j_muon_pt_nohltgood" source="/Muons/muon_pt_nohltgood"/>
+    <TH1 name="W0j_muon_pt_cut0" source="/Muons/muon_pt_cut0"/>
+    <TH1 name="W0j_muon_pt_cut1" source="/Muons/muon_pt_cut1"/>
+    <TH1 name="W0j_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
+    <TH1 name="W0j_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
+    <TH1 name="W0j_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="W0j_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
+    <TH1 name="W0j_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
+    <TH1 name="W0j_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
+    <TH1 name="W0j_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="W0j_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <!-- mass -->
+    <TH1 name="W0j_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="W0j_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="W0j_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="W0j_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="W0j_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="W0j_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="W0j_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="W0j_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="W0j_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="W0j_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="W0j_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="W0j_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="W0j_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="W0j_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="W0j_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="W0j_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="W0j_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="W0j_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="W0j_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="W0j_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+
+    <TH1 name="W0j_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+  <validation type="Z0j" file="nominalJPT/TopAnalysis_ZJets_madgraph_Fall08_all.root" release="X.Y.Z">
+
+    <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
+    <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="Z0j_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="Z0j_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="Z0j_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="Z0j_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+
+    <TH1 name="Z0j_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
+    <TH1 name="Z0j_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
+    <TH1 name="Z0j_muon_eta_cut0" source="/Muons/muon_eta_cut0"/>
+    <TH1 name="Z0j_muon_eta_cut1" source="/Muons/muon_eta_cut1"/>
+    <TH1 name="Z0j_muon_pt_nohlt" source="/Muons/muon_pt_nohlt"/>
+    <TH1 name="Z0j_muon_pt_nohltgood" source="/Muons/muon_pt_nohltgood"/>
+    <TH1 name="Z0j_muon_pt_cut0" source="/Muons/muon_pt_cut0"/>
+    <TH1 name="Z0j_muon_pt_cut1" source="/Muons/muon_pt_cut1"/>
+    <TH1 name="Z0j_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
+    <TH1 name="Z0j_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
+    <TH1 name="Z0j_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="Z0j_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
+    <TH1 name="Z0j_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
+    <TH1 name="Z0j_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
+    <TH1 name="Z0j_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="Z0j_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <!-- mass -->
+    <TH1 name="Z0j_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="Z0j_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="Z0j_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="Z0j_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="Z0j_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="Z0j_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="Z0j_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="Z0j_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="Z0j_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="Z0j_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="Z0j_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="Z0j_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="Z0j_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="Z0j_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="Z0j_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="Z0j_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="Z0j_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="Z0j_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="Z0j_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="Z0j_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+
+    <TH1 name="Z0j_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+  <validation type="qcd" file="nominalJPT/TopAnalysis_InclusiveMuPt15_Summer08_all.root" release="X.Y.Z">
+
+    <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
+    <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="qcd_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="qcd_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="qcd_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="qcd_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+
+    <TH1 name="qcd_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
+    <TH1 name="qcd_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
+    <TH1 name="qcd_muon_eta_cut0" source="/Muons/muon_eta_cut0"/>
+    <TH1 name="qcd_muon_eta_cut1" source="/Muons/muon_eta_cut1"/>
+    <TH1 name="qcd_muon_pt_nohlt" source="/Muons/muon_pt_nohlt"/>
+    <TH1 name="qcd_muon_pt_nohltgood" source="/Muons/muon_pt_nohltgood"/>
+    <TH1 name="qcd_muon_pt_cut0" source="/Muons/muon_pt_cut0"/>
+    <TH1 name="qcd_muon_pt_cut1" source="/Muons/muon_pt_cut1"/>
+    <TH1 name="qcd_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
+    <TH1 name="qcd_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
+    <TH1 name="qcd_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="qcd_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
+    <TH1 name="qcd_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
+    <TH1 name="qcd_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
+    <TH1 name="qcd_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="qcd_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <!-- mass -->
+    <TH1 name="qcd_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="qcd_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="qcd_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="qcd_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="qcd_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="qcd_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="qcd_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="qcd_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="qcd_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="qcd_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="qcd_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="qcd_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="qcd_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="qcd_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="qcd_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="qcd_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="qcd_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="qcd_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="qcd_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="qcd_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+
+    <TH1 name="qcd_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+<!--
+mass cuts
+cut0 = all chi2 combinations
+cut1 = M3 method
+cut2 = lowest chi2 combination
+cut3 = 3rd chi2 combination
+cut4 = lowest chi2 combination + mass cuts
+cut5 = 3rd chi2 combination + mass cuts
+-->
+
+  <divide name="muon_hltg_pt_ttbar" numerator="tT0j_muon_pt_cut1" denominator="tT0j_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
+  <divide name="muon_hltg_pt_Wjets" numerator="W0j_muon_pt_cut1" denominator="W0j_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
+  <divide name="muon_hltg_pt_Zjets" numerator="Z0j_muon_pt_cut1" denominator="Z0j_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
+  <divide name="muon_hltg_pt_qcd" numerator="qcd_muon_pt_cut1" denominator="qcd_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
+
+  <divide name="muon_hltg_eta_ttbar" numerator="tT0j_muon_eta_cut1" denominator="tT0j_muon_eta_nohltgood" DivideOption="B" Option="e1"/>
+  <divide name="muon_hltg_eta_Wjets" numerator="W0j_muon_eta_cut1" denominator="W0j_muon_eta_nohltgood" DivideOption="B" Option="e1"/>
+  <divide name="muon_hltg_eta_Zjets" numerator="Z0j_muon_eta_cut1" denominator="Z0j_muon_eta_nohltgood" DivideOption="B" Option="e1"/>
+  <divide name="muon_hltg_eta_qcd" numerator="qcd_muon_eta_cut1" denominator="qcd_muon_eta_nohltgood" DivideOption="B" Option="e1"/>
+
+  <superimpose name="muon_pt_triggerGood" title="muon_pt_triggerGood" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+    <superimposeItem name="muon_hltg_pt_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_hltg_pt_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_hltg_pt_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_hltg_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muon_eta_triggerGood" title="muon_eta_triggerGood" XTitle="muon #eta" YTitle="Efficiency" >
+    <superimposeItem name="muon_hltg_eta_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_hltg_eta_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_hltg_eta_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_hltg_eta_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+
+  <divide name="muon_hlt_pt_ttbar" numerator="tT0j_muon_pt_cut0" denominator="tT0j_muon_pt_nohlt" DivideOption="B" Option="e1"/>
+  <divide name="muon_hlt_pt_Wjets" numerator="W0j_muon_pt_cut0" denominator="W0j_muon_pt_nohlt" DivideOption="B" Option="e1"/>
+  <divide name="muon_hlt_pt_Zjets" numerator="Z0j_muon_pt_cut0" denominator="Z0j_muon_pt_nohlt" DivideOption="B" Option="e1"/>
+  <divide name="muon_hlt_pt_qcd" numerator="qcd_muon_pt_cut0" denominator="qcd_muon_pt_nohlt" DivideOption="B" Option="e1"/>
+
+  <divide name="muon_hlt_eta_ttbar" numerator="tT0j_muon_eta_cut0" denominator="tT0j_muon_eta_nohlt" DivideOption="B" Option="e1"/>
+  <divide name="muon_hlt_eta_Wjets" numerator="W0j_muon_eta_cut0" denominator="W0j_muon_eta_nohlt" DivideOption="B" Option="e1"/>
+  <divide name="muon_hlt_eta_Zjets" numerator="Z0j_muon_eta_cut0" denominator="Z0j_muon_eta_nohlt" DivideOption="B" Option="e1"/>
+  <divide name="muon_hlt_eta_qcd" numerator="qcd_muon_eta_cut0" denominator="qcd_muon_eta_nohlt" DivideOption="B" Option="e1"/>
+
+  <superimpose name="muon_pt_trigger" title="muon_pt_trigger" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+    <superimposeItem name="muon_hlt_pt_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_hlt_pt_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_hlt_pt_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_hlt_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muon_eta_trigger" title="muon_eta_trigger" XTitle="muon #eta" YTitle="Efficiency" >
+    <superimposeItem name="muon_hlt_eta_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_hlt_eta_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_hlt_eta_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_hlt_eta_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+
+  <divide name="muon_effiso_pt_ttbar" numerator="tT0j_muon_pt_cut3" denominator="tT0j_muon_pt_cut2" DivideOption="B" Option="e1"/>
+  <divide name="muon_effiso_pt_Wjets" numerator="W0j_muon_pt_cut3" denominator="W0j_muon_pt_cut2" DivideOption="B" Option="e1"/>
+  <divide name="muon_effiso_pt_Zjets" numerator="Z0j_muon_pt_cut3" denominator="Z0j_muon_pt_cut2" DivideOption="B" Option="e1"/>
+  <divide name="muon_effiso_pt_qcd" numerator="qcd_muon_pt_cut3" denominator="qcd_muon_pt_cut2" DivideOption="B" Option="e1"/>
+
+  <superimpose name="muon_effiso_pt" title="muon_effiso_pt" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+    <superimposeItem name="muon_effiso_pt_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_effiso_pt_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_effiso_pt_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_effiso_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <divide name="muon_effiso_pt_all_ttbar" numerator="tT0j_muon_pt_vsJets_cut3" denominator="tT0j_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
+  <divide name="muon_effiso_pt_all_Wjets" numerator="W0j_muon_pt_vsJets_cut3" denominator="W0j_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
+  <divide name="muon_effiso_pt_all_Zjets" numerator="Z0j_muon_pt_vsJets_cut3" denominator="Z0j_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
+  <divide name="muon_effiso_pt_all_qcd" numerator="qcd_muon_pt_vsJets_cut3" denominator="qcd_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
+
+  <superimpose name="muon_effiso_pt_jet2" title="muon_effiso_pt_jet2" Projection="x" bin="2" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+    <superimposeItem name="muon_effiso_pt_all_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_effiso_pt_all_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_effiso_pt_all_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_effiso_pt_all_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muon_effiso_pt_jet3" title="muon_effiso_pt_jet3" Projection="x" bin="3" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+    <superimposeItem name="muon_effiso_pt_all_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_effiso_pt_all_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_effiso_pt_all_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_effiso_pt_all_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muon_effiso_pt_jet4" title="muon_effiso_pt_jet4" Projection="x" bin="4" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+    <superimposeItem name="muon_effiso_pt_all_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_effiso_pt_all_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_effiso_pt_all_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_effiso_pt_all_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+
+  <superimpose name="muon_pt_cut4" title="muon_pt_cut4" XTitle="muon p_{T} [GeV/c]" Fill="false" Stack="false">
+    <superimposeItem name="qcd_muon_pt_cut4" weight="0.2849" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muon_pt_cut4" weight="0.0392" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muon_pt_cut4" weight="0.0493" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muon_pt_cut4" weight="0.004" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muons_vetoEM" title="muons_vetoEM" XTitle="muon veto em [GeV]" Fill="false" Stack="false">
+    <superimposeItem name="qcd_muons_vetoEM" weight="0.2849" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muons_vetoEM" weight="0.0392" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muons_vetoEM" weight="0.0493" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muons_vetoEM" weight="0.004" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muons_vetoHad" title="muons_vetoHad" XTitle="muon veto Had [GeV]" Fill="false" Stack="false">
+    <superimposeItem name="qcd_muons_vetoHad" weight="0.2849" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muons_vetoHad" weight="0.0392" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muons_vetoHad" weight="0.0493" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muons_vetoHad" weight="0.004" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muon_RelIso_cut2" title="muon_RelIso_cut2" XTitle="Combined RelIso" Fill="false" Stack="false">
+    <superimposeItem name="qcd_muon_RelIso_cut2"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muon_RelIso_cut2"  color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muon_RelIso_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muon_RelIso_cut2" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+
+</cuy>
