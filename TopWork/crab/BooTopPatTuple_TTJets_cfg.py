@@ -18,11 +18,8 @@ process.MessageLogger.cerr.threshold = 'INFO'
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
     #
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/00437D8F-04A9-DD11-8D99-0015C5E9B2AB.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/00BD3644-90A8-DD11-8D9E-001CC47BCFDC.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/02DCB67E-9FA9-DD11-B550-00E081402E8B.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/0419137A-9BA8-DD11-B5AC-0015C5E9C17C.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/046A072B-31A9-DD11-A931-00E08140EAB7.root'
+    '/store/mc/Fall08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0000/027B51E9-8EED-DD11-9045-0015C5E9C0E1.root'
+#    '/store/mc/Fall08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0000/0297592D-D1ED-DD11-8D29-001E4F3D764C.root'
     #'/store/mc/Summer08/TauolaTTbar/GEN-SIM-RECO/IDEAL_V9_v1/0004/16AAC418-218A-DD11-AC33-001F2908F0E4.root',
     #'/store/mc/Summer08/TauolaTTbar/GEN-SIM-RECO/IDEAL_V9_v1/0004/1E19C1C2-EF89-DD11-A6AB-001E0B1C74DA.root',
     #'/store/mc/Summer08/TauolaTTbar/GEN-SIM-RECO/IDEAL_V9_v1/0004/2AE099C8-1F8A-DD11-B30F-00144F2031D4.root',
@@ -75,8 +72,11 @@ run22XonSummer08AODSIM(process)
 # process paths;
 #-------------------------------------------------
 
+#**************************Load the ZPT_cff file here************************************
+process.load("TopQuarkAnalysis.TopPairBSM.ZPT_cff")
+
 ## process path
-process.p = cms.Path(process.BooTopPatTuple)
+process.p = cms.Path(process.recoJPTJets+process.BooTopPatTuple)
 
 #-------------------------------------------------
 # pat tuple event content; first ALL objects
@@ -97,11 +97,20 @@ switchJetCollection(process,
                     runCleaner   = "CaloJet",       # =None if not to clean
                     doJTA        = True,            # run jet-track association & JetCharge
                     doBTagging   = True,            # run b-tagging
-                    jetCorrLabel = ('SC5', 'Calo'), # example jet correction name; set to None for no JEC
-                    doType1MET   = True             # recompute Type1 MET using these jets
+                    jetCorrLabel = ('SC5','Calo'), # example jet correction name; set to None for no JEC
+                    doType1MET   = False             # recompute Type1 MET using these jets
                     )
 
-#addJetCollection(process, "", "JPT", layers....  )
+# now set JEC by hand
+process.jetCorrFactors.jetSource = cms.InputTag("sisCone5CaloJets")
+process.jetCorrFactors.L1Offset  = cms.string('none')
+process.jetCorrFactors.L2Relative= cms.string('Summer08_L2Relative_SC5Calo')
+process.jetCorrFactors.L3Absolute= cms.string('Summer08_L3Absolute_SC5Calo')
+process.jetCorrFactors.L4EMF     = cms.string('none')
+process.jetCorrFactors.L5Flavor  = cms.string('none')
+process.jetCorrFactors.L6UE      = cms.string('none')
+process.jetCorrFactors.L7Parton  = cms.string('none')
+
 
 
 # selection
@@ -123,6 +132,10 @@ selectedLayer1METs.cut       = cms.string('et >= 0.')
 #countLayer1Leptons.minNumber = 1
 minLayer1Jets.minNumber      = 2
 minLayer1Muons               = 1
+
+
+addJetCollection(process,'JetPlusTrackZSPCorJetIcone5','JPT',runCleaner='CaloJet',doJTA=True,doBTagging=False,jetCorrLabel=None,doType1MET=False,doL1Counters=False)
+
 
 #-------------------------------------------------
 # process output; first the event selection is
@@ -153,8 +166,10 @@ process.out = cms.OutputModule("PoolOutputModule",
                 )
 )
 
+process.out.outputCommands.extend(["keep *_selectedLayer1Jets*_*_*"])
+
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.1 $'),
+    version = cms.untracked.string('$Revision: 1.2 $'),
     annotation = cms.untracked.string('PAT tuple creation'),
     name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/UserCode/Yumiceva/TopWork/crab/BooTopPatTuple_TTJets_cfg.py,v $')
 )

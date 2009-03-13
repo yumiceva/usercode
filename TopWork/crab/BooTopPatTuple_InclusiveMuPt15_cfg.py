@@ -57,7 +57,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 #-------------------------------------------------
 
 ## std sequence for tqaf layer1
-process.load("TopQuarkAnalysis.TopObjectProducers.BooTopPatTuple")
+process.load("TopQuarkAnalysis.TopPairBSM.BooTopPatTuple")
 
 ## necessary fixes to run 2.2.X on 2.1.X data
 from PhysicsTools.PatAlgos.tools.cmsswVersionTools import run22XonSummer08AODSIM
@@ -75,8 +75,11 @@ run22XonSummer08AODSIM(process)
 # process paths;
 #-------------------------------------------------
 
+#**************************Load the ZPT_cff file here************************************
+process.load("TopQuarkAnalysis.TopPairBSM.ZPT_cff")
+
 ## process path
-process.p = cms.Path(process.BooTopPatTuple)
+process.p = cms.Path(process.recoJPTJets+process.BooTopPatTuple)
 
 #-------------------------------------------------
 # pat tuple event content; first ALL objects
@@ -97,11 +100,19 @@ switchJetCollection(process,
                     runCleaner   = "CaloJet",       # =None if not to clean
                     doJTA        = True,            # run jet-track association & JetCharge
                     doBTagging   = True,            # run b-tagging
-                    jetCorrLabel = ('SC5', 'Calo'), # example jet correction name; set to None for no JEC
-                    doType1MET   = True             # recompute Type1 MET using these jets
+                    jetCorrLabel = ('SC5','Calo'), # example jet correction name; set to None for no JEC
+                    doType1MET   = False             # recompute Type1 MET using these jets
                     )
 
-#addJetCollection(process, "", "JPT", layers....  )
+# now set JEC by hand
+process.jetCorrFactors.jetSource = cms.InputTag("sisCone5CaloJets")
+process.jetCorrFactors.L1Offset  = cms.string('none')
+process.jetCorrFactors.L2Relative= cms.string('Summer08_L2Relative_SC5Calo')
+process.jetCorrFactors.L3Absolute= cms.string('Summer08_L3Absolute_SC5Calo')
+process.jetCorrFactors.L4EMF     = cms.string('none')
+process.jetCorrFactors.L5Flavor  = cms.string('none')
+process.jetCorrFactors.L6UE      = cms.string('none')
+process.jetCorrFactors.L7Parton  = cms.string('none')
 
 
 # selection
@@ -123,6 +134,9 @@ selectedLayer1METs.cut       = cms.string('et >= 0.')
 #countLayer1Leptons.minNumber = 1
 minLayer1Jets.minNumber      = 2
 minLayer1Muons               = 1
+
+addJetCollection(process,'JetPlusTrackZSPCorJetIcone5','JPT',runCleaner='CaloJet',doJTA=True,doBTagging=False,jetCorrLabel=None,doType1MET=False,doL1Counters=False)
+
 
 #-------------------------------------------------
 # process output; first the event selection is
@@ -153,10 +167,12 @@ process.out = cms.OutputModule("PoolOutputModule",
                 )
 )
 
+process.out.outputCommands.extend(["keep *_selectedLayer1Jets*_*_*"])
+
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.11 $'),
+    version = cms.untracked.string('$Revision: 1.1 $'),
     annotation = cms.untracked.string('PAT tuple creation'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/CMSSW/TopQuarkAnalysis/TopObjectProducers/test/testPatTuple_cfg.py,v $')
+    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/UserCode/Yumiceva/TopWork/crab/BooTopPatTuple_InclusiveMuPt15_cfg.py,v $')
 )
 
 

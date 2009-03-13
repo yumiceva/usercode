@@ -47,7 +47,7 @@ process.options = cms.untracked.PSet(
 process.load("Configuration.StandardSequences.Geometry_cff")
 ## configure conditions
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = cms.string('IDEAL_V9::All')
+process.GlobalTag.globaltag = cms.string('IDEAL_V11::All')
 ## load magnetic field
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
@@ -114,6 +114,7 @@ process.jetCorrFactors.L5Flavor  = cms.string('none')
 process.jetCorrFactors.L6UE      = cms.string('none')
 process.jetCorrFactors.L7Parton  = cms.string('none')
 
+
 # selection
 #
 from PhysicsTools.PatAlgos.selectionLayer1.electronSelector_cfi  import selectedLayer1Electrons
@@ -135,6 +136,7 @@ minLayer1Jets.minNumber      = 2
 minLayer1Muons               = 1
 
 addJetCollection(process,'JetPlusTrackZSPCorJetIcone5','JPT',runCleaner='CaloJet',doJTA=True,doBTagging=False,jetCorrLabel=None,doType1MET=False,doL1Counters=False)
+
 
 #-------------------------------------------------
 # process output; first the event selection is
@@ -158,7 +160,7 @@ process.out = cms.OutputModule("PoolOutputModule",
     verbose = cms.untracked.bool(True),
     dropMetaDataForDroppedData = cms.untracked.bool(True),                           
 ##  fileName = cms.untracked.string('/afs/cern.ch/user/r/rwolf/pccmsuhh06/testPatTuple_recHits_221.root')
-    fileName = cms.untracked.string('InclusiveMu5Pt50_Summer08.root'),
+    fileName = cms.untracked.string('ZJets_madgraph_Fall08.root'),
     dataset = cms.untracked.PSet(
             dataTier = cms.untracked.string('USER'),
             filterName = cms.untracked.string('')
@@ -170,7 +172,7 @@ process.out.outputCommands.extend(["keep *_selectedLayer1Jets*_*_*"])
 process.configurationMetadata = cms.untracked.PSet(
     version = cms.untracked.string('$Revision: 1.1 $'),
     annotation = cms.untracked.string('PAT tuple creation'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/UserCode/Yumiceva/TopWork/crab/BooTopPatTuple_InclusiveMuPt15_cfg.py,v $')
+    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/UserCode/Yumiceva/TopWork/crab/BooTopPatTuple_ZJets_cfg.py,v $')
 )
 
 
