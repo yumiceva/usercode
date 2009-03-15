@@ -39,38 +39,58 @@ def main():
 
     hall = TH1F("hall","hall",10,0,1)
 
+    labelsize = 0
+
     for f in files:
 
-	#print nfiles
+	print "number of file: " + str(nfiles)
         
         tf = TFile(f);
 
         h = ROOT.gDirectory.Get("counter")
 
-        #h.Print("all")
+        h.Print("all")
 
-	labelsize = 0
-
+	
 	if nfiles == 0:
 	    labels = h.GetXaxis().GetLabels()
 	    labelsize = len(labels)
 	    hall = h.Clone("hall")
 	    hall.Reset()
 	    hall.SetDirectory(0)
+	    
+	    for il in labels:
+		print il
+	    
 
 	#hall.Print("all")
-
-	for ibin in range(1, h.GetNbinsX() ):
-
-	    #print ibin
-	    hall.SetBinContent( ibin, (hall.GetBinContent(ibin) + h.GetBinContent(ibin)) )
+	
+	ibin = 1
+	# loop over labels
+	for il in labels:
 
 	    axislabel = h.GetXaxis().GetLabels()
-	    if ibin < labelsize:
+	    jbin = 1
+	    for j in axislabel:
+		if j == il:
+		    # got the bin
+		    hall.SetBinContent( ibin, (hall.GetBinContent(ibin) + h.GetBinContent(jbin)) )
+		jbin = jbin + 1
+	    ibin = ibin + 1
 
-		if labels[ibin] != axislabel[ibin]:
-		    print "no matched labels!!"
 
+#	for ibin in range(1, h.GetNbinsX() ):
+
+
+	    #print ibin
+#	    hall.SetBinContent( ibin, (hall.GetBinContent(ibin) + h.GetBinContent(ibin)) )
+
+#	    axislabel = h.GetXaxis().GetLabels()
+#	    if ibin < labelsize:
+
+#		if labels[ibin] != axislabel[ibin]:
+#		    print "no matched labels!!"
+		
 	nfiles = nfiles+1
 	tf.Close()
 
@@ -79,7 +99,7 @@ def main():
 
     ihall = 1;
     for i in finallabels:
-	print str(i) + " = " + str( hall.GetBinContent(ihall) )
+	print str(ihall) + " " + str(i) + " = " + str( hall.GetBinContent(ihall) )
 	ihall = ihall+1
 
     outfile.cd()

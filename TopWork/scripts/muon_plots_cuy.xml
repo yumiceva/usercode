@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="tT0j" file="nominalJPT/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" release="X.Y.Z">
+  <validation type="tT0j" file="nominalJPT/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.004">
     <!-- generator -->
     <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
     <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
@@ -84,7 +84,7 @@
   </validation>
 
 
-  <validation type="tT0jo" file="all/TopAnalysis_TTJets-madgraph_Summer08_other_all.root" release="X.Y.Z">
+  <validation type="tT0jo" file="all/TopAnalysis_TTJets-madgraph_Summer08_other_all.root">
 
     <!-- mass -->
     <TH1 name="tT0jo_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
@@ -122,7 +122,7 @@
 
   </validation>
 
-  <validation type="W0j" file="nominalJPT/TopAnalysis_WJets_madgraph_Fall08_all.root" release="X.Y.Z">
+  <validation type="W0j" file="nominalJPT/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0493">
 
     <TH1 name="W0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="W0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -173,7 +173,7 @@
 
   </validation>
 
-  <validation type="Z0j" file="nominalJPT/TopAnalysis_ZJets_madgraph_Fall08_all.root" release="X.Y.Z">
+  <validation type="Z0j" file="nominalJPT/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.0392">
 
     <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -224,7 +224,7 @@
 
   </validation>
 
-  <validation type="qcd" file="nominalJPT/TopAnalysis_InclusiveMuPt15_Summer08_all.root" release="X.Y.Z">
+  <validation type="qcd" file="nominalJPT/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.2849">
 
     <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -374,25 +374,25 @@ cut5 = 3rd chi2 combination + mass cuts
   </superimpose>
 
 
-  <superimpose name="muon_pt_cut4" title="muon_pt_cut4" XTitle="muon p_{T} [GeV/c]" Fill="false" Stack="false">
-    <superimposeItem name="qcd_muon_pt_cut4" weight="0.2849" color="6" legend="QCD"/>
-    <superimposeItem name="Z0j_muon_pt_cut4" weight="0.0392" color="4" legend="Z+jets"/>
-    <superimposeItem name="W0j_muon_pt_cut4" weight="0.0493" color="3" legend="W+jets"/>
-    <superimposeItem name="tT0j_muon_pt_cut4" weight="0.004" color="2" legend="t#bar{t}+jets"/>
+  <superimpose name="muon_pt_cut4" title="muon_pt_cut4" XTitle="muon p_{T} [GeV/c]" Fill="false" Stack="false" Weight="true">
+    <superimposeItem name="qcd_muon_pt_cut4" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muon_pt_cut4" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muon_pt_cut4" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muon_pt_cut4" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
   <superimpose name="muons_vetoEM" title="muons_vetoEM" XTitle="muon veto em [GeV]" Fill="false" Stack="false">
-    <superimposeItem name="qcd_muons_vetoEM" weight="0.2849" color="6" legend="QCD"/>
-    <superimposeItem name="Z0j_muons_vetoEM" weight="0.0392" color="4" legend="Z+jets"/>
-    <superimposeItem name="W0j_muons_vetoEM" weight="0.0493" color="3" legend="W+jets"/>
-    <superimposeItem name="tT0j_muons_vetoEM" weight="0.004" color="2" legend="t#bar{t}+jets"/>
+    <superimposeItem name="qcd_muons_vetoEM" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muons_vetoEM" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muons_vetoEM" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muons_vetoEM" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
   <superimpose name="muons_vetoHad" title="muons_vetoHad" XTitle="muon veto Had [GeV]" Fill="false" Stack="false">
-    <superimposeItem name="qcd_muons_vetoHad" weight="0.2849" color="6" legend="QCD"/>
-    <superimposeItem name="Z0j_muons_vetoHad" weight="0.0392" color="4" legend="Z+jets"/>
-    <superimposeItem name="W0j_muons_vetoHad" weight="0.0493" color="3" legend="W+jets"/>
-    <superimposeItem name="tT0j_muons_vetoHad" weight="0.004" color="2" legend="t#bar{t}+jets"/>
+    <superimposeItem name="qcd_muons_vetoHad" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muons_vetoHad" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muons_vetoHad" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muons_vetoHad" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
   <superimpose name="muon_RelIso_cut2" title="muon_RelIso_cut2" XTitle="Combined RelIso" Fill="false" Stack="false">
