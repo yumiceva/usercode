@@ -40,11 +40,11 @@ def main():
     hall = TH1F("hall","hall",10,0,1)
 
     labelsize = 0
-    labels = 0
+    #labels = 0
 
     for f in files:
 
-	print "number of file: " + str(nfiles)
+	print "\n number of file: " + str(nfiles)
         
         tf = TFile(f);
 
@@ -68,7 +68,7 @@ def main():
 	
 	ibin = 1
 	# loop over labels
-	for il in labels:
+	for il in hall.GetXaxis().GetLabels():
 
 	    axislabel = h.GetXaxis().GetLabels()
 	    jbin = 1
