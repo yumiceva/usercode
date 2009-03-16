@@ -40,6 +40,7 @@ def main():
     hall = TH1F("hall","hall",10,0,1)
 
     labelsize = 0
+    labels = 0
 
     for f in files:
 
@@ -49,7 +50,7 @@ def main():
 
         h = ROOT.gDirectory.Get("counter")
 
-        h.Print("all")
+        #h.Print("all")
 
 	
 	if nfiles == 0:
