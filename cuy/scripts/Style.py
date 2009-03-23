@@ -21,6 +21,7 @@ class Style:
 	ROOT.gStyle.SetCanvasBorderMode(0)
 	ROOT.gStyle.SetPadBorderMode(0)
 
+	ROOT.gStyle.SetFrameFillColor(0)
 	ROOT.gStyle.SetPadColor(0)
 	ROOT.gStyle.SetCanvasColor(0)
 	ROOT.gStyle.SetTitleColor(1)
@@ -35,10 +36,10 @@ class Style:
 	ROOT.gStyle.SetPadTickX(1)
 	ROOT.gStyle.SetPadTickY(1)
     
-	ROOT.gStyle.SetTextFont(132)
+	ROOT.gStyle.SetTextFont(42) #132
 	ROOT.gStyle.SetTextSize(0.09)
-	ROOT.gStyle.SetLabelFont(132,"xyz")
-	ROOT.gStyle.SetTitleFont(132,"xyz")
+	ROOT.gStyle.SetLabelFont(42,"xyz")
+	ROOT.gStyle.SetTitleFont(42,"xyz")
 	ROOT.gStyle.SetLabelSize(0.035,"xyz")
 	ROOT.gStyle.SetTitleSize(0.045,"xyz")
 	ROOT.gStyle.SetTitleOffset(1.5,"y")
@@ -50,7 +51,7 @@ class Style:
     #ROOT.gStyle.SetLineStyleString(2,"[12 12]") // postscript dashes
 
 	# do not display any of the standard histogram decorations
-	#ROOT.gStyle.SetOptTitle(0)
+	ROOT.gStyle.SetOptTitle(0)
 	ROOT.gStyle.SetOptStat(0) #("m")
 	ROOT.gStyle.SetOptFit(0)
     

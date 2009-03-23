@@ -108,6 +108,7 @@ class ValElement:
 	self.release = ""
 	self.histos = {}
 	self.TH1s = {}
+	self.weight = None
 
 class divideElement:
     def __init__(self):
@@ -162,6 +163,7 @@ class FindIssue(handler.ContentHandler):
 	    self.data[self.atype].type = attrs.get('type',None)
 	    self.data[self.atype].filename = attrs.get('file',None)
 	    self.data[self.atype].release = attrs.get('release',None)
+	    self.data[self.atype].weight = attrs.get('weight','')
 	if name == 'TH1':
 	    self.data[self.atype].histos[attrs.get('name',None)] = attrs.get('source',None)
 	    #print attrs.get('name',None)
@@ -183,6 +185,7 @@ class FindIssue(handler.ContentHandler):
 	    self.addition[aname].YTitle = attrs.get('YTitle',None)
 	    self.addition[aname].XTitle = attrs.get('XTitle',None)
 	    self.addition[aname].Option = attrs.get('Option',None)
+	    self.addition[aname].Weight = attrs.get('Weight',None)
 	if name == 'additionItem':
 	    #print "in element: " + self.tmpsupername
 	    self.addition[self.tmpaddname].histos.append(attrs.get('name',None))
@@ -199,9 +202,11 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[aname].YTitle = attrs.get('YTitle',None)
 	    self.superimpose[aname].XTitle = attrs.get('XTitle',None)
 	    self.superimpose[aname].projection = attrs.get('Projection',None)
+	    self.superimpose[aname].bin = attrs.get('bin',None)
 	    self.superimpose[aname].profile = attrs.get('Profile',None)
 	    self.superimpose[aname].Fill = attrs.get('Fill',None)
 	    self.superimpose[aname].Option = attrs.get('Option',None)
+	    self.superimpose[aname].Weight = attrs.get('Weight',None)
 	    self.tmpsupername = aname
 	if name == 'superimposeItem':
 	    #print "in element: " + self.tmpsupername
@@ -209,7 +214,7 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[self.tmpsupername].color.append(attrs.get('color',None))
 	    self.superimpose[self.tmpsupername].marker.append(attrs.get('MarkerStyle',None))
 	    self.superimpose[self.tmpsupername].legend.append(attrs.get('legend',None))
-	    self.superimpose[self.tmpsupername].weight.append(attrs.get('weight',None))
+	    #self.superimpose[self.tmpsupername].weight.append(attrs.get('weight',None))
 
 if __name__ == '__main__':
 
@@ -291,9 +296,12 @@ if __name__ == '__main__':
 	afilename = thedata[ikey].filename
 	if firstFilename == '':
 	    firstFilename = afilename
-	arelease = thedata[ikey].release
+	arelease = ""
+	if thedata[ikey].release != None:
+	    arelease = thedata[ikey].release
 	print "== filename: " + afilename
 	print "== release:  " + arelease
+	print "== weight:   " + thedata[ikey].weight
 	thehistos = thedata[ikey].histos
 	afilelist[afilename] = TFile(afilename)
 	print "== get histograms: "
@@ -318,7 +326,7 @@ if __name__ == '__main__':
     for ikey in theaddition:
 	print "== plot name: \""+theaddition[ikey].name+"\" title: \""+theaddition[ikey].title+"\""
 	listname = theaddition[ikey].histos
-	listweight = theaddition[ikey].weight
+	#listweight = theaddition[ikey].weight
 
 	#create canvas
 	cv[theaddition[ikey].name] = TCanvas(theaddition[ikey].name,theaddition[ikey].name,700,700)
@@ -327,8 +335,10 @@ if __name__ == '__main__':
 	ihnameIt = 0
 	for ihname in listname:
 	    aweight = 1
-	    if listweight[ihnameIt]:
-		aweight = float(listweight[ihnameIt])
+	    #if listweight[ihnameIt]:
+	    if thedata[jkey].weight != None and theaddition[ikey].Weight == "true":
+		#aweight = float(listweight[ihnameIt])
+		aweight = float(thedata[jkey].weight)
 	    for jkey in thedata:
 		tmpkeys = thedata[jkey].histos.keys()
 		for tmpname in tmpkeys:
@@ -403,6 +413,8 @@ if __name__ == '__main__':
 
 
 	
+	numeratorth.Sumw2()
+	denominatorth.Sumw2()
 	newth = numeratorth.Clone()
 	newth.Clear()
 	if thedivition[ikey].DivideOption is None:
@@ -415,22 +427,27 @@ if __name__ == '__main__':
 #	    newth.SetYTitle(theaddition[ikey].YTitle)
 
 	if thedivition[ikey].Option:
-	    newth.Draw(theaddition[ikey].Option)
+	    newth.Draw(thedivition[ikey].Option)
 	else:
 	    newth.Draw()
 
 	cv[thedivition[ikey].name].Update()
 	
+	
+	# pause
+	if option.wait:
+	    raw_input( 'Press ENTER to continue\n ' )
+
+	# add new histogram to the list
+	newth.SetName(thedivition[ikey].name)
+	newTH1list.append(newth.GetName())
+	thedata[newth.GetName()] = ValElement()
+	thedata[newth.GetName()].TH1s[newth.GetName()] = newth
+	thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
+	
 	# write new histograms to file
 	outputroot.cd()
 	newth.Write()
-
-	# add new histogram to the list
-	#newth.SetName(theaddition[ikey].name)
-	#newTH1list.append(newth.GetName())
-	#thedata[newth.GetName()] = ValElement()
-	#thedata[newth.GetName()].TH1s[newth.GetName()] = newth
-	#thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
 
 
     thesuper = dh.superimpose
@@ -441,7 +458,7 @@ if __name__ == '__main__':
 	listcolor = thesuper[ikey].color
 	listmarker = thesuper[ikey].marker
 	listlegend = thesuper[ikey].legend
-	listweight = thesuper[ikey].weight
+	#listweight = thesuper[ikey].weight
 	dolegend = True
 	for il in listlegend:
 	    if il==None: dolegend = False
@@ -451,8 +468,10 @@ if __name__ == '__main__':
 	    doNormalize = True
 	    print "normalize = " +str(doNormalize)
 	projectAxis = "no"
+	projectBin = -1 #all
 	if thesuper[ikey].projection == "x": projectAxis = "x"
 	if thesuper[ikey].projection == "y": projectAxis = "y"
+	if thesuper[ikey].bin != None: projectBin = thesuper[ikey].bin
 	profileAxis = "no"
 	if thesuper[ikey].profile == "x": profileAxis = "x"
 	if thesuper[ikey].profile == "y": profileAxis = "y"
@@ -489,10 +508,16 @@ if __name__ == '__main__':
 			print "=== superimpose histogram: "+ath.GetName() + " mean = " + "%.2f" % round(ath.GetMean(),2)
 			# project 2D histogram if requested
 			if projectAxis == "x":
-			    newthpx = ath.ProjectionX(ath.GetName()+"_px",0,-1,"e")
+			    if projectBin == -1:
+				newthpx = ath.ProjectionX(ath.GetName()+"_px",0,-1,"e")
+			    else:
+				newthpx = ath.ProjectionX(ath.GetName()+"_px",int(projectBin),int(projectBin),"e")
 			    newth = newthpx.Clone()
 			if projectAxis == "y":
-			    newthpy = ath.ProjectionY(ath.GetName()+"_py",0,-1,"e")
+			    if projectBin == -1:
+				newthpy = ath.ProjectionY(ath.GetName()+"_py",0,-1,"e")
+			    else:
+				newthpx = ath.ProjectionY(ath.GetName()+"_py",int(projectBin),int(projectBin),"e")
 			    newth = newthpy.Clone()
 			if profileAxis == "x":
 			    newthpx = ath.ProfileX(ath.GetName()+"_px",0,-1,"e")
@@ -503,8 +528,11 @@ if __name__ == '__main__':
 			
 			# get weight
 			aweight = 1
-			if listweight[ii]:
-			    aweight = float( listweight[ii] )
+			if thedata[jkey].weight != None and thesuper[ikey].Weight=="true":
+			    aweight = float( thedata[jkey].weight )
+			print " with weight = " + str(aweight)
+			#if listweight[ii]:
+			 #   aweight = float( listweight[ii] )
 
 			# clone original histogram
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
@@ -600,7 +628,7 @@ if __name__ == '__main__':
 	
     
     #outputroot.Write()
-    outputroot.Close()
+    #outputroot.Close()
 
 #    if not option.wait:
     rep = ''
