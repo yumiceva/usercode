@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="tT0j" file="nominalJPT/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.004">
+  <validation type="tT0j" file="nominal/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0094">
     <!-- generator -->
     <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
     <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
@@ -38,8 +38,9 @@
     <TH1 name="tT0j_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
     <TH1 name="tT0j_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
     <TH1 name="tT0j_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="tT0j_muon_IPS_cut1" source="/Muons/muon_IPS_cut1"/> 
     <TH1 name="tT0j_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
-    <TH1 name="tT0j_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <TH1 name="tT0j_muon_pt_vsJets_cut4" source="/Muons/muon_pt_vsJets_cut4"/>
     <TH1 name="tT0j_muon_caloIso_cut0" source="/Muons/muon_caloIso_cut0"/>
     <TH1 name="tT0j_muon_trackIso_cut0" source="/Muons/muon_trackIso_cut0"/>
     <TH1 name="tT0j_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
@@ -122,7 +123,7 @@
 
   </validation>
 
-  <validation type="W0j" file="nominalJPT/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0493">
+  <validation type="W0j" file="nominal/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0177">
 
     <TH1 name="W0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="W0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -142,11 +143,12 @@
     <TH1 name="W0j_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
     <TH1 name="W0j_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
     <TH1 name="W0j_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="W0j_muon_IPS_cut1" source="/Muons/muon_IPS_cut1"/> 
     <TH1 name="W0j_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
     <TH1 name="W0j_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
     <TH1 name="W0j_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
     <TH1 name="W0j_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
-    <TH1 name="W0j_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <TH1 name="W0j_muon_pt_vsJets_cut4" source="/Muons/muon_pt_vsJets_cut4"/>
     <!-- mass -->
     <TH1 name="W0j_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
     <TH1 name="W0j_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
@@ -173,7 +175,7 @@
 
   </validation>
 
-  <validation type="Z0j" file="nominalJPT/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.0392">
+  <validation type="Z0j" file="nominal/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.041">
 
     <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -193,11 +195,12 @@
     <TH1 name="Z0j_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
     <TH1 name="Z0j_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
     <TH1 name="Z0j_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="Z0j_muon_IPS_cut1" source="/Muons/muon_IPS_cut1"/> 
     <TH1 name="Z0j_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
     <TH1 name="Z0j_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
     <TH1 name="Z0j_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
     <TH1 name="Z0j_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
-    <TH1 name="Z0j_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <TH1 name="Z0j_muon_pt_vsJets_cut4" source="/Muons/muon_pt_vsJets_cut4"/>
     <!-- mass -->
     <TH1 name="Z0j_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
     <TH1 name="Z0j_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
@@ -224,7 +227,7 @@
 
   </validation>
 
-  <validation type="qcd" file="nominalJPT/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.2849">
+  <validation type="qcd" file="nominal/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.3907">
 
     <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -244,11 +247,12 @@
     <TH1 name="qcd_muon_pt_cut2" source="/Muons/muon_pt_cut2"/>
     <TH1 name="qcd_muon_pt_cut3" source="/Muons/muon_pt_cut3"/>
     <TH1 name="qcd_muon_pt_cut4" source="/Muons/muon_pt_cut4"/>
+    <TH1 name="qcd_muon_IPS_cut1" source="/Muons/muon_IPS_cut1"/> 
     <TH1 name="qcd_muons_vetoEM" source="/Muons/muon_vetoEM_cut3"/>
     <TH1 name="qcd_muons_vetoHad" source="/Muons/muon_vetoHad_cut3"/>
     <TH1 name="qcd_muon_RelIso_cut2" source="/Muons/muon_RelIso_cut2"/>
     <TH1 name="qcd_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
-    <TH1 name="qcd_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <TH1 name="qcd_muon_pt_vsJets_cut4" source="/Muons/muon_pt_vsJets_cut4"/>
     <!-- mass -->
     <TH1 name="qcd_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
     <TH1 name="qcd_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
@@ -295,14 +299,14 @@ cut5 = 3rd chi2 combination + mass cuts
   <divide name="muon_hltg_eta_Zjets" numerator="Z0j_muon_eta_cut1" denominator="Z0j_muon_eta_nohltgood" DivideOption="B" Option="e1"/>
   <divide name="muon_hltg_eta_qcd" numerator="qcd_muon_eta_cut1" denominator="qcd_muon_eta_nohltgood" DivideOption="B" Option="e1"/>
 
-  <superimpose name="muon_pt_triggerGood" title="muon_pt_triggerGood" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+  <superimpose name="muon_pt_triggerGood" title="muon_pt_triggerGood" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" SetGrid="true">
     <superimposeItem name="muon_hltg_pt_qcd"   color="6" legend="QCD"/>
     <superimposeItem name="muon_hltg_pt_Zjets" color="4" legend="Z+jets"/>
     <superimposeItem name="muon_hltg_pt_Wjets" color="3" legend="W+jets"/>
     <superimposeItem name="muon_hltg_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muon_eta_triggerGood" title="muon_eta_triggerGood" XTitle="muon #eta" YTitle="Efficiency" >
+  <superimpose name="muon_eta_triggerGood" title="muon_eta_triggerGood" XTitle="muon #eta" YTitle="Efficiency" SetGrid="true" >
     <superimposeItem name="muon_hltg_eta_qcd"   color="6" legend="QCD"/>
     <superimposeItem name="muon_hltg_eta_Zjets" color="4" legend="Z+jets"/>
     <superimposeItem name="muon_hltg_eta_Wjets" color="3" legend="W+jets"/>
@@ -320,33 +324,52 @@ cut5 = 3rd chi2 combination + mass cuts
   <divide name="muon_hlt_eta_Zjets" numerator="Z0j_muon_eta_cut0" denominator="Z0j_muon_eta_nohlt" DivideOption="B" Option="e1"/>
   <divide name="muon_hlt_eta_qcd" numerator="qcd_muon_eta_cut0" denominator="qcd_muon_eta_nohlt" DivideOption="B" Option="e1"/>
 
-  <superimpose name="muon_pt_trigger" title="muon_pt_trigger" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+  <superimpose name="muon_pt_trigger" title="muon_pt_trigger" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" SetGrid="true">
     <superimposeItem name="muon_hlt_pt_qcd"   color="6" legend="QCD"/>
     <superimposeItem name="muon_hlt_pt_Zjets" color="4" legend="Z+jets"/>
     <superimposeItem name="muon_hlt_pt_Wjets" color="3" legend="W+jets"/>
     <superimposeItem name="muon_hlt_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muon_eta_trigger" title="muon_eta_trigger" XTitle="muon #eta" YTitle="Efficiency" >
+  <superimpose name="muon_eta_trigger" title="muon_eta_trigger" XTitle="muon #eta" YTitle="Efficiency" SetGrid="true">
     <superimposeItem name="muon_hlt_eta_qcd"   color="6" legend="QCD"/>
     <superimposeItem name="muon_hlt_eta_Zjets" color="4" legend="Z+jets"/>
     <superimposeItem name="muon_hlt_eta_Wjets" color="3" legend="W+jets"/>
     <superimposeItem name="muon_hlt_eta_ttbar" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
+  <superimpose name="muon_IPS_cut1" title="muon_IPS_cut1" XTitle="muon d_{0}/#sigma_{d0}" Fill="false" Stack="false">
+    <superimposeItem name="qcd_muon_IPS_cut1" color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muon_IPS_cut1" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muon_IPS_cut1" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muon_IPS_cut1" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <divide name="muon_effips_pt_ttbar" numerator="tT0j_muon_pt_cut2" denominator="tT0j_muon_pt_cut1" DivideOption="B" Option="e1"/>
+  <divide name="muon_effips_pt_Wjets" numerator="W0j_muon_pt_cut2" denominator="W0j_muon_pt_cut1" DivideOption="B" Option="e1"/>
+  <divide name="muon_effips_pt_Zjets" numerator="Z0j_muon_pt_cut2" denominator="Z0j_muon_pt_cut1" DivideOption="B" Option="e1"/>
+  <divide name="muon_effips_pt_qcd" numerator="qcd_muon_pt_cut2" denominator="qcd_muon_pt_cut1" DivideOption="B" Option="e1"/>
+
+  <superimpose name="muon_effips_pt" title="muon_effips_pt" XTitle="muon p_{T} [GeV/c]" YTitle="d_{0}/#sigma_{d0} 5 Efficiency" SetGrid="true">
+    <superimposeItem name="muon_effips_pt_qcd"   color="6" legend="QCD"/>
+    <superimposeItem name="muon_effips_pt_Zjets" color="4" legend="Z+jets"/>
+    <superimposeItem name="muon_effips_pt_Wjets" color="3" legend="W+jets"/>
+    <superimposeItem name="muon_effips_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
 
   <divide name="muon_effiso_pt_ttbar" numerator="tT0j_muon_pt_cut3" denominator="tT0j_muon_pt_cut2" DivideOption="B" Option="e1"/>
   <divide name="muon_effiso_pt_Wjets" numerator="W0j_muon_pt_cut3" denominator="W0j_muon_pt_cut2" DivideOption="B" Option="e1"/>
   <divide name="muon_effiso_pt_Zjets" numerator="Z0j_muon_pt_cut3" denominator="Z0j_muon_pt_cut2" DivideOption="B" Option="e1"/>
   <divide name="muon_effiso_pt_qcd" numerator="qcd_muon_pt_cut3" denominator="qcd_muon_pt_cut2" DivideOption="B" Option="e1"/>
 
-  <superimpose name="muon_effiso_pt" title="muon_effiso_pt" XTitle="muon p_{T} [GeV/c]" YTitle="Efficiency" >
+  <superimpose name="muon_effiso_pt" title="muon_effiso_pt" XTitle="muon p_{T} [GeV/c]" YTitle="(old) RelIso 0.9 Efficiency" SetGrid="true">
     <superimposeItem name="muon_effiso_pt_qcd"   color="6" legend="QCD"/>
     <superimposeItem name="muon_effiso_pt_Zjets" color="4" legend="Z+jets"/>
     <superimposeItem name="muon_effiso_pt_Wjets" color="3" legend="W+jets"/>
     <superimposeItem name="muon_effiso_pt_ttbar" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
+<!--
   <divide name="muon_effiso_pt_all_ttbar" numerator="tT0j_muon_pt_vsJets_cut3" denominator="tT0j_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
   <divide name="muon_effiso_pt_all_Wjets" numerator="W0j_muon_pt_vsJets_cut3" denominator="W0j_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
   <divide name="muon_effiso_pt_all_Zjets" numerator="Z0j_muon_pt_vsJets_cut3" denominator="Z0j_muon_pt_vsJets_cut2" DivideOption="B" Option="e1"/>
@@ -373,7 +396,7 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="muon_effiso_pt_all_ttbar" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-
+-->
   <superimpose name="muon_pt_cut4" title="muon_pt_cut4" XTitle="muon p_{T} [GeV/c]" Fill="false" Stack="false" Weight="true">
     <superimposeItem name="qcd_muon_pt_cut4" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muon_pt_cut4" color="4" legend="Z+jets"/>
@@ -381,25 +404,32 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_muon_pt_cut4" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muons_vetoEM" title="muons_vetoEM" XTitle="muon veto em [GeV]" Fill="false" Stack="false">
+  <superimpose name="muons_vetoEM" title="muons_vetoEM" XTitle="muon veto em [GeV]" Option="HIST" Fill="false" Stack="false">
     <superimposeItem name="qcd_muons_vetoEM" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muons_vetoEM" color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muons_vetoEM" color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_muons_vetoEM" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muons_vetoHad" title="muons_vetoHad" XTitle="muon veto Had [GeV]" Fill="false" Stack="false">
+  <superimpose name="muons_vetoHad" title="muons_vetoHad" XTitle="muon veto Had [GeV]" Option="HIST" Fill="false" Stack="false">
     <superimposeItem name="qcd_muons_vetoHad" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muons_vetoHad" color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muons_vetoHad" color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_muons_vetoHad" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muon_RelIso_cut2" title="muon_RelIso_cut2" XTitle="Combined RelIso" Fill="false" Stack="false">
+  <superimpose name="muon_RelIso_cut2" title="muon_RelIso_cut2" XTitle="Combined RelIso" Option="HIST" Fill="false" Stack="false">
     <superimposeItem name="qcd_muon_RelIso_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muon_RelIso_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muon_RelIso_cut2"  color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_muon_RelIso_cut2" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="muon_pt_vsJets_cut4" title="muon_pt_vsJets_cut4" XTitle="jet multiplicity" Fill="true" Stack="true" Weight="true" Projection="y">
+    <superimposeItem name="qcd_muon_pt_vsJets_cut4"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_muon_pt_vsJets_cut4"  color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_muon_pt_vsJets_cut4"  color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_muon_pt_vsJets_cut4" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
 
