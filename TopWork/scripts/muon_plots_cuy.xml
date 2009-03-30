@@ -338,7 +338,7 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="muon_hlt_eta_ttbar" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muon_IPS_cut1" title="muon_IPS_cut1" XTitle="muon d_{0}/#sigma_{d0}" Fill="false" Stack="false">
+  <superimpose name="muon_IPS_cut1" title="muon_IPS_cut1" YTitle="a.u." XTitle="muon d_{0}/(#sigma_{d0} + #sigma_{BS})" Fill="false" Stack="false" Normalize="true">
     <superimposeItem name="qcd_muon_IPS_cut1" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muon_IPS_cut1" color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muon_IPS_cut1" color="3" legend="W+jets"/>
@@ -404,21 +404,21 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_muon_pt_cut4" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muons_vetoEM" title="muons_vetoEM" XTitle="muon veto em [GeV]" Option="HIST" Fill="false" Stack="false">
+  <superimpose name="muons_vetoEM" title="muons_vetoEM" YTitle="a.u." XTitle="muon veto em [GeV]" Option="HIST" Fill="false" Stack="false" Normalize="true">
     <superimposeItem name="qcd_muons_vetoEM" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muons_vetoEM" color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muons_vetoEM" color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_muons_vetoEM" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muons_vetoHad" title="muons_vetoHad" XTitle="muon veto Had [GeV]" Option="HIST" Fill="false" Stack="false">
+  <superimpose name="muons_vetoHad" title="muons_vetoHad" YTitle="a.u." XTitle="muon veto Had [GeV]" Option="HIST" Fill="false" Stack="false" Normalize="true">
     <superimposeItem name="qcd_muons_vetoHad" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muons_vetoHad" color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muons_vetoHad" color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_muons_vetoHad" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="muon_RelIso_cut2" title="muon_RelIso_cut2" XTitle="Combined RelIso" Option="HIST" Fill="false" Stack="false">
+  <superimpose name="muon_RelIso_cut2" title="muon_RelIso_cut2" YTitle="a.u." XTitle="Combined RelIso" Option="HIST" Fill="false" Stack="false" Normalize="true">
     <superimposeItem name="qcd_muon_RelIso_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_muon_RelIso_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_muon_RelIso_cut2"  color="3" legend="W+jets"/>

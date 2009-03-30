@@ -29,10 +29,10 @@ void fitM3()
 	TH1F *hWjets;
 	TH1F *hM3;
 	
-	TFile *infile0 = TFile::Open("all_global2/TopAnalysis_TTJets-madgraph_Fall08_all.root");
+	TFile *infile0 = TFile::Open("nominalIP3/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
 	hTTjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 	
-	TFile *infile1 = TFile::Open("all_global2/TopAnalysis_WJets_madgraph_Fall08_all.root");
+	TFile *infile1 = TFile::Open("nominalIP3/TopAnalysis_WJets_madgraph_Fall08_all.root");
 	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	//TFile *outfile = TFile::Open("templates.root","RECREATE");
@@ -41,8 +41,8 @@ void fitM3()
 	//outfile->Close();
 	
 	// scale them to 10/pb
-	hTTjets->Scale(0.0063);
-	hWjets->Scale(0.0543);
+	hTTjets->Scale(0.0094);
+	hWjets->Scale(0.0177);
 	double nexp_tt = hTTjets->Integral(); 
     double nexp_wj = hWjets->Integral();
 
@@ -55,8 +55,8 @@ void fitM3()
 	
 	// --- Observable ---
         
-	RooRealVar mass("mass"," top mass",100,500,"GeV/c^{2}") ; 
-	RooRealVar Ntt("Ntt","number of ttbar events",   nexp_tt, -500 , 1000);
+	RooRealVar mass("mass","M3",100,500,"GeV/c^{2}") ; 
+	RooRealVar Ntt("Ntt","number of t#bar{t} events",   nexp_tt, -500 , 1000);
     RooRealVar NW("NW","number of W+jets events", nexp_wj, -500 , 1000);
 
 	RooDataHist hdata_ttbar("hdata_ttbar","ttbar", mass, hTTjets);       
@@ -166,7 +166,8 @@ void fitM3()
 	TCanvas* cve = new TCanvas("cve","cve",1200,600) ;
 	TCanvas* cvf = new TCanvas("cvf","cvf",600,600) ;
 
-	TH1F *hNgen = new TH1F("hNgen","hNgen",30,30,120);
+	TH1F *hNgen = new TH1F("hNgen","Number of observed events",30,100,500);
+	hNgen->SetXTitle("Number of observed events");
 	
 	bool gotone = false;
 	int Nfailed = 0;
@@ -186,7 +187,7 @@ void fitM3()
 
 		if ( r->numInvalidNLL() > 0 ) Nfailed++;
 		
-		if ( !gotone && nte > 19 && nte< 20 )
+		if ( !gotone && nt > 250 && nt< 270 )
 		{
 			cout << " sample # " << i << endl;
 			gotone = true;
@@ -197,7 +198,7 @@ void fitM3()
 			
 			RooAddPdf amodel("amodel", "TTjets+Wjets", RooArgList(hpdf_ttbar,hpdf_wjets),
 							 RooArgList(list[1],list[0])) ;
-			RooPlot *d2 = new RooPlot(Ntt,NW,10,80,-10,45);
+			RooPlot *d2 = new RooPlot(Ntt,NW,0,500,-200,200);
 			r->plotOn(d2,Ntt,NW,"ME12ABHV");
 			cvd->cd();
 			d2->Draw();
@@ -210,13 +211,13 @@ void fitM3()
 			//myminuit.Save()->Print("v");
 
 			cve->Divide(2);
-			RooPlot *nllframett = Ntt.frame(Bins(50),Range(-50,200));//,Range(10,2000));
+			RooPlot *nllframett = Ntt.frame(Bins(50),Range(0,500));//,Range(10,2000));
 			nll.plotOn(nllframett);//,ShiftToZero());
 						
 			RooProfileLL pll_ntt("pll_ntt","pll_ntt",nll,Ntt);
 			pll_ntt.plotOn(nllframett,LineColor(kRed));
 
-			RooPlot *nllframeW = NW.frame(Bins(50),Range(-10,70));//,Range(10,2000));
+			RooPlot *nllframeW = NW.frame(Bins(50),Range(-50,200));//,Range(10,2000));
 			nll.plotOn(nllframeW);//,ShiftToZero());
 						
 			RooProfileLL pll_nW("pll_nW","pll_nW",nll,NW);

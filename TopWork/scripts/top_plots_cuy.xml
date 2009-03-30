@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="tT0j" file="nominal/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0094">
+  <validation type="tT0j" file="nominalIP3/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0094">
     <!-- generator -->
     <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
     <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
@@ -108,7 +108,7 @@
 
   </validation>
 
-  <validation type="W0j" file="nominal/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0177">
+  <validation type="W0j" file="nominalIP3/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0177">
 
     <TH1 name="W0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="W0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -149,7 +149,7 @@
 
   </validation>
 
-  <validation type="Z0j" file="nominal/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.041">
+  <validation type="Z0j" file="nominalIP3/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.041">
 
     <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -190,7 +190,7 @@
 
   </validation>
 
-  <validation type="qcd" file="nominal/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.3907">
+  <validation type="qcd" file="nominalIP3/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.3907">
 
     <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -343,19 +343,35 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_HadronicW_mass_cut3"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 -->
-  <superimpose name="HadronicTop_mass_cut1" title="HadronicTop_mass_cut1" XTitle="Hadronic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="HadronicTop_mass_cut1" title="HadronicTop_mass_cut1" XTitle="M3 [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
     <superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut1"  color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="HadronicTop_mass_cut2" title="HadronicTop_mass_cut2" XTitle="Hadronic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="HadronicTop_mass_cut1_Norm" title="HadronicTop_mass_cut1_Norm" XTitle="M3 [GeV/c^{2}]" Stack="false" Weight="true" Normalize="true" Option="HIST">
+    <superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_HadronicTop_mass_cut1"  color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_HadronicTop_mass_cut1"  color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_HadronicTop_mass_cut1"  color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="HadronicTop_mass_cut2" title="HadronicTop_mass_cut2" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
     <superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut2"  color="3" legend="W+jets"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
+
+  <superimpose name="HadronicTop_mass_cut2_Norm" title="HadronicTop_mass_cut2_Norm" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Stack="false" Weight="true" Normalize="true" Option="HIST">
+    <superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_HadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_HadronicTop_mass_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_HadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+
 <!--
   <superimpose name="HadronicTop_mass_cut3" title="HadronicTop_mass_cut3" XTitle="Hadronic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
     <superimposeItem name="qcd_HadronicTop_mass_cut3"  color="6" legend="QCD"/>
