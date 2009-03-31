@@ -153,6 +153,9 @@ top::top(TTree *tree)
 	TChain * chain = new TChain("top","");
 	chain->Add("nominalABCD/ABCD_TTJets_all.root/top");
 	chain->Add("nominalABCD/ABCD_MuPt15_all.root/top");
+		//chain->Add("nominalABCD/ABCD_WJets_all.root/top");
+		//chain->Add("nominalABCD/ABCD_ZJets_all.root/top");
+	
 	tree = chain;
 
    
