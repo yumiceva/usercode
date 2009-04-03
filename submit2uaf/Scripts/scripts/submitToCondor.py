@@ -218,7 +218,9 @@ fileNames = cms.untracked.vstring(
                 suffix = "\""
             fout.write("\""+ifile+suffix+"\n")
 
-        fout.write("))")
+        fout.write(")\n")
+        fout.write(", duplicateCheckMode = cms.untracked.string('noDuplicateCheck')\n")
+        fout.write(")\n")
 
                                                                                                 
 
