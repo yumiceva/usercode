@@ -21,7 +21,7 @@ def get_list_files(directory,pattern = ""):
 def main():
 
     if len(sys.argv) < 2:
-        print" [usage] replace.py <flag=btag,JPT> <on/off> <pattern>"
+        print" [usage] replace.py <flag=JetAsymmetric,btag,JPT,MET> <on/off> <pattern>"
         sys.exit()
 
 
@@ -59,6 +59,25 @@ def main():
                     line = '#'+line
                     
                 print "line replaced"
+
+	    if line.find('METCuts')!=-1 and flag=='MET':
+
+		    if switch=='on':
+			    line = line.strip('\#')
+		    else:
+			    line = '#'+line
+			    
+		    print "line replaced"
+		    
+	    if line.find('ApplyAsymmetricCuts')!=-1 and flag=='JetAsymmetric':
+
+		    if switch=='on':
+			    line = line.strip('\#')
+		    else:
+			    line = '#'+line
+			    
+		    print "line replaced"
+									    
 
                                                                         
             newf.write(line)

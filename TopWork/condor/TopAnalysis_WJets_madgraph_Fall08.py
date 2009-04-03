@@ -35,8 +35,9 @@ process.load("TopQuarkAnalysis.TopPairBSM.TopAnalysis_sequences")
 process.p = cms.Path( process.TopAnalysis ) # no generator filter at all
 
 # change defaults
-process.TopAnalyzer.METCuts.Recalculate        = cms.bool(True)
-process.TopAnalyzer.jetSource      = cms.InputTag('selectedLayer1JetsJPT')
+#process.TopAnalyzer.jetCuts.ApplyAsymmetricCuts = cms.bool(True)
+#process.TopAnalyzer.METCuts.Recalculate        = cms.bool(True)
+#process.TopAnalyzer.jetSource      = cms.InputTag('selectedLayer1JetsJPT')
 #process.TopAnalyzer.UsebTagging  = cms.bool(True)
 process.TopAnalyzer.IsMCTop      = cms.bool( False )
 process.TopAnalyzer.rootFilename = '{OUTPUT_FILENAME}'
