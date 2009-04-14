@@ -18,11 +18,8 @@ process.MessageLogger.cerr.threshold = 'INFO'
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
     #
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/00437D8F-04A9-DD11-8D99-0015C5E9B2AB.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/00BD3644-90A8-DD11-8D9E-001CC47BCFDC.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/02DCB67E-9FA9-DD11-B550-00E081402E8B.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/0419137A-9BA8-DD11-B5AC-0015C5E9C17C.root',
-    '/store/mc/Summer08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0002/046A072B-31A9-DD11-A931-00E08140EAB7.root'
+    '/store/mc/Fall08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0000/027B51E9-8EED-DD11-9045-0015C5E9C0E1.root'
+#    '/store/mc/Fall08/TTJets-madgraph/GEN-SIM-RECO/IDEAL_V9_v2/0000/0297592D-D1ED-DD11-8D29-001E4F3D764C.root'
     #'/store/mc/Summer08/TauolaTTbar/GEN-SIM-RECO/IDEAL_V9_v1/0004/16AAC418-218A-DD11-AC33-001F2908F0E4.root',
     #'/store/mc/Summer08/TauolaTTbar/GEN-SIM-RECO/IDEAL_V9_v1/0004/1E19C1C2-EF89-DD11-A6AB-001E0B1C74DA.root',
     #'/store/mc/Summer08/TauolaTTbar/GEN-SIM-RECO/IDEAL_V9_v1/0004/2AE099C8-1F8A-DD11-B30F-00144F2031D4.root',
@@ -71,7 +68,6 @@ run22XonSummer08AODSIM(process)
 #usePhotonRecHitIsolation(process)
 
 
-
 #-------------------------------------------------
 # pat tuple event content; first ALL objects
 # are dropped in this process; then patTuple
@@ -96,6 +92,7 @@ switchJetCollection(process,
                     jetCorrLabel = ('SC5','Calo'), # example jet correction name; set to None for no JEC
                     doType1MET   = False             # recompute Type1 MET using these jets
                     )
+
 
 # if you need to change JEC use the following
 # FOR WINTER09 FASTSIM samples comment out the following line
@@ -174,8 +171,7 @@ addClone('selectedLayer1METs', src=cms.InputTag('allLayer1METs'+'tcMET'))
 
 process.p = cms.Path(process.recoJPTJets+
                      process.MetMuonCorrections*process.tcMet+
-                     process.BooTopPatTuple)
-
+                     process.BooTopPatTuple_reduced)
 
 
 
@@ -201,7 +197,7 @@ process.out = cms.OutputModule("PoolOutputModule",
     verbose = cms.untracked.bool(True),
     dropMetaDataForDroppedData = cms.untracked.bool(True),                           
 ##  fileName = cms.untracked.string('/afs/cern.ch/user/r/rwolf/pccmsuhh06/testPatTuple_recHits_221.root')
-    fileName = cms.untracked.string('ZJets_madgraph_Fall08.root'),
+    fileName = cms.untracked.string('SingleTop_tWChannel.root'),
     dataset = cms.untracked.PSet(
             dataTier = cms.untracked.string('USER'),
             filterName = cms.untracked.string('')
@@ -212,9 +208,9 @@ process.out.outputCommands.extend(["keep *_selectedLayer1Jets*_*_*"])
 process.out.outputCommands.extend(["keep *_selectedLayer1METs*_*_*"])
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.1 $'),
+    version = cms.untracked.string('$Revision: 1.3 $'),
     annotation = cms.untracked.string('PAT tuple creation'),
-    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/UserCode/Yumiceva/TopWork/crab/BooTopPatTuple_ZJets_cfg.py,v $')
+    name = cms.untracked.string('$Source: /cvs_server/repositories/CMSSW/UserCode/Yumiceva/TopWork/crab/BooTopPatTuple_TTJets_cfg.py,v $')
 )
 
 
