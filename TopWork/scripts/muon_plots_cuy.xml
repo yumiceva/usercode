@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="tT0j" file="nominal/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0094">
+  <validation type="tT0j" file="nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0101">
     <!-- generator -->
     <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
     <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
@@ -123,7 +123,7 @@
 
   </validation>
 
-  <validation type="W0j" file="nominal/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0177">
+  <validation type="W0j" file="nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0883">
 
     <TH1 name="W0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="W0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -175,7 +175,7 @@
 
   </validation>
 
-  <validation type="Z0j" file="nominal/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.041">
+  <validation type="Z0j" file="nominal_IPsig3_Iso95/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.0744">
 
     <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -227,7 +227,7 @@
 
   </validation>
 
-  <validation type="qcd" file="nominal/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.3907">
+  <validation type="qcd" file="nominal_IPsig3_Iso95/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="1.3161">
 
     <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -350,7 +350,7 @@ cut5 = 3rd chi2 combination + mass cuts
   <divide name="muon_effips_pt_Zjets" numerator="Z0j_muon_pt_cut2" denominator="Z0j_muon_pt_cut1" DivideOption="B" Option="e1"/>
   <divide name="muon_effips_pt_qcd" numerator="qcd_muon_pt_cut2" denominator="qcd_muon_pt_cut1" DivideOption="B" Option="e1"/>
 
-  <superimpose name="muon_effips_pt" title="muon_effips_pt" XTitle="muon p_{T} [GeV/c]" YTitle="d_{0}/#sigma_{d0} 5 Efficiency" SetGrid="true">
+  <superimpose name="muon_effips_pt" title="muon_effips_pt" XTitle="muon p_{T} [GeV/c]" YTitle="d_{0}/#sigma_{d0} 3 Efficiency" SetGrid="true">
     <superimposeItem name="muon_effips_pt_qcd"   color="6" legend="QCD"/>
     <superimposeItem name="muon_effips_pt_Zjets" color="4" legend="Z+jets"/>
     <superimposeItem name="muon_effips_pt_Wjets" color="3" legend="W+jets"/>

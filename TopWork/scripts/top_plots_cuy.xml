@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="tT0j" file="nominalIP3/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0094">
+  <validation type="tT0j" file="nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0101">
     <!-- generator -->
     <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
     <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
@@ -69,46 +69,7 @@
 
   </validation>
 
-
-  <validation type="tT0jo" file="all/TopAnalysis_TTJets-madgraph_Summer08_other_all.root" weight="0.0177">
-
-    <!-- mass -->
-    <TH1 name="tT0jo_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
-    <TH1 name="tT0jo_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
-    <TH1 name="tT0jo_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
-    <TH1 name="tT0jo_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
-    <TH1 name="tT0jo_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
-    <TH1 name="tT0jo_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
-    <TH1 name="tT0jo_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
-    <TH1 name="tT0jo_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
-    <TH1 name="tT0jo_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
-    <TH1 name="tT0jo_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
-    <TH1 name="tT0jo_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
-    <TH1 name="tT0jo_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
-    <TH1 name="tT0jo_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
-    <TH1 name="tT0jo_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
-    <TH1 name="tT0jo_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
-    <TH1 name="tT0jo_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
-    <TH1 name="tT0jo_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
-    <TH1 name="tT0jo_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
-    <TH1 name="tT0jo_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
-    <TH1 name="tT0jo_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
-    <TH1 name="tT0jo_combinations_NormChi2_cut4" source="/Jets/jet_combinations_NormChi2_cut4"/>
-    <TH1 name="tT0jo_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
-    <TH1 name="tT0jo_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
-    <TH1 name="tT0jo_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
-    <TH1 name="tT0jo_combinations_NormChi2_cut5" source="/Jets/jet_combinations_NormChi2_cut5"/>
-
-    <TH1 name="tT0jo_HadTop_vs_HadW_cut0" source="/Mass/HadTop_vs_HadW_cut0"/>
-    <TH1 name="tT0jo_HadTop_vs_HadW_cut1" source="/Mass/HadTop_vs_HadW_cut1"/>
-    <TH1 name="tT0jo_HadTop_vs_HadW_cut2" source="/Mass/HadTop_vs_HadW_cut2"/>
-    <TH1 name="tT0jo_LepTop_vs_LepW_cut0" source="/Mass/LepTop_vs_LepW_cut0"/>
-    <TH1 name="tT0jo_LepTop_vs_LepW_cut1" source="/Mass/LepTop_vs_LepW_cut1"/>
-    <TH1 name="tT0jo_LepTop_vs_LepW_cut2" source="/Mass/LepTop_vs_LepW_cut2"/>
-
-  </validation>
-
-  <validation type="W0j" file="nominalIP3/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0177">
+  <validation type="W0j" file="nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root" weight="0.0883">
 
     <TH1 name="W0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="W0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -144,12 +105,15 @@
     <TH1 name="W0j_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
     <TH1 name="W0j_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
     <TH1 name="W0j_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+    <TH1 name="W0j_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="W0j_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="W0j_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
 
     <TH1 name="W0j_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
 
   </validation>
 
-  <validation type="Z0j" file="nominalIP3/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.041">
+  <validation type="Z0j" file="nominal_IPsig3_Iso95/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.0744">
 
     <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -185,12 +149,14 @@
     <TH1 name="Z0j_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
     <TH1 name="Z0j_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
     <TH1 name="Z0j_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
-
+    <TH1 name="Z0j_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="Z0j_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="Z0j_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
     <TH1 name="Z0j_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
 
   </validation>
 
-  <validation type="qcd" file="nominalIP3/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.3907">
+  <validation type="qcd" file="nominal_IPsig3_Iso95/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="1.3161">
 
     <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -226,8 +192,139 @@
     <TH1 name="qcd_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
     <TH1 name="qcd_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
     <TH1 name="qcd_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
-
+    <TH1 name="qcd_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="qcd_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="qcd_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
     <TH1 name="qcd_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+  <validation type="ST_t" file="nominal_IPsig3_Iso95/TopAnalysis_ST_t.root" weight="0.0092">
+
+    <TH1 name="ST_t_jets_cut1" source="/Jets/jets_cut1"/>
+    <TH1 name="ST_t_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="ST_t_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="ST_t_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="ST_t_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="ST_t_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+
+    <!-- MET -->
+    <TH1 name="ST_t_met_cut0" source="/MET/MET_cut0"/>
+    <TH1 name="ST_t_met_vsJets_cut0" source="/MET/MET_vsJets_cut0"/>
+
+    <TH1 name="ST_t_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="ST_t_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <!-- mass -->
+    <TH1 name="ST_t_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="ST_t_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="ST_t_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="ST_t_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="ST_t_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="ST_t_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="ST_t_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="ST_t_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="ST_t_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="ST_t_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="ST_t_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="ST_t_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="ST_t_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="ST_t_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="ST_t_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="ST_t_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="ST_t_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="ST_t_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="ST_t_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="ST_t_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+    <TH1 name="ST_t_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="ST_t_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="ST_t_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
+    <TH1 name="ST_t_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+  <validation type="ST_s" file="nominal_IPsig3_Iso95/TopAnalysis_ST_s.root" weight="0.0083">
+
+    <TH1 name="ST_s_jets_cut1" source="/Jets/jets_cut1"/>
+    <TH1 name="ST_s_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="ST_s_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="ST_s_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="ST_s_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="ST_s_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+
+    <!-- MET -->
+    <TH1 name="ST_s_met_cut0" source="/MET/MET_cut0"/>
+    <TH1 name="ST_s_met_vsJets_cut0" source="/MET/MET_vsJets_cut0"/>
+
+    <TH1 name="ST_s_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="ST_s_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <!-- mass -->
+    <TH1 name="ST_s_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="ST_s_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="ST_s_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="ST_s_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="ST_s_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="ST_s_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="ST_s_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="ST_s_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="ST_s_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="ST_s_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="ST_s_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="ST_s_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="ST_s_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="ST_s_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="ST_s_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="ST_s_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="ST_s_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="ST_s_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="ST_s_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="ST_s_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+    <TH1 name="ST_s_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="ST_s_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="ST_s_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
+    <TH1 name="ST_s_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
+
+  </validation>
+
+  <validation type="ST_tW" file="nominal_IPsig3_Iso95/TopAnalysis_ST_tW.root" weight="0.0034">
+
+    <TH1 name="ST_tW_jets_cut1" source="/Jets/jets_cut1"/>
+    <TH1 name="ST_tW_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
+    <TH1 name="ST_tW_jet0_eta_cut0" source="/Jets/jet0_eta_cut0"/>
+    <TH1 name="ST_tW_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
+    <TH1 name="ST_tW_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
+    <TH1 name="ST_tW_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+
+    <!-- MET -->
+    <TH1 name="ST_tW_met_cut0" source="/MET/MET_cut0"/>
+    <TH1 name="ST_tW_met_vsJets_cut0" source="/MET/MET_vsJets_cut0"/>
+
+    <TH1 name="ST_tW_muon_pt_vsJets_cut2" source="/Muons/muon_pt_vsJets_cut2"/>
+    <TH1 name="ST_tW_muon_pt_vsJets_cut3" source="/Muons/muon_pt_vsJets_cut3"/>
+    <!-- mass -->
+    <TH1 name="ST_tW_LeptonicW_mass_cut1" source="/Mass/LeptonicW_mass_cut1"/>
+    <TH1 name="ST_tW_LeptonicTop_mass_cut0" source="/Mass/LeptonicTop_mass_cut0"/>
+    <TH1 name="ST_tW_HadronicTop_mass_cut0" source="/Mass/HadronicTop_mass_cut0"/>
+    <TH1 name="ST_tW_HadronicW_mass_cut0" source="/Mass/HadronicW_mass_cut0"/>
+    <TH1 name="ST_tW_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
+    <TH1 name="ST_tW_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
+    <TH1 name="ST_tW_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="ST_tW_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
+    <TH1 name="ST_tW_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
+    <TH1 name="ST_tW_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
+    <TH1 name="ST_tW_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="ST_tW_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
+    <TH1 name="ST_tW_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
+    <TH1 name="ST_tW_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
+    <TH1 name="ST_tW_HadronicTop_mass_cut3" source="/Mass/HadronicTop_mass_cut3"/>
+    <TH1 name="ST_tW_HadronicW_mass_cut3" source="/Mass/HadronicW_mass_cut3"/>
+    <TH1 name="ST_tW_combinations_NormChi2_cut3" source="/Jets/jet_combinations_NormChi2_cut3"/>
+    <TH1 name="ST_tW_LeptonicTop_mass_cut4" source="/Mass/LeptonicTop_mass_cut4"/>
+    <TH1 name="ST_tW_HadronicTop_mass_cut4" source="/Mass/HadronicTop_mass_cut4"/>
+    <TH1 name="ST_tW_HadronicW_mass_cut4" source="/Mass/HadronicW_mass_cut4"/>
+    <TH1 name="ST_tW_LeptonicTop_mass_cut5" source="/Mass/LeptonicTop_mass_cut5"/>
+    <TH1 name="ST_tW_HadronicTop_mass_cut5" source="/Mass/HadronicTop_mass_cut5"/>
+    <TH1 name="ST_tW_HadronicW_mass_cut5" source="/Mass/HadronicW_mass_cut5"/>
+    <TH1 name="ST_tW_topPair_mass_cut4" source="/Mass/topPair_cut4"/>
 
   </validation>
 
@@ -245,6 +342,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_met_vsJets_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_met_vsJets_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_met_vsJets_cut0"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_met_vsJets_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_met_vsJets_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_met_vsJets_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_met_vsJets_cut0" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -252,21 +352,30 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_met_vsJets_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_met_vsJets_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_met_vsJets_cut0"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_met_vsJets_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_met_vsJets_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_met_vsJets_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_met_vsJets_cut0" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-
+<!--
   <superimpose name="jets_cut1" title="jets_cut1" XTitle="jet multiplicity" Fill="true" Stack="true" Weight="true">
     <superimposeItem name="qcd_jets_cut1"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_jets_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_jets_cut1"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_jets_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_jets_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_jets_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_jets_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
-
+-->
   <superimpose name="jet0_et_cut0" title="jet0_et_cut0" XTitle="leading jet E_{T} [GeV]" SetLogy="true" Fill="false" Stack="false">
     <superimposeItem name="qcd_jet0_et_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_jet0_et_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_jet0_et_cut0"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_jet0_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_jet0_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_jet0_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_jet0_et_cut0"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -310,6 +419,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_HadronicW_mass_cut1"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicW_mass_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicW_mass_cut1"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicW_mass_cut1" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicW_mass_cut1" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicW_mass_cut1" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicW_mass_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 <!--
@@ -325,6 +437,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_HadronicW_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicW_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicW_mass_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicW_mass_cut2" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicW_mass_cut2" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicW_mass_cut2" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicW_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -332,6 +447,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_combinations_NormChi2_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_combinations_NormChi2_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_combinations_NormChi2_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_combinations_NormChi2_cut2" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_combinations_NormChi2_cut2" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_combinations_NormChi2_cut2" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_combinations_NormChi2_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -347,6 +465,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut1"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut1" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut1" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut1" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -354,6 +475,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut1"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut1" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut1" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut1" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -361,6 +485,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut2" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut2" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut2" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -368,17 +495,33 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut2" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut2" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut2" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-
-<!--
-  <superimpose name="HadronicTop_mass_cut3" title="HadronicTop_mass_cut3" XTitle="Hadronic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="HadronicTop_mass_cut3" title="HadronicTop_mass_cut3" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
     <superimposeItem name="qcd_HadronicTop_mass_cut3"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut3"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut3"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut3" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut3" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut3" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut3"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
+
+  <superimpose name="HadronicTop_mass_cut5" title="HadronicTop_mass_cut5" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+    <superimposeItem name="qcd_HadronicTop_mass_cut5"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_HadronicTop_mass_cut5"  color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_HadronicTop_mass_cut5"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut5" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut5" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut5" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="tT0j_HadronicTop_mass_cut5"  color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+<!--
 
   <superimpose name="HadronicTop_mass_cut4" title="HadronicTop_mass_cut4" XTitle="Hadronic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
     <superimposeItem name="qcd_HadronicTop_mass_cut4"  color="6" legend="QCD"/>
@@ -398,6 +541,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_LeptonicTop_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_LeptonicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_LeptonicTop_mass_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_LeptonicTop_mass_cut2" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_LepctonicTop_mass_cut2" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_LeptonicTop_mass_cut2" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_LeptonicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 <!--
@@ -427,6 +573,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_topPair_mass_cut4" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_topPair_mass_cut4"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_topPair_mass_cut4"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_topPair_mass_cut4" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_topPair_mass_cut4" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_topPair_mass_cut4" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_topPair_mass_cut4"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 

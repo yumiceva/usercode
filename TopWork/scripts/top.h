@@ -128,7 +128,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop();
+   virtual void     Loop(int type = 1, int njets = 4);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 };
@@ -151,10 +151,10 @@ top::top(TTree *tree)
    }
 		*/
 	TChain * chain = new TChain("top","");
-	chain->Add("nominalABCD/ABCD_TTJets_all.root/top");
-	chain->Add("nominalABCD/ABCD_MuPt15_all.root/top");
-		//chain->Add("nominalABCD/ABCD_WJets_all.root/top");
-		//chain->Add("nominalABCD/ABCD_ZJets_all.root/top");
+		chain->Add("nominalABCD/ABCD_TTJets_all.root/top");
+		chain->Add("nominalABCD/ABCD_MuPt15_all.root/top");
+		chain->Add("nominalABCD/ABCD_WJets_all.root/top");
+		chain->Add("nominalABCD/ABCD_ZJets_all.root/top");
 	
 	tree = chain;
 
