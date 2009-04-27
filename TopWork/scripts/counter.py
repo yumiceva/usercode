@@ -24,13 +24,24 @@ def get_list_files(directory,pattern = ""):
 def main():
     
     if len(sys.argv) < 2:
-        print" [usage] conter.py <directory> <pattern> <root file destination>"
+        print" [usage] conter.py <directory> <pattern> <root file destination> <on/off=write labels>"
         sys.exit()
 
     directory = sys.argv[1]
     pattern = sys.argv[2]
     out = sys.argv[3]
+    writeLabels = "off"
+    if len(sys.argv)==5:
+        writeLabels = sys.argv[4]
+    try:
+        labelfile = open("labels")
+    except:
+        labelfile = open("labels","w")
 
+    if writeLabels == "on":
+        labelfile.close()
+        labelfile = open("labels","w")
+    
     outfile = TFile(out, "UPDATE")
 
     files = get_list_files(directory, pattern)
@@ -62,8 +73,21 @@ def main():
 	    
 	    for il in labels:
 		print il
-	    
+                if writeLabels == "on":
+                    labelfile.write(il.GetName())
+                    labelfile.write('\n')
 
+            if writeLabels!="on":
+                labels = []
+                for line in labelfile:
+                    labels.append(line)
+                ib = 1
+                for al in labels:
+                    al = al.strip('\n')
+                    print al
+                    hall.GetXaxis().SetBinLabel(ib,al)
+                    ib = ib+1
+            
 	#hall.Print("all")
 	
 	ibin = 1
