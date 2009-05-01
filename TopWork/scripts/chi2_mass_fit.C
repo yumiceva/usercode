@@ -6,7 +6,7 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	TString decay = "Hadronic";
 	if (type==1) decay = "Leptonic";
 
-	if (lumi==20) lumi = 1.;//already scaled to 10/pb.
+	if (lumi==20) lumi = 1.;//already scaled to 20/pb.
 	else lumi = lumi/10.;
 
 	// get histograms
@@ -75,6 +75,14 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	hadTop_all->Add(hadTop_ST_t);
 	hadTop_all->Add(hadTop_ST_tW);
 
+	// only background
+	TH1D *hadTop_bkp = hadTop_Wjets->Clone("hadTop_bkp");
+	hadTop_bkp->Add(hadTop_Zjets);
+	hadTop_bkp->Add(hadTop_qcd);
+	hadTop_bkp->Add(hadTop_ST_s);
+	hadTop_bkp->Add(hadTop_ST_t);
+	hadTop_bkp->Add(hadTop_ST_tW);
+	
 	// only mc bkg
 	//TH1D *hadTop_bkg_mc = hadTop_tTjO->Clone("hadTop_bkg_mc");
 	//TH1D *hadTop_bkg_mc = hadTop_Wjets->Clone("hadTop_bkg_mc");
@@ -92,6 +100,8 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	hadTop_c->Add(hadTop_ST_s_c);
 	hadTop_c->Add(hadTop_ST_t_c);
 	hadTop_c->Add(hadTop_ST_tW_c);
+
+	TH1D *hadTop_c_norm = hadTop_c->Clone("hadTop_c_norm");
 	
 	// scale by lumi
 	hadTop_all->Scale(lumi);
@@ -138,8 +148,22 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	cout << " total events = " << hadTop_all->Integral() << endl;
 	cout << " total events in combinatoric bkg. = " << hadTop_c->Integral() << endl;
 
-	//TCanvas *c00 = new TCanvas("c00","c00",700,700);
-	//hadTop_c->Draw();
+	//plot shapes
+	TCanvas *c00 = new TCanvas("c00","c00",700,700);
+	hadTop_c_norm->Scale(1./hadTop_c_norm->Integral());
+	hadTop_bkp->Scale(1./hadTop_bkp->Integral());
+	hadTop_c_norm->SetXTitle("M3'(#chi^{2})");
+	hadTop_c_norm->SetYTitle("a.u.");
+	hadTop_c_norm->Draw();
+	hadTop_bkp->Draw("same");
+	TLegend *len00 = new TLegend(0.6,0.2,0.8,0.4);
+	len00->SetMargin(0.12);
+	len00->SetTextSize(0.035);
+	len00->SetFillColor(10);
+	len00->SetBorderSize(0);
+	len00->AddEntry(hadTop_c_norm, "only background, lowest #chi^{2}");
+	len00->AddEntry(hadTop_bkp, "t#bar{t} + background, 3rd #chi^{2}");
+	len00->Draw();
 	
 	// --- Observable ---
 	
@@ -175,7 +199,7 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	// Landau
 	RooRealVar meanLandau("meanLandau","mean landau",180,170,210); 
 	RooRealVar sigmaLandau("sigmaLandau","sigma landau",40,20,50) ; 
-	//RooLandau landau("landau","landau",mass,meanLandau,sigmaLandau) ; 
+	RooLandau landau("landau","landau",mass,meanLandau,sigmaLandau) ; 
 
 	// bkg: gauss + exp
 	RooRealVar mGS_B("mean","mass",170,150,220,"GeV/c^{2}");
@@ -184,8 +208,7 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	RooChebychev cheby("cheby","cheby",mass,RooArgList(cheby0,cheby1,cheby2,cheby3)) ;
 	RooRealVar b1frac("b1frac","fraction 1",0.5);
 	RooRealVar b2frac("b2frac","fraction 2",0.4);
-	RooAddPdf landau("landau","landau", RooArgList(gaus_B,cheby),
-					 RooArgList(b1frac,b2frac));
+	//RooAddPdf landau("landau","landau", RooArgList(gaus_B,cheby),RooArgList(b1frac,b2frac));
 	
 	// --- first fit background ---
 

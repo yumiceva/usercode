@@ -52,6 +52,7 @@ public :
    vector<float>   top_muon_old_reliso;
    vector<float>   top_muon_new_reliso;
    vector<float>   top_muon_ptrel;
+   vector<float>   top_muon_minDeltaR;
    vector<float>   top_MET;
    vector<float>   top_Ht;
    vector<float>   top_genmuon_px;
@@ -102,6 +103,7 @@ public :
    TBranch        *b_top_muon_old_reliso;   //!
    TBranch        *b_top_muon_new_reliso;   //!
    TBranch        *b_top_muon_ptrel;   //!
+   TBranch        *b_top_muon_minDeltaR;   //!
    TBranch        *b_top_MET;   //!
    TBranch        *b_top_Ht;   //!
    TBranch        *b_top_genmuon_px;   //!
@@ -234,6 +236,7 @@ void top::Init(TTree *tree)
    fChain->SetBranchAddress("top.muon_old_reliso", &top_muon_old_reliso, &b_top_muon_old_reliso);
    fChain->SetBranchAddress("top.muon_new_reliso", &top_muon_new_reliso, &b_top_muon_new_reliso);
    fChain->SetBranchAddress("top.muon_ptrel", &top_muon_ptrel, &b_top_muon_ptrel);
+   fChain->SetBranchAddress("top.muon_minDeltaR", &top_muon_minDeltaR, &b_top_muon_minDeltaR);
    fChain->SetBranchAddress("top.MET", &top_MET, &b_top_MET);
    fChain->SetBranchAddress("top.Ht", &top_Ht, &b_top_Ht);
    fChain->SetBranchAddress("top.genmuon_px", &top_genmuon_px, &b_top_genmuon_px);

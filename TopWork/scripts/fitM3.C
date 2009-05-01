@@ -29,10 +29,10 @@ void fitM3()
 	TH1F *hWjets;
 	TH1F *hM3;
 	
-	TFile *infile0 = TFile::Open("nominalIP3/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
+	TFile *infile0 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
 	hTTjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 	
-	TFile *infile1 = TFile::Open("nominalIP3/TopAnalysis_WJets_madgraph_Fall08_all.root");
+	TFile *infile1 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root");
 	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	//TFile *outfile = TFile::Open("templates.root","RECREATE");
@@ -40,9 +40,9 @@ void fitM3()
 	//hWjets->Write("Wjets");
 	//outfile->Close();
 	
-	// scale them to 10/pb
-	hTTjets->Scale(0.0094);
-	hWjets->Scale(0.0177);
+	// scale them to 20/pb
+	hTTjets->Scale(0.0081);
+	hWjets->Scale(0.0883);
 	double nexp_tt = hTTjets->Integral(); 
     double nexp_wj = hWjets->Integral();
 

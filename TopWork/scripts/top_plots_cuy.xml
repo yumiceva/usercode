@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="tT0j" file="nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0101">
+  <validation type="tT0j" file="nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root" weight="0.0081">
     <!-- generator -->
     <TH1 name="tT0j_gen_top_pt" source="/Generator/gen_top_pt"/>
     <TH1 name="tT0j_gen_muonpt_vs_lepbpt" source="/Generator/gen_muonpt_vs_lepbpt"/>
@@ -113,7 +113,7 @@
 
   </validation>
 
-  <validation type="Z0j" file="nominal_IPsig3_Iso95/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.0744">
+  <validation type="Z0j" file="nominal_IPsig3_Iso95/TopAnalysis_ZJets_madgraph_Fall08_all.root" weight="0.0731">
 
     <TH1 name="Z0j_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="Z0j_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -156,7 +156,7 @@
 
   </validation>
 
-  <validation type="qcd" file="nominal_IPsig3_Iso95/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="1.3161">
+  <validation type="qcd" file="nominal_IPsig3_Iso95/TopAnalysis_InclusiveMuPt15_Summer08_all.root" weight="0.3932">
 
     <TH1 name="qcd_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="qcd_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -199,7 +199,7 @@
 
   </validation>
 
-  <validation type="ST_t" file="nominal_IPsig3_Iso95/TopAnalysis_ST_t.root" weight="0.0092">
+  <validation type="ST_t" file="nominal_IPsig3_Iso95/TopAnalysis_ST_t.root" weight="0.003">
 
     <TH1 name="ST_t_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="ST_t_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -242,7 +242,7 @@
 
   </validation>
 
-  <validation type="ST_s" file="nominal_IPsig3_Iso95/TopAnalysis_ST_s.root" weight="0.0083">
+  <validation type="ST_s" file="nominal_IPsig3_Iso95/TopAnalysis_ST_s.root" weight="0.0027">
 
     <TH1 name="ST_s_jets_cut1" source="/Jets/jets_cut1"/>
     <TH1 name="ST_s_jet0_et_cut0" source="/Jets/jet0_et_cut0"/>
@@ -369,34 +369,43 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_jets_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 -->
-  <superimpose name="jet0_et_cut0" title="jet0_et_cut0" XTitle="leading jet E_{T} [GeV]" SetLogy="true" Fill="false" Stack="false">
+  <superimpose name="jet0_et_cut0" title="jet0_et_cut0" XTitle="leading jet E_{T} [GeV]" YTitle="a.u." SetLogy="true" Fill="false" Stack="false" Normalize="true">
     <superimposeItem name="qcd_jet0_et_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_jet0_et_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_jet0_et_cut0"  color="3" legend="W+jets"/>
-    <superimposeItem name="ST_s_jet0_cut0" color="9" legend="single top s-ch"/>
-    <superimposeItem name="ST_t_jet0_cut0" color="7" legend="single top t-ch"/>
-    <superimposeItem name="ST_tW_jet0_cut0" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="ST_s_jet0_et_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_jet0_et_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_jet0_et_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_jet0_et_cut0"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="jet1_et_cut0" title="jet1_et_cut0" XTitle="second jet E_{T} [GeV]" SetLogy="true" Fill="false" Stack="false">
+  <superimpose name="jet1_et_cut0" title="jet1_et_cut0" XTitle="second jet E_{T} [GeV]" YTitle="a.u." SetLogy="true" Fill="false" Stack="false" Normalize="true" >
     <superimposeItem name="qcd_jet1_et_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_jet1_et_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_jet1_et_cut0"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_jet1_et_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_jet1_et_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_jet1_et_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_jet1_et_cut0"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="jet2_et_cut0" title="jet2_et_cut0" XTitle="third jet E_{T} [GeV]" SetLogy="true" Fill="false" Stack="false">
+  <superimpose name="jet2_et_cut0" title="jet2_et_cut0" XTitle="third jet E_{T} [GeV]" YTitle="a.u." SetLogy="true" Fill="false" Stack="false" Normalize="true" >
     <superimposeItem name="qcd_jet2_et_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_jet2_et_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_jet2_et_cut0"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_jet2_et_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_jet2_et_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_jet2_et_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_jet2_et_cut0"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="jet3_et_cut0" title="jet3_et_cut0" XTitle="fourth jet E_{T} [GeV]" SetLogy="true" Fill="false" Stack="false">
+  <superimpose name="jet3_et_cut0" title="jet3_et_cut0" XTitle="fourth jet E_{T} [GeV]" YTitle="a.u." SetLogy="true" Fill="false" Stack="false" Normalize="true">
     <superimposeItem name="qcd_jet3_et_cut0"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_jet3_et_cut0"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_jet3_et_cut0"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_jet3_et_cut0" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_jet3_et_cut0" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_jet3_et_cut0" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_jet3_et_cut0"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -411,6 +420,9 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="qcd_LeptonicW_mass_cut1" color="6" legend="QCD"/>
     <superimposeItem name="Z0j_LeptonicW_mass_cut1" color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_LeptonicW_mass_cut1" color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_LeptonicW_mass_cut1" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_LeptonicW_mass_cut1" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_LeptonicW_mass_cut1" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_LeptonicW_mass_cut1" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -443,13 +455,13 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_HadronicW_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="jet_combinations_NormChi2_cut2" title="jet_combinations_NormChi2_cut2" XTitle="#chi^{2}/n.d.f." Fill="true" Stack="true" Weight="true">
-    <superimposeItem name="qcd_combinations_NormChi2_cut2"  color="6" legend="QCD"/>
-    <superimposeItem name="Z0j_combinations_NormChi2_cut2"  color="4" legend="Z+jets"/>
+  <superimpose name="jet_combinations_NormChi2_cut2" title="jet_combinations_NormChi2_cut2" XTitle="#chi^{2}/n.d.f." Fill="false" Stack="false" Weight="true" Normalize="true" Option="HIST">
+    <!--<superimposeItem name="qcd_combinations_NormChi2_cut2"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_combinations_NormChi2_cut2"  color="4" legend="Z+jets"/>-->
     <superimposeItem name="W0j_combinations_NormChi2_cut2"  color="3" legend="W+jets"/>
-    <superimposeItem name="ST_s_combinations_NormChi2_cut2" color="9" legend="single top s-ch"/>
+    <!--<superimposeItem name="ST_s_combinations_NormChi2_cut2" color="9" legend="single top s-ch"/>
     <superimposeItem name="ST_t_combinations_NormChi2_cut2" color="7" legend="single top t-ch"/>
-    <superimposeItem name="ST_tW_combinations_NormChi2_cut2" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="ST_tW_combinations_NormChi2_cut2" color="5" legend="single top tW-ch"/>-->
     <superimposeItem name="tT0j_combinations_NormChi2_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -461,7 +473,7 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_HadronicW_mass_cut3"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 -->
-  <superimpose name="HadronicTop_mass_cut1" title="HadronicTop_mass_cut1" XTitle="M3 [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="HadronicTop_mass_cut1" title="HadronicTop_mass_cut1" XTitle="M3 [GeV/c^{2}]" Fill="true" Stack="true" Weight="true" Maximum="120">
     <superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut1"  color="3" legend="W+jets"/>
@@ -472,16 +484,16 @@ cut5 = 3rd chi2 combination + mass cuts
   </superimpose>
 
   <superimpose name="HadronicTop_mass_cut1_Norm" title="HadronicTop_mass_cut1_Norm" XTitle="M3 [GeV/c^{2}]" Stack="false" Weight="true" Normalize="true" Option="HIST">
-    <superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>
+    <!--<superimposeItem name="qcd_HadronicTop_mass_cut1"  color="6" legend="QCD"/>-->
     <superimposeItem name="Z0j_HadronicTop_mass_cut1"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut1"  color="3" legend="W+jets"/>
-    <superimposeItem name="ST_s_HadronicTop_mass_cut1" color="9" legend="single top s-ch"/>
+    <!--<superimposeItem name="ST_s_HadronicTop_mass_cut1" color="9" legend="single top s-ch"/>
     <superimposeItem name="ST_t_HadronicTop_mass_cut1" color="7" legend="single top t-ch"/>
-    <superimposeItem name="ST_tW_HadronicTop_mass_cut1" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut1" color="5" legend="single top tW-ch"/>-->
     <superimposeItem name="tT0j_HadronicTop_mass_cut1"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="HadronicTop_mass_cut2" title="HadronicTop_mass_cut2" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="HadronicTop_mass_cut2" title="HadronicTop_mass_cut2" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true" Maximum="120">
     <superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut2"  color="3" legend="W+jets"/>
@@ -492,12 +504,12 @@ cut5 = 3rd chi2 combination + mass cuts
   </superimpose>
 
   <superimpose name="HadronicTop_mass_cut2_Norm" title="HadronicTop_mass_cut2_Norm" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Stack="false" Weight="true" Normalize="true" Option="HIST">
-    <superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>
+    <!--<superimposeItem name="qcd_HadronicTop_mass_cut2"  color="6" legend="QCD"/>-->
     <superimposeItem name="Z0j_HadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut2"  color="3" legend="W+jets"/>
-    <superimposeItem name="ST_s_HadronicTop_mass_cut2" color="9" legend="single top s-ch"/>
+    <!--<superimposeItem name="ST_s_HadronicTop_mass_cut2" color="9" legend="single top s-ch"/>
     <superimposeItem name="ST_t_HadronicTop_mass_cut2" color="7" legend="single top t-ch"/>
-    <superimposeItem name="ST_tW_HadronicTop_mass_cut2" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut2" color="5" legend="single top tW-ch"/>-->
     <superimposeItem name="tT0j_HadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
@@ -511,7 +523,17 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_HadronicTop_mass_cut3"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="HadronicTop_mass_cut5" title="HadronicTop_mass_cut5" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="HadronicTop_mass_chi2_leptonicCut" title="HadronicTop_mass_chi2_leptonicCut" XTitle="M3' (#chi^{2}) with m(j+#mu+#nu) cut [GeV/c^{2}]" Fill="true" Stack="true" Weight="true" Maximum="120">
+    <superimposeItem name="qcd_HadronicTop_mass_cut4"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_HadronicTop_mass_cut4"  color="4" legend="Z+jets"/>-->
+    <superimposeItem name="W0j_HadronicTop_mass_cut4"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_HadronicTop_mass_cut4" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_HadronicTop_mass_cut4" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_HadronicTop_mass_cut4" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="tT0j_HadronicTop_mass_cut4"  color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="HadronicTop_mass_cut5" title="HadronicTop_mass_cut5" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true" Maximum="120">
     <superimposeItem name="qcd_HadronicTop_mass_cut5"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_HadronicTop_mass_cut5"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_HadronicTop_mass_cut5"  color="3" legend="W+jets"/>
@@ -537,7 +559,7 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_HadronicTop_mass_cut5"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 -->
-  <superimpose name="LeptonicTop_mass_cut2" title="LeptonicTop_mass_cut2" XTitle="Leptonic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true">
+  <superimpose name="LeptonicTop_mass_cut2" title="LeptonicTop_mass_cut2" XTitle="Leptonic top mass [GeV/c^{2}]" Fill="true" Stack="true" Weight="true" Maximum="120">
     <superimposeItem name="qcd_LeptonicTop_mass_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_LeptonicTop_mass_cut2"  color="4" legend="Z+jets"/>
     <superimposeItem name="W0j_LeptonicTop_mass_cut2"  color="3" legend="W+jets"/>

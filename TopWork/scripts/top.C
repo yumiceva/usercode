@@ -37,6 +37,11 @@ void top::Loop(int type, int njets)
 //    fChain->GetEntry(jentry);       //read all branches
 //by  b_branchname->GetEntry(ientry); //read only this branch
 
+	TString njetTitle= "Njets >= 4";
+	if (njets == 3 ) njetTitle = "Njets = 3";
+	if (njets == 2 ) njetTitle = "Njets = 2";
+	if (njets == 1 ) njetTitle = "Njets = 1";
+	
 	// type:
 
 	// 1: CombRelIso vs IP significance
@@ -58,14 +63,47 @@ void top::Loop(int type, int njets)
 	double BXf = 0.7; double BYf = AYf;
 
 	double CX0 = AX0; double CY0 = 5;
-	double CXf = AXf; double CYf = 10;
+	double CXf = AXf; double CYf = 999999;
 
 	double DX0 = BX0; double DY0 = CY0;
 	double DXf = BXf; double DYf = CYf;
 
 	TString titleX = "Combined Relative Isolation";
 	TString titleY = "Impact Parameter significance";
-	
+
+	// check correlation
+	int Nhist_corr = 4;
+	TH1F *hvary[5];
+	TH1F *hvarx_total;
+	TH1F *hvarx_cut[4];
+	TH1F *hkin_muon_pt[2];
+	TH1F *hkin_Ht[2];
+	if (type == 1) {	
+			hvary[0] = new TH1F("hvary0","0.0 < RelIso <= 0.4",50,AY0,CYf);
+			hvary[1] = new TH1F("hvary1","0.4 < RelIso <= 0.6",50,AY0,CYf);
+			hvary[2] = new TH1F("hvary2","0.6 < RelIso <= 0.7",50,AY0,CYf);
+			hvary[3] = new TH1F("hvary3","0.7 < RelIso <= 1.0",50,AY0,CYf);
+			//hvary[4] = new TH1F("hvary4","0.9 < RelIso <= 1.0",50,AY0,CYf);
+			hvarx_cut[0] = new TH1F("hvarx_cut0","IPsig < 3",5,0,1);
+			hvarx_cut[1] = new TH1F("hvarx_cut1","IPsig < 4",5,0,1);
+			hvarx_cut[2] = new TH1F("hvarx_cut2","IPsig < 5",5,0,1);
+			hvarx_cut[3] = new TH1F("hvarx_cut3","IPsig < 6",5,0,1);
+			hvarx_total = new TH1F("hvarx_total","IPsig",5,0,1);
+			hvarx_total->Sumw2();
+			for (int i=0; i< Nhist_corr; i++) {
+				hvary[i]->Sumw2();
+				hvarx_cut[i]->Sumw2();
+			}
+			hkin_muon_pt[0] = new TH1F("hkin_muon_pt0","Region A",5,20,70);
+			hkin_muon_pt[1] = new TH1F("hkin_muon_pt1","Region B+C+D",5,20,70);
+			hkin_Ht[0] = new TH1F("hkin_Ht0","Region A",5,50,900);
+			hkin_Ht[1] = new TH1F("hkin_Ht1","Region B+C+D",5,50,900);
+			for (int i=0; i<2; i++) {
+				hkin_muon_pt[i]->Sumw2();
+				hkin_Ht[i]->Sumw2();
+			}
+	}
+		
 	// 2: CombRelIso vs MET
 	if ( type == 2 ) {
 		binX0 = 0;
@@ -155,6 +193,32 @@ void top::Loop(int type, int njets)
 		titleX = "Combined Relative Isolation";
 		titleY = "Ht";
 	}
+
+	// 3: IP significance vs pTrel
+	if ( type == 6 ) {
+		binX0 = 0;
+		binX1 = 200;
+		binY0 = 0;
+		binY1 = 10;
+
+		dx = 0.5;
+		dy = 0.5;
+		
+		AX0 = 50; AY0 = 0; //signal box
+		AXf = 200; AYf = 3;
+
+		BX0 = 0; BY0 = AY0;
+		BXf = 30; BYf = AYf;
+
+		CX0 = AX0; CY0 = 5;
+		CXf = AXf; CYf = 10;
+
+		DX0 = BX0; DY0 = CY0;
+		DXf = BXf; DYf = CYf;
+		
+		titleX = "p_{T}^{Rel} (#DeltaR>0.35)";
+		titleY = "Impact Parameter significance";
+	}
 	
 	TH2D *h_2d_ttbar = new TH2D("h_2d_ttbar","h_2d_ttbar",100,binX0,binX1,100,binY0,binY1);
 	TH2D *h_2d_qcd = new TH2D("h_2dqcd","h_2d_qcd",100,binX0,binX1,100,binY0,binY1);
@@ -204,9 +268,9 @@ void top::Loop(int type, int njets)
 	
 	// weights
 	double wttbar = 0.0101;
-	double wwjets = 0.0977;
-	double wzjets = 0.078;
-	double wqcd = 1.3161;
+	double wwjets = 0.0883;
+	double wzjets = 0.0744;
+	double wqcd = 0.3907;
 	
 	double Na, Nb, Nc, Nd;
 	Na = Nb = Nc = Nd = 0;
@@ -255,13 +319,20 @@ void top::Loop(int type, int njets)
 		  varY = top_Ht[0];
 		  if ( d0sig >= 3 ) continue;
 	  }
-
+	  if ( type == 6 ) {
+		  varX = top_muon_ptrel[0];
+		  varY = d0sig;
+	  }
 	  bool runloop = false;
 	  
 	  if ( njets < 4 && top_njets == njets) runloop = true;
-
 	  if ( njets == 4 && top_njets >= njets ) runloop = true;
 
+	  if ( type == 6 && runloop ) {
+		  if (top_muon_minDeltaR[0] > 0.35 ) runloop = true;
+		  else runloop = false;
+	  }
+	  
 	  if (runloop)
 	  {
 		  
@@ -286,25 +357,65 @@ void top::Loop(int type, int njets)
 			  //if ( reliso < 0.7 && d0sig > 5 ) Nd += wttbar;
 		  }
 		  if ( filename.Contains("MuPt15") ) {
-
+			  
+			  if (type == 1 ) {
+				  if ( 0.0 < varX && varX <= 0.4) hvary[0]->Fill(TMath::Min(9.999,varY), wqcd);
+				  if ( 0.4 < varX && varX <= 0.6) hvary[1]->Fill(TMath::Min(9.999,varY), wqcd);
+				  if ( 0.6 < varX && varX <= 0.7) hvary[2]->Fill(TMath::Min(9.999,varY), wqcd);
+				  if ( 0.7 < varX && varX <= 1.0) hvary[3]->Fill(TMath::Min(9.999,varY), wqcd);
+				  //if ( 0.9 < varX && varX <= 1.0) hvary[4]->Fill(varY);
+				  if ( varY < 3 ) hvarx_cut[0]->Fill(varX, wqcd);
+				  if ( varY < 4 ) hvarx_cut[1]->Fill(varX, wqcd);
+				  if ( varY < 5 ) hvarx_cut[2]->Fill(varX, wqcd);
+				  if ( varY < 6 ) hvarx_cut[3]->Fill(varX, wqcd);
+				  hvarx_total->Fill(varX, wqcd);
+			  }
+			  
+			  //cout << " muon px " << top_muon_px[0] << endl;
+			  //cout << " Ht " << top_Ht[0] << endl;
+			  
 			  for ( int ii= 0; ii < ndx; ii++) {
 
 				  for ( int jj =0; jj < ndy; jj++) {
 
-					  if ( varX > AX0 && varX <= AXf && varY >= AY0 && varY < AYf ) { NAqcd[ii][jj] += 1; expNA[ii][jj] += wqcd; }
-					  if ( varX >= BX0 && varX < (dx0_ + dx* ((double)ii)) && varY >= BY0 && varY < BYf ) { NBqcd[ii][jj] += 1;}
-					  if ( varX > CX0 && varX <= CXf && varY > (dy0_+dy*((double)jj)) && varY <= CYf ) { NCqcd[ii][jj] += 1;}
-					  if ( varX >= DX0 && varX < (dx0_+dx*((double)ii)) && varY > (dy0_+dy*((double)jj)) && varY <= DYf ) { NDqcd[ii][jj] += 1;} 
+					  if ( varX > AX0 && varX <= AXf && varY >= AY0 && varY < AYf ) {
+						  NAqcd[ii][jj] += 1; expNA[ii][jj] += wqcd;
+						  if ( jj==3 && ii==3 ) {
+							  //hkin_muon_pt[0]->Fill( sqrt(top_muon_px[0]*top_muon_px[0] + top_muon_py[0]*top_muon_py[0]), wqcd );
+							  //hkin_Ht[0]->Fill( top_Ht[0], wqcd );
+						  }
+					  }
+					  if ( varX >= BX0 && varX < (dx0_ + dx* ((double)ii)) && varY >= BY0 && varY < BYf ) {
+						  NBqcd[ii][jj] += 1;
+						  if ( jj==3 && ii==3 ) {
+							  //hkin_muon_pt[1]->Fill( sqrt(top_muon_px[0]*top_muon_px[0] + top_muon_py[0]*top_muon_py[0]), wqcd );
+							  //hkin_Ht[1]->Fill( top_Ht[0], wqcd );
+						  }
+					  }
+					  if ( varX > CX0 && varX <= CXf && varY > (dy0_+dy*((double)jj)) && varY <= CYf ) {
+						  NCqcd[ii][jj] += 1;
+						  if ( jj==3 && ii==3 ) {
+							  //hkin_muon_pt[1]->Fill( sqrt(top_muon_px[0]*top_muon_px[0] + top_muon_py[0]*top_muon_py[0]), wqcd );
+							  //hkin_Ht[1]->Fill( top_Ht[0], wqcd );
+						  }
+					  }
+					  if ( varX >= DX0 && varX < (dx0_+dx*((double)ii)) && varY > (dy0_+dy*((double)jj)) && varY <= DYf ) {
+						  NDqcd[ii][jj] += 1;
+						  if ( jj==3 && ii==3 ) {
+							  //hkin_muon_pt[1]->Fill( sqrt(top_muon_px[0]*top_muon_px[0] + top_muon_py[0]*top_muon_py[0]), wqcd );
+							  //hkin_Ht[1]->Fill( top_Ht[0], wqcd );
+						  }
+					  }
 				  }
 			  }
-
-			  if ( varX > AX0 && varX <= AXf && varY >= AY0 && varY < AYf ) { Nqcd+= wqcd;}
+			  if ( varX > AX0 && varX <= AXf && varY >= AY0 && varY < AYf ) { Nqcd += wqcd;}
 			  //if ( reliso > 0.95 && d0sig < 3 ) { Na += wqcd; Nqcd+= wqcd; }
 			  //if ( reliso < 0.7 && d0sig < 3 ) Nb += wqcd;
 			  //if ( reliso > 0.95 && d0sig > 5 ) Nc += wqcd;
 			  //if ( reliso < 0.7 && d0sig > 5 ) Nd += wqcd;
 			  
 			  h_2d_qcd->Fill(varX,varY);
+			  
 		  }
 		  if ( filename.Contains("WJets") ) {
 
@@ -341,7 +452,7 @@ void top::Loop(int type, int njets)
 			  //if ( reliso > 0.95 && d0sig < 3 ) { NZjets += wzjets; }
 		  }
 	  }
-   }
+   } // end loop
 
    TMultiGraph *mg = new TMultiGraph();
    double markers[6] = {22, 23, 24, 25, 26, 27};
@@ -351,7 +462,8 @@ void top::Loop(int type, int njets)
    legend->SetTextSize(0.035);
    legend->SetFillColor(10);
    legend->SetBorderSize(0);
-
+   legend->SetHeader(njetTitle);
+   
    double theNa = 0;
    double theNaErr = 0;
    
@@ -420,6 +532,12 @@ void top::Loop(int type, int njets)
    
    mg->Draw("a");
    mg->GetHistogram()->SetXTitle(titleY);
+   mg->GetHistogram()->SetYTitle("N^{observe}_{A}/N^{expected}_{A}");
+   legend->SetMargin(0.12);
+   legend->SetTextSize(0.035);
+   legend->SetFillColor(10);
+   legend->SetBorderSize(0);
+
    legend->Draw();
    
    TCanvas *cv1 = new TCanvas("cv1","cv1",600,600);
@@ -432,10 +550,116 @@ void top::Loop(int type, int njets)
    h_2d_ttbar->Draw("BOX");
    h_2d_qcd->Draw("BOX same");
 
-   //h_2d_all->Add(h_IPS_iso_ttbar,h_IPS_iso_qcd);
+   /*
+   TCanvas *cv2 = new TCanvas("cv2","cv2",600,600);
+   TLegend *len_cv2 = new TLegend(0.6,0.2,0.8,0.4);
+   len_cv2->SetMargin(0.12);
+   len_cv2->SetTextSize(0.035);
+   len_cv2->SetFillColor(10);
+   len_cv2->SetBorderSize(0);
+   len_cv2->SetHeader(njetTitle);
    
+   hvary[0]->SetXTitle(titleY);
    
+   for (int i=0; i<Nhist_corr; i++) {
+	   hvary[i]->SetYTitle("a.u.");
+	   hvary[i]->Scale(1/hvary[i]->Integral());
+	   hvary[i]->SetMarkerColor(i+1);
+	   hvary[i]->SetLineColor(i+1);
+	   hvary[i]->SetMarkerStyle(21+i);
+	   len_cv2->AddEntry(hvary[i],hvary[i]->GetTitle(), "p");
+   }
 
+   cv2->SetGrid();
+   
+   hvary[0]->Draw("p");
+   hvary[1]->Draw("psame");
+   hvary[2]->Draw("psame");
+   hvary[3]->Draw("psame");
+   //hvary[4]->Draw("psame");
+   len_cv2->Draw();
+   
+   TCanvas *cv3 = new TCanvas("cv3","cv3",600,600);
+
+   TH1F *hvarx_frac[5];
+   TLegend *len_cv3 = new TLegend(0.6,0.2,0.8,0.4);
+   len_cv3->SetMargin(0.12);
+   len_cv3->SetTextSize(0.035);
+   len_cv3->SetFillColor(10);
+   len_cv3->SetBorderSize(0);
+   len_cv3->SetHeader(njetTitle);
+   
+   for (int i=0; i< 4; i++) {
+	   char histname[20];
+	   sprintf(histname, "hvarx_frac_%i", i );
+	   hvarx_frac[i] = (TH1F*) hvarx_cut[i]->Clone(histname);
+	   hvarx_frac[i]->Reset();
+	   hvarx_frac[i]->Sumw2();
+	   hvarx_frac[i]->Divide(hvarx_cut[i],hvarx_total,1.,1.,"B");
+	   hvarx_frac[i]->SetMarkerColor(i+1);
+	   hvarx_frac[i]->SetLineColor(i+1);
+	   hvarx_frac[i]->SetMarkerStyle(21+i);
+	   len_cv3->AddEntry(hvarx_frac[i],hvarx_frac[i]->GetTitle(), "p");
+   }
+   cv3->SetGrid();
+   hvarx_frac[0]->SetXTitle(titleX);
+   hvarx_frac[0]->Draw("p");
+   hvarx_frac[1]->Draw("psame");
+   hvarx_frac[2]->Draw("psame");
+   hvarx_frac[3]->Draw("psame");
+   len_cv3->Draw();
+
+   TCanvas *cv4 = new TCanvas("cv4","cv4",600,600);
+   TLegend *len_cv4 = new TLegend(0.6,0.2,0.8,0.4);
+   len_cv4->SetMargin(0.12);
+   len_cv4->SetTextSize(0.035);
+   len_cv4->SetFillColor(10);
+   len_cv4->SetBorderSize(0);
+   len_cv4->SetHeader(njetTitle);
+      
+   for (int i=0; i<2; i++) {
+	   hkin_muon_pt[i]->SetXTitle("muon p_{T} [GeV/c]");
+	   hkin_muon_pt[i]->SetYTitle("a.u.");
+	   //hkin_muon_pt[i]->Scale(wqcd);
+	   cout << "Integral of muon_pt histogram i="<< i << " is = " << hkin_muon_pt[i]->Integral() << endl;
+	   hkin_muon_pt[i]->Scale(1/hkin_muon_pt[i]->Integral());
+	   hkin_muon_pt[i]->SetMarkerColor(i+1);
+	   hkin_muon_pt[i]->SetLineColor(i+1);
+	   hkin_muon_pt[i]->SetMarkerStyle(22+i);
+	   len_cv4->AddEntry(hkin_muon_pt[i],hkin_muon_pt[i]->GetTitle(), "p");
+   }
+   cv4->SetGrid();
+   
+   hkin_muon_pt[1]->Draw("e0");
+   hkin_muon_pt[0]->Draw("e0same");
+   len_cv4->Draw();
+   
+   TCanvas *cv5 = new TCanvas("cv5","cv5",600,600);
+   TLegend *len_cv5 = new TLegend(0.6,0.2,0.8,0.4);
+   len_cv5->SetMargin(0.12);
+   len_cv5->SetTextSize(0.035);
+   len_cv5->SetFillColor(10);
+   len_cv5->SetBorderSize(0);
+   len_cv5->SetHeader(njetTitle);
+   
+   for (int i=0; i<2; i++) {
+	   hkin_Ht[i]->SetXTitle("H_{T} [GeV]");
+	   hkin_Ht[i]->SetYTitle("a.u.");
+	   //hkin_Ht[i]->Scale(wqcd);
+	   hkin_Ht[i]->Scale(1/hkin_Ht[i]->Integral());
+	   hkin_Ht[i]->SetMarkerColor(i+1);
+	   hkin_Ht[i]->SetLineColor(i+1);
+	   hkin_Ht[i]->SetMarkerStyle(22+i);
+	   len_cv5->AddEntry(hkin_Ht[i],hkin_Ht[i]->GetTitle(), "p");
+   }
+   cv5->SetGrid();
+   
+   hkin_Ht[0]->Draw("e0");
+   hkin_Ht[1]->Draw("e0same");
+   len_cv5->Draw();
+   
+   */
+   
    /*
    Na = h_IPS_iso_qcd->Integral(h_IPS_iso_qcd->GetXaxis()->FindBin(0.95),-1,0,h_IPS_iso_qcd->GetYaxis()->FindBin(3));
    Nb = h_IPS_iso_all->Integral(0, h_IPS_iso_all->GetXaxis()->FindBin(0.7),0,h_IPS_iso_all->GetYaxis()->FindBin(3));
