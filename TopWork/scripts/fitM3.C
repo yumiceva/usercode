@@ -35,6 +35,9 @@ void fitM3()
 	TFile *infile1 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root");
 	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
+	TFile *infile1 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root");
+	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+
 	//TFile *outfile = TFile::Open("templates.root","RECREATE");
 	//hTTjets->Write("ttbar");
 	//hWjets->Write("Wjets");
