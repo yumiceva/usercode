@@ -43,6 +43,7 @@
     <TH1 name="tT0j_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="tT0j_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
     <TH1 name="tT0j_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="tT0j_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="tT0j_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
     <TH1 name="tT0j_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
     <TH1 name="tT0j_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
@@ -96,6 +97,7 @@
     <TH1 name="W0j_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="W0j_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
     <TH1 name="W0j_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="W0j_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="W0j_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
     <TH1 name="W0j_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
     <TH1 name="W0j_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
@@ -140,6 +142,7 @@
     <TH1 name="Z0j_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="Z0j_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
     <TH1 name="Z0j_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="Z0j_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="Z0j_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
     <TH1 name="Z0j_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
     <TH1 name="Z0j_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
@@ -183,6 +186,7 @@
     <TH1 name="qcd_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="qcd_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
     <TH1 name="qcd_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="qcd_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="qcd_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
     <TH1 name="qcd_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
     <TH1 name="qcd_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
@@ -226,6 +230,7 @@
     <TH1 name="ST_t_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="ST_t_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
     <TH1 name="ST_t_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="ST_t_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="ST_t_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
     <TH1 name="ST_t_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
     <TH1 name="ST_t_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
@@ -265,6 +270,7 @@
     <TH1 name="ST_s_combinations_NormChi2_cut0" source="/Jets/jet_combinations_NormChi2_cut0"/>
     <TH1 name="ST_s_LeptonicTop_mass_cut1" source="/Mass/LeptonicTop_mass_cut1"/>
     <TH1 name="ST_s_HadronicTop_mass_cut1" source="/Mass/HadronicTop_mass_cut1"/>
+    <TH1 name="ST_t_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="ST_s_HadronicW_mass_cut1" source="/Mass/HadronicW_mass_cut1"/>
     <TH1 name="ST_s_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="ST_s_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
@@ -312,6 +318,7 @@
     <TH1 name="ST_tW_combinations_NormChi2_cut1" source="/Jets/jet_combinations_NormChi2_cut1"/>
     <TH1 name="ST_tW_LeptonicTop_mass_cut2" source="/Mass/LeptonicTop_mass_cut2"/>
     <TH1 name="ST_tW_HadronicTop_mass_cut2" source="/Mass/HadronicTop_mass_cut2"/>
+    <TH1 name="ST_tW_fitHadronicTop_mass_cut2" source="/Mass/fitHadronicTop_mass_cut2"/>
     <TH1 name="ST_tW_HadronicW_mass_cut2" source="/Mass/HadronicW_mass_cut2"/>
     <TH1 name="ST_tW_combinations_NormChi2_cut2" source="/Jets/jet_combinations_NormChi2_cut2"/>
     <TH1 name="ST_tW_LeptonicTop_mass_cut3" source="/Mass/LeptonicTop_mass_cut3"/>
@@ -455,7 +462,7 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_HadronicW_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
-  <superimpose name="jet_combinations_NormChi2_cut2" title="jet_combinations_NormChi2_cut2" XTitle="#chi^{2}/n.d.f." Fill="false" Stack="false" Weight="true" Normalize="true" Option="HIST">
+  <superimpose name="jet_combinations_NormChi2_cut2" title="jet_combinations_NormChi2_cut2" XTitle="#chi^{2}/n.d.f." Fill="false" Stack="false" Weight="true" Normalize="false" Option="HIST">
     <!--<superimposeItem name="qcd_combinations_NormChi2_cut2"  color="6" legend="QCD"/>
     <superimposeItem name="Z0j_combinations_NormChi2_cut2"  color="4" legend="Z+jets"/>-->
     <superimposeItem name="W0j_combinations_NormChi2_cut2"  color="3" legend="W+jets"/>
@@ -501,6 +508,16 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="ST_t_HadronicTop_mass_cut2" color="7" legend="single top t-ch"/>
     <superimposeItem name="ST_tW_HadronicTop_mass_cut2" color="5" legend="single top tW-ch"/>
     <superimposeItem name="tT0j_HadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="fitHadronicTop_mass_cut2" title="fitHadronicTop_mass_cut2" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Fill="true" Stack="true" Weight="true" Maximum="120">
+    <superimposeItem name="qcd_fitHadronicTop_mass_cut2"  color="6" legend="QCD"/>
+    <superimposeItem name="Z0j_fitHadronicTop_mass_cut2"  color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_fitHadronicTop_mass_cut2"  color="3" legend="W+jets"/>
+    <superimposeItem name="ST_s_fitHadronicTop_mass_cut2" color="9" legend="single top s-ch"/>
+    <superimposeItem name="ST_t_fitHadronicTop_mass_cut2" color="7" legend="single top t-ch"/>
+    <superimposeItem name="ST_tW_fitHadronicTop_mass_cut2" color="5" legend="single top tW-ch"/>
+    <superimposeItem name="tT0j_fitHadronicTop_mass_cut2"  color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
   <superimpose name="HadronicTop_mass_cut2_Norm" title="HadronicTop_mass_cut2_Norm" XTitle="M3' (#chi^{2}) [GeV/c^{2}]" Stack="false" Weight="true" Normalize="true" Option="HIST">

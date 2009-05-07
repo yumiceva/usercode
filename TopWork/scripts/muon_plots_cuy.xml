@@ -25,6 +25,10 @@
     <TH1 name="tT0j_jet_pT_closest_muon_cut1" source="/Jets/jet_pT_closest_muon_cut1"/>
     <TH1 name="tT0j_jets_cut1" source="/Jets/jets_cut1"/>
 
+    <!-- electron -->
+    <TH1 name="tT0j_electron_pt_cut0" source="/Electrons/electron_pt_cut0"/>
+    <TH1 name="tT0j_electron_eta_cut0" source="/Electrons/electron_eta_cut0"/>
+
     <!-- muon -->
     <TH1 name="tT0j_muons" source="/Muons/muons_cut0"/>
     <TH1 name="tT0j_muon_pt_nohlt" source="/Muons/muon_pt_nohlt"/>
@@ -132,6 +136,9 @@
     <TH1 name="W0j_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
     <TH1 name="W0j_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
     <TH1 name="W0j_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+    <!-- electron -->
+    <TH1 name="W0j_electron_pt_cut0" source="/Electrons/electron_pt_cut0"/>
+    <TH1 name="W0j_electron_eta_cut0" source="/Electrons/electron_eta_cut0"/>
 
     <TH1 name="W0j_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
     <TH1 name="W0j_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
@@ -185,6 +192,9 @@
     <TH1 name="Z0j_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
     <TH1 name="Z0j_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
     <TH1 name="Z0j_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+    <!-- electron -->
+    <TH1 name="Z0j_electron_pt_cut0" source="/Electrons/electron_pt_cut0"/>
+    <TH1 name="Z0j_electron_eta_cut0" source="/Electrons/electron_eta_cut0"/>
 
     <TH1 name="Z0j_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
     <TH1 name="Z0j_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
@@ -238,6 +248,9 @@
     <TH1 name="qcd_jet1_et_cut0" source="/Jets/jet1_et_cut0"/>
     <TH1 name="qcd_jet2_et_cut0" source="/Jets/jet2_et_cut0"/>
     <TH1 name="qcd_jet3_et_cut0" source="/Jets/jet3_et_cut0"/>
+    <!-- electron -->
+    <TH1 name="qcd_electron_pt_cut0" source="/Electrons/electron_pt_cut0"/>
+    <TH1 name="qcd_electron_eta_cut0" source="/Electrons/electron_eta_cut0"/>
 
     <TH1 name="qcd_muon_eta_nohlt" source="/Muons/muon_eta_nohlt"/>
     <TH1 name="qcd_muon_eta_nohltgood" source="/Muons/muon_eta_nohltgood"/>
@@ -443,5 +456,19 @@ cut5 = 3rd chi2 combination + mass cuts
     <superimposeItem name="tT0j_muon_pt_vsJets_cut4" color="2" legend="t#bar{t}+jets"/>
   </superimpose>
 
+
+  <superimpose name="electron_pt_cut0" title="electron_pt_cut0" XTitle="electron p_{T} [GeV/c]" YTitle="a.u." Fill="false" Option="HIST" Stack="false" Weight="true" Normalize="true">
+<!--    <superimposeItem name="qcd_electron_pt_cut0" color="6" legend="QCD"/> -->
+    <superimposeItem name="Z0j_electron_pt_cut0" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_electron_pt_cut0" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_electron_pt_cut0" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
+
+  <superimpose name="electron_eta_cut0" title="electron_eta_cut0" XTitle="electron #eta" YTitle="a.u." Fill="false" Option="HIST" Stack="false" Weight="true" Normalize="true">
+<!--    <superimposeItem name="qcd_electron_eta_cut0" color="6" legend="QCD"/> -->
+    <superimposeItem name="Z0j_electron_eta_cut0" color="4" legend="Z+jets"/>
+    <superimposeItem name="W0j_electron_eta_cut0" color="3" legend="W+jets"/>
+    <superimposeItem name="tT0j_electron_eta_cut0" color="2" legend="t#bar{t}+jets"/>
+  </superimpose>
 
 </cuy>

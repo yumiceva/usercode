@@ -267,10 +267,10 @@ void top::Loop(int type, int njets)
 	}
 	
 	// weights
-	double wttbar = 0.0101;
+	double wttbar = 0.0081;
 	double wwjets = 0.0883;
-	double wzjets = 0.0744;
-	double wqcd = 0.3907;
+	double wzjets = 0.0731;
+	double wqcd = 0.4003;
 	
 	double Na, Nb, Nc, Nd;
 	Na = Nb = Nc = Nd = 0;
@@ -502,16 +502,21 @@ void top::Loop(int type, int njets)
 									  pow((NB[ii][jj]*NC[ii][jj])/(ND[ii][jj]*ND[ii][jj]),2)*deltaND*deltaND );
 		   // Observed Na
 		   double obsNa =  NB[ii][jj]*NC[ii][jj]/ND[ii][jj];
-				
+
+		   /*
 		   cout << " NA[" << ii << "," << jj << "]=" << NA[ii][jj] << endl;
 		   cout << " NB[" << ii << "," << jj << "]=" << NB[ii][jj] << endl;
 		   cout << " NC[" << ii << "," << jj << "]=" << NC[ii][jj] << endl;
 		   cout << " ND[" << ii << "," << jj << "]=" << ND[ii][jj] << endl;
 		   cout << "  jj = " << jj << " ratio = " << ratio[jj] << " xaxis = " << xaxis[jj] << endl;
 		   cout << "  NA expected = " << expNA[ii][jj] << " NA observed = " << obsNa << " \\pm " << obsNa_error << endl;
+		   */
 		   if (ii==3 && jj == 3) {
 			   theNa = obsNa;
 			   theNaErr = obsNa_error;
+
+			   string sp = " & ";
+			   cout << NA[ii][jj] << sp << NB[ii][jj] << sp << NC[ii][jj] << sp << ND[ii][jj] << sp << expNA[ii][jj] << theNa << sp << theNaErr << "\\\\" << endl;
 		   }
 	   }
 
