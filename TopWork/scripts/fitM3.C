@@ -33,27 +33,53 @@ void fitM3()
 	TH1F *hST_s;
 	TH1F *hST_t;
 	TH1F *hST_tW;
-	
+
+	//nominal
 	TFile *infile0 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
-	hTTjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hTTjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 	
 	TFile *infile1 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root");
-	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 
 	TFile *infileZ = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ZJets_madgraph_Fall08_all.root");
-	hZjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hZjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 
 	TFile *infileST_s = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ST_s.root");
-	hST_s = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hST_s = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 
 	TFile *infileST_t = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ST_t.root");
-	hST_t = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hST_t = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 
 	TFile *infileST_tW = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ST_tW.root");
-	hST_tW = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hST_tW = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 
 	TFile *infileQCD = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_InclusiveMuPt15_Summer08_all.root");
-	hQCD = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
+	hQCD = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+
+	// syst. samples
+	TFile *infile0S = TFile::Open("nominal_JESUp/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
+	hTTjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	
+	TFile *infile1S = TFile::Open("nominal_JESUp/TopAnalysis_WJets_madgraph_Fall08_all.root");
+	hWjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+
+	TFile *infileZS = TFile::Open("nominal_JESUp/TopAnalysis_ZJets_madgraph_Fall08_all.root");
+	hZjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+
+	TFile *infileST_sS = TFile::Open("nominal_JESUp/TopAnalysis_ST_s.root");
+	hST_sS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+
+	TFile *infileST_tS = TFile::Open("nominal_JESUp/TopAnalysis_ST_t.root");
+	hST_tS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+
+	TFile *infileST_tWS = TFile::Open("nominal_JESUp/TopAnalysis_ST_tW.root");
+	hST_tWS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+
+	TFile *infileQCDS = TFile::Open("nominal_JESUp/TopAnalysis_InclusiveMuPt15_Summer08_all.root");
+	hQCDS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	
+	//TFile *infileQCD_CS = TFile::Open("nominal_antiMuon/TopAnalysis_InclusiveMuPt15_Summer08_all.root");
+	//hQCD_CS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
 
 	//TFile *outfile = TFile::Open("templates.root","RECREATE");
 	//hTTjets->Write("ttbar");
@@ -62,24 +88,62 @@ void fitM3()
 
 	//overflow bin
 	int maxbin=hTTjets->GetNbinsX();
-	/*
+	
 	hTTjets->SetBinContent(maxbin, hTTjets->GetBinContent(maxbin+1)+hTTjets->GetBinContent(maxbin) );
 	hWjets->SetBinContent(maxbin, hWjets->GetBinContent(maxbin+1)+hWjets->GetBinContent(maxbin) );
 	hZjets->SetBinContent(maxbin, hZjets->GetBinContent(maxbin+1)+hZjets->GetBinContent(maxbin) );
 	hQCD->SetBinContent(maxbin, hQCD->GetBinContent(maxbin+1)+hQCD->GetBinContent(maxbin) );
+	//hQCD_CS->SetBinContent(maxbin, hQCD_CS->GetBinContent(maxbin+1)+hQCD_CS->GetBinContent(maxbin) );
 	hST_s->SetBinContent(maxbin, hST_s->GetBinContent(maxbin+1)+hST_s->GetBinContent(maxbin) );
 	hST_t->SetBinContent(maxbin, hST_t->GetBinContent(maxbin+1)+hST_t->GetBinContent(maxbin) );
 	hST_tW->SetBinContent(maxbin, hST_tW->GetBinContent(maxbin+1)+hST_tW->GetBinContent(maxbin) );
-	*/
-	
+
+	//underflow bin
+	maxbin=1;
+	hTTjets->SetBinContent(maxbin, hTTjets->GetBinContent(maxbin-1)+hTTjets->GetBinContent(maxbin) );
+	hWjets->SetBinContent(maxbin, hWjets->GetBinContent(maxbin-1)+hWjets->GetBinContent(maxbin) );
+	hZjets->SetBinContent(maxbin, hZjets->GetBinContent(maxbin-1)+hZjets->GetBinContent(maxbin) );
+	hQCD->SetBinContent(maxbin, hQCD->GetBinContent(maxbin-1)+hQCD->GetBinContent(maxbin) );
+	//hQCD_CS->SetBinContent(maxbin, hQCD_CS->GetBinContent(maxbin+1)+hQCD_CS->GetBinContent(maxbin) );
+	hST_s->SetBinContent(maxbin, hST_s->GetBinContent(maxbin-1)+hST_s->GetBinContent(maxbin) );
+	hST_t->SetBinContent(maxbin, hST_t->GetBinContent(maxbin-1)+hST_t->GetBinContent(maxbin) );
+	hST_tW->SetBinContent(maxbin, hST_tW->GetBinContent(maxbin-1)+hST_tW->GetBinContent(maxbin) );
+
+	//syst.
+	hTTjetsS->SetBinContent(maxbin, hTTjetsS->GetBinContent(maxbin+1)+hTTjetsS->GetBinContent(maxbin) );
+	hWjetsS->SetBinContent(maxbin, hWjetsS->GetBinContent(maxbin+1)+hWjetsS->GetBinContent(maxbin) );
+	hZjetsS->SetBinContent(maxbin, hZjetsS->GetBinContent(maxbin+1)+hZjetsS->GetBinContent(maxbin) );
+	hQCDS->SetBinContent(maxbin, hQCDS->GetBinContent(maxbin+1)+hQCDS->GetBinContent(maxbin) );
+	hST_sS->SetBinContent(maxbin, hST_sS->GetBinContent(maxbin+1)+hST_sS->GetBinContent(maxbin) );
+	hST_tS->SetBinContent(maxbin, hST_tS->GetBinContent(maxbin+1)+hST_tS->GetBinContent(maxbin) );
+	hST_tWS->SetBinContent(maxbin, hST_tWS->GetBinContent(maxbin+1)+hST_tWS->GetBinContent(maxbin) );
+
+	//underflow bin
+	maxbin=1;
+	hTTjetsS->SetBinContent(maxbin, hTTjetsS->GetBinContent(maxbin-1)+hTTjetsS->GetBinContent(maxbin) );
+	hWjetsS->SetBinContent(maxbin, hWjetsS->GetBinContent(maxbin-1)+hWjetsS->GetBinContent(maxbin) );
+	hZjetsS->SetBinContent(maxbin, hZjetsS->GetBinContent(maxbin-1)+hZjetsS->GetBinContent(maxbin) );
+	hQCDS->SetBinContent(maxbin, hQCDS->GetBinContent(maxbin-1)+hQCDS->GetBinContent(maxbin) );
+	hST_sS->SetBinContent(maxbin, hST_sS->GetBinContent(maxbin-1)+hST_sS->GetBinContent(maxbin) );
+	hST_tS->SetBinContent(maxbin, hST_tS->GetBinContent(maxbin-1)+hST_tS->GetBinContent(maxbin) );
+	hST_tWS->SetBinContent(maxbin, hST_tWS->GetBinContent(maxbin-1)+hST_tWS->GetBinContent(maxbin) );
+
 	// scale them to 20/pb
 	hTTjets->Scale(0.0081);
 	hWjets->Scale(0.0883);
 	hZjets->Scale(0.0731);
 	hQCD->Scale(0.4003);
-	hST_s->Scale(0.003);
-	hST_t->Scale(0.0027);
+	hST_t->Scale(0.003);
+	hST_s->Scale(0.0027);
 	hST_tW->Scale(0.0034);
+
+	hTTjetsS->Scale(0.0081);
+	hWjetsS->Scale(0.0883);
+	hZjetsS->Scale(0.0731);
+	hQCDS->Scale(0.4003);
+	hST_tS->Scale(0.003);
+	hST_sS->Scale(0.0027);
+	hST_tWS->Scale(0.0034);
 
 	cout << " N expected ttbar+jets events = " << hTTjets->Integral() << endl;
 	cout << " N expected W+jets     events = " << hWjets->Integral()  << endl;
@@ -87,10 +151,14 @@ void fitM3()
 	cout << " N expected ST s       events = " << hST_s->Integral()  << endl;
 	cout << " N expected ST t       events = " << hST_t->Integral()  << endl;
 	cout << " N expected ST tW      events = " << hST_tW->Integral()  << endl;
+	cout << " N expected qcd        events = " << hQCD->Integral()  << endl;
 	
 	// add all three single top samples
 	hST_t->Add(hST_s);
 	hST_t->Add(hST_tW);
+
+	hST_tS->Add(hST_sS);
+	hST_tS->Add(hST_tWS);
 
 	// add Z+jets to W+jets sample
 	//hWjets->Add(hZjets);
@@ -122,14 +190,27 @@ void fitM3()
 	RooDataHist hdata_ST("hdata_ST","ST", mass, hST_t);
 	RooDataHist hdata_zjets("hdata_zjets","zjets", mass, hZjets);
 	RooDataHist hdata_qcd("hdata_qcd","qcd", mass, hQCD);
-	
+		
 	RooHistPdf hpdf_ttbar("hpdf_ttbar","signal pdf", mass, hdata_ttbar, 0 );
 	RooHistPdf hpdf_wjets("hpdf_wjets","W+jets pdf", mass, hdata_wjets, 0 );
 	RooHistPdf hpdf_ST("hpdf_ST","ST pdf", mass, hdata_ST, 0 );
 	RooHistPdf hpdf_zjets("hpdf_zjets","Z+jets pdf", mass, hdata_zjets, 0 );
 	RooHistPdf hpdf_qcd("hpdf_qcd","qcd pdf", mass, hdata_qcd, 0 );
+
+	//SYST
+	RooDataHist hdata_ttbarS("hdata_ttbarS","ttbar", mass, hTTjetsS);       
+	RooDataHist hdata_wjetsS("hdata_wjetsS","wjets", mass, hWjetsS);
+	RooDataHist hdata_STS("hdata_STS","ST", mass, hST_tS);
+	RooDataHist hdata_zjetsS("hdata_zjetsS","zjets", mass, hZjetsS);
+	RooDataHist hdata_qcdS("hdata_qcdS","qcd", mass, hQCDS);
+		
+	RooHistPdf hpdf_ttbarS("hpdf_ttbarS","signal pdf", mass, hdata_ttbarS, 0 );
+	RooHistPdf hpdf_wjetsS("hpdf_wjetsS","W+jets pdf", mass, hdata_wjetsS, 0 );
+	RooHistPdf hpdf_STS("hpdf_STS","ST pdf", mass, hdata_STS, 0 );
+	RooHistPdf hpdf_zjetsS("hpdf_zjetsS","Z+jets pdf", mass, hdata_zjetsS, 0 );
+	RooHistPdf hpdf_qcdS("hpdf_qcdS","qcd pdf", mass, hdata_qcdS, 0 );
 	
-	RooAddPdf model_M3("modelM3","all", RooArgList(hpdf_ttbar,hpdf_wjets,hpdf_ST,hpdf_zjets,hpdf_qcd),
+	RooAddPdf model_M3("modelM3","all", RooArgList(hpdf_ttbarS,hpdf_wjetsS,hpdf_STS,hpdf_zjetsS,hpdf_qcdS),
 					   RooArgList(Ntt,NW,NST,NZjets,Nqcd) );
 					   
 	RooAddPdf model_histpdf("model", "TTjets+Wjets", RooArgList(hpdf_ttbar,hpdf_wjets,hpdf_ST),
@@ -160,12 +241,12 @@ void fitM3()
 	//mcstudy->fit(Nsamples, dataList);
 	//mcstudy->fit(Nsamples, "toymc.dat");
 
-		
+	gDirectory->Add(mcstudy) ;	
 	// E x p l o r e   r e s u l t s   o f   s t u d y 
 	// ------------------------------------------------
 
 	// Make plots of the distributions of mean, the error on mean and the pull of mean
-	RooPlot* frame1 = mcstudy->plotParam(Ntt,Bins(40)) ;
+	RooPlot* frame1 = mcstudy->plotParam(Ntt,Bins(40));
 	RooPlot* frame2 = mcstudy->plotError(Ntt,Bins(40)) ;
 	RooPlot* frame3 = mcstudy->plotPull(Ntt,Bins(40),FitGauss(kTRUE)) ;
 	RooPlot* frame1w = mcstudy->plotParam(NW,Bins(40)) ;
@@ -270,28 +351,40 @@ void fitM3()
 	TCanvas* cve = new TCanvas("cve","cve",1200,600) ;
 	TCanvas* cvf = new TCanvas("cvf","cvf",600,600) ;
 
-	TH1F *hNgen = new TH1F("hNgen","Number of observed events",30,300,600);
+	TH1F *hNgen = new TH1F("hNgen","Number of observed events",30,350,650);
 	hNgen->SetXTitle("Number of observed events");
-	
+
+	TH1F *hNttresults = new TH1F("hNttresults","number of ttbar events",40,20,600);
+	TH1F *hNWresults = new TH1F("hNWresults","number of W events",40,-150,400);
+	TH1F *hNSTresults = new TH1F("hNSTresults","number of ttbar events",40,5,20);
+									 
 	bool gotone = false;
 	int Nfailed = 0;
 	for ( int i=0; i< Nsamples; i++)
 	{
 		RooFitResult *r = mcstudy->fitResult(i);
 		RooArgList list = r->floatParsFinal();
-		RooRealVar *rrv_nt = (RooRealVar*)list.at(1);
+		RooRealVar *rrv_nt = (RooRealVar*)list.at(2);
 		double nt = rrv_nt->getVal();
 		double nte= rrv_nt->getError();
-		RooRealVar *rrv_nw = (RooRealVar*)list.at(0);
+		RooRealVar *rrv_nw = (RooRealVar*)list.at(1);
 		double nw = rrv_nw->getVal();
 		double nwe= rrv_nw->getError();
 
+		RooRealVar *rrv_nst = (RooRealVar*)list.at(0);
+		double nst = rrv_nst->getVal();
+		
+		hNttresults->Fill(nt);
+		hNWresults->Fill(nw);
+		hNSTresults->Fill(nst);
+		
 		RooDataSet *adata = mcstudy->genData(i);
 		hNgen->Fill(adata->numEntries());
 
 		if ( r->numInvalidNLL() > 0 ) Nfailed++;
 		
-		if ( !gotone && nt > 250 && nt< 270 )
+		//if ( !gotone && nt > 250 && nt< 270 )
+		if ( i == 10 )
 		{
 			cout << " sample # " << i << endl;
 			gotone = true;
@@ -315,13 +408,13 @@ void fitM3()
 			//myminuit.Save()->Print("v");
 
 			cve->Divide(2);
-			RooPlot *nllframett = Ntt.frame(Bins(50),Range(0,500));//,Range(10,2000));
+			RooPlot *nllframett = Ntt.frame(Bins(50),Range(100,600));//,Range(10,2000));
 			nll.plotOn(nllframett);//,ShiftToZero());
 						
 			RooProfileLL pll_ntt("pll_ntt","pll_ntt",nll,Ntt);
 			pll_ntt.plotOn(nllframett,LineColor(kRed));
 
-			RooPlot *nllframeW = NW.frame(Bins(50),Range(-50,200));//,Range(10,2000));
+			RooPlot *nllframeW = NW.frame(Bins(50),Range(0,250));//,Range(10,2000));
 			nll.plotOn(nllframeW);//,ShiftToZero());
 						
 			RooProfileLL pll_nW("pll_nW","pll_nW",nll,NW);
@@ -337,6 +430,25 @@ void fitM3()
 		}
 	}
 
+	TCanvas *tmpcv = new TCanvas("tmpcv","tmpcv",700,700);
+	cout << "\n ==================================" << endl;
+	cout << "gaussian fit of Nttbar fitted values: " << endl;
+	//hNttresults->Print("all");
+	hNttresults->Fit("gaus");
+
+	cout << "\n ==================================" << endl;
+	cout << "gaussian fit of NW fitted values: " << endl;
+	//hNWresults->Print("all");
+	hNWresults->Fit("gaus");
+
+	cout << "\n ==================================" << endl;
+	cout << "gaussian fit of NST fitted values: " << endl;
+	//hNSTresults->Print("all");
+	hNSTresults->Fit("gaus");
+
+	
+	
+	
 	cout << "N failed fits = " << Nfailed << endl;
 	
 	cvf->cd();
@@ -344,6 +456,6 @@ void fitM3()
 	
 	// Make RooMCStudy object available on command line after
 	// macro finishes
-	gDirectory->Add(mcstudy) ;
+	//gDirectory->Add(mcstudy) ;
 }
 

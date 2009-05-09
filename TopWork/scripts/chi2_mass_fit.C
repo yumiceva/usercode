@@ -199,16 +199,18 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	// Landau
 	RooRealVar meanLandau("meanLandau","mean landau",180,170,210); 
 	RooRealVar sigmaLandau("sigmaLandau","sigma landau",40,20,50) ; 
-	RooLandau landau("landau","landau",mass,meanLandau,sigmaLandau) ; 
+	RooLandau landau0("landau0","landau",mass,meanLandau,sigmaLandau) ; 
 
 	// bkg: gauss + exp
 	RooRealVar mGS_B("mean","mass",170,150,220,"GeV/c^{2}");
 	RooRealVar wGS_B("widht","width",15,5,40,"GeV/c^{2}");
 	RooGaussian gaus_B("gaussB","guassian pdf",mass,mGS_B,wGS_B);
 	RooChebychev cheby("cheby","cheby",mass,RooArgList(cheby0,cheby1,cheby2,cheby3)) ;
+	
 	RooRealVar b1frac("b1frac","fraction 1",0.5);
 	RooRealVar b2frac("b2frac","fraction 2",0.4);
-	//RooAddPdf landau("landau","landau", RooArgList(gaus_B,cheby),RooArgList(b1frac,b2frac));
+	////RooAddPdf landau("landau","landau", RooArgList(gaus_B,cheby),RooArgList(b1frac,b2frac));
+	RooAddPdf landau("landau","landau", RooArgList(landau0,gaus_B),RooArgList(b1frac,b2frac));
 	
 	// --- first fit background ---
 
@@ -228,6 +230,7 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	TCanvas *c1 = new TCanvas("c1","c1",700,700);
 	landau.paramOn(bkgframe,Label("Fit Results"),Format("NEU",AutoPrecision(2)));
 	bkgframe->Draw();
+	cout << "chi^2 = " << bkgframe->chiSquare() << endl;
 	
 	// fix backgroun values
 	meanLandau.setConstant(kTRUE);
@@ -236,14 +239,18 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	cheby1.setConstant(kTRUE);
 	cheby2.setConstant(kTRUE);
 	cheby3.setConstant(kTRUE);
+	b1frac.setConstant(kTRUE);
+	b2frac.setConstant(kTRUE);
+	mGS_B.setConstant(kTRUE);
+	wGS_B.setConstant(kTRUE);
 	
     // --- Construct signal+background PDF ---
 	Double_t Ntot = hadTop_all->Integral();
 	//Double_t Ntot = 1000.;
 	//RooRealVar Nsig("Nsig","signal fraction",55.,0.,Ntot) ;
 	//RooRealVar Nbkg("Nbkg","background fraction",80.,0.,Ntot) ;
-	RooRealVar Nsig("Nsig","signal fraction",0.5*Ntot,0.,Ntot) ;
-	RooRealVar Nbkg("Nbkg","background fraction",0.5*Ntot,0.,Ntot) ;
+	RooRealVar Nsig("Nsig","signal fraction",0.5*Ntot,0,1000) ;
+	RooRealVar Nbkg("Nbkg","background fraction",0.5*Ntot,0,1000) ;
 	//RooAddPdf model("model","model",RooArgList(gauss,background),RooArgList(Nsig,Nbkg));
 	RooAddPdf model("model","model",RooArgList(gauss,landau),RooArgList(Nsig,Nbkg));
 	
@@ -282,6 +289,7 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	finalframe->SetMaximum(42.5);
 	data->plotOn(finalframe,DataError(RooAbsData::SumW2));
 	model.plotOn(finalframe) ;
+	cout << "chi^2 = " << finalframe->chiSquare() << endl;
 	//model.plotOn(finalframe,Components(background),LineStyle(kDashed)) ;
 	model.plotOn(finalframe,Components(landau),LineStyle(kDashed)) ;
 	model.paramOn(finalframe,Label("Fit Results"),Format("NEU",AutoPrecision(2)));
@@ -289,13 +297,70 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	
 	TCanvas *c2 = new TCanvas("c2","c2",700,700);
 	finalframe->Draw();
-
+	
+	
 	cout << mass.getVal() << endl;
 	cout << "model.getVal()" << model.getVal(RooArgSet(Nsig,Nbkg,meanS,widthS)) << endl;
 	//TCanvas *c3 = new TCanvas("c3","c3",700,700);
 	//RooPlot* mpframe = meanS.frame();
 	//model.plotParamOn(mpframe);
 	//mpframe->Draw();
+
+	// TOY MC Study
+	RooDataHist hdata_ttbar("hdata_ttbar","ttbar", mass, hadTop_tTj);       
+	RooDataHist hdata_bkg("hdata_bkg","wjets", mass, hadTop_bkp);
+		
+	RooHistPdf hpdf_ttbar("hpdf_ttbar","signal pdf", mass, hdata_ttbar, 0 );
+	RooHistPdf hpdf_bkg("hpdf_bkg","W+jets pdf", mass, hdata_bkg, 0 );
+
+	RooRealVar Ntt("Ntt","number of t#bar{t} events", hadTop_tTj->Integral(), -500 , 1000);
+    RooRealVar NW("NW","number of W+jets events", hadTop_bkp->Integral(), -500 , 1000);
+
+	RooAddPdf model_histpdf("model_histpdf", "TTjets+Wjets", RooArgList(hpdf_ttbar,hpdf_bkg),
+							RooArgList(Nsig, Nbkg) ) ;
+
+	RooMCStudy *mcstudy = new RooMCStudy(model, mass, FitModel(model),Binned(kTRUE),Silence(), Extended() , 
+										 //FitOptions(Save(kTRUE),Minos(kTRUE),Extended()) );
+										 FitOptions(Save(kTRUE),Minos(kTRUE),Extended()));
+	
+
+	return;
+	
+	TCanvas* cva = new TCanvas("cva","cva",1800,600) ;
+	RooPlot *initialframe = mass.frame();
+	model_histpdf.plotOn(initialframe,LineColor(kRed));
+	initialframe->Draw();
+	
+	// generate PEs
+	int Nsamples = 1000;
+
+	// Fit
+	mcstudy->generateAndFit(Nsamples,0,kTRUE);
+
+//	gDirectory->Add(mcstudy) ;	
+	// E x p l o r e   r e s u l t s   o f   s t u d y 
+	// ------------------------------------------------
+
+	// Make plots of the distributions of mean, the error on mean and the pull of mean
+	RooPlot* frame1 = mcstudy->plotParam(Nsig,Bins(40));
+	RooPlot* frame2 = mcstudy->plotError(Nsig,Bins(40)) ;
+	RooPlot* frame3 = mcstudy->plotPull(Nsig,Bins(40),FitGauss(kTRUE)) ;
+	RooPlot* frame1w = mcstudy->plotParam(Nbkg,Bins(40)) ;
+	RooPlot* frame2w = mcstudy->plotError(Nbkg,Bins(40)) ;
+	RooPlot* frame3w = mcstudy->plotPull(Nbkg,Bins(40),FitGauss(kTRUE)) ;
+
+	TCanvas* cvb = new TCanvas("cvb","cvb",1800,600) ;
+	cvb->Divide(3);
+	cvb->cd(1) ; frame1->Draw();
+	cvb->cd(2) ; frame2->Draw();
+	cvb->cd(3) ; frame3->Draw();
+	
+	TCanvas* cvbb = new TCanvas("cvbb","cvbb",1800,600) ;
+	cvbb->Divide(3);
+	cvbb->cd(1) ; frame1w->Draw();
+	cvbb->cd(2) ; frame2w->Draw();
+	cvbb->cd(3) ; frame3w->Draw();
+
 	
 }
 
