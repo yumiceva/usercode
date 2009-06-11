@@ -40,64 +40,64 @@ void fitM3()
 	
 	TFile *infile0 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
 	//TFile *infile0 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_TauolaTTbar.root");
-	hTTjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hTTjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 	
 	TFile *infile1 = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_WJets_madgraph_Fall08_all.root");
-	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hWjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 	
 	TFile *infile1Fast = TFile::Open("nominal_IPsig3_Iso95_Fast/TopAnalysis_Wjets_madgraph_Winter09_v2_all.root");
-	hWjetsFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hWjetsFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileZ = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ZJets_madgraph_Fall08_all.root");
-	hZjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hZjets = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 	TFile *infileZFast = TFile::Open("nominal_IPsig3_Iso95_Fast/TopAnalysis_Zjets_madgraph_Winter09_v2_all.root");
-	hZjetsFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hZjetsFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileST_s = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ST_s.root");
-	hST_s = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hST_s = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileST_t = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ST_t.root");
-	hST_t = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hST_t = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileST_tW = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_ST_tW.root");
-	hST_tW = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hST_tW = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileQCD = TFile::Open("nominal_IPsig3_Iso95/TopAnalysis_InclusiveMuPt15_Summer08_all.root");
-	hQCD = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hQCD = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	// histograms from systematic samples
 	//////////
 	TFile *infile0S = TFile::Open("nominal_JESUp/TopAnalysis_TTJets-madgraph_Fall08_all_all.root");
-	hTTjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hTTjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 		
 	TFile *infile1S = TFile::Open("nominal_JESUp/TopAnalysis_WJets_madgraph_Fall08_all.root");// from FullSim
-	hWjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hWjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	//TFile *infile1SF = TFile::Open("nominal_JESUp_Fast/TopAnalysis_WJets_madgraph_Fall08_all.root");// from FastSim
 	//TFile *infile1SF = TFile::Open("nominal_IPsig3_Iso95_Fast/TopAnalysis_Wjets_ScaleUp_madgraph_Winter09_all.root");
 	TFile *infile1SF = TFile::Open("nominal_IPsig3_Iso95_Fast/TopAnalysis_WJets_Threshold20GeV_madgraph_Winter09_all.root");
-	hWjetsSFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hWjetsSFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileZS = TFile::Open("nominal_JESUp/TopAnalysis_ZJets_madgraph_Fall08_all.root");// from FullSim
-	hZjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hZjetsS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileZSF = TFile::Open("nominal_JESUp_Fast/TopAnalysis_ZJets_madgraph_Fall08_all.root");// from FullSim
-	hZjetsSFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hZjetsSFast = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileST_sS = TFile::Open("nominal_JESUp/TopAnalysis_ST_s.root");
-	hST_sS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hST_sS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileST_tS = TFile::Open("nominal_JESUp/TopAnalysis_ST_t.root");
-	hST_tS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hST_tS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileST_tWS = TFile::Open("nominal_JESUp/TopAnalysis_ST_tW.root");
-	hST_tWS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hST_tWS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	TFile *infileQCDS = TFile::Open("nominal_JESUp/TopAnalysis_InclusiveMuPt15_Summer08_all.root");//
-	hQCDS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	hQCDS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 	
 	//TFile *infileQCD_CS = TFile::Open("nominal_antiMuon/TopAnalysis_InclusiveMuPt15_Summer08_all.root");
-	//hQCD_CS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut2");
+	//hQCD_CS = (TH1F*) gDirectory->Get("Mass/HadronicTop_mass_cut1");
 
 	// write templates to file
 	//TFile *outfile = TFile::Open("templates.root","RECREATE");
@@ -222,7 +222,7 @@ void fitM3()
 	// add all three single top samples
 
 	// for systematics
-	hST_t->Scale(2.);
+	//hST_t->Scale(2.);
 	
 	hST_t->Add(hST_s);
 	hST_t->Add(hST_tW);
