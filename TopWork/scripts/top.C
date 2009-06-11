@@ -516,7 +516,7 @@ void top::Loop(int type, int njets)
 			   theNaErr = obsNa_error;
 
 			   string sp = " & ";
-			   cout << NA[ii][jj] << sp << njets << sp << NB[ii][jj] << sp << NC[ii][jj] << sp << ND[ii][jj] << sp << expNA[ii][jj] << sp << theNa << sp << theNaErr << "\\\\" << endl;
+			   cout << NA[ii][jj] << sp << njets << sp << NB[ii][jj] << sp << NC[ii][jj] << sp << ND[ii][jj] << sp << theNa << "\\pm" << theNaErr << sp << expNA[ii][jj] << "\\\\" << endl;
 		   }
 	   }
 

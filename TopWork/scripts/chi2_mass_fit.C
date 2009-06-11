@@ -170,8 +170,8 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	RooRealVar mass("mass",decay+" top mass",100,500,"GeV/c^{2}") ; 
  
     // --- Build Gaussian signal PDF ---
-	RooRealVar meanS("mean","top mass",170,165,220,"GeV/c^{2}") ; 
-	RooRealVar widthS("width","top width",15,5,40,"GeV/c^{2}") ;
+	RooRealVar meanS("mean","top mass",170,160,210,"GeV/c^{2}") ; 
+	RooRealVar widthS("width","top width",30,15,40,"GeV/c^{2}") ;
 	RooGaussian gauss("gauss","gaussian p.d.f.",mass,meanS,widthS) ; 
 
 	// --- Build background PDF ---
@@ -202,13 +202,13 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	RooLandau landau0("landau0","landau",mass,meanLandau,sigmaLandau) ; 
 
 	// bkg: gauss + exp
-	RooRealVar mGS_B("mean","mass",170,150,220,"GeV/c^{2}");
-	RooRealVar wGS_B("widht","width",15,5,40,"GeV/c^{2}");
+	RooRealVar mGS_B("meanGauss","mass",170,150,220,"GeV/c^{2}");
+	RooRealVar wGS_B("widthGauss","width",15,5,40,"GeV/c^{2}");
 	RooGaussian gaus_B("gaussB","guassian pdf",mass,mGS_B,wGS_B);
 	RooChebychev cheby("cheby","cheby",mass,RooArgList(cheby0,cheby1,cheby2,cheby3)) ;
 	
-	RooRealVar b1frac("b1frac","fraction 1",0.5);
-	RooRealVar b2frac("b2frac","fraction 2",0.4);
+	RooRealVar b1frac("fracLandau","fraction 1",0.5,0.4,0.6);
+	RooRealVar b2frac("fracGauss","fraction 2",0.4,0.3,0.5);
 	////RooAddPdf landau("landau","landau", RooArgList(gaus_B,cheby),RooArgList(b1frac,b2frac));
 	RooAddPdf landau("landau","landau", RooArgList(landau0,gaus_B),RooArgList(b1frac,b2frac));
 	
@@ -249,8 +249,8 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	//Double_t Ntot = 1000.;
 	//RooRealVar Nsig("Nsig","signal fraction",55.,0.,Ntot) ;
 	//RooRealVar Nbkg("Nbkg","background fraction",80.,0.,Ntot) ;
-	RooRealVar Nsig("Nsig","signal fraction",0.5*Ntot,0,1000) ;
-	RooRealVar Nbkg("Nbkg","background fraction",0.5*Ntot,0,1000) ;
+	RooRealVar Nsig("Nsig","signal fraction",100,50,150) ;
+	RooRealVar Nbkg("Nbkg","background fraction",350,250,600) ;
 	//RooAddPdf model("model","model",RooArgList(gauss,background),RooArgList(Nsig,Nbkg));
 	RooAddPdf model("model","model",RooArgList(gauss,landau),RooArgList(Nsig,Nbkg));
 	
@@ -286,11 +286,12 @@ void chi2_mass_fit(int type=0,bool smear=false, double lumi=20.) {
 	
     // --- Plot toy data and composite PDF overlaid --- 
 	RooPlot* finalframe = mass.frame();
-	finalframe->SetMaximum(42.5);
+	//finalframe->SetMaximum(42.5);
 	data->plotOn(finalframe,DataError(RooAbsData::SumW2));
 	model.plotOn(finalframe) ;
-	cout << "chi^2 = " << finalframe->chiSquare() << endl;
+	//cout << "chi^2 = " << finalframe->chiSquare() << endl;
 	//model.plotOn(finalframe,Components(background),LineStyle(kDashed)) ;
+	//model.plotOn(finalframe);
 	model.plotOn(finalframe,Components(landau),LineStyle(kDashed)) ;
 	model.paramOn(finalframe,Label("Fit Results"),Format("NEU",AutoPrecision(2)));
 
