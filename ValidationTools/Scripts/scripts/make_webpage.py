@@ -28,7 +28,15 @@ import webpage
 #____________________________________________________________
 mypath = os.getcwd()
 
-pkgpath = os.environ['CMSSW_BASE']+"/src/ValidationTools/Scripts/templates/"
+pkgpath = ''
+try:
+	
+	pkgpath = os.environ['CMSSW_BASE']+"/src/ValidationTools/Scripts/templates/"
+
+except LookupError:
+	
+	pkgpath = "/uscms/home/yumiceva/work/ValidationTools/Scripts/templates/"
+
 os.chdir(pkgpath)
 
 #__________________
@@ -328,8 +336,7 @@ if __name__ == "__main__":
 			    <div class="titlepage"><div><div>
 			    ''')
 
-			    apath = " http://cmsrocstor.fnal.gov/lpc1/cmsroc/yumiceva/validation/"
-			 #   apath = "http://nippon.fnal.gov:8888/lpc1/cmsroc/yumiceva/validation/"
+			    apath = "http://cmsrocstor.fnal.gov/lpc1/cmsroc/yumiceva/validation/"
 			    rootname = irel+"_"+ipkg+"_"+isample+".root"
 			    logname = rootname.replace(".root",".log")
 			    output.write("<center><strong>"+ipkg+" "+irel+" "+isample+"</strong></center>")
@@ -349,8 +356,7 @@ if __name__ == "__main__":
 					    output.write("\n<tr>\n")
 
 				    #apath = "http://nippon.fnal.gov/lpc1/cmsroc/yumiceva/CMSSW_1_5_0_pre2/src/Validation/RecoVertex/test/webpage/"
-				    apath = " http://cmsrocstor.fnal.gov/lpc1/cmsroc/yumiceva/validation/"
-				    #apath = "http://nippon.fnal.gov:8888/lpc1/cmsroc/yumiceva/validation/"
+				    apath = "http://cmsrocstor.fnal.gov/lpc1/cmsroc/yumiceva/validation/"
 				    aline = " <td><a href=\""+apath+packagespath+"/"+ipkg+"/"+irel+"/"+isample+"/"+iplot+"\">"
 				    output.write(aline)
 			            #aline = "\" width=\"340\" border=\"0\" alt=\""+iplot+"\">"
