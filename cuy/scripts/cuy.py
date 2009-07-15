@@ -20,12 +20,13 @@
    usage: %prog -x <XML configuration file>
    -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
+   -f, --flag    = FLAG: create a baneer
    -l, --list    = LIST: list of objects in the ROOT file. 
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
    -t, --tag     = TAG: tag name for XML configuration file.
    -w, --wait : Pause script after plotting a new superposition of histograms.
    -x, --xml     = XML: xml configuration file.
-
+   
    Francisco Yumiceva (yumiceva@fnal.gov)
    Fermilab 2008
    
@@ -50,6 +51,7 @@ from ROOT import TCanvas
 from ROOT import TLegend
 from ROOT import SetOwnership
 from ROOT import THStack
+from ROOT import TLatex
 
 from xml.sax import saxutils, make_parser, handler
 from xml.sax.handler import feature_namespaces
@@ -185,7 +187,9 @@ class FindIssue(handler.ContentHandler):
 	    self.addition[aname].YTitle = attrs.get('YTitle',None)
 	    self.addition[aname].XTitle = attrs.get('XTitle',None)
 	    self.addition[aname].Option = attrs.get('Option',None)
-	    self.addition[aname].Weight = attrs.get('Weight',None)
+	    self.addition[aname].Weight = attrs.get('Wight',None)
+	    self.addition[aname].Normalize = attrs.get('Normalize',None)
+	    self.addition[aname].SetGrid = attrs.get('SetGrid',None)
 	if name == 'additionItem':
 	    #print "in element: " + self.tmpsupername
 	    self.addition[self.tmpaddname].histos.append(attrs.get('name',None))
@@ -207,6 +211,8 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[aname].Fill = attrs.get('Fill',None)
 	    self.superimpose[aname].Option = attrs.get('Option',None)
 	    self.superimpose[aname].Weight = attrs.get('Weight',None)
+	    self.superimpose[aname].Maximum = attrs.get('Maximum',None)
+	    self.superimpose[aname].Labels = attrs.get('Labels',None)
 	    self.tmpsupername = aname
 	if name == 'superimposeItem':
 	    #print "in element: " + self.tmpsupername
@@ -224,6 +230,9 @@ if __name__ == '__main__':
 
     printCanvas = False
     printFormat = "png"
+    printBanner = False
+    Banner = "CMS Preliminary"
+
     # check options
     option,args = parse(__doc__)
     if not args and not option: exit()
@@ -251,6 +260,9 @@ if __name__ == '__main__':
 	printCanvas = True
 	printFormat = option.prt
 
+    if option.flag:
+	printBanner = True
+	Banner = option.flag
 
     # check xml file
     try:
@@ -326,7 +338,7 @@ if __name__ == '__main__':
     for ikey in theaddition:
 	print "== plot name: \""+theaddition[ikey].name+"\" title: \""+theaddition[ikey].title+"\""
 	listname = theaddition[ikey].histos
-	#listweight = theaddition[ikey].weight
+	listweight = theaddition[ikey].weight
 
 	#create canvas
 	cv[theaddition[ikey].name] = TCanvas(theaddition[ikey].name,theaddition[ikey].name,700,700)
@@ -335,10 +347,10 @@ if __name__ == '__main__':
 	ihnameIt = 0
 	for ihname in listname:
 	    aweight = 1
-	    #if listweight[ihnameIt]:
-	    if thedata[jkey].weight != None and theaddition[ikey].Weight == "true":
-		#aweight = float(listweight[ihnameIt])
-		aweight = float(thedata[jkey].weight)
+	    if listweight[ihnameIt]:
+	    #if thedata[jkey].weight != None and theaddition[ikey].Weight == "true":
+		aweight = float(listweight[ihnameIt])
+		#aweight = float(thedata[jkey].weight)
 	    for jkey in thedata:
 		tmpkeys = thedata[jkey].histos.keys()
 		for tmpname in tmpkeys:
@@ -351,10 +363,16 @@ if __name__ == '__main__':
 			#ath.Print("all")
 			if isFirst:
 			    newth = ath.Clone(theaddition[ikey].name)
+			    newth.Sumw2()
+			    if theaddition[ikey].Normalize == "true":
+				newth.Scale(1/newth.Integral())
 			    newth.Scale(aweight)
 			    isFirst = False
 			else:
 			    atmpth = ath.Clone()
+			    atmpth.Sumw2()
+			    if theaddition[ikey].Normalize == "true":
+				atmpth.Scale(1/atmpth.Integral())
 			    atmpth.Scale(aweight)
 			    newth.Add( atmpth )
 	    ihnameIt = ihnameIt + 1
@@ -369,6 +387,9 @@ if __name__ == '__main__':
 	else:
 	    newth.Draw()
 
+	if theaddition[ikey].SetGrid == "true":
+	    cv[theaddition[ikey].name].SetGrid()
+	
 	cv[theaddition[ikey].name].Update()
 
 	# add new histogram to the list
@@ -481,7 +502,7 @@ if __name__ == '__main__':
 	#create canvas
 	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
 	#legend
-	aleg = TLegend(0.6,0.2,0.8,0.4)
+	aleg = TLegend(0.6,0.4,0.8,0.6)
 	SetOwnership( aleg, 0 ) 
 	aleg.SetMargin(0.12)
         aleg.SetTextSize(0.035)
@@ -556,8 +577,37 @@ if __name__ == '__main__':
 			    newth.Scale(1./newth.Integral())
 			#print "   "+listlegend[ii]
 			
+			if thesuper[ikey].Labels != None:
+			    thelabels = thesuper[ikey].Labels.split(',')
+			    ib = 1
+			    #print thelabels
+
+			    for ilabel in thelabels:
+				newth.GetXaxis().SetBinLabel(ib,ilabel)
+				#if ib==1:
+				    #newth.GetXaxis().SetBinLabel(ib,"")
+				#newth.GetHistogram().GetXaxis().SetBinLabel(ib,ilabel)
+				ib += 1
+			    #if aweight==0.0081:
+			#	newth.SetBinContent(1, newth.GetBinContent(1) / 0.28756)
+			 #   if aweight==0.0883:
+				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.01953)
+			    #if aweight==0.0731:
+				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.0367)
+			    #if aweight==0.4003:
+				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.5683)
+			    #if aweight==0.003:
+				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.21173)
+			    #if aweight==0.0027:
+				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.26394)
+			    #if aweight==0.0034:
+				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.26394)
+
+
 			# stack histograms
 			if doFill:
+			    if thesuper[ikey].XTitle != None:
+				newth.SetXTitle("")
 			    astack.Add(newth,"HIST")
 			elif thesuper[ikey].Option:
 			    astack.Add(newth,thesuper[ikey].Option)
@@ -584,7 +634,15 @@ if __name__ == '__main__':
 			    aleg.AddEntry(newth,listlegend[ii],"F")
 			elif dolegend:
 			    aleg.AddEntry(newth,listlegend[ii],"P")
+			
+			newth.SetName(tmpname)
+			outputroot.cd()
+			newth.Write()
 	    ii = ii + 1
+
+	
+	if thesuper[ikey].Maximum != None:
+	    astack.SetMaximum( float(thesuper[ikey].Maximum) )
 	if thesuper[ikey].Stack == "true":
 	    astack.Draw()
 	if thesuper[ikey].Stack == "false" or thesuper[ikey].Stack == None:
@@ -594,6 +652,23 @@ if __name__ == '__main__':
 	    astack.GetHistogram().SetXTitle(thesuper[ikey].XTitle)
 	if thesuper[ikey].YTitle != None:
 	    astack.GetHistogram().SetYTitle(thesuper[ikey].YTitle)
+	if doFill:
+	    astack.Draw("sameaxis")
+
+	
+	#thelabels = []
+	#if thesuper[ikey].Labels != None:
+	#    thelabels = thesuper[ikey].Labels.split(',')
+	#    ib = 1
+	#    print thelabels
+
+	 #   for ilabel in thelabels:
+	#	astack.GetXaxis().SetBinLabel(ib,ilabel)
+		#astack.GetHistogram().GetXaxis().SetBinLabel(ib,ilabel)
+		#ib += 1
+	#    astack.Draw()
+	#    astack.Draw("sameaxis")
+
 	if dolegend: 
 	    aleg.Draw()
 	if thesuper[ikey].SetLogy == "true":
@@ -612,13 +687,20 @@ if __name__ == '__main__':
 			
 	#tmpsumth.Draw("same E1")
 
+	
+	if printBanner:
+	    tex = TLatex(0.35,0.95,Banner)
+	    tex.SetNDC()
+	    tex.SetTextSize(0.05)
+	    tex.Draw()
+	
 	cv[thesuper[ikey].name].Update()
 	#cv[thesuper[ikey].name].Print("test.png")
-
+	
 	# pause
 	if option.wait:
 	    raw_input( 'Press ENTER to continue\n ' )
-
+	    
     if printCanvas:
 	
 	for ikey in theaddition:
