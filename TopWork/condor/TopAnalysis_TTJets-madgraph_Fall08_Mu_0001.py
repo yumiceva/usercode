@@ -18,63 +18,54 @@ process.options = cms.untracked.PSet(
 process.load("Configuration.StandardSequences.Geometry_cff")
 ## configure conditions
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.GlobalTag.globaltag = cms.string('IDEAL_V9::All')
+process.GlobalTag.globaltag = cms.string('IDEAL_V11::All')
 ## load magnetic field
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 # load sequences
 process.load("TopQuarkAnalysis.TopPairBSM.TopAnalysis_sequences")
 
-# decay chain for madgraph samples
-from TopQuarkAnalysis.TopEventProducers.producers.TopDecaySubset_cfi import *
-process.decaySubset.genType = cms.uint32(1)
-
-process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-
-process.printList = cms.EDFilter("ParticleListDrawer",
-                                 src = cms.InputTag("genParticles"),
-                                 maxEventsToPrint = cms.untracked.int32(-1)
-                                 )
-
-process.printTree = cms.EDFilter("ParticleTreeDrawer",
-                                 src = cms.InputTag("genParticles"),
-                                 printP4 = cms.untracked.bool(False),
-                                 printPtEtaPhi = cms.untracked.bool(False),
-                                 printVertex = cms.untracked.bool(True),
-                                 printStatus = cms.untracked.bool(False),
-                                 printIndex = cms.untracked.bool(False),
-                                 status = cms.untracked.vint32(1, 2, 3)
-                                 )
+# decaychain for madgraph samples
+#from TopQuarkAnalysis.TopEventProducers.producers.TopDecaySubset_cfi import *
+#process.decaySubset.genType = cms.uint32(1)
 
 # setup path
-process.p = cms.Path( process.printList+process.TopAnalysisMuFilter ) # with muonic generator filter
+process.p = cms.Path( process.TopAnalysisMuFilter ) # with muonic generator filter
 #process.p = cms.Path( process.TopAnalysisNoMuFilter ) # with generator filter on all but muonci decays
 #process.p = cms.Path( process.TopAnalysis ) # no generator filter at all
 
-
 # change defaults
-process.TopAnalyzer.rootFilename = '/uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_1/LowMass_analysis//TopAnalysis_TTJets-madgraph_Fall08_Mu_0001.root'
+#process.TopAnalyzer.muonCuts.MinPt = cms.double(30.)
+#process.TopAnalyzer.jetCuts.ApplyAsymmetricCuts = cms.bool(True)
+#process.TopAnalyzer.METCuts.Recalculate  = cms.bool(True)
+#process.TopAnalyzer.jetSource      = cms.InputTag('selectedLayer1JetsJPT')
+#process.TopAnalyzer.UsebTagging  = cms.bool(True)
+#process.TopAnalyzer.IsMCTop      = cms.bool( False )
+process.TopAnalyzer.rootFilename = 'TopAnalysis_TTJets-madgraph_Fall08_Mu_0001.root'
 process.BooTopHLTFilter.HLTPaths = [''] # do not filter
+#process.TopAnalyzer.writeAscii = cms.bool( True )
+process.TopAnalyzer.asciiFilename = cms.string('/uscmst1b_scratch/lpc1/cmsroc/yumiceva/TQAF/CMSSW_2_2_6/LowMass_analysis_IPsig3_Iso95//TopAnalysis_TTJets-madgraph_Fall08_all_0001.root.txt')
 
 # source
-#from TopQuarkAnalysis.TopPairBSM.L1_TTJets_madgraph_Summer08 import source
+#from TopQuarkAnalysis.TopPairBSM.L1_WJets_madgraph_Fall08 import source
 
 #process.source = source
-#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10) )
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1) )
 
 
 
     
 
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(15) )
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("PoolSource",
 fileNames = cms.untracked.vstring(
 "",
 "",
 "",
-"dcache:/pnfs/cms/WAX/resilient/yumiceva/Top/PatTuple_2_2_1_v3/TTJets-madgraph_Fall08/TTJets_madgraph_Fall08_1.root",
-"dcache:/pnfs/cms/WAX/resilient/yumiceva/Top/PatTuple_2_2_1_v3/TTJets-madgraph_Fall08/TTJets_madgraph_Fall08_10.root"
+"dcache:/pnfs/cms/WAX/resilient/yumiceva/Top/PatTuple_2_2_6/TTJets-madgraph_Fall08//TTJets_madgraph_Fall08_1.root",
+"dcache:/pnfs/cms/WAX/resilient/yumiceva/Top/PatTuple_2_2_6/TTJets-madgraph_Fall08//TTJets_madgraph_Fall08_10.root",
+"dcache:/pnfs/cms/WAX/resilient/yumiceva/Top/PatTuple_2_2_6/TTJets-madgraph_Fall08//TTJets_madgraph_Fall08_100.root"
 )
 , duplicateCheckMode = cms.untracked.string('noDuplicateCheck')
 )
