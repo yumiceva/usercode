@@ -5,6 +5,9 @@
 # yumiceva@fnal.gov
 #
 # Fermilab, 2007
+#
+# 2009/07/14: Modification to prevent empty string for input fileNames
+# Geng-yuan Jeng
 ############################################################################
 
 """
@@ -357,7 +360,8 @@ if __name__ =='__main__':
 
     subset = []
     njob = 0
-
+    notrootfiles = 0
+    
     #make directories
     if not os.path.exists(cfg_path):
         _mkdir(cfg_path)
@@ -373,18 +377,27 @@ if __name__ =='__main__':
         inputfile = open(list_of_files)
         totalfiles = len(inputfile.readlines())
         inputfile.seek(0,0)
+
+        for iline in inputfile:
+            #print iline
+            if iline.find(".root")==-1:
+                notrootfiles += 1
+
+        #print notrootfiles
+        totalfiles -= notrootfiles
+        inputfile.seek(0,0)
+
         filesperjob = float(totalfiles)/float(number_of_jobs)
         filesperjob = int(filesperjob)
-    
-    
+            
+        #print "Number of total root files = "
+        #print totalfiles    
+        
         for ifile in inputfile:
             #print "ifile: "+ifile
             ignoreline = 0
-            #if ifile.find("replace")!=-1 or ifile.find("}")!=-1 or ifile.find("{")!=-1:
-            #    ignoreline = 1
-            if ifile.find("import")!=-1 or ifile.find("cms.untracked")!=-1 or ifile.find("cms.Source")!=-1:
-                ignoreline = 1
-            if ifile.find(") )")!=-1:
+
+            if ifile.find(".root")==-1:
                 ignoreline = 1
             
             if ignoreline==0:
