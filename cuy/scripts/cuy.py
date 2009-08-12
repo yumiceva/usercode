@@ -18,6 +18,7 @@
     A very simple way to make plots with ROOT via an XML file.
 
    usage: %prog -x <XML configuration file>
+   -b, --batch : run in batch mode without graphics.
    -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
    -f, --flag    = FLAG: create a baneer
@@ -224,6 +225,8 @@ class FindIssue(handler.ContentHandler):
 
 if __name__ == '__main__':
 
+
+
     # style
     thestyle = Style.Style()
     thestyle.SetStyle()
@@ -236,6 +239,9 @@ if __name__ == '__main__':
     # check options
     option,args = parse(__doc__)
     if not args and not option: exit()
+
+    if option.batch:
+	ROOT.gROOT.SetBatch()
 
     if option.list:
 	ins = Inspector.Inspector()
