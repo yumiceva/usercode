@@ -29,7 +29,7 @@ class Style:
 
 	# set the paper & margin sizes
 	ROOT.gStyle.SetPaperSize(20,26)
-	ROOT.gStyle.SetPadTopMargin(0.04)
+	ROOT.gStyle.SetPadTopMargin(0.06)
 	ROOT.gStyle.SetPadRightMargin(0.04)
 	ROOT.gStyle.SetPadBottomMargin(0.14)
 	ROOT.gStyle.SetPadLeftMargin(0.16)
@@ -40,7 +40,7 @@ class Style:
 	ROOT.gStyle.SetTextSize(0.09)
 	ROOT.gStyle.SetLabelFont(42,"xyz")
 	ROOT.gStyle.SetTitleFont(42,"xyz")
-	ROOT.gStyle.SetLabelSize(0.035,"xyz")
+	ROOT.gStyle.SetLabelSize(0.045,"xyz") #0.035
 	ROOT.gStyle.SetTitleSize(0.045,"xyz")
 	ROOT.gStyle.SetTitleOffset(1.5,"y")
     

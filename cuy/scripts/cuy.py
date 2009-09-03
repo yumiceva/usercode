@@ -25,6 +25,7 @@
    -l, --list    = LIST: list of objects in the ROOT file. 
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
    -t, --tag     = TAG: tag name for XML configuration file.
+   -v, --verbose : verbose output.
    -w, --wait : Pause script after plotting a new superposition of histograms.
    -x, --xml     = XML: xml configuration file.
    
@@ -213,6 +214,7 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[aname].Option = attrs.get('Option',None)
 	    self.superimpose[aname].Weight = attrs.get('Weight',None)
 	    self.superimpose[aname].Maximum = attrs.get('Maximum',None)
+	    self.superimpose[aname].Minimum = attrs.get('Minimum',None)
 	    self.superimpose[aname].Labels = attrs.get('Labels',None)
 	    self.tmpsupername = aname
 	if name == 'superimposeItem':
@@ -235,6 +237,7 @@ if __name__ == '__main__':
     printFormat = "png"
     printBanner = False
     Banner = "CMS Preliminary"
+    verbose = False
 
     # check options
     option,args = parse(__doc__)
@@ -242,6 +245,9 @@ if __name__ == '__main__':
 
     if option.batch:
 	ROOT.gROOT.SetBatch()
+
+    if option.verbose:
+	verbose = True
 
     if option.list:
 	ins = Inspector.Inspector()
@@ -310,22 +316,22 @@ if __name__ == '__main__':
     firstFilename = ''
 
     for ikey in thedata:
-	print "= Processing set called: " + ikey
+	if verbose : print "= Processing set called: " + ikey
 	afilename = thedata[ikey].filename
 	if firstFilename == '':
 	    firstFilename = afilename
 	arelease = ""
 	if thedata[ikey].release != None:
 	    arelease = thedata[ikey].release
-	print "== filename: " + afilename
-	print "== release:  " + arelease
-	print "== weight:   " + thedata[ikey].weight
+	if verbose : print "== filename: " + afilename
+	if verbose : print "== release:  " + arelease
+	if verbose : print "== weight:   " + thedata[ikey].weight
 	thehistos = thedata[ikey].histos
 	afilelist[afilename] = TFile(afilename)
-	print "== get histograms: "
+	if verbose : print "== get histograms: "
 	histonamekeys = thehistos.keys()
 	for ihname in histonamekeys:
-	    print "=== Histogram name: \""+ ihname + "\" source: \""+thehistos[ihname]+"\""
+	    if verbose : print "=== Histogram name: \""+ ihname + "\" source: \""+thehistos[ihname]+"\""
 	    thedata[ikey].TH1s[ihname] = ROOT.gDirectory.Get(thehistos[ihname])
 	    #SetOwnership(thedata[ikey].TH1s[ihname], 0)
 	    # check if file exists
@@ -339,10 +345,10 @@ if __name__ == '__main__':
 
 
     theaddition = dh.addition
-    print "= Create addition histograms:"
+    if verbose : print "= Create addition histograms:"
     
     for ikey in theaddition:
-	print "== plot name: \""+theaddition[ikey].name+"\" title: \""+theaddition[ikey].title+"\""
+	if verbose : print "== plot name: \""+theaddition[ikey].name+"\" title: \""+theaddition[ikey].title+"\""
 	listname = theaddition[ikey].histos
 	listweight = theaddition[ikey].weight
 
@@ -365,7 +371,7 @@ if __name__ == '__main__':
 			if ath is None:
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			    exit(0)
-			print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
+			if verbose : print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
 			#ath.Print("all")
 			if isFirst:
 			    newth = ath.Clone(theaddition[ikey].name)
@@ -410,11 +416,11 @@ if __name__ == '__main__':
 	newth.Write()
 	
     
-    print "= Create ratio histograms:"
+    if verbose : print "= Create ratio histograms:"
     
     thedivition = dh.divide
     for ikey in thedivition:
-	print "== plot name: \""+thedivition[ikey].name+"\" title: \""+"\""
+	if verbose : print "== plot name: \""+thedivition[ikey].name+"\" title: \""+"\""
 	numerator = thedivition[ikey].numerator
 	denominator = thedivition[ikey].denominator
 
@@ -478,9 +484,9 @@ if __name__ == '__main__':
 
 
     thesuper = dh.superimpose
-    print "= Create superimpose histograms:"
+    if verbose : print "= Create superimpose histograms:"
     for ikey in thesuper:
-	print "== plot name: \""+thesuper[ikey].name+"\" title: \""+thesuper[ikey].title+"\""
+	if verbose : print "== plot name: \""+thesuper[ikey].name+"\" title: \""+thesuper[ikey].title+"\""
 	listname = thesuper[ikey].histos
 	listcolor = thesuper[ikey].color
 	listmarker = thesuper[ikey].marker
@@ -489,11 +495,11 @@ if __name__ == '__main__':
 	dolegend = True
 	for il in listlegend:
 	    if il==None: dolegend = False
-	print "dolegend = " +str(dolegend)
+	if verbose : print "dolegend = " +str(dolegend)
 	doNormalize = False
 	if thesuper[ikey].Normalize == "true":
 	    doNormalize = True
-	    print "normalize = " +str(doNormalize)
+	    if verbose : print "normalize = " +str(doNormalize)
 	projectAxis = "no"
 	projectBin = -1 #all
 	if thesuper[ikey].projection == "x": projectAxis = "x"
@@ -504,7 +510,7 @@ if __name__ == '__main__':
 	if thesuper[ikey].profile == "y": profileAxis = "y"
 	doFill = False
 	if thesuper[ikey].Fill == "true": doFill = True
-	print doFill
+	if verbose : print "fill option:"+ doFill
 	#create canvas
 	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
 	#legend
@@ -532,7 +538,7 @@ if __name__ == '__main__':
 			if ath is None:
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			    exit(0)
-			print "=== superimpose histogram: "+ath.GetName() + " mean = " + "%.2f" % round(ath.GetMean(),2)
+			if verbose : print "=== superimpose histogram: "+ath.GetName() + " mean = " + "%.2f" % round(ath.GetMean(),2)
 			# project 2D histogram if requested
 			if projectAxis == "x":
 			    if projectBin == -1:
@@ -557,7 +563,7 @@ if __name__ == '__main__':
 			aweight = 1
 			if thedata[jkey].weight != None and thesuper[ikey].Weight=="true":
 			    aweight = float( thedata[jkey].weight )
-			print " with weight = " + str(aweight)
+			if verbose: print " with weight = " + str(aweight)
 			#if listweight[ii]:
 			 #   aweight = float( listweight[ii] )
 
@@ -649,6 +655,8 @@ if __name__ == '__main__':
 	
 	if thesuper[ikey].Maximum != None:
 	    astack.SetMaximum( float(thesuper[ikey].Maximum) )
+	if thesuper[ikey].Minimum != None:
+	    astack.SetMinimum( float(thesuper[ikey].Minimum) )
 	if thesuper[ikey].Stack == "true":
 	    astack.Draw()
 	if thesuper[ikey].Stack == "false" or thesuper[ikey].Stack == None:
