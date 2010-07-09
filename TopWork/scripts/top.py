@@ -9,7 +9,14 @@ from RooAlias import *
 
 gROOT.Reset()
 # defined style
-SetStyle()
+#SetStyle()
+
+gROOT.ProcessLine('.L tdrstyle.C')
+ROOT.setTDRStyle()
+
+gROOT.ProcessLine('.L CMSTopStyle.cc+')
+style = ROOT.CMSTopStyle()
+style.setupICHEPv1()
 
 # define histos
 histo = {}
@@ -23,10 +30,10 @@ histo['mu_d0'] = TH1F("mu_d0","mu_d0",40,0,0.3)
 histo['mu_d0_QCDMC'] = TH1F("mu_d0_QCDMC","mu_d0_QCDMC",40,0,0.3)
 histo['mu_d0_WMC'] = TH1F("mu_d0_WMC","mu_d0_WMC",40,0,0.3)
 histo['d0_vs_reliso'] = TH2F("d0_vs_reliso","d0_vs_reliso",40,0,1,40,0,0.11)
-histo['W_mt_data'] = TH1F("W_mt","W_mt",25,0,160)
-histo['W_mt_QCDdata'] = TH1F("W_mt_QCDdata","W_mt_QCDdata",25,0,160)
-histo['W_mt_QCDMC'] = TH1F("W_mt_QCDMC","W_mt_QCDMC",25,0,160)
-histo['W_mt_WMC'] = TH1F("W_mt_WMC","W_mt_WMC",25,0,160)
+histo['W_mt_data'] = TH1F("W_mt","W_mt",30,0,200)
+histo['W_mt_QCDdata'] = TH1F("W_mt_QCDdata","W_mt_QCDdata",30,0,200)
+histo['W_mt_QCDMC'] = TH1F("W_mt_QCDMC","W_mt_QCDMC",30,0,200)
+histo['W_mt_WMC'] = TH1F("W_mt_WMC","W_mt_WMC",30,0,200)
 histo['met_data'] = TH1F("met_data","met_data",25,0,160)
 histo['met_QCDMC'] = TH1F("met_QCDMC","met_QCDMC",25,0,160)
 histo['met_WMC'] = TH1F("met_WMC","met_WMC",25,0,160)
@@ -35,13 +42,6 @@ for key in histo.keys():
     if key!="d0_vs_reliso":
 	histo[key].Sumw2()
 
-# input files
-tfile = TFile("ABCD_data_new.root")
-tfile.cd()
-
-fchain = ROOT.gDirectory.Get( 'top' )
-entries = fchain.GetEntriesFast()
-
 Ndata = 0
 Ndata50 = 0
 Ndata50_pt20 = 0
@@ -49,9 +49,37 @@ Ndata50_pt20 = 0
 mu_pt_cut = 20.
 isTrkMuon_cut = 1.
 
-Nqcd = 4. #322. 
-Nqcderr = 3. #73. 
-Nsig = 45. #46. #61.
+Nqcd = 12 #4. #322. 
+Nqcderr = 6. #73. 
+Nsig = 162 #45. #46. #61.
+Luminosity = 35 #66.3 #36.5 #11.4 /nb
+IsppMuX = False
+Njetscut = 0
+METcut = 0.
+
+# get Z histos
+tzfile = TFile("hist_Z.root")
+histo['W_mt_ZMC'] = ROOT.gDirectory.Get("/demo/h_mt0")
+histo['W_mt_ZMC'].Add( ROOT.gDirectory.Get("/demo/h_mt1") )
+histo['W_mt_ZMC'].Add( ROOT.gDirectory.Get("/demo/h_mt2") )
+histo['W_mt_ZMC'].Add( ROOT.gDirectory.Get("/demo/h_mt3") )
+histo['W_mt_ZMC'].Add( ROOT.gDirectory.Get("/demo/h_mt4") )
+
+Z_weight = (2.8 )/1084921. #nb
+ntotal = histo['W_mt_ZMC'].Integral()
+histo['W_mt_ZMC'].Scale(Z_weight*Luminosity)
+histo['W_mt_ZMC'].SetDirectory(0)
+histo['W_mt_ZMC'].SetFillColor( style.DYZJetsColor )
+histo['W_mt_ZMC'].SetLineColor( style.DYZJetsColor )
+histo['W_mt_ZMC'].SetFillStyle( style.DYZJetsFill )
+
+# input files
+tfile = TFile("ABCD_data_36nb.root") #"ABCD_data_new.root")
+tfile.cd()
+
+fchain = ROOT.gDirectory.Get( 'top' )
+entries = fchain.GetEntriesFast()
+
 
 
 for jentry in xrange( entries ):
@@ -71,6 +99,7 @@ for jentry in xrange( entries ):
     # get number of muons candidates
     #n_mu = int(fchain.n_mu)
     
+    njets = int( fchain.njets )
     mu_pt = float(fchain.muon_pt)
     mu_reliso = float(fchain.muon_old_reliso)
     mu_d0 = math.fabs( float(fchain.muon_d0) )
@@ -93,7 +122,7 @@ for jentry in xrange( entries ):
 	histo['mu_pt'].Fill( mu_pt )
 
     passV2 = False
-    if mu_reliso > 0.95 and mu_d0<0.02 and mu_pt>20. and isTrkMu==1 and deltaR>0.3 and muHits>0 and trkHits>10 and chi2<10 and eta<2.1:
+    if mu_reliso > 0.95 and mu_d0<0.02 and mu_pt>20. and isTrkMu==1 and deltaR>0.3 and muHits>0 and trkHits>10 and chi2<10 and eta<2.1 and njets>=Njetscut and met>METcut:
 	passV2 = True
 
     if passV2:
@@ -158,15 +187,15 @@ aleg.SetTextSize(0.035)
 aleg.SetFillColor(10)
 aleg.SetBorderSize(0)
 aleg.SetHeader("CMS Preliminary #sqrt{s}=7 TeV")
-aleg.AddEntry(histo['d0_vs_reliso'],'data L = 11.4 nb^{-1}','p')
+aleg.AddEntry(histo['d0_vs_reliso'],'data L = '+str(Luminosity)+' nb^{-1}','p')
 aleg.Draw()
 
 cv['W_mt'] = TCanvas("W_mt","W_mt",600,600)
 histo['W_mt_data'].SetYTitle(ytitle)
 histo['W_mt_data'].SetXTitle("W transverse mass [GeV/c^{2}]")
 histo['W_mt_data'].Draw("p")
-histo['W_mt_QCDdata'].SetLineColor(4)
-histo['W_mt_QCDdata'].SetMarkerColor(4)
+histo['W_mt_QCDdata'].SetLineColor(style.QCDColor)
+histo['W_mt_QCDdata'].SetMarkerColor(style.QCDColor)
 ntotal = histo['W_mt_QCDdata'].Integral()
 histo['W_mt_QCDdataP'] = histo['W_mt_QCDdata'].Clone("W_mt_QCDdataP")
 histo['W_mt_QCDdataM'] = histo['W_mt_QCDdata'].Clone("W_mt_QCDdataM")
@@ -178,7 +207,8 @@ histo['W_mt_QCDdataErr'] = histo['W_mt_QCDdata'].Clone("W_mt_QCDdataErr")
 for ibin in range(0,histo['W_mt_QCDdata'].GetNbinsX()):
     error = histo['W_mt_QCDdataP'].GetBinContent(ibin) - histo['W_mt_QCDdata'].GetBinContent(ibin)
     histo['W_mt_QCDdataErr'].SetBinError( ibin, error )
-histo['W_mt_QCDdata'].SetFillColor(4)
+histo['W_mt_QCDdata'].SetFillColor(style.QCDColor)
+histo['W_mt_QCDdata'].SetFillStyle(style.QCDFill)
 histo['W_mt_QCDdata'].Draw("histo same")
 histo['W_mt_QCDdataErr'].SetLineColor(2)
 histo['W_mt_QCDdataErr'].SetFillColor(2)
@@ -194,7 +224,7 @@ aleg.SetTextSize(0.035)
 aleg.SetFillColor(10)
 aleg.SetBorderSize(0)
 aleg.SetHeader("CMS Preliminary #sqrt{s}=7 TeV")
-aleg.AddEntry(histo['W_mt_data'],'data L = 11.4 nb^{-1}','p')
+aleg.AddEntry(histo['W_mt_data'],'data L = '+str(Luminosity)+' nb^{-1}','p')
 aleg.AddEntry(histo['W_mt_QCDdata'],'background data-driven','f')
 aleg.AddEntry(histo['W_mt_QCDdataErr'],'background data-driven error','f')
 aleg.Draw()
@@ -214,9 +244,15 @@ raw_input ("Enter to quit:")
 histo['W_mt_QCDdataErr'].SetDirectory(0)
 
 #################################################
-print "read ppMuX MC sample"
-#tfile = TFile("ABCD_ppMuX_new.root")
-tfile = TFile("ppMuX_corrected.root")
+tfile = 0
+
+if IsppMuX:
+    print "read ppMuX MC sample"
+    tfile = TFile("ppMuX_corrected.root")
+else:
+    print "read InclusiveMu MC sample"
+    tfile = TFile("ABCD_InclusiveMu15.root")
+#tfile = TFile("ppMuX_corrected.root")
 tfile.cd()
 
 fchain = ROOT.gDirectory.Get( 'top' )
@@ -239,24 +275,33 @@ for jentry in xrange( entries ):
     # get number of muons candidates
     #n_mu = int(fchain.n_mu)
     
+    njets = int( fchain.njets )
     mu_pt = float(fchain.muon_pt)
     mu_reliso = float(fchain.muon_old_reliso)
     mu_d0 = math.fabs( float(fchain.muon_d0) )
     mu_d0Err = float(fchain.muon_d0Error)
-    isTrkMu = int(fchain.TrackerMu)
     met = float( fchain.met )
-    deltaR = float ( fchain.muon_jet_dr )
-    muHits = float ( fchain.muon_muonhits)
-    trkHits = float( fchain.muon_trackerhits)
-    chi2 = float ( fchain.muon_chi2 )
     eta = math.fabs( float(fchain.muon_eta) )
+
+    isTrkMu = 1
+    deltaR = 999
+    muHits = 999
+    trkHits = 999
+    chi2 = 0
+    if IsppMuX:
+	isTrkMu = int(fchain.TrackerMu)
+	deltaR = float ( fchain.muon_jet_dr )
+	muHits = float ( fchain.muon_muonhits)
+	trkHits = float( fchain.muon_trackerhits)
+	chi2 = float ( fchain.muon_chi2 )
+    
     #histo['mu_d0_QCDMC'].Fill( mu_d0 )
     #histo['mu_pt'].Fill( mu_pt )
     #histo['mu_reliso'].Fill( mu_reliso )
     #histo['d0_vs_reliso'].Fill(mu_reliso, mu_d0 )
     
     passV2 = False
-    if mu_reliso > 0.95 and mu_d0<0.02 and mu_pt>20. and isTrkMu==1 and deltaR>0.3 and muHits>0 and trkHits>10 and chi2<10 and eta<2.1:
+    if mu_reliso > 0.95 and mu_d0<0.02 and mu_pt>20. and isTrkMu==1 and deltaR>0.3 and muHits>0 and trkHits>10 and chi2<10 and eta<2.1 and njets>=Njetscut and met>METcut:
 	passV2 = True
     
     if passV2:
@@ -266,6 +311,53 @@ for jentry in xrange( entries ):
 	histo['met_QCDMC'].Fill( fchain.met )
 	histo['mu_d0_QCDMC'].Fill( mu_d0 )
 	histo['mu_pt_QCDMC'].Fill( mu_pt )
+
+QCD_weight = 1.
+
+if IsppMuX:
+    # for ppMuX
+    QCD_weight = (85254. )/8000000. #nb
+else:
+    # for InclusiveMu
+    QCD_weight = 79.688 / 4377187 ##(85254. )/8000000. #nb
+
+
+#QCD_weight = (28000. * 1.e3 )/10068895.
+#QCD_weight = (28000. * 1.e3 )/7189041.
+
+cv['W_mtCompare'] = TCanvas("W_mtCompare","W_mtCompare",600,600)
+histo['W_mt_QCDMC'].SetYTitle("Arbitrary Units")
+histo['W_mt_QCDMC'].SetXTitle("W transverse mass [GeV/c^{2}]")
+
+ntotal = histo['W_mt_QCDMC'].Integral()
+#histo['W_mt_QCDMC'].Scale(1./ntotal)
+histo['W_mt_QCDMC'].Scale(QCD_weight*Luminosity)
+ntotal = histo['W_mt_QCDMC'].Integral()
+print "total MC QCD events for lumi "+str(ntotal)
+
+histo['W_mt_QCDMC'].SetMarkerColor(2)
+histo['W_mt_QCDMC'].SetLineColor(2)
+histo['W_mt_QCDdata'].SetMarkerColor(1)
+histo['W_mt_QCDdata'].SetLineColor(1)
+
+histo['W_mt_QCDMC'].Scale(1./ntotal)
+ntotal = histo['W_mt_QCDdata'].Integral()
+histo['W_mt_QCDdata'].Scale(1./ntotal)
+histo['W_mt_QCDMC'].Draw()
+histo['W_mt_QCDdata'].Draw("same")
+aleg = TLegend(0.4,0.5,0.8,0.7)
+aleg.SetFillColor(10)
+aleg.SetBorderSize(0)
+aleg.SetTextSize(0.035)
+aleg.SetHeader("CMS Preliminary #sqrt{s}=7 TeV, "+str(Luminosity)+" nb^{-1}")
+aleg.AddEntry(histo['W_mt_QCDMC'],'QCD MC','p')
+aleg.AddEntry(histo['W_mt_QCDdata'],'data-driven shape','p')
+aleg.Draw()
+ROOT.gPad.RedrawAxis()
+raw_input ("Enter to quit:")
+
+histo['W_mt_QCDdata'].SetMarkerColor(style.QCDColor)
+histo['W_mt_QCDdata'].SetLineColor(style.QCDColor)
 
 #####################################################
 print "read W MC sample"
@@ -292,6 +384,7 @@ for jentry in xrange( entries ):
     # get number of muons candidates
     #n_mu = int(fchain.n_mu)
     
+    njets = int( fchain.njets )
     mu_pt = float(fchain.muon_pt)
     mu_reliso = float(fchain.muon_old_reliso)
     mu_d0 = math.fabs( float(fchain.muon_d0) )
@@ -309,7 +402,7 @@ for jentry in xrange( entries ):
     #histo['d0_vs_reliso'].Fill(mu_reliso, mu_d0 )
     
     passV2 = False
-    if mu_reliso > 0.95 and mu_d0<0.02 and mu_pt>20. and isTrkMu==1 and deltaR>0.3 and muHits>0 and trkHits>10 and chi2<10 and eta<2.1:
+    if mu_reliso > 0.95 and mu_d0<0.02 and mu_pt>20. and isTrkMu==1 and deltaR>0.3 and muHits>0 and trkHits>10 and chi2<10 and eta<2.1 and njets>=Njetscut and met>METcut:
 	passV2 = True
 
     if passV2:
@@ -322,40 +415,15 @@ for jentry in xrange( entries ):
 
 
 #W_weight = (8.525*10e7 * 1.e3 )/10418911.
-QCD_weight = (85254. )/8000000. #nb
-#QCD_weight = (28000. * 1.e3 )/10068895.
-#QCD_weight = (28000. * 1.e3 )/7189041.
+
 W_weight = (2.8 )/7000000. #nb
 
 ntotal = histo['W_mt_WMC'].Integral()
-histo['W_mt_WMC'].Scale(W_weight*11.4)
+histo['W_mt_WMC'].Scale(W_weight*Luminosity)
 ntotal = histo['W_mt_WMC'].Integral()
 print "total MC W events for lumi "+str(ntotal)
 
-cv['W_mtCompare'] = TCanvas("W_mtCompare","W_mtCompare",600,600)
-histo['W_mt_QCDMC'].SetYTitle("Arbitrary Units")
-histo['W_mt_QCDMC'].SetXTitle("W transverse mass [GeV/c^{2}]")
 
-ntotal = histo['W_mt_QCDMC'].Integral()
-#histo['W_mt_QCDMC'].Scale(1./ntotal)
-histo['W_mt_QCDMC'].Scale(QCD_weight*11.4)
-ntotal = histo['W_mt_QCDMC'].Integral()
-print "total MC QCD events for lumi"+str(ntotal)
-
-histo['W_mt_QCDMC'].Scale(1./ntotal)
-ntotal = histo['W_mt_QCDdata'].Integral()
-histo['W_mt_QCDdata'].Scale(1./ntotal)
-histo['W_mt_QCDMC'].Draw()
-histo['W_mt_QCDdata'].Draw("same")
-aleg = TLegend(0.4,0.5,0.8,0.7)
-aleg.SetFillColor(10)
-aleg.SetBorderSize(0)
-aleg.SetHeader("CMS Preliminary #sqrt{s}=7 TeV")
-aleg.AddEntry(histo['W_mt_QCDMC'],'QCD MC','p')
-aleg.AddEntry(histo['W_mt_QCDdata'],'data-driven shape','p')
-aleg.Draw()
-ROOT.gPad.RedrawAxis()
-raw_input ("Enter to quit:")
 
 cv['mu_ptCompare'] = TCanvas("mu_ptCompare","mu_ptCompare",600,600)
 ntotal = histo['mu_pt_QCDMC'].Integral()
@@ -383,23 +451,31 @@ ntotal = histo['W_mt_WMC'].Integral()
 histo['W_mt_WMC'].Scale(Nsig/ntotal)
 
 histo['W_mt_QCDdata'].Scale(Nqcd)
-histo['W_mt_WMC'].Add(histo['W_mt_QCDdata']) # add qcd to make stack plot
-histo['W_mt_WMC'].SetLineColor(400)
-histo['W_mt_WMC'].SetFillColor(400)
+
+histo['W_mt_ZMC'].Add(histo['W_mt_QCDdata'])
+
+#histo['W_mt_WMC'].Add(histo['W_mt_QCDdata']) # add qcd to make stack plot
+histo['W_mt_WMC'].Add(histo['W_mt_ZMC'])
+
+histo['W_mt_WMC'].SetLineColor(style.WJetsColor)
+histo['W_mt_WMC'].SetFillColor(style.WJetsColor)
+histo['W_mt_WMC'].SetFillStyle(style.WJetsFill)
 histo['W_mt_WMC'].SetYTitle( ytitle )
 histo['W_mt_WMC'].SetXTitle("W transverse mass [GeV/c^{2}]")
 histo['W_mt_WMC'].Draw("hist")
+histo['W_mt_ZMC'].Draw("hist same")
 histo['W_mt_QCDdata'].Draw("hist same")
-histo['W_mt_QCDdataErr'].Draw("E3 same")
+#histo['W_mt_QCDdataErr'].Draw("E3 same")
 histo['W_mt_data'].Draw("p same")
 aleg = TLegend(0.4,0.5,0.8,0.7)
 aleg.SetFillColor(10)
 aleg.SetBorderSize(0)
 aleg.SetHeader("CMS Preliminary #sqrt{s}=7 TeV")
-aleg.AddEntry(histo['W_mt_data'],'data L = 11.4 nb^{-1}','p')
-aleg.AddEntry(histo['W_mt_QCDdata'],'background data-driven','f')
-aleg.AddEntry(histo['W_mt_QCDdataErr'],'background data-driven error','f')
-aleg.AddEntry(histo['W_mt_WMC'],'W+jets MC','f')
+aleg.AddEntry(histo['W_mt_data'],'Data L = '+str(Luminosity)+' nb^{-1}','p')
+aleg.AddEntry(histo['W_mt_ZMC'],'Z/#gamma*#rightarrowl^{+}l^{-}','f')
+aleg.AddEntry(histo['W_mt_QCDdata'],'QCD data-driven','f')
+#aleg.AddEntry(histo['W_mt_QCDdataErr'],'background data-driven error','f')
+aleg.AddEntry(histo['W_mt_WMC'],'W#rightarrowl#nu','f')
 aleg.Draw()
 ROOT.gPad.RedrawAxis()
 raw_input ("Enter to quit:")
