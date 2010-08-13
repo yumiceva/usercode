@@ -5,22 +5,28 @@ from ROOT import *
 import sys,os, math
 
 
-# Luminosity in 1/pb
-L = 0.58
+L = 0.58 # Luminosity in 1/pb
+IsMC = False
 
+xsec = {} # xsection in pb
 file = {}
+# MC files
+if IsMC:
+    file['ttbar'] = 'NtupleMaker/MC/v2/TTbar/ttmuj_ntuple.root'
+    file['QCD']   = 'NtupleMaker/MC/v2/InclusiveMu15/ttmuj_ntuple.root'
+    file['WJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
+    file['ZJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
 
-file['ttbar'] = 'NtupleMaker/MC/v2/TTbar/ttmuj_ntuple.root'
-file['QCD']   = 'NtupleMaker/MC/v2/InclusiveMu15/ttmuj_ntuple.root'
-file['WJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
-file['ZJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
-
-# xsection in pb
-xsec = {}
-xsec['ttbar'] =   157.5
-xsec['QCD']   = 79688.
-xsec['WJets'] = 31314.
-xsec['ZJets'] =  3048.
+    xsec['ttbar'] =   157.5
+    xsec['QCD']   = 79688.
+    xsec['WJets'] = 31314.
+    xsec['ZJets'] =  3048.
+else:
+# data files
+    file['Jun14'] = 'NtupleMaker/Data/0.84pb-1/Jun14/ttmuj_ntuple.root'
+    file['MB']    = 'NtupleMaker/Data/0.84pb-1/MinimumBias/ttmuj_ntuple.root'
+    file['Jul16'] = 'NtupleMaker/Data/0.84pb-1/Jul16/ttmuj_ntuple.root'
+    file['Prompt']= 'NtupleMaker/Data/0.84pb-1/PromptReco/ttmuj_ntuple.root'
 
 keys = file.keys()
 cutflow = {}
@@ -49,7 +55,9 @@ for sample in keys:
     for acut in range(1, h.GetNbinsX() + 1 ):
         cutmap[ acut ] = h.GetBinContent( acut );
 
-    scale = ( L * xsec[ sample ] / cutmap[1] )
+    scale = 1.
+    if IsMC:
+        scale = ( L * xsec[ sample ] / cutmap[1] )
 
     for key in cutmap.keys():
 
