@@ -41,7 +41,7 @@ for sample in keys:
     for key in cutmap.keys():
 
         cutmap[ key ] = scale * cutmap[ key]
-        print " cut "+str(key) +" = "+str( cutmap[key] )
+        print " cut "+str(key) +" = "+str( round(cutmap[key],1) )
 
     cutflow[ sample ] = cutmap
 
