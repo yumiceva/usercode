@@ -36,6 +36,8 @@ cutlabel[8] = 'jets>=2'
 cutlabel[9] = 'jets>=3'
 cutlabel[10] = 'jets>=4'
 
+allmap = {}
+
 for sample in keys:
 
     print " processing " + sample
@@ -53,9 +55,16 @@ for sample in keys:
 
         cutmap[ key ] = scale * cutmap[ key]
         print " cut "+str(key) + " ("+cutlabel[key]+") "+" = "+str( round(cutmap[key],1) )
+        if allmap.has_key(key):
+            allmap[ key ] += cutmap[ key ]
+        else:
+            allmap[ key ] = cutmap[ key ]
 
     cutflow[ sample ] = cutmap
 
+print " TOTAL"
+for key in allmap.keys():
+    print " cut "+str(key) + " ("+cutlabel[key]+") "+" = "+str( round(allmap[key],1) )
 
     
 
