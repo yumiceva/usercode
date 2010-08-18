@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.cc,v 1.19 2009/10/26 22:51:24 kellerjd Exp $
+ version $Id: TopEventNtuple.cc,v 1.1 2010/08/18 16:28:43 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -45,19 +45,19 @@ void TopEventNtuple::Reset()
     lumi       = -1;
     dataType   = -1;
 
-    njets      = -1;
-    nmuons     = -1;
-    nelectrons = -1;
-    nvertices  = -1;
+    //njets      = -1;
+    //nmuons     = -1;
+    //nelectrons = -1;
+    //nvertices  = -1;
 
     muons.clear();
-    //jets.clear();
+    jets.clear();
     electrons.clear();
-    //vertices.clear();
+    vertices.clear();
 
     MET        = -1;
-    METx       = -1;
-    METy       = -1;
+    METeta     = -999;
+    METphi     = -999;
     Ht         = -1;
     
     M3         = -1;

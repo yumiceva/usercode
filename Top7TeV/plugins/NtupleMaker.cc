@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.cc,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
+// $Id: NtupleMaker.cc,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
 //
 //
 
@@ -369,6 +369,9 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
     _ntuple->MET = cmet->et();
+    _ntuple->METeta = cmet->eta();
+    _ntuple->METphi = cmet->phi();
+    _ntuple->Ht = cmet->sumEt();
 
     ftree->Fill();
 

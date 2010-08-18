@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -44,13 +44,13 @@ public:
     Int_t event;       // event number
     Int_t run;         // run number
     Int_t lumi;        // luminosity section
-	Int_t dataType;    // type of data: MC, colisions,
+    Int_t dataType;    // type of data: MC, colisions,
 	
     //_______ event counters_________________________
-    Int_t njets;       // number of jets
-    Int_t nmuons;      // number of muons
-    Int_t nelectrons;  // number of electrons
-    Int_t nvertices;   // number of vertices
+    //Int_t njets;       // number of jets
+    //Int_t nmuons;      // number of muons
+    //Int_t nelectrons;  // number of electrons
+    //Int_t nvertices;   // number of vertices
 
     //______ muons ________________________________
     std::vector< TopMuonEvent > muons;
@@ -66,8 +66,8 @@ public:
     
     //_____ Event variables ______________________
     Float_t MET;
-    Float_t METx;
-    Float_t METy;
+    Float_t METeta;
+    Float_t METphi;
     Float_t Ht;
     
     //_____ jet combinations _______________________
