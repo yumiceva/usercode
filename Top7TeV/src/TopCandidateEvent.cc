@@ -1,36 +1,39 @@
 /**_________________________________________________________________
-   class:   TopBaseEvent.cc
+   class:   TopCandidateEvent.cc
    package: 
 
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopBaseEvent.cc,v 1.19 2009/10/26 22:51:24 kellerjd Exp $
+ version $Id: TopCandidateEvent.cc,v 1.1 2010/08/18 16:28:43 yumiceva Exp $
 
 ________________________________________________________________**/
 
 #ifdef NOSCRAMV
-#include "TopBaseEvent.h"
+#include "TopCandidateEvent.h"
 #else
-#include "Yumiceva/Top7TeV/interface/TopBaseEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
 #endif
 
 #include <math.h>
 
-ClassImp(TopBaseEvent)
+ClassImp(TopCandidateEvent)
 
 // ROOT
 
 
 //_______________________________________________________________
-void TopBaseEvent::Reset()
+void TopCandidateEvent::Reset()
 {
 
     //___ kinematics _______________________________
-    px = -1;
-    py = -1;
-    pz = -1;
+    eta = -999;
+    phi = -999;
     pt = -1;
     e = -1;
+
+    vx = -1;
+    vy = -1;
+    vz = -1;
 
 }

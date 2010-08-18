@@ -8,38 +8,38 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopElectronEvent.h,v 1.3 2009/07/30 06:02:19 jengbou Exp $
+ version $Id: TopElectronEvent.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
 
 ________________________________________________________________**/
 
 
 #ifdef NOSCRAMV
-#include "TopBaseEvent.h"
+#include "TopCandidateEvent.h"
 #else
-#include "Yumiceva/Top7TeV/interface/TopBaseEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
 #endif
 
 
-class TopElectronEvent : public TopBaseEvent
+class TopElectronEvent : public TopCandidateEvent
 {
 
-public:
+ public:
 
-    TopElectronEvent() : TopBaseEvent()
+  TopElectronEvent() : TopCandidateEvent()
     {
-        Reset();
+      Reset();
     }
-        ~TopElectronEvent() {}
+    ~TopElectronEvent() {}
 
     virtual void Reset();
 
     //___
-    Int_t normchi2;
-    Int_t isTracker;
     Float_t d0;
     Float_t d0err;
     Float_t d0wrtPV2d;
     Float_t d0wrtPV2derr;
+
+    Float_t reliso03;
 
     ClassDef(TopElectronEvent,1);
 

@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.3 2009/07/30 06:02:19 jengbou Exp $
+ version $Id: TopEventNtuple.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -26,7 +26,7 @@ ________________________________________________________________**/
 #include "Yumiceva/Top7TeV/interface/TopMuonEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopElectronEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopJetEvent.h"
-//#include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
 #endif
 
 
@@ -61,8 +61,8 @@ public:
     //_____ electrons _____________________________
     std::vector< TopElectronEvent > electrons;
     
-	//_____ vertices ______________________________
-    //std::vector< TopVertexEvent > vertices;
+    //_____ vertices ______________________________
+    std::vector< TopVertexEvent > vertices;
     
     //_____ Event variables ______________________
     Float_t MET;

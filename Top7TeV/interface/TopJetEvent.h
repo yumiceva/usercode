@@ -8,24 +8,24 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.h,v 1.3 2009/07/30 06:02:19 jengbou Exp $
+ version $Id: TopJetEvent.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
 
 ________________________________________________________________**/
 
 
 #ifdef NOSCRAMV
-#include "TopBaseEvent.h"
+#include "TopCandidateEvent.h"
 #else
-#include "Yumiceva/Top7TeV/interface/TopBaseEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
 #endif
 
 
-class TopJetEvent : public TopBaseEvent
+class TopJetEvent : public TopCandidateEvent
 {
 
 public:
 
-    TopJetEvent() : TopBaseEvent()
+    TopJetEvent() : TopCandidateEvent()
     {
         Reset();
     }

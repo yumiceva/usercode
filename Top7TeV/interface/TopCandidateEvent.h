@@ -1,14 +1,14 @@
-#ifndef TopBaseEvent_h
-#define TopBaseEvent_h
+#ifndef TopCandidateEvent_h
+#define TopCandidateEvent_h
 
 /**_________________________________________________________________
-   class:   TopBaseEvent.h
+   class:   TopCandidateEvent.h
    package:
 
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopBaseEvent.h,v 1.3 2009/07/30 06:02:19 jengbou Exp $
+ version $Id: TopCandidateEvent.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -16,27 +16,30 @@ ________________________________________________________________**/
 // ROOT
 #include "TObject.h"
 
-class TopBaseEvent : public TObject
+class TopCandidateEvent : public TObject
 {
 
 public:
 
-    TopBaseEvent()
+    TopCandidateEvent()
     {
         Reset();
     }
-    ~TopBaseEvent() {}
+    ~TopCandidateEvent() {}
 
     virtual void Reset();
 
 	//___ kinematics _______________________________
-    Float_t px;
-    Float_t py;
-    Float_t pz;
+    Float_t eta;
+    Float_t phi;
     Float_t pt;
     Float_t e;
 
-    ClassDef(TopBaseEvent,1);
+    Float_t vx;
+    Float_t vy;
+    Float_t vz;
+
+    ClassDef(TopCandidateEvent,1);
 
 };
 

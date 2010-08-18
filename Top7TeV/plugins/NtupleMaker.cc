@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.cc,v 1.1 2010/08/17 15:22:04 samvel Exp $
+// $Id: NtupleMaker.cc,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
 //
 //
 
@@ -32,6 +32,7 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/MuonReco/interface/MuonFwd.h"
@@ -73,6 +74,8 @@ NtupleMaker::~NtupleMaker()
 {
     // do anything here that needs to be done at desctruction time
     // (e.g. close files, deallocate resources etc.)
+
+  delete _ntuple;
 }
 
 
@@ -103,7 +106,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByLabel("ak5CaloJetsL2L3",jets);
 
     // -[ Primary Vertices ]-
-    Handle<vector<reco::Vertex> > pvtx;
+    Handle<VertexCollection> pvtx;
     iEvent.getByLabel("offlinePrimaryVertices",pvtx);
 
     // -[ Beam Spot ]-
@@ -143,27 +146,37 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     if(pvtx->size()<1)
         return false;
         
-    //_npvs = pvtx->size();
+    // check PVs
+    int npvs = 0;
+    for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
 
-    Vertex const & pv = pvtx->at(0);
-    if(!(!pv.isFake()
-        &&pv.ndof()>4
-        &&fabs(pv.z())< _isDataInput ? 24 : 15.
-        &&fabs(pv.position().Rho())<2.0))
-        return false;
+      if(!pv->isFake()
+	 &&pv->ndof()>4
+	 &&fabs(pv->z())< _isDataInput ? 24 : 15.
+	 &&fabs(pv->position().Rho())<2.0 ) {
+
+	npvs++;
+	TopVertexEvent topvtx;
+	topvtx.vx = pv->x();
+	topvtx.vy = pv->y();
+	topvtx.vz = pv->z();
+	topvtx.ndof = pv->ndof();
+	topvtx.rho = pv->position().Rho();
+	_ntuple->vertices.push_back(topvtx);
+      }
+    }
+    if ( npvs == 0 ) return false;
 
     _cutflow->Fill(2);
 
+    // Event ID
     _ntuple->event = iEvent.id().event();
     _ntuple->run   = iEvent.id().run();
     _ntuple->lumi  = iEvent.id().luminosityBlock();
 
-
-    //_pv_coord[0] = pv.x();
-    //_pv_coord[1] = pv.y();
-    //_pv_coord[2] = pv.z();
-
-    math::XYZPoint primaryVertex(pv.x(), pv.y(), pv.z());
+    math::XYZPoint primaryVertex( _ntuple->vertices[0].vx,
+				  _ntuple->vertices[0].vy,
+				  _ntuple->vertices[0].vz);
 
     size_t n_loose=0;
     size_t n_tight=0;
@@ -190,7 +203,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
                 DeltaR=dr;
           }
        }
-
+       
 
        // Loose muons
        if(
@@ -211,74 +224,63 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
           n_muon++;
 	  
           TopMuonEvent topmuon;
-
+	  
           topmuon.pt = mu->pt();
-          topmuon.px = mu->px();
-          topmuon.py = mu->py();
+          topmuon.eta = mu->eta();
+          topmuon.phi = mu->phi();
           topmuon.e  = mu->energy();
+	  topmuon.vx = mu->vx();
+	  topmuon.vy = mu->vy();
+	  topmuon.vz = mu->vz();
 
           topmuon.d0 = -1.* mu->innerTrack()->dxy(point);
           topmuon.d0err = sqrt( mu->innerTrack()->d0Error() * mu->innerTrack()->d0Error() + beamSpot.BeamWidthX()*beamSpot.BeamWidthX());
           topmuon.d0wrtPV2d = -1. * mu->innerTrack()->dxy(primaryVertex);
           //topmuon.d0wrtPV2derr
+	  topmuon.muonhits = mu->globalTrack()->hitPattern().numberOfValidMuonHits();
+	  topmuon.trackerhits = mu->innerTrack()->numberOfValidHits();
+	  topmuon.muonstations = mu->numberOfMatches();
           topmuon.normchi2 = mu->globalTrack()->normalizedChi2();
+	  
+	  topmuon.iso03_track = mu->isolationR03().sumPt;
+	  topmuon.iso03_ecal = mu->isolationR03().emEt;
+	  topmuon.iso03_hcal = mu->isolationR03().hadEt;
+	  topmuon.iso03_ecalveto = mu->isolationR03().emVetoEt;
+	  topmuon.iso03_hcalveto = mu->isolationR05().hadVetoEt;
+	  topmuon.reliso03 = reliso;
+	  topmuon.deltaR = DeltaR;
+	  
+	  topmuon.IsTrackerMuon = mu->isTrackerMuon();
+	  topmuon.IsLooseIsoMuon = IsLooseIsoMuon;
 
-	  /*
-          if(n_tight==0)
-            {
-             
-                muon_d0_ = -1.* mu->innerTrack()->dxy(point);
-                _muon_d0pv2d = -1. * mu->innerTrack()->dxy(primaryVertex);
+	  //_muon_iso05_track = mu->isolationR05().sumPt;
+	  //_muon_iso05_ecal = mu->isolationR05().emEt;
+	  //_muon_iso05_hcal = mu->isolationR05().hadEt;
+	  //_muon_iso05_ecal_veto = mu->isolationR05().emVetoEt;
+	  //_muon_iso05_hcal_veto = mu->isolationR05().hadVetoEt;
 
-                muon_d0Error_ = sqrt( mu->innerTrack()->d0Error() * mu->innerTrack()->d0Error() + beamSpot.BeamWidthX()*beamSpot.BeamWidthX());
-                muon_old_reliso_=( mu->pt()/(mu->pt() + mu->isolationR03().sumPt+mu->isolationR03().emEt+mu->isolationR03().hadEt) );
-                muon_pt_ = mu->pt();
-                muon_eta_ = mu->eta();
-                muon_phi_ = mu->phi();
-                muon_chi2_ = mu->globalTrack()->normalizedChi2();
-                muon_muonhits_ = mu->globalTrack()->hitPattern().numberOfValidMuonHits();
-                muon_trackerhits_ = mu->innerTrack()->numberOfValidHits();
-                _muon_iso03_track = mu->isolationR03().sumPt;
-                _muon_iso03_ecal = mu->isolationR03().emEt;
-                _muon_iso03_hcal = mu->isolationR03().hadEt;
-                _muon_iso03_ecal_veto = mu->isolationR03().emVetoEt;
-                _muon_iso03_hcal_veto = mu->isolationR03().hadVetoEt;
+	  // https://twiki.cern.ch/twiki/bin/view/CMS/VbtfWmunuBaselineSelection
 
-                _muon_iso05_track = mu->isolationR05().sumPt;
-                _muon_iso05_ecal = mu->isolationR05().emEt;
-                _muon_iso05_hcal = mu->isolationR05().hadEt;
-                _muon_iso05_ecal_veto = mu->isolationR05().emVetoEt;
-                _muon_iso05_hcal_veto = mu->isolationR05().hadVetoEt;
-
-                _muon_coord[0] = mu->vx();
-                _muon_coord[1] = mu->vy();
-                _muon_coord[2] = mu->vz();
-                // https://twiki.cern.ch/twiki/bin/view/CMS/VbtfWmunuBaselineSelection
-                _muon_mustations = mu->numberOfMatches();
-                TrackerMu_ = mu->isTrackerMuon();
-                GlobalMu_ = mu->isGlobalMuon();
-                muon_jet_dr_ = DeltaR;
-                double w_et = cmet->et()+ mu->pt();
-                double w_px = cmet->px()+ mu->px();
-                double w_py = cmet->py()+ mu->py();
-                w_mt_ = sqrt(w_et*w_et-w_px*w_px-w_py*w_py);
-            }
-        }
-	  */
+	  //                double w_et = cmet->et()+ mu->pt();
+	  //    double w_px = cmet->px()+ mu->px();
+	  //    double w_py = cmet->py()+ mu->py();
+	  //    w_mt_ = sqrt(w_et*w_et-w_px*w_px-w_py*w_py);
+        
 	  // Tight Isolated muons
-        if (mu->isGlobalMuon()&&mu->isTrackerMuon()
-            &&abs(mu->eta())<2.1
-            &&mu->pt()>20.
-            &&reliso<0.05
-            &&mu->innerTrack()->numberOfValidHits()>=11
-            &&mu->globalTrack()->normalizedChi2()<10.
-            &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>0
-            &&DeltaR>0.3
-            &&abs(mu->innerTrack()->dxy(point))<0.02)
-        {
-            n_tight++;
-	    IsTightIsoMuon = 1;
-        }
+	  if (mu->isGlobalMuon()&&mu->isTrackerMuon()
+	      &&abs(mu->eta())<2.1
+	      &&mu->pt()>20.
+	      &&reliso<0.05
+	      &&mu->innerTrack()->numberOfValidHits()>=11
+	      &&mu->globalTrack()->normalizedChi2()<10.
+	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>0
+	      &&DeltaR>0.3
+	      &&abs(mu->innerTrack()->dxy(point))<0.02)
+	    {
+	      n_tight++;
+	      IsTightIsoMuon = 1;
+	      topmuon.IsTightIsoMuon = 1;
+	    }
 	
 	// store muons                                                                                                   
 	_ntuple->muons.push_back( topmuon );
@@ -295,16 +297,31 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             _cutflow->Fill(4);
     }
 
+    // Electrons
     for(GsfElectronCollection::const_iterator elec=electrons->begin(); elec!=electrons->end(); ++elec )
     {
         double RelIso = (elec->dr03TkSumPt()+elec->dr03EcalRecHitSumEt()+elec->dr03HcalTowerSumEt())/elec->et();
-        if(elec->et()>15.&&abs(elec->eta())<2.5&&RelIso<0.2)
-            n_electron++;
+        if(elec->et()>15.&&abs(elec->eta())<2.5&&RelIso<0.2) {
+	 
+	  n_electron++;
+	  TopElectronEvent topele;
+	  
+	  topele.eta = elec->eta();
+	  topele.phi = elec->phi();
+	  topele.pt = elec->pt();
+	  topele.e  = elec->energy();
+	  topele.vx = elec->vx();
+	  topele.vy = elec->vy();
+	  topele.vz = elec->vz();
+
+	  topele.reliso03 = RelIso;
+
+	  _ntuple->electrons.push_back( topele );
+
+	}
     }
 
-    //    if(n_electron!=0)
-    //  return;
-
+    // Jets
     int njets = 0;
     for(CaloJetCollection::const_iterator jet = jets->begin(); jet != jets->end(); ++jet)
     {
@@ -318,9 +335,9 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	  TopJetEvent topjet;
 
-	  topjet.px = jet->px();
-	  topjet.py = jet->py();
-	  topjet.pz = jet->pz();
+	  topjet.eta = jet->eta();
+	  topjet.phi = jet->phi();
+	  topjet.pt = jet->pt();
 	  topjet.e  = jet->energy();
 	  ++njets;
 
@@ -331,7 +348,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     if (1 == n_tight &&
-        1 == n_loose)
+        1 == n_loose && n_electron==0)
     {
         _cutflow->Fill(5);
 
