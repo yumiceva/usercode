@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.3 2010/08/18 21:20:15 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.1 2010/08/19 16:03:43 yumiceva Exp $
 //
 //
 
@@ -52,11 +52,13 @@ using namespace edm;
 using namespace reco;
 
 PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig):
+  ntuplefile_(iConfig.getParameter<std::string> ("ntupleFile")),
   hltTag_(iConfig.getParameter< InputTag >("hltTag")),
   muonTag_(iConfig.getParameter< InputTag >("MuonTag")),
   electronTag_(iConfig.getParameter< InputTag >("ElectronTag")),
   jetTag_(iConfig.getParameter< InputTag >("JetTag")),
   metTag_(iConfig.getParameter< InputTag >("METTag"))
+
 {
     //now do what ever initialization is needed
     //jetID = new helper::JetIDHelper(iConfig.getParameter<ParameterSet>("JetIDParams"));
@@ -390,13 +392,13 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 void 
 PATNtupleMaker::beginJob()
 {
-    theFile = new TFile("PATNtupleMaker.root", "RECREATE");
-    ftree = new TTree("top","top");
-    ftree->AutoSave();
-
-    ftree->Branch("top.","TopEventNtuple",&_ntuple,64000,1); 
-
-    _cutflow = new TH1I("cutflow", "Cutflow", 10, 0, 10);
+  theFile = new TFile(ntuplefile_.c_str(), "RECREATE");
+  ftree = new TTree("top","top");
+  ftree->AutoSave();
+  
+  ftree->Branch("top.","TopEventNtuple",&_ntuple,64000,1); 
+  
+  _cutflow = new TH1I("cutflow", "Cutflow", 10, 0, 10);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
