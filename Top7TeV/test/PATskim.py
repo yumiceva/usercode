@@ -11,7 +11,7 @@
 
 import string
 
-events= 10
+events= -1
 inputType = "MC" # choose MC/DATA
 
 eventtype="TTJets"
@@ -252,11 +252,11 @@ process.out.outputCommands += ['drop *_cleanPat*_*_*',
 #process.out.outputCommands += patTriggerStandAloneEventContent
 
 # Keep everything, including input
-process.out.outputCommands = ['keep *']
+#process.out.outputCommands = ['keep *']
 
 process.out.fileName = outfile
 
 # No output
-#del(process.outpath)
+del(process.outpath)
 
 
