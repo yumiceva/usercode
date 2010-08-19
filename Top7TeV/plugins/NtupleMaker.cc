@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.cc,v 1.3 2010/08/18 21:20:15 yumiceva Exp $
+// $Id: NtupleMaker.cc,v 1.4 2010/08/19 15:03:49 yumiceva Exp $
 //
 //
 
@@ -352,11 +352,12 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     {
         _cutflow->Fill(5);
 
-	pass_event = true;
+	//pass_event = true;
 
-        if (njets)
-            _cutflow->Fill(6);
-
+        if (njets) {
+	  _cutflow->Fill(6);
+	  pass_event = true;
+	}
         if (1 < njets)
             _cutflow->Fill(7);
 
