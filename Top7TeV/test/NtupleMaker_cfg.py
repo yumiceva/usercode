@@ -22,4 +22,14 @@ process.metMuonJESCorAK5 = metJESCorAK5CaloJet.clone()
 process.metMuonJESCorAK5.inputUncorMetLabel = "corMetGlobalMuons"
 process.metCorSequence = cms.Sequence(process.metMuonJESCorAK5)
 
+process.Out = cms.OutputModule("PoolOutputModule",
+                               SelectEvents = cms.untracked.PSet(
+    SelectEvents = cms.vstring('p')
+    ),
+    fileName = cms.untracked.string('RECO.root')
+)
+
+
 process.p = cms.Path(process.ak5CaloJetsL2L3 * process.metCorSequence * process.NtupleMaker)
+
+process.outpath = cms.EndPath(process.Out)
