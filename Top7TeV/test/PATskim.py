@@ -11,7 +11,7 @@
 
 import string
 
-events= -1
+events= 50
 inputType = "MC" # choose MC/DATA
 
 eventtype="TTJets"
@@ -218,22 +218,20 @@ process.PATNtupleMaker.ntupleFile = outntuple
 
 ### The process path ###
 process.p = cms.Path(
-#    process.eventsProcessed *
+
+    process.scrapingVeto *
+    process.HBHENoiseFilter *
+    process.triggerFilter *
+        
     process.simpleSecondaryVertexHighPurBJetTags *
     process.patDefaultSequence *
     #process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
     #process.vFlavor *          # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
-    process.scrapingVeto *
-#    process.eventsPassingScrapingVeto *
-    process.HBHENoiseFilter *
-#    process.eventsPassingHCALNoiseFilter *
-#    process.triggerFilter *
-#    process.eventsPassingTrigger *
-    #process.pvFilter *
+    
     process.makeGenEvt *        # Use only for tT (MC) events
     process.prunedGenParticles *
     process.PATNtupleMaker
-#    process.eventsPassed
+
 )
 
 ### Output ###
