@@ -59,14 +59,14 @@ process.maxEvents.input = events
 
 ### Speed up I/O using patches ###
 # https://twiki.cern.ch/twiki/bin/view/Main/CmsIOWork
-process.source.cacheSize = cms.untracked.uint32(20*1024*1024)
-process.AdaptorConfig = cms.Service(
-    "AdaptorConfig",
-    enable=cms.untracked.bool(True),
-    stats = cms.untracked.bool(True),
-    cacheHint = cms.untracked.string("auto-detect"),
-    readHint = cms.untracked.string("direct-unbuffered")
-)
+##process.source.cacheSize = cms.untracked.uint32(20*1024*1024)
+##process.AdaptorConfig = cms.Service(
+##    "AdaptorConfig",
+##    enable=cms.untracked.bool(True),
+##    stats = cms.untracked.bool(True),
+##    cacheHint = cms.untracked.string("auto-detect"),
+##    readHint = cms.untracked.string("direct-unbuffered")
+#)
 
 
 ### PAT setup ###
