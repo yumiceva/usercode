@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.cc,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
+// $Id: NtupleMaker.cc,v 1.3 2010/08/18 21:20:15 yumiceva Exp $
 //
 //
 
@@ -152,7 +152,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
       if(!pv->isFake()
 	 &&pv->ndof()>4
-	 &&fabs(pv->z())< _isDataInput ? 24 : 15.
+	 &&fabs(pv->z())< (_isDataInput ? 24 : 15.)
 	 &&fabs(pv->position().Rho())<2.0 ) {
 
 	npvs++;
