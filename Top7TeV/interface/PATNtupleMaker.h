@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
+// $Id: PATNtupleMaker.h,v 1.1 2010/08/19 16:03:42 yumiceva Exp $
 //
 //
 
@@ -56,6 +56,7 @@ private:
   // ----------member data ---------------------------
   TFile *theFile;
   TTree *ftree;
+  std::string ntuplefile_;
 
   edm::TriggerNames hltNames_;
   edm::InputTag hltTag_;
