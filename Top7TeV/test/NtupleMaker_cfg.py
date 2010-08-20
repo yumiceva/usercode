@@ -11,7 +11,7 @@ process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
     '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
     )
-                            )
+)
 
 process.load("Yumiceva.Top7TeV.NtupleMaker_cfi")
 process.NtupleMaker.inputType = "MC"
@@ -30,6 +30,8 @@ process.Out = cms.OutputModule("PoolOutputModule",
 )
 
 
-process.p = cms.Path(process.ak5CaloJetsL2L3 * process.metCorSequence * process.NtupleMaker)
+process.p = cms.Path(
+    process.ak5CaloJetsL2L3 * process.metCorSequence *
+    process.NtupleMaker)
 
 process.outpath = cms.EndPath(process.Out)

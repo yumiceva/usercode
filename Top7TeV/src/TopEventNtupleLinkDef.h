@@ -13,6 +13,8 @@
 #include "Yumiceva/Top7TeV/interface/TopJetEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
 #endif
+
+#include <vector>
  
 #ifdef __CINT__
  
@@ -26,5 +28,15 @@
 #pragma link C++ class TopJetEvent+;
 #pragma link C++ class TopElectronEvent+;
 #pragma link C++ class TopVertexEvent+;
+
+#pragma link C++ class std::vector< TopMuonEvent >;
+#pragma link C++ class std::vector< TopMuonEvent >::iterator;
+#pragma link C++ class std::vector< TopElectronEvent >;
+#pragma link C++ class std::vector< TopElectronEvent >::iterator;
+#pragma link C++ class std::vector< TopJetEvent >;
+#pragma link C++ class std::vector< TopJetEvent >::iterator;
+#pragma link C++ class std::vector< TopVertexEvent >;
+#pragma link C++ class std::vector< TopVertexEvent >::iterator;
+
 
 #endif

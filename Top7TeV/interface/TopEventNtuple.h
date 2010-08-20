@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.3 2010/08/18 21:20:15 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -20,8 +20,8 @@ ________________________________________________________________**/
 #ifdef NOSCRAMV
 #include "TopMuonEvent.h"
 #include "TopElectronEvent.h"
-//#include "TopJetEvent.h"
-//#include "TopVertexEvent.h"
+#include "TopJetEvent.h"
+#include "TopVertexEvent.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopMuonEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopElectronEvent.h"

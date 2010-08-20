@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.cc,v 1.4 2010/08/19 15:03:49 yumiceva Exp $
+// $Id: NtupleMaker.cc,v 1.5 2010/08/19 21:29:06 yumiceva Exp $
 //
 //
 
@@ -128,7 +128,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     cmet = &(cmetCol->front());
 
     _cutflow->Fill(0);
-
+    
     bool hlt_mu_ = false; 
     for(size_t itrig = 0; itrig != hlt->size(); itrig++){
         string hltName = hltNames_.triggerName(itrig);
@@ -140,6 +140,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     if(!hlt_mu_)
         return false;
+    
 
     _cutflow->Fill(1);
 
@@ -150,10 +151,10 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int npvs = 0;
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
 
-      if(!pv->isFake()
-	 &&pv->ndof()>4
-	 &&fabs(pv->z())< (_isDataInput ? 24 : 15.)
-	 &&fabs(pv->position().Rho())<2.0 ) {
+      if( (!pv->isFake())
+	  &&pv->ndof()>4
+	  && fabs(pv->z()) < (_isDataInput ? 24. : 15.)
+	  && fabs(pv->position().Rho()) < 2.0 ) {
 
 	npvs++;
 	TopVertexEvent topvtx;
@@ -359,13 +360,14 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  pass_event = true;
 	}
         if (1 < njets)
-            _cutflow->Fill(7);
+	  _cutflow->Fill(7);
 
         if (2 < njets)
-            _cutflow->Fill(8);
+	  _cutflow->Fill(8);
 
-        if (3 < njets)
-            _cutflow->Fill(9);
+        if (3 < njets) 
+	  _cutflow->Fill(9);
+	
     }
 
 
