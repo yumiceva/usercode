@@ -1,31 +1,31 @@
 /**_________________________________________________________________
-   class:   TopVertexEvent.cc
+   class:   TopGenJetEvent.cc
    package: 
 
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopVertexEvent.cc,v 1.1 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopGenJetEvent.cc,v 1.1 2010/08/18 21:13:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
 #ifdef NOSCRAMV
-#include "TopVertexEvent.h"
+#include "TopGenJetEvent.h"
 #else
-#include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenJetEvent.h"
 #endif
 
-
-ClassImp(TopVertexEvent)
+ClassImp(TopGenJetEvent)
 
 //_______________________________________________________________
-void TopVertexEvent::Reset()
+void TopGenJetEvent::Reset()
 {
 
-  vx = -999;
-  vy = -999;
-  vz = -999;
-  ndof = -999;
-  rho = -999;
+  pt = -999;
+  eta = -999;
+  phi = -999;
+  e = -999;
+
+  flavor =-999;
 
 }

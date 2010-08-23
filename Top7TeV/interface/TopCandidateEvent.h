@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopCandidateEvent.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
+ version $Id: TopCandidateEvent.h,v 1.1 2010/08/18 21:13:04 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -38,6 +38,8 @@ public:
     Float_t vx;
     Float_t vy;
     Float_t vz;
+
+    Float_t charge;
 
     ClassDef(TopCandidateEvent,1);
 

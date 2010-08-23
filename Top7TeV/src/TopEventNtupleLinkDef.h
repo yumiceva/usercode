@@ -1,10 +1,14 @@
 #ifdef NOSCRAMV
 #include "TopEventNtuple.h"
-#include "TopBaseEvent.h"
+#include "TopCandidateEvent.h"
 #include "TopMuonEvent.h"
 #include "TopJetEvent.h"
 #include "TopElectronEvent.h"
 #include "TopVertexEvent.h"
+#include "TopGenCandidateEvent.h"
+#include "TopGenMuonEvent.h"
+#include "TopGenElectronEvent.h"
+#include "TopGenJetEvent.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopEventNtuple.h"
 #include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
@@ -12,6 +16,10 @@
 #include "Yumiceva/Top7TeV/interface/TopElectronEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopJetEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenCandidateEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenMuonEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenElectronEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenJetEvent.h"
 #endif
 
 #include <vector>
@@ -28,6 +36,10 @@
 #pragma link C++ class TopJetEvent+;
 #pragma link C++ class TopElectronEvent+;
 #pragma link C++ class TopVertexEvent+;
+#pragma link C++ class TopGenCandidateEvent+;
+#pragma link C++ class TopGenMuonEvent+;
+#pragma link C++ class TopGenElectronEvent+;
+#pragma link C++ class TopGenJetEvent+;
 
 #pragma link C++ class std::vector< TopMuonEvent >;
 #pragma link C++ class std::vector< TopMuonEvent >::iterator;

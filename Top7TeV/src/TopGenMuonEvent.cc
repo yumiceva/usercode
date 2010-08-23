@@ -1,31 +1,27 @@
 /**_________________________________________________________________
-   class:   TopVertexEvent.cc
+   class:   TopGenMuonEvent.cc
    package: 
 
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopVertexEvent.cc,v 1.1 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopGenMuonEvent.cc,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
 #ifdef NOSCRAMV
-#include "TopVertexEvent.h"
+#include "TopGenMuonEvent.h"
 #else
-#include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenMuonEvent.h"
 #endif
 
+#include <math.h>
 
-ClassImp(TopVertexEvent)
+ClassImp(TopGenMuonEvent)
 
 //_______________________________________________________________
-void TopVertexEvent::Reset()
+void TopGenMuonEvent::Reset()
 {
-
-  vx = -999;
-  vy = -999;
-  vz = -999;
-  ndof = -999;
-  rho = -999;
-
+   
+    //___
 }

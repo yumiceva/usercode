@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
+ version $Id: TopJetEvent.h,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -34,6 +34,10 @@ public:
     virtual void Reset();
 	
     //___
+    Float_t btag_TCHE;
+    Float_t btag_TCHP;
+    Float_t btag_SSVHE;
+    Float_t btag_SSVHP;
 
     ClassDef(TopJetEvent,1);
 
