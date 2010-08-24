@@ -8,15 +8,17 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
+ version $Id: TopMuonEvent.h,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
 
 #ifdef NOSCRAMV
 #include "TopCandidateEvent.h"
+#include "TopGenMuonEvent.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenMuonEvent.h"
 #endif
 
 
@@ -54,8 +56,17 @@ public:
     Float_t iso03_ecalveto;
     Float_t iso03_hcalveto;
     Float_t reliso03;
-    Float_t deltaR;
+    Float_t CalodeltaR;
+    Float_t JPTdeltaR;
+    Float_t PFdeltaR;
 
+    Float_t CalEhad;
+    Float_t CalEho;
+    Float_t CalEem;
+    Float_t CaloCompatibility;
+
+    //___ MC
+    TopGenMuonEvent mc;
 
     ClassDef(TopMuonEvent,1);
 

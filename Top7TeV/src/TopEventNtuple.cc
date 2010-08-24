@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.cc,v 1.1 2010/08/18 16:28:43 yumiceva Exp $
+ version $Id: TopEventNtuple.cc,v 1.2 2010/08/18 21:20:15 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -24,9 +24,7 @@ ClassImp(TopEventNtuple)
 //_______________________________________________________________
 TopEventNtuple::TopEventNtuple()
 {
-
     this->Reset();
-
 }
 
 
@@ -51,15 +49,23 @@ void TopEventNtuple::Reset()
     //nvertices  = -1;
 
     muons.clear();
-    jets.clear();
+    Calojets.clear();
+    JPTjets.clear();
+    PFjets.clear();
     electrons.clear();
     vertices.clear();
 
-    MET        = -1;
-    METeta     = -999;
-    METphi     = -999;
-    Ht         = -1;
-    
-    M3         = -1;
-    chi2sorting= -1;
+    CaloMET        = -999;
+    //CaloMETeta     = -999;
+    CaloMETphi     = -999;
+    CaloHt         = -1;
+    tcMET = -999;
+    tcMETphi = -999;
+    tcHt = -999;
+    PFMET = -999;
+    PFMETphi = -999;
+    PFHt = -999;
+
+    //M3         = -1;
+    //chi2sorting= -1;
 }

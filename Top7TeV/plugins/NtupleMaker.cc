@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.cc,v 1.5 2010/08/19 21:29:06 yumiceva Exp $
+// $Id: NtupleMaker.cc,v 1.6 2010/08/20 18:53:24 yumiceva Exp $
 //
 //
 
@@ -249,7 +249,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topmuon.iso03_ecalveto = mu->isolationR03().emVetoEt;
 	  topmuon.iso03_hcalveto = mu->isolationR05().hadVetoEt;
 	  topmuon.reliso03 = reliso;
-	  topmuon.deltaR = DeltaR;
+	  topmuon.CalodeltaR = DeltaR;
 	  
 	  topmuon.IsTrackerMuon = mu->isTrackerMuon();
 	  topmuon.IsLooseIsoMuon = IsLooseIsoMuon;
@@ -343,7 +343,7 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  ++njets;
 
 	  // store jets
-	  _ntuple->jets.push_back( topjet );
+	  _ntuple->Calojets.push_back( topjet );
 
         }
     }
@@ -371,10 +371,10 @@ NtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
 
-    _ntuple->MET = cmet->et();
-    _ntuple->METeta = cmet->eta();
-    _ntuple->METphi = cmet->phi();
-    _ntuple->Ht = cmet->sumEt();
+    _ntuple->CaloMET = cmet->et();
+    //_ntuple->CaloMETeta = cmet->eta();
+    _ntuple->CaloMETphi = cmet->phi();
+    _ntuple->CaloHt = cmet->sumEt();
 
     ftree->Fill();
 

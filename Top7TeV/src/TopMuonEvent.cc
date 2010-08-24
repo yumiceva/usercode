@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.cc,v 1.1 2010/08/18 16:28:43 yumiceva Exp $
+ version $Id: TopMuonEvent.cc,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -44,7 +44,15 @@ void TopMuonEvent::Reset()
   iso03_ecalveto = -1;
   iso03_hcalveto = -1;
   reliso03 = -1;
-  deltaR = -1;
+  CalodeltaR = -1;
+  JPTdeltaR = -1;
+  PFdeltaR = -1;
 
+  CalEhad = -999;
+  CalEho = -999;
+  CalEem = -999;
+  CaloCompatibility = -999;
+
+  mc.Reset();
 
 }

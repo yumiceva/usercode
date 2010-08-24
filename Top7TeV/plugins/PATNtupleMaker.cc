@@ -12,9 +12,9 @@
 */
 //
 // Original Author:  "Jian Wang"
-//        Modified:  Samvel Khalatian
+//        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.1 2010/08/19 16:03:43 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.2 2010/08/19 19:32:40 yumiceva Exp $
 //
 //
 
@@ -30,10 +30,14 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Common/interface/TriggerNames.h"
+#include "FWCore/ServiceRegistry/interface/Service.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
+#include "DataFormats/JetReco/interface/JPTJet.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
@@ -60,15 +64,16 @@ PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig):
   metTag_(iConfig.getParameter< InputTag >("METTag"))
 
 {
-    //now do what ever initialization is needed
-    //jetID = new helper::JetIDHelper(iConfig.getParameter<ParameterSet>("JetIDParams"));
-    _isDataInput = "DATA" == iConfig.getParameter<std::string>("inputType");
+  //now do what ever initialization is needed
 
-    cout << "[PATNtupleMaker] Using " << (_isDataInput ? "DATA" : "MC")
-        << " input" << endl;
+  //jetID = new helper::JetIDHelper(iConfig.getParameter<ParameterSet>("JetIDParams"));
+  _isDataInput = "DATA" == iConfig.getParameter<std::string>("inputType");
 
-    _ntuple = new TopEventNtuple();
+  cout << "[PATNtupleMaker] Using " << (_isDataInput ? "DATA" : "MC")
+       << " input" << endl;
 
+  _ntuple = new TopEventNtuple();
+  
 }
 
 
@@ -100,18 +105,24 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
    _ntuple->Reset();
 
     // -[ Trigger ]-
-    Handle<TriggerResults> hlt;
-    iEvent.getByLabel(hltTag_,hlt);
-    const TriggerNames & hltNames_ = iEvent.triggerNames(*hlt);
+    //Handle<TriggerResults> hlt;
+    //iEvent.getByLabel(hltTag_,hlt);
+    //const TriggerNames & hltNames_ = iEvent.triggerNames(*hlt);
 
     // -[ Muons ]-
     Handle<MuonCollection> muons;
     iEvent.getByLabel(muonTag_,muons);
 
     // -[ Jets ]-
-    Handle<JetCollection> jets;
-    iEvent.getByLabel(jetTag_,jets);
+    Handle<JetCollection> calojets;
+    iEvent.getByLabel(jetTag_,calojets);
+    
+    Handle<JetCollection> jptjets;
+    iEvent.getByLabel("patJPTJetUserData",jptjets); //patJetsAK5JPT
 
+    Handle<JetCollection> pfjets;
+    iEvent.getByLabel("patJetsAK5PF",pfjets);
+    
     // -[ Primary Vertices ]-
     Handle<VertexCollection> pvtx;
     iEvent.getByLabel("offlinePrimaryVertices",pvtx);
@@ -135,19 +146,33 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     const METCollection *cmetCol = cmetHandle.product();
     cmet = &(cmetCol->front());
 
-    _cutflow->Fill(0);
+    // tcMET
+    const pat::MET *tcmet;
+    Handle<METCollection> tcmetHandle;
+    iEvent.getByLabel("patMETsTC", tcmetHandle);
+    const METCollection *tcmetCol = tcmetHandle.product();
+    tcmet = &(tcmetCol->front());
 
-    bool hlt_mu_ = false; 
-    for(size_t itrig = 0; itrig != hlt->size(); itrig++){
-        string hltName = hltNames_.triggerName(itrig);
-        if(hltName == "HLT_Mu9"&&hlt->accept(itrig))
-        {
-            hlt_mu_ = true;
-            break;
-        }
-    }
-    if(!hlt_mu_)
-        return false;
+    // PFMET
+    const pat::MET *pfmet;
+    Handle<METCollection> pfmetHandle;
+    iEvent.getByLabel("patMETsPF", pfmetHandle);
+    const METCollection *pfmetCol = pfmetHandle.product();
+    pfmet = &(pfmetCol->front());
+
+    //_cutflow->Fill(0);
+
+    //bool hlt_mu_ = false; 
+    //for(size_t itrig = 0; itrig != hlt->size(); itrig++){
+    //    string hltName = hltNames_.triggerName(itrig);
+    //    if(hltName == "HLT_Mu9"&&hlt->accept(itrig))
+    //    {
+    //        hlt_mu_ = true;
+    //        break;
+    //    }
+    //}
+    //if(!hlt_mu_)
+    //    return false;
 
     _cutflow->Fill(1);
 
@@ -156,11 +181,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
     // check PVs
     int npvs = 0;
+    float cutPVz = 15.;
+    if (_isDataInput) cutPVz = 24.;
+
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
 
       if(!pv->isFake()
 	 &&pv->ndof()>4
-	 &&fabs(pv->z())< _isDataInput ? 24 : 15.
+	 &&fabs(pv->z())< cutPVz
 	 &&fabs(pv->position().Rho())<2.0 ) {
 
 	npvs++;
@@ -190,35 +218,77 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     size_t n_tight=0;
     size_t n_muon=0;
     size_t n_electron=0;
+    
+    //if (_debug) cout << "begin loop over muons" << endl;
 
     for(MuonCollection::const_iterator mu = muons->begin(); mu != muons->end();  ++mu) {
         
       // relative isolation
-       double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
+      double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
 
-       // calculate deltaR
-       double DeltaR = 3.;
-       for(JetCollection::const_iterator jet = jets->begin(); jet != jets->end(); ++jet){
+      // calculate deltaR
+      double CaloDeltaR = 3.;
+      double JPTDeltaR = 3.;
+      double PFDeltaR = 3.;
+
+      for(JetCollection::const_iterator jet = calojets->begin(); jet != calojets->end(); ++jet){
           
-          if (jet->pt()>30.
-              &&abs(jet->eta())<2.4
-              &&jet->emEnergyFraction() >0.01
-              &&jet->jetID().n90Hits>1
-              &&jet->jetID().fHPD<0.98)
+	if (jet->pt()>30.
+	    &&abs(jet->eta())<2.4
+	    &&jet->emEnergyFraction() >0.01
+	    &&jet->jetID().n90Hits>1
+	    &&jet->jetID().fHPD<0.98)
           {
-             double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
-             if(dr<DeltaR)
-                DeltaR=dr;
+	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
+	    if(dr<CaloDeltaR)
+	      CaloDeltaR=dr;
           }
-       }
-       
+      }
+      //if (_debug) cout << "got calo deltaR" << endl;
+      for(JetCollection::const_iterator jet = jptjets->begin(); jet != jptjets->end(); ++jet){
 
-       // Loose muons
-       if(
-          mu->isGlobalMuon()
-          &&abs(mu->eta())<2.5
-          &&mu->pt()>10.)
-       {
+	//double emf = jet->emEnergyFraction();
+	double emf = jet->userFloat("MyemEnergyFraction");
+	double fhpd = jet->userFloat("MyfHPD");
+	int n90 = jet->userFloat("Myn90");
+
+	if (jet->pt()>30.
+	    &&abs(jet->eta())<2.4
+	    && emf >0.01
+	    && n90>1
+	    && fhpd<0.98 )
+	  {
+	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
+	    if(dr<JPTDeltaR)
+	      JPTDeltaR=dr;
+	  }
+      }
+      
+      //if (_debug) cout << "got jpt deltaR" << endl;
+      for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet){
+	// cache some variables
+	double chf = jet->chargedHadronEnergyFraction();
+	double cef = jet->chargedEmEnergyFraction();
+	int    nch = jet->chargedMultiplicity();
+	if (jet->pt()>20.
+	    &&abs(jet->eta())<2.4
+	    && chf>0.0
+	     && nch > 0
+	    && cef<0.99
+	    )
+	  {
+	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
+	    if(dr<PFDeltaR)
+	      PFDeltaR=dr;
+	  }
+      }
+      
+      // Loose muons
+      if(
+	 mu->isGlobalMuon()
+	 &&abs(mu->eta())<2.5
+	 &&mu->pt()>10.)
+	{
         
           // Loose Isolated muons
           int IsLooseIsoMuon = 0;
@@ -240,6 +310,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topmuon.vx = mu->vx();
 	  topmuon.vy = mu->vy();
 	  topmuon.vz = mu->vz();
+	  topmuon.charge = mu->charge();
 
           topmuon.d0 = -1.* mu->innerTrack()->dxy(point);
           topmuon.d0err = sqrt( mu->innerTrack()->d0Error() * mu->innerTrack()->d0Error() + beamSpot.BeamWidthX()*beamSpot.BeamWidthX());
@@ -256,10 +327,17 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topmuon.iso03_ecalveto = mu->isolationR03().emVetoEt;
 	  topmuon.iso03_hcalveto = mu->isolationR05().hadVetoEt;
 	  topmuon.reliso03 = reliso;
-	  topmuon.deltaR = DeltaR;
-	  
+	  topmuon.CalodeltaR = CaloDeltaR;
+	  topmuon.JPTdeltaR = JPTDeltaR;
+	  topmuon.PFdeltaR = PFDeltaR;
+
 	  topmuon.IsTrackerMuon = mu->isTrackerMuon();
 	  topmuon.IsLooseIsoMuon = IsLooseIsoMuon;
+
+	  topmuon.CalEhad = mu->calEnergy().had;
+	  topmuon.CalEho = mu->calEnergy().ho;
+	  topmuon.CalEem = mu->calEnergy().em;
+	  topmuon.CaloCompatibility = mu->caloCompatibility();
 
 	  //_muon_iso05_track = mu->isolationR05().sumPt;
 	  //_muon_iso05_ecal = mu->isolationR05().emEt;
@@ -282,7 +360,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      &&mu->innerTrack()->numberOfValidHits()>=11
 	      &&mu->globalTrack()->normalizedChi2()<10.
 	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>0
-	      &&DeltaR>0.3
+	      &&CaloDeltaR>0.3
 	      &&abs(mu->innerTrack()->dxy(point))<0.02)
 	    {
 	      n_tight++;
@@ -295,6 +373,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
        }
     }
+
+    //if(_debug) cout << "look at jets now" << endl;
 
     if (1 == n_tight)
         _cutflow->Fill(3);
@@ -329,12 +409,11 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	}
     }
 
-    // Jets
-    int njets = 0;
-    for(JetCollection::const_iterator jet = jets->begin(); jet != jets->end(); ++jet)
+    // Calo Jets
+    int ncalojets = 0;
+    for(JetCollection::const_iterator jet = calojets->begin(); jet != calojets->end(); ++jet)
     {
-      //jetID->calculate(iEvent, *jet);
-        if (jet->pt()>30.
+      if (jet->pt()>30.
             &&abs(jet->eta())<2.4
             &&jet->emEnergyFraction()>0.01
             &&jet->jetID().n90Hits>1
@@ -347,14 +426,111 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topjet.phi = jet->phi();
 	  topjet.pt = jet->pt();
 	  topjet.e  = jet->energy();
-	  ++njets;
+	  ++ncalojets;
+	  
+	  topjet.ntracks = jet->associatedTracks().size();
+	  topjet.ndaughters =jet->numberOfDaughters();
+	  topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
+	  topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
+	  topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
+	  topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
 
+	  if (! _isDataInput ) {
+	    topjet.mc.flavor = jet->partonFlavour();
+	  }
 	  // store jets
-	  _ntuple->jets.push_back( topjet );
+	  _ntuple->Calojets.push_back( topjet );
 
         }
     }
 
+    // JPT Jets
+    int njptjets = 0;
+    for(JetCollection::const_iterator jet = jptjets->begin(); jet != jptjets->end(); ++jet)
+      {
+	double emf = jet->userFloat("MyemEnergyFraction");
+        double fhpd = jet->userFloat("MyfHPD");
+        int n90 = jet->userFloat("Myn90");
+	
+	cout << "got one JPT" << endl;
+	cout << "emf = " << emf << endl;
+	cout << "n90 = " << n90 << endl;
+	cout << "fhpd = "<< fhpd << endl;
+	cout << "pt = " << jet->pt() << endl;
+        if (jet->pt()>20.
+            &&abs(jet->eta())<2.4
+	    && emf >0.01
+            && n90>1
+            && fhpd<0.98 )
+	  {
+	    cout << "pass jet ID for jpt jets" << endl;
+
+	    TopJetEvent topjet;
+
+	    topjet.eta = jet->eta();
+	    topjet.phi = jet->phi();
+	    topjet.pt = jet->pt();
+	    topjet.e  = jet->energy();
+	    ++njptjets;
+
+	    topjet.ntracks = jet->associatedTracks().size();
+	    topjet.ndaughters = jet->numberOfDaughters();
+	    topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
+	    topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
+	    topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
+	    topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
+
+	    if (! _isDataInput ) {
+	      topjet.mc.flavor = jet->partonFlavour();
+	    }
+	    // store jets
+	    _ntuple->JPTjets.push_back( topjet );
+
+	  }
+      }
+
+    // PF Jets
+    int npfjets = 0;
+    for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
+      {
+	// cache some variables
+	double chf = jet->chargedHadronEnergyFraction();
+	double cef = jet->chargedEmEnergyFraction();
+        int    nch = jet->chargedMultiplicity();
+        if (jet->pt()>20.
+            &&abs(jet->eta())<2.4
+            && chf>0.0
+             && nch > 0
+            && cef<0.99
+            )
+          {
+
+            TopJetEvent topjet;
+
+            topjet.eta = jet->eta();
+            topjet.phi = jet->phi();
+            topjet.pt = jet->pt();
+            topjet.e  = jet->energy();
+            ++npfjets;
+
+	    topjet.ntracks = jet->associatedTracks().size();
+            topjet.ndaughters =jet->numberOfDaughters();
+            topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
+            topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
+            topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
+            topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
+
+            if (! _isDataInput ) {
+              topjet.mc.flavor = jet->partonFlavour();
+            }
+            // store jets
+	    _ntuple->PFjets.push_back( topjet );
+	    
+          }
+      }
+
+
+    
     if (1 == n_tight &&
         1 == n_loose && n_electron==0)
     {
@@ -362,24 +538,34 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	pass_event = true;
 
-        if (njets)
+        if (ncalojets)
             _cutflow->Fill(6);
 
-        if (1 < njets)
+        if (1 < ncalojets)
             _cutflow->Fill(7);
 
-        if (2 < njets)
+        if (2 < ncalojets)
             _cutflow->Fill(8);
 
-        if (3 < njets)
+        if (3 < ncalojets)
             _cutflow->Fill(9);
     }
 
+    
 
-    _ntuple->MET = cmet->et();
-    _ntuple->METeta = cmet->eta();
-    _ntuple->METphi = cmet->phi();
-    _ntuple->Ht = cmet->sumEt();
+
+    _ntuple->CaloMET = cmet->et();
+    //_ntuple->CaloMETeta = cmet->eta();
+    _ntuple->CaloMETphi = cmet->phi();
+    _ntuple->CaloHt = cmet->sumEt();
+
+    _ntuple->tcMET = tcmet->et();
+    _ntuple->tcMETphi = tcmet->phi();
+    _ntuple->tcHt = tcmet->sumEt();
+
+    _ntuple->PFMET = pfmet->et();
+    _ntuple->PFMETphi = pfmet->phi();
+    _ntuple->PFHt = pfmet->sumEt();
 
     ftree->Fill();
 
@@ -392,23 +578,30 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 void 
 PATNtupleMaker::beginJob()
 {
-  theFile = new TFile(ntuplefile_.c_str(), "RECREATE");
-  ftree = new TTree("top","top");
-  ftree->AutoSave();
-  
-  ftree->Branch("top.","TopEventNtuple",&_ntuple,64000,1); 
-  
-  _cutflow = new TH1I("cutflow", "Cutflow", 10, 0, 10);
+  //theFile = new TFile(ntuplefile_.c_str(), "RECREATE");
+  //ftree = new TTree("top","top");
+  //ftree->AutoSave();
+    
+  //_cutflow = new TH1I("cutflow", "Cutflow", 10, 0, 10);
+
+  edm::Service<TFileService> tfileservice;
+  tfileservice->file().cd("/");
+
+  ftree = tfileservice->make<TTree>("top","top");
+  ftree->Branch("top.","TopEventNtuple",&_ntuple,64000,1);
+
+  _cutflow = tfileservice->make<TH1I>("cutflow","Number of events", 10, 0, 10);
+
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
 PATNtupleMaker::endJob() {
-    theFile->cd();
-    ftree->Write();
-    _cutflow->Write();
+  //theFile->cd();
+  //ftree->Write();
+  //_cutflow->Write();
 
-    delete ftree;
+  //delete ftree;
 }
 
 //define this as a plug-in

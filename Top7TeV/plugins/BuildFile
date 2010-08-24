@@ -12,8 +12,10 @@
 <use name=FWCore/Framework>
 <use name=FWCore/ParameterSet>
 <use name=FWCore/Utilities>
+<use name=FWCore/ServiceRegistry>
 <use name=RecoJets/JetAlgorithms>
 <use name=Yumiceva/Top7TeV>
+<use name=CommonTools/UtilAlgos>
 
 <library file="*.cc" name=YumicevaTop7TeVPlugins>
  <flags EDM_PLUGIN = 1 >

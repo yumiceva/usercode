@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: NtupleMaker.h,v 1.1 2010/08/17 15:22:03 samvel Exp $
+// $Id: NtupleMaker.h,v 1.1 2010/08/18 16:28:42 yumiceva Exp $
 //
 //
 
@@ -43,25 +43,26 @@ class TH1;
 //
 
 class NtupleMaker : public edm::EDFilter {
-    public:
-        explicit NtupleMaker(const edm::ParameterSet&);
-        ~NtupleMaker();
 
-    private:
-        virtual void beginJob() ;
-        virtual bool filter( edm::Event&, const edm::EventSetup&);
-        virtual void endJob() ;
+public:
+  explicit NtupleMaker(const edm::ParameterSet&);
+  ~NtupleMaker();
 
-        // ----------member data ---------------------------
-        TFile *theFile;
-        TTree *ftree;
+private:
+  virtual void beginJob() ;
+  virtual bool filter( edm::Event&, const edm::EventSetup&);
+  virtual void endJob() ;
 
-        edm::TriggerNames hltNames_;
-        helper::JetIDHelper *jetID;
-        edm::InputTag hltTag_;
-
-        TH1 *_cutflow;
-        bool _isDataInput;
+  // ----------member data ---------------------------
+  TFile *theFile;
+  TTree *ftree;
+  
+  edm::TriggerNames hltNames_;
+  helper::JetIDHelper *jetID;
+  edm::InputTag hltTag_;
+  
+  TH1 *_cutflow;
+  bool _isDataInput;
   TopEventNtuple *_ntuple;
 };
 

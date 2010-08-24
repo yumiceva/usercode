@@ -68,6 +68,11 @@ process.maxEvents.input = events
 #    readHint = cms.untracked.string("direct-unbuffered")
 #)
 
+process.TFileService = cms.Service(
+    "TFileService",
+    fileName = cms.string(outntuple)
+)
+
 
 ### PAT setup ###
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -94,16 +99,16 @@ setTagInfos(
 ### Muons ###
 process.patMuons.isoDeposits = cms.PSet()
 # Embed user data into the PAT objects
-process.patMuonsUserData = cms.EDProducer(
-    "PATMuonUserData",
-    src = cms.InputTag("patMuons")
-)
+#process.patMuonsUserData = cms.EDProducer(
+#    "PATMuonUserData",
+#    src = cms.InputTag("patMuons")
+#)
 # Insert the user data process into the PAT sequence
-process.makePatMuons.replace(getattr(process,"patMuons"),getattr(process,"patMuons")*process.patMuonsUserData)
+#process.makePatMuons.replace(getattr(process,"patMuons"),getattr(process,"patMuons")*process.patMuonsUserData)
 # Use BeamSpot instead of primary vertex
 process.patMuons.usePV = False
 # Tell selectedPatMuons to use the new user collection as input
-process.selectedPatMuons.src = "patMuonsUserData"
+#process.selectedPatMuons.src = "patMuonsUserData"
 process.selectedPatMuons.cut = "pt>10. & abs(eta)<2.5 & muonID('AllGlobalMuons')"
 #process.countPatMuons.minNumber = 1
 process.muonMatch.checkCharge = False
@@ -148,6 +153,50 @@ process.patPhotons.embedSuperCluster = False
 ### Taus ###
 process.patTaus.isoDeposits = cms.PSet()
 
+# -[ Add Custom Collections ]-
+#
+# = Jets
+process.load('RecoJets.Configuration.RecoJPTJets_cff')
+
+
+addJetCollection(process,cms.InputTag('ak5PFJets'),
+                 'AK5', 'PF',
+                 doJTA = False,
+                 doBTagging = True,
+                 jetCorrLabel = ('AK5','PF'),
+                 doType1MET = False,
+                 doL1Cleaning = False,
+                 doL1Counters = False,
+                 genJetCollection=cms.InputTag("ak5GenJets"),
+                 doJetID = False
+                 )
+
+addJetCollection(process,cms.InputTag('JetPlusTrackZSPCorJetAntiKt5'),
+                 'AK5', 'JPT',
+                 doJTA = True,
+                 doBTagging = True,
+                 jetCorrLabel = ('AK5','JPT'),
+                 doType1MET = False,
+                 doL1Cleaning = False,
+                 doL1Counters = False,
+                 genJetCollection=cms.InputTag("ak5GenJets"),
+                 doJetID = True
+                 )
+# Embed user data into the PAT objects
+process.load('JetMETCorrections.Configuration.DefaultJEC_cff')
+process.load('RecoJets.Configuration.RecoJPTJets_cff')
+process.patJPTJetUserData = cms.EDProducer(
+    "PATJPTJetUserData",
+    src = cms.InputTag("patJetsAK5JPT")
+)
+# Insert the user data process into the PAT sequence
+process.makePatJets.replace(getattr(process,"patJetsAK5JPT"),getattr(process,"patJetsAK5JPT")*process.patJPTJetUserData)
+
+# = MET
+from PhysicsTools.PatAlgos.tools.metTools import *
+addTcMET(process)
+addPfMET(process)
+
 ### Filters used ###
 
 ### Veto scraping events ###
@@ -164,10 +213,15 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 ### Trigger ###
 process.triggerFilter = cms.EDFilter(
-    'TriggerFilter',
-    menu = cms.string("patTriggerEvent"),
-    path = cms.string("HLT_Mu9")
-)
+    'TopHLTFilter',
+    hltTag = cms.InputTag("TriggerResults::REDIGI")
+)    
+# pat based trigger    
+#process.triggerFilter = cms.EDFilter(
+#    'TriggerFilter',
+#    menu = cms.string("patTriggerEvent"),
+#    path = cms.string("HLT_Mu9")
+#)
 
 ### Primary vertex ###
 # The below, provided from DPGAnalysis/Skims, doesn't include a
@@ -221,11 +275,14 @@ process.p = cms.Path(
 
     process.scrapingVeto *
     process.HBHENoiseFilter *
-#    process.triggerFilter *
+    process.triggerFilter *
         
     process.simpleSecondaryVertexHighPurBJetTags *
+    process.recoJPTJets *
+    process.ak5JPTJetsL2L3 *
+    
     process.patDefaultSequence *
-    process.triggerFilter *
+#    process.triggerFilter *
     #process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
     #process.vFlavor *          # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
     

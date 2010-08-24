@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.3 2010/08/18 21:20:15 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.4 2010/08/20 18:53:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -56,8 +56,10 @@ public:
     std::vector< TopMuonEvent > muons;
     
     //_____ jets __________________________________
-    std::vector< TopJetEvent > jets;
-    
+    std::vector< TopJetEvent > Calojets;
+    std::vector< TopJetEvent > JPTjets;
+    std::vector< TopJetEvent > PFjets;
+
     //_____ electrons _____________________________
     std::vector< TopElectronEvent > electrons;
     
@@ -65,14 +67,21 @@ public:
     std::vector< TopVertexEvent > vertices;
     
     //_____ Event variables ______________________
-    Float_t MET;
-    Float_t METeta;
-    Float_t METphi;
-    Float_t Ht;
+    Float_t CaloMET;
+    //Float_t CaloMETeta;
+    Float_t CaloMETphi;
+    Float_t CaloHt;
+    Float_t tcMET;
+    Float_t tcMETphi;
+    Float_t tcHt;
+    Float_t PFMET;
+    Float_t PFMETphi;
+    Float_t PFHt;
+
     
     //_____ jet combinations _______________________
-    Float_t M3;
-    Float_t chi2sorting;
+    //Float_t M3;
+    //Float_t chi2sorting;
     
     
     ClassDef(TopEventNtuple,1);
