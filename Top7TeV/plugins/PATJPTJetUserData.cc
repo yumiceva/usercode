@@ -11,9 +11,9 @@
      <Notes on implementation>
 */
 //
-// Original Author:  Malina Kirn
+// Original Author:  Francisco Yumiceva
 //         Created:  Tue Mar 17 15:19:19 EDT 2009
-// $Id: PATJPTJetUserData.cc,v 1.5 2010/06/28 19:23:45 mkirn Exp $
+// $Id: PATJPTJetUserData.cc,v 1.1 2010/08/24 22:04:40 yumiceva Exp $
 //
 //
 
@@ -108,7 +108,7 @@ PATJPTJetUserData::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     pat::Jet myJet = *jet; // copy
 
-    float DeltaR = 3.;
+    //float DeltaR = 3.;
     float emEnergyFraction = 0.;
     int n90 = 0;
     float fhpd = 0.;

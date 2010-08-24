@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.2 2010/08/19 19:32:40 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.3 2010/08/24 22:04:40 yumiceva Exp $
 //
 //
 
@@ -452,18 +452,18 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         double fhpd = jet->userFloat("MyfHPD");
         int n90 = jet->userFloat("Myn90");
 	
-	cout << "got one JPT" << endl;
-	cout << "emf = " << emf << endl;
-	cout << "n90 = " << n90 << endl;
-	cout << "fhpd = "<< fhpd << endl;
-	cout << "pt = " << jet->pt() << endl;
+	//cout << "got one JPT" << endl;
+	//cout << "emf = " << emf << endl;
+	//cout << "n90 = " << n90 << endl;
+	//cout << "fhpd = "<< fhpd << endl;
+	//cout << "pt = " << jet->pt() << endl;
         if (jet->pt()>20.
             &&abs(jet->eta())<2.4
 	    && emf >0.01
             && n90>1
             && fhpd<0.98 )
 	  {
-	    cout << "pass jet ID for jpt jets" << endl;
+	    //cout << "pass jet ID for jpt jets" << endl;
 
 	    TopJetEvent topjet;
 
