@@ -30,20 +30,12 @@ cutkeys = ['processed','OneIsoMuon','VetoElectron','1jet','2jet','3jet','4jet']
 for i in cutkeys:
     cut[i] = 0
 
-hmuon = {}
-hmuon['pt'] = TH1F("muon_pt","p_{T}^{#mu}", 25, 0, 100)
-hmuon['pt_1jet'] = TH1F("muon_pt_1jet","p_{T}^{#mu}", 25, 20, 100)
-hmuon['pt_2jet'] = TH1F("muon_pt_2jet","p_{T}^{#mu}", 25, 20, 100)
-hmuon['pt_3jet'] = TH1F("muon_pt_3jet","p_{T}^{#mu}", 25, 20, 100)
-hmuon['pt_4jet'] = TH1F("muon_pt_4jet","p_{T}^{#mu}", 25, 20, 100)
-hmuon['eta'] = TH1F("muon_eta","#eta^{#mu}", 20, -2.1, 2.1)
-hmuon['eta_1jet'] = TH1F("muon_eta_1jet","#eta^{#mu}", 20, -2.1, 2.1)
-hmuon['eta_2jet'] = TH1F("muon_eta_2jet","#eta^{#mu}", 20, -2.1, 2.1)
-hmuon['eta_3jet'] = TH1F("muon_eta_3jet","#eta^{#mu}", 20, -2.1, 2.1)
-hmuon['eta_4jet'] = TH1F("muon_eta_4jet","#eta^{#mu}", 20, -2.1, 2.1)
 
-hM3 = {}
-hM3['3jet'] = TH1F("M3","M3 [GeV/c^{2}]", 20, 0, 500)
+# create histograms
+hist = histograms.Hist()
+hist.Create("data")
+
+#hM3['3jet'] = TH1F("M3","M3 [GeV/c^{2}]", 20, 0, 500)
 
                    
 for jentry in xrange( entries ):
@@ -84,8 +76,8 @@ for jentry in xrange( entries ):
     if nmuons != 1:
         continue
     cut['OneIsoMuon'] += 1
-    hmuon['pt'].Fill( p4muon.Pt() )
-    hmuon['eta'].Fill( p4muon.Eta() )
+    hist.muons['pt'].Fill( p4muon.Pt() )
+    #    hmuon['eta'].Fill( p4muon.Eta() )
     
     for ele in electrons:
         nelec += 1
@@ -128,8 +120,8 @@ for key in cutkeys:
     print key + " " + str(cut[key])
 
 cv1 = TCanvas('muon_pt','muon_pt',600,600)
-hmuon['pt'].Draw()
+hist.muons['pt'].Draw()
 cv2 = TCanvas('muon_eta','muon_eta',600,600)
-hmuon['eta'].Draw()
+#hist.muons['eta'].Draw()
 
 raw_input ("Enter to quit:")
