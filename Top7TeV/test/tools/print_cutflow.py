@@ -4,9 +4,10 @@ from ROOT import *
 
 import sys,os, math
 
+gSystem.Load('libYumicevaTop7TeV.so')
 
 L = 0.84 # Luminosity in 1/pb
-IsMC = True
+IsMC = False
 
 xsec = {} # xsection in pb
 file = {}
@@ -24,15 +25,15 @@ if IsMC:
     #xsec['ZJets'] =  3048.
 else:
 # data files
-    file['Jun14'] = 'NtupleMaker/Data/0.84pb-1/Jun14/ttmuj_ntuple.root'
-    file['MB']    = 'NtupleMaker/Data/0.84pb-1/MinimumBias/ttmuj_ntuple.root'
-    file['Jul16'] = 'NtupleMaker/Data/0.84pb-1/Jul16/ttmuj_ntuple.root'
-    file['Prompt']= 'NtupleMaker/Data/0.84pb-1/PromptReco/ttmuj_ntuple.root'
+    #file['Jun14'] = 'NtupleMaker/Data/0.84pb-1/Jun14/ttmuj_ntuple.root'
+    file['MB']    = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root'
+    #file['Jul16'] = 'NtupleMaker/Data/0.84pb-1/Jul16/ttmuj_ntuple.root'
+    #file['Prompt']= 'NtupleMaker/Data/0.84pb-1/PromptReco/ttmuj_ntuple.root'
 
 keys = file.keys()
 cutflow = {}
 cutlabel = {}
-cutlabel[1] = 'Processed'
+cutlabel[1] = 'CleanFilters'
 cutlabel[2] = 'HLT'
 cutlabel[3] = 'PV'
 cutlabel[4] = '1 iso mu'
@@ -49,12 +50,17 @@ for sample in keys:
 
     print " processing " + sample
     afile = TFile(file[sample])
-    h = gDirectory.Get('cutflow')
+    h = gDirectory.Get('/triggerFilter/eventCount')
 
     cutmap = {}
+    
+    cutmap[ 1 ] = h.GetBinContent( 1 )
+    cutmap[ 2 ] = h.GetBinContent( 2 )
 
-    for acut in range(1, h.GetNbinsX() + 1 ):
-        cutmap[ acut ] = h.GetBinContent( acut );
+    h2 = gDirectory.Get('/PATNtupleMaker/cutflow')
+
+    for acut in range(3, h2.GetNbinsX()+1 ):
+        cutmap[ acut ] = h2.GetBinContent( acut );
 
     scale = 1.
     if IsMC:
