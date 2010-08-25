@@ -16,6 +16,7 @@
 <use name=RecoJets/JetAlgorithms>
 <use name=Yumiceva/Top7TeV>
 <use name=CommonTools/UtilAlgos>
+<use name=RecoLocalCalo/EcalRecAlgos>
 
 <library file="*.cc" name=YumicevaTop7TeVPlugins>
  <flags EDM_PLUGIN = 1 >
