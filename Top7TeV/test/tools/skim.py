@@ -20,8 +20,23 @@ entries = top.GetEntriesFast()
 
 evt = TopEventNtuple()
 top.SetBranchAddress('top.', evt)
-passed = 0
+cut = {}
+cut['processed'] = cut['OneIsoMuon'] = cut['VetoElectron'] = 0
+cut['1jet'] = cut['2jet'] = cut['3jet'] = cut['4jet'] = 0
 
+hmuon['pt'] = TH1F("muon_pt","p_{T}^{#mu}", 25, 0, 100)
+hmuon['pt_1jet'] = TH1F("muon_pt_1jet","p_{T}^{#mu}", 25,0, 100)
+hmuon['pt_2jet'] = TH1F("muon_pt_2jet","p_{T}^{#mu}", 25,0, 100)
+hmuon['pt_3jet'] = TH1F("muon_pt_3jet","p_{T}^{#mu}", 25,0, 100)
+hmuon['pt_4jet'] = TH1F("muon_pt_4jet","p_{T}^{#mu}", 25,0, 100)
+hmuon['eta'] = TH1F("muon_eta","p_{T}^{#mu}", 25,0, 100)
+hmuon['eta_1jet'] = TH1F("muon_eta_1jet","#eta^{#mu}", 25,0, 100)
+hmuon['eta_2jet'] = TH1F("muon_eta_2jet","#eta^{#mu}", 25,0, 100)
+hmuon['eta_3jet'] = TH1F("muon_eta_3jet","#eta^{#mu}", 25,0, 100)
+hmuon['eta_4jet'] = TH1F("muon_eta_4jet","#eta^{#mu}", 25,0, 100)
+
+
+                   
 for jentry in xrange( entries ):
 
     # get the next tree in the chain
@@ -35,35 +50,37 @@ for jentry in xrange( entries ):
     if nb <= 0 or not hasattr( evt, 'run' ):
         continue
 
-    #print "entry = "+str(jentry)
-    
+    cut['processed'] += 1
+
+    if jentry%500 == 0:
+        print "Processing entry = "+str(jentry)
+
+    # get collections
     muons = evt.muons
-    jets  = evt.jets
+    jets  = evt.Calojets
     electrons = evt.electrons
     
     nmuons = 0
     nelec = 0
     njets = 0
-    mupt = 0.
-    mueta = 0.
-    muphi = 0.
+    p4muon = TLorentzVector()
     
     for mu in muons:
 
         if mu.IsTightIsoMuon == 1:
 
             nmuons += 1
-            mupt = mu.pt
-            mueta = mu.eta
-            muphi = mu.phi
-            
+            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
+                        
     if nmuons != 1:
         continue
-
+    cut['OneIsoMuon'] += 1
+    
     for ele in electrons:
         nelec += 1
 
     if nelec > 0 : continue
+    cut['VetoElectron'] += 1
     
     for jet in jets:
 
@@ -71,7 +88,15 @@ for jentry in xrange( entries ):
 
             njets += 1
 
-    if njets >= 4:
+    if njets > 0:
+        cut['1jet'] += 1
+    if njets > 1:
+        cut['2jet'] += 1
+    if njets > 2:
+        cut['3jet'] += 1
+    if nejts > 3:
+
+        cut['4jet'] += 1
         
         print "-15 "+str(mupt)+" "+str(mueta)+' '+str(muphi)
         print "-5 "+str(evt.MET)+" "+str(evt.METeta)+' '+str(evt.METphi)
@@ -81,5 +106,7 @@ for jentry in xrange( entries ):
             print str(jet.e) +' '+str(jet.pt)+' '+str(jet.eta)+' '+str(jet.phi) 
 
 print "done."
-print "total = "+str(passed)
+print "Cut flow"
+for key in cut.keys():
+    print key + " " + str(cut[key])
 

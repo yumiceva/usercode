@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.4 2010/08/24 22:12:51 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.5 2010/08/25 16:03:42 yumiceva Exp $
 //
 //
 
@@ -374,6 +374,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
        }
     }
 
+    // keep at least one loose muon not isolated
+    if ( nmuon == 0 ) return false;
+
     //if(_debug) cout << "look at jets now" << endl;
 
     if (1 == n_tight)
@@ -457,7 +460,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	//cout << "n90 = " << n90 << endl;
 	//cout << "fhpd = "<< fhpd << endl;
 	//cout << "pt = " << jet->pt() << endl;
-        if (jet->pt()>20.
+        if (jet->pt()>30.
             &&abs(jet->eta())<2.4
 	    && emf >0.01
             && n90>1
@@ -540,8 +543,6 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     {
         _cutflow->Fill(5);
 
-	pass_event = true;
-
         if (ncalojets)
             _cutflow->Fill(6);
 
@@ -551,8 +552,10 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         if (2 < ncalojets)
             _cutflow->Fill(8);
 
-        if (3 < ncalojets)
-            _cutflow->Fill(9);
+        if (3 < ncalojets) {
+	  _cutflow->Fill(9);
+	  pass_event = true;
+	}
     }
 
     

@@ -5,22 +5,23 @@ from ROOT import *
 import sys,os, math
 
 
-L = 0.58 # Luminosity in 1/pb
-IsMC = False
+L = 0.84 # Luminosity in 1/pb
+IsMC = True
 
 xsec = {} # xsection in pb
 file = {}
 # MC files
 if IsMC:
-    file['ttbar'] = 'NtupleMaker/MC/v2/TTbar/ttmuj_ntuple.root'
-    file['QCD']   = 'NtupleMaker/MC/v2/InclusiveMu15/ttmuj_ntuple.root'
-    file['WJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
-    file['ZJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
+    file['ttbar'] = '/uscms_data/d2/samvel/Public/2Francisco/ttmuj_ntuple.root'
+    #'NtupleMaker/MC/v2/TTbar/ttmuj_ntuple.root'
+    #file['QCD']   = 'NtupleMaker/MC/v2/InclusiveMu15/ttmuj_ntuple.root'
+    #file['WJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
+    #file['ZJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
 
     xsec['ttbar'] =   157.5
-    xsec['QCD']   = 79688.
-    xsec['WJets'] = 31314.
-    xsec['ZJets'] =  3048.
+    #xsec['QCD']   = 79688.
+    #xsec['WJets'] = 31314.
+    #xsec['ZJets'] =  3048.
 else:
 # data files
     file['Jun14'] = 'NtupleMaker/Data/0.84pb-1/Jun14/ttmuj_ntuple.root'
