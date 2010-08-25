@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.cc,v 1.2 2010/08/23 01:49:41 yumiceva Exp $
+ version $Id: TopJetEvent.cc,v 1.3 2010/08/24 22:04:19 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -22,6 +22,11 @@ ClassImp(TopJetEvent)
 //_______________________________________________________________
 void TopJetEvent::Reset()
 {
+
+  //___
+  id_neutralEmE = -999;
+  id_chargedEmE = -999;
+  id_muonMultiplicity = -999;
 
   //___
   ntracks = -999;

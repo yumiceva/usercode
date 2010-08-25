@@ -11,7 +11,7 @@
 
 import string
 
-events= 1000
+events= -1
 inputType = "DATA" # choose MC/DATA
 
 eventtype="Jun14"
@@ -43,7 +43,30 @@ process.GlobalTag.globaltag = 'GR10_P_V7::All' # For PromptReco
 #process.source.skipEvents = 0
 # tT+jet input file
 process.source.fileNames = cms.untracked.vstring(
-    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0006/B0222EAB-B07B-DF11-AE0A-001E0B5FE542.root'
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0006/B0222EAB-B07B-DF11-AE0A-001E0B5FE542.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/F25FF224-F47A-DF11-AE84-0017A4770828.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/EEBDBF25-F47A-DF11-9E8F-0017A477083C.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/E6F21093-EF7A-DF11-9985-0017A4770C38.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/DED36991-F17A-DF11-A857-0017A477141C.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/CC6AA9E2-EF7A-DF11-A84D-001E0B5FC422.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/C06427E0-EF7A-DF11-861D-0017A4771004.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/B25323B8-F47A-DF11-932C-0017A4770028.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/B0A68691-F37A-DF11-920E-00237DA14F92.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/A8DD8DF0-EF7A-DF11-9176-001E0BEACAB8.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/94C12994-EF7A-DF11-91F9-001E0B5FC422.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/94B4688F-EF7A-DF11-9512-0017A4770C10.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/84070BDC-EF7A-DF11-BA3C-00237DA13CAC.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/72BE83F5-EF7A-DF11-9669-001CC443B76C.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/720CA171-F47A-DF11-BF4D-0017A477041C.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/6AC5E58D-F17A-DF11-AAC3-0017A4770004.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/6A86E9F7-EF7A-DF11-A7AF-0017A4770C34.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/584B5E90-F37A-DF11-A8D5-0017A4770024.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/48CE97B5-F47A-DF11-9BF4-001E0B4A0EFC.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/40ACF3E7-EF7A-DF11-A840-0017A4770430.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/3E6B78EA-F17A-DF11-AEF9-0017A4771030.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/30212CEB-EF7A-DF11-9EAE-0017A4770828.root',
+    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/2EC3A00D-F07A-DF11-9B09-00237DA41368.root'
+    
 )
 process.maxEvents.input = events
 
@@ -140,7 +163,7 @@ process.electronMatch.checkCharge = False
 # Running on Summer09 data using 7TeV JEC
 # Use default patJetCorrFactors in 36X
 #process.patJetCorrFactors.corrSample = 'Summer09_7TeV_ReReco332'
-process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4 & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
+process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4'# & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
 #process.countPatJets.minNumber = 1
 process.patJets.embedGenJetMatch = False
 

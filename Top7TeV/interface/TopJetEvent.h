@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.h,v 1.3 2010/08/23 01:48:56 yumiceva Exp $
+ version $Id: TopJetEvent.h,v 1.4 2010/08/24 22:00:40 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -34,6 +34,11 @@ public:
         ~TopJetEvent() {}
 
     virtual void Reset();
+
+    //___
+    Float_t id_neutralEmE;
+    Float_t id_chargedEmE;
+    Float_t id_muonMultiplicity;
 
     //___
     Int_t ntracks;

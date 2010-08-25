@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.3 2010/08/24 22:04:40 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.4 2010/08/24 22:12:51 yumiceva Exp $
 //
 //
 
@@ -512,6 +512,10 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.pt = jet->pt();
             topjet.e  = jet->energy();
             ++npfjets;
+
+	    topjet.id_neutralEmE = jet->neutralEmEnergy();
+	    topjet.id_chargedEmE = jet->chargedEmEnergy();
+	    topjet.id_muonMultiplicity = jet->muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
             topjet.ndaughters =jet->numberOfDaughters();
