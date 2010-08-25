@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.5 2010/08/25 16:03:42 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.6 2010/08/25 17:50:40 yumiceva Exp $
 //
 //
 
@@ -375,7 +375,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     // keep at least one loose muon not isolated
-    if ( nmuon == 0 ) return false;
+    if ( n_muon == 0 ) return false;
 
     //if(_debug) cout << "look at jets now" << endl;
 
