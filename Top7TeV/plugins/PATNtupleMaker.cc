@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.10 2010/08/26 17:58:40 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.11 2010/08/26 18:02:36 yumiceva Exp $
 //
 //
 
@@ -427,11 +427,15 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  
 	  // MC stuff
 	  if (!_isDataInput) {
-	    topmuon.mc.pdgId = (mu->genLepton())->pdgId();
-	    topmuon.mc.mom_pdgId = ((mu->genLepton())->mother())->pdgId();
-	    topmuon.mc.mom_pt = ((mu->genLepton())->mother())->pt();
-	    topmuon.mc.mom_eta =((mu->genLepton())->mother())->eta();
-	    topmuon.mc.mom_phi =((mu->genLepton())->mother())->phi();
+	    if (mu->genLepton() != 0 ) {
+	      topmuon.mc.pdgId = (mu->genLepton())->pdgId();
+	      if (mu->genLepton()->mother() != 0) {
+		topmuon.mc.mom_pdgId = ((mu->genLepton())->mother())->pdgId();
+		topmuon.mc.mom_pt = ((mu->genLepton())->mother())->pt();
+		topmuon.mc.mom_eta =((mu->genLepton())->mother())->eta();
+		topmuon.mc.mom_phi =((mu->genLepton())->mother())->phi();
+	      }
+	    }
 	  }
 	
 	// store muons                                                                                                   

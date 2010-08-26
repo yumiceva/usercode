@@ -25,10 +25,10 @@ if IsMC:
     #xsec['ZJets'] =  3048.
 else:
 # data files
-    #file['Jun14'] = 'NtupleMaker/Data/0.84pb-1/Jun14/ttmuj_ntuple.root'
-    file['MB']    = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root'
-    #file['Jul16'] = 'NtupleMaker/Data/0.84pb-1/Jul16/ttmuj_ntuple.root'
-    #file['Prompt']= 'NtupleMaker/Data/0.84pb-1/PromptReco/ttmuj_ntuple.root'
+    file['Jun14'] = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root'
+    file['MB']    = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_2/ntuple_patskim.root'
+    file['Jul16'] = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_3/ntuple_patskim.root'
+    #file['Prompt']= '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_4/ntuple_patskim.root'
 
 keys = file.keys()
 cutflow = {}

@@ -11,7 +11,7 @@
 
 import string
 
-events= -1
+events= 1000
 inputType = "DATA" # choose MC/DATA
 
 eventtype="Jun14"
@@ -29,12 +29,13 @@ process.MessageLogger.cerr = cms.untracked.PSet(
     placeholder = cms.untracked.bool( True )
 )
 process.MessageLogger.cerr_stats.output = 'cout'
+#process.MessageLogger.cout.FwkReport.reportEvery = 500
 process.options.wantSummary = True
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideFrontierConditions
 #process.GlobalTag.globaltag = 'GR_R_36X_V12A::All' # For the Jun 14 re-reco
 #process.GlobalTag.globaltag = 'GR_R_36X_V12B::All' # For the Jul 16 re-reco
-process.GlobalTag.globaltag = 'GR10_P_V7::All' # For PromptReco
-
+#process.GlobalTag.globaltag = 'GR10_P_V7::All' # For PromptReco
+process.GlobalTag.globaltag = 'GR_R_36X_V12::All' # for all
 
 ### Input ###
 # My typical PoolSource

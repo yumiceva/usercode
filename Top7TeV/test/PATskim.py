@@ -11,7 +11,7 @@
 
 import string
 
-events= 50
+events= 100
 inputType = "MC" # choose MC/DATA
 
 eventtype="TTJets"
@@ -54,6 +54,7 @@ process.GlobalTag.globaltag = 'START36_V10::All' # Newest 36X conditions for 7Te
 # tT+jet input file
 process.source.fileNames = cms.untracked.vstring(
     '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
+    #'/store/mc/Spring10/WJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0014/84872812-1F4B-DF11-8A07-00151796C158.root'
 )
 process.maxEvents.input = events
 
@@ -248,11 +249,6 @@ process.load("PhysicsTools.HepMCCandAlgos.flavorHistoryPaths_cfi")
 process.cFlavorHistoryProducer.matchedSrc = "ak5GenJets"
 process.bFlavorHistoryProducer.matchedSrc = "ak5GenJets"
 
-### V flavor history plots, for W+jet, Z+jet, Vqq, & Wc events only ###
-process.vFlavor = cms.EDAnalyzer(
-    'VFlavor'
-)
-
 ### Prune the GEN particle collection ###
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
@@ -271,6 +267,7 @@ process.PATNtupleMaker.inputType = inputType
 process.PATNtupleMaker.ntupleFile = outntuple
 
 ### The process path ###
+# For ttbar events
 process.p = cms.Path(
 
     process.scrapingVeto *
@@ -283,14 +280,53 @@ process.p = cms.Path(
     
     process.patDefaultSequence *
 #    process.triggerFilter *
-    #process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
-    #process.vFlavor *          # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
     
     process.makeGenEvt *        # Use only for tT (MC) events
     process.prunedGenParticles *
     process.PATNtupleMaker
 
 )
+if eventtype =="WJets" or eventtype=="ZJets" or eventtype=="Vqq" or eventtype=="Wc":
+    process.p = cms.Path(
+
+        process.scrapingVeto *
+        process.HBHENoiseFilter *
+        process.triggerFilter *
+
+        process.simpleSecondaryVertexHighPurBJetTags *
+        process.recoJPTJets *
+        process.ak5JPTJetsL2L3 *
+
+        process.patDefaultSequence *
+        #    process.triggerFilter *
+        process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
+
+        #process.makeGenEvt *        # Use only for tT (MC) events
+        process.prunedGenParticles *
+        process.PATNtupleMaker
+
+   )
+elif eventtype != "TTJets":
+    process.p = cms.Path(
+
+        process.scrapingVeto *
+        process.HBHENoiseFilter *
+        process.triggerFilter *
+
+        process.simpleSecondaryVertexHighPurBJetTags *
+        process.recoJPTJets *
+        process.ak5JPTJetsL2L3 *
+
+        process.patDefaultSequence *
+        #    process.triggerFilter *
+        #process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
+        #process.vFlavor *          # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
+
+        #process.makeGenEvt *        # Use only for tT (MC) events
+        process.prunedGenParticles *
+        process.PATNtupleMaker
+
+    )
 
 ### Output ###
 # For a PAT Skim
