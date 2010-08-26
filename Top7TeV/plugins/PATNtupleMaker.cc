@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.7 2010/08/25 18:01:52 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.8 2010/08/26 15:24:37 yumiceva Exp $
 //
 //
 
@@ -197,28 +197,31 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         return false;
         
     // check PVs
-    int npvs = 0;
+    int ngoodPVs = 0; int npvs = 0;
     float cutPVz = 15.;
     if (_isDataInput) cutPVz = 24.;
 
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
 
-      if(!pv->isFake()
-	 &&pv->ndof()>=4
-	 &&fabs(pv->z())<= cutPVz
-	 &&fabs(pv->position().Rho())<=2.0 ) {
+      TopVertexEvent topvtx;
+      topvtx.vx = pv->x();
+      topvtx.vy = pv->y();
+      topvtx.vz = pv->z();
+      topvtx.ndof = pv->ndof();
+      topvtx.rho = pv->position().Rho();
+      _ntuple->vertices.push_back(topvtx);
+      
+      // only check first PV
+      if( npvs==0 && !pv->isFake()
+	 &&pv->ndof()>4
+	 &&fabs(pv->z())< cutPVz
+	 &&fabs(pv->position().Rho())<2.0 ) {
 
-	npvs++;
-	TopVertexEvent topvtx;
-	topvtx.vx = pv->x();
-	topvtx.vy = pv->y();
-	topvtx.vz = pv->z();
-	topvtx.ndof = pv->ndof();
-	topvtx.rho = pv->position().Rho();
-	_ntuple->vertices.push_back(topvtx);
+	ngoodPVs++;
       }
+      npvs++;
     }
-    if ( npvs == 0 ) return false;
+    if ( ngoodPVs == 0 ) return false;
 
     _cutflow->Fill(2);
 
