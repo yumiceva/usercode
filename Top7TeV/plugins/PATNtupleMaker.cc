@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.9 2010/08/26 15:54:50 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.10 2010/08/26 17:58:40 yumiceva Exp $
 //
 //
 
@@ -165,10 +165,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     //__________________
     //Event Flavor History Flag
     Handle< unsigned int > flavorhistoryHandle;
-    int eventFlavor = -99;
     if ( !_isDataInput && iEvent.getByLabel("flavorHistoryFilter",flavorhistoryHandle) ) {
-       eventFlavor = *flavorhistoryHandle;
-      //cout << "FlavorHistory variable = " << *flavorhistoryHandle << "  eventFlavor =  " << eventFlavor << endl;
+       _ntuple->flavorHistory = *flavorhistoryHandle;
+       //cout << "FlavorHistory variable = " << *flavorhistoryHandle << "  eventFlavor =  " << eventFlavor << endl;
     }
     // for ttbar MC events
     Handle<TtGenEvent > genEventHandle;
