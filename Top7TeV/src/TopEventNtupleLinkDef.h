@@ -9,6 +9,7 @@
 #include "TopGenMuonEvent.h"
 #include "TopGenElectronEvent.h"
 #include "TopGenJetEvent.h"
+#include "TopMyGenEvent.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopEventNtuple.h"
 #include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
@@ -20,6 +21,7 @@
 #include "Yumiceva/Top7TeV/interface/TopGenMuonEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopGenElectronEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopGenJetEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopMyGenEvent.h"
 #endif
 
 #include <vector>
@@ -40,6 +42,7 @@
 #pragma link C++ class TopGenMuonEvent+;
 #pragma link C++ class TopGenElectronEvent+;
 #pragma link C++ class TopGenJetEvent+;
+#pragma link C++ class TopMyGenEvent+;
 
 #pragma link C++ class std::vector< TopMuonEvent >;
 #pragma link C++ class std::vector< TopMuonEvent >::iterator;
@@ -49,6 +52,5 @@
 #pragma link C++ class std::vector< TopJetEvent >::iterator;
 #pragma link C++ class std::vector< TopVertexEvent >;
 #pragma link C++ class std::vector< TopVertexEvent >::iterator;
-
 
 #endif

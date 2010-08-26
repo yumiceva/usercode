@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.8 2010/08/26 15:24:37 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.9 2010/08/26 15:54:50 yumiceva Exp $
 //
 //
 
@@ -173,10 +173,48 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // for ttbar MC events
     Handle<TtGenEvent > genEventHandle;
     TtGenEvent genevent;
-    if ( !_isDataInput && iEvent.getByLabel("genEvt", genEventHandle) )
+    if ( !_isDataInput && iEvent.getByLabel("genEvt", genEventHandle) ) {
       genevent = *genEventHandle;
-
-    
+      TopMyGenEvent mygen;
+      mygen.isSemiLeptonic = int(genevent.isSemiLeptonic());
+      mygen.isDilepton = int(genevent.isFullLeptonic());
+      mygen.LeptonicChannel = genevent.semiLeptonicChannel();
+      mygen.t_pt =  (genevent.top())->pt();
+      mygen.t_eta = (genevent.top())->eta();
+      mygen.t_phi = (genevent.top())->phi();
+      mygen.t_e =   (genevent.top())->energy();
+      mygen.tbar_pt =  (genevent.topBar())->pt();
+      mygen.tbar_eta = (genevent.topBar())->eta();
+      mygen.tbar_phi = (genevent.topBar())->phi();
+      mygen.tbar_e =   (genevent.topBar())->energy();
+      if ( genevent.isSemiLeptonic() ) {
+	mygen.nu_pt =  (genevent.singleNeutrino())->pt();
+	mygen.nu_eta = (genevent.singleNeutrino())->eta();
+	mygen.nu_phi = (genevent.singleNeutrino())->phi();
+	mygen.nu_e =   (genevent.singleNeutrino())->energy();
+	mygen.mu_pt =  (genevent.singleLepton())->pt();
+	mygen.mu_eta = (genevent.singleLepton())->eta();
+	mygen.mu_phi = (genevent.singleLepton())->phi();
+	mygen.mu_e =   (genevent.singleLepton())->energy();
+	mygen.Wp_pt =  (genevent.hadronicDecayQuark())->pt();
+	mygen.Wp_eta = (genevent.hadronicDecayQuark())->eta();
+	mygen.Wp_phi = (genevent.hadronicDecayQuark())->phi();
+	mygen.Wp_e =   (genevent.hadronicDecayQuark())->energy();
+	mygen.Wq_pt =  (genevent.hadronicDecayQuarkBar())->pt();
+        mygen.Wq_eta = (genevent.hadronicDecayQuarkBar())->eta();
+        mygen.Wq_phi = (genevent.hadronicDecayQuarkBar())->phi();
+        mygen.Wq_e =   (genevent.hadronicDecayQuarkBar())->energy();
+	mygen.bHad_pt =  (genevent.hadronicDecayB())->pt();
+        mygen.bHad_eta = (genevent.hadronicDecayB())->eta();
+        mygen.bHad_phi = (genevent.hadronicDecayB())->phi();
+        mygen.bHad_e =   (genevent.hadronicDecayB())->energy();
+	mygen.bLep_pt =  (genevent.leptonicDecayB())->pt();
+        mygen.bLep_eta = (genevent.leptonicDecayB())->eta();
+        mygen.bLep_phi = (genevent.leptonicDecayB())->phi();
+        mygen.bLep_e =   (genevent.leptonicDecayB())->energy();
+      }
+      _ntuple->gen = mygen;
+    }
     //_cutflow->Fill(0);
 
     //bool hlt_mu_ = false; 
@@ -387,6 +425,15 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      IsTightIsoMuon = 1;
 	      topmuon.IsTightIsoMuon = 1;
 	    }
+	  
+	  // MC stuff
+	  if (!_isDataInput) {
+	    topmuon.mc.pdgId = (mu->genLepton())->pdgId();
+	    topmuon.mc.mom_pdgId = ((mu->genLepton())->mother())->pdgId();
+	    topmuon.mc.mom_pt = ((mu->genLepton())->mother())->pt();
+	    topmuon.mc.mom_eta =((mu->genLepton())->mother())->eta();
+	    topmuon.mc.mom_phi =((mu->genLepton())->mother())->phi();
+	  }
 	
 	// store muons                                                                                                   
 	_ntuple->muons.push_back( topmuon );
