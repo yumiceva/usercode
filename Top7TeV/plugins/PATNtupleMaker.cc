@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.11 2010/08/26 18:02:36 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.12 2010/08/26 19:07:40 yumiceva Exp $
 //
 //
 
@@ -101,7 +101,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   using pat::MuonCollection;
   using pat::METCollection;
 
-  bool pass_event = false;
+  bool pass_event = true; // for the moment DO not filter
+
    // reset ntuple containers
    _ntuple->Reset();
 
