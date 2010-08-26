@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.6 2010/08/25 17:50:40 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.7 2010/08/25 18:01:52 yumiceva Exp $
 //
 //
 
@@ -42,6 +42,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
+#include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -160,6 +161,22 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     const METCollection *pfmetCol = pfmetHandle.product();
     pfmet = &(pfmetCol->front());
 
+    // MC stuff
+    //__________________
+    //Event Flavor History Flag
+    Handle< unsigned int > flavorhistoryHandle;
+    int eventFlavor = -99;
+    if ( !_isDataInput && iEvent.getByLabel("flavorHistoryFilter",flavorhistoryHandle) ) {
+       eventFlavor = *flavorhistoryHandle;
+      //cout << "FlavorHistory variable = " << *flavorhistoryHandle << "  eventFlavor =  " << eventFlavor << endl;
+    }
+    // for ttbar MC events
+    Handle<TtGenEvent > genEventHandle;
+    TtGenEvent genevent;
+    if ( !_isDataInput && iEvent.getByLabel("genEvt", genEventHandle) )
+      genevent = *genEventHandle;
+
+    
     //_cutflow->Fill(0);
 
     //bool hlt_mu_ = false; 
@@ -187,9 +204,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
 
       if(!pv->isFake()
-	 &&pv->ndof()>4
-	 &&fabs(pv->z())< cutPVz
-	 &&fabs(pv->position().Rho())<2.0 ) {
+	 &&pv->ndof()>=4
+	 &&fabs(pv->z())<= cutPVz
+	 &&fabs(pv->position().Rho())<=2.0 ) {
 
 	npvs++;
 	TopVertexEvent topvtx;

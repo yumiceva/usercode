@@ -17,6 +17,7 @@
 <use name=Yumiceva/Top7TeV>
 <use name=CommonTools/UtilAlgos>
 <use name=RecoLocalCalo/EcalRecAlgos>
+<use name=AnalysisDataFormats/TopObjects>
 
 <library file="*.cc" name=YumicevaTop7TeVPlugins>
  <flags EDM_PLUGIN = 1 >
