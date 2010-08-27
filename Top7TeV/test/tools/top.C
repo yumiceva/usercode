@@ -18,6 +18,10 @@ void top::Loop()
 // The input file is defined in top.h constructor
 //
 
+  TFile fresults = TFile("results.root","RECREATE");
+
+  TH1F *h_muon_pt = new TH1F("h_muon_pt","p_{T}^{#mu} [GeV/c]",25,20,100);
+
    if (fChain == 0) return;
 
    Long64_t nentries = fChain->GetEntriesFast();
@@ -42,6 +46,8 @@ void top::Loop()
       for ( size_t imu=0; imu < total_muons; ++imu) {
 	
 	cout << " muon pt= " << muons[imu].pt << endl;
+	if (muons[imu].pt > 20.) h_muon_pt->Fill( muons[imu].pt );
+ 
       }
       // loop over jets in the event
       for ( size_t ijet=0; ijet < total_calojets; ++ijet) {
@@ -50,4 +56,9 @@ void top::Loop()
 
       }
    }
+
+   // save results
+   fresults.cd();
+   h_muon_pt->Write();
+
 }

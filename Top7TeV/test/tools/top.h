@@ -50,10 +50,10 @@ top::top(TTree *tree)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root");
       if (!f) {
-         f = new TFile("/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root");
-         f->cd("/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root:/PATNtupleMaker");
+         f = new TFile("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root");
+         f->cd("/PATNtupleMaker");
       }
       tree = (TTree*)gDirectory->Get("top");
       ntuple = new TopEventNtuple();
