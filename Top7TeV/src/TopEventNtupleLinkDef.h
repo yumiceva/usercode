@@ -32,17 +32,17 @@
 #pragma link off all classes;
 #pragma link off all functions;
  
-#pragma link C++ class TopEventNtuple+;
 #pragma link C++ class TopCandidateEvent+;
+#pragma link C++ class TopGenCandidateEvent+;
 #pragma link C++ class TopMuonEvent+;
 #pragma link C++ class TopJetEvent+;
 #pragma link C++ class TopElectronEvent+;
 #pragma link C++ class TopVertexEvent+;
-#pragma link C++ class TopGenCandidateEvent+;
 #pragma link C++ class TopGenMuonEvent+;
 #pragma link C++ class TopGenElectronEvent+;
 #pragma link C++ class TopGenJetEvent+;
 #pragma link C++ class TopMyGenEvent+;
+#pragma link C++ class TopEventNtuple+;
 
 #pragma link C++ class std::vector< TopMuonEvent >;
 #pragma link C++ class std::vector< TopMuonEvent >::iterator;
