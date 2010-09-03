@@ -30,7 +30,7 @@ endif
 
 LD_LIBRARY_PATH:= $(ROOTSYS)/lib/:$(LD_LIBRARY_PATH)
 
-INCLUDEDIR    = -I$(ROOTSYS)/include -I../interface 
+INCLUDEDIR    = -I$(shell root-config --incdir) -I../interface 
 
 HEADERS       = TopCandidateEvent.h TopGenCandidateEvent.h TopGenMuonEvent.h TopMyGenEvent.h TopElectronEvent.h TopGenElectronEvent.h TopJetEvent.h TopVertexEvent.h TopEventNtuple.h TopGenJetEvent.h TopMuonEvent.h
 
@@ -51,4 +51,4 @@ TopEventNtupleDict.cc: TopEventNtupleLinkDef.h
 	rootcint -f $@ -c -DNOSCRAMV -I../interface $(HEADERS) $^
 
 clean:        
-	@rm -f $(OBJS) core *~ *.o *.so *Dict.cc *Dict.h
+	@rm -f $(OBJS) core *~ *.o *.so *Dict.cc *Dict.cxx *Dict.h

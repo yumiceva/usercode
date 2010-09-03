@@ -219,7 +219,11 @@ process.patJPTJetUserData = cms.EDProducer(
 )
 # Insert the user data process into the PAT sequence
 process.makePatJets.replace(getattr(process,"patJetsAK5JPT"),getattr(process,"patJetsAK5JPT")*process.patJPTJetUserData)
-
+# replace JPT sample by costumized collection
+process.selectedPatJetsAK5JPT.src = "patJPTJetUserData"
+# Apply jet ID
+process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4 & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
+#process.selectedPatJetsAK4PF.cut = 'pt > 20. & abs(eta) < 2.4 & neutralHadronEnergyFraction() < 0.99 & neutralEmEnergyFraction() < 0.99 & nConstituents() > 1 & chargedHadronEnergyFraction() > 0.0 & chargedMultiplicity() > 0.0 & chargedEmEnergyFraction() < 0.99'
 # = MET
 from PhysicsTools.PatAlgos.tools.metTools import *
 addTcMET(process)

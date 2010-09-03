@@ -6,29 +6,29 @@ import sys,os, math
 
 gSystem.Load('libYumicevaTop7TeV.so')
 
-L = 0.84 # Luminosity in 1/pb
-IsMC = False
+L = 2.79 # Luminosity in 1/pb
+IsMC = True
 
 xsec = {} # xsection in pb
 file = {}
 # MC files
 if IsMC:
-    file['ttbar'] = '/uscms_data/d2/samvel/Public/2Francisco/ttmuj_ntuple.root'
+    file['ttbar'] = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v4/ttmuj_TTbar.root'
     #'NtupleMaker/MC/v2/TTbar/ttmuj_ntuple.root'
-    #file['QCD']   = 'NtupleMaker/MC/v2/InclusiveMu15/ttmuj_ntuple.root'
-    #file['WJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
-    #file['ZJets'] = 'NtupleMaker/MC/v2/WJets/ttmuj_ntuple.root'
+    file['QCD']   = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v4/ttmuj_QCD.root'
+    file['WJets'] = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v4/ttmuj_Wjets.root'
+    file['ZJets'] = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v4/ttmuj_Zjets.root'
 
     xsec['ttbar'] =   157.5
-    #xsec['QCD']   = 79688.
-    #xsec['WJets'] = 31314.
-    #xsec['ZJets'] =  3048.
+    xsec['QCD']   = 79688.
+    xsec['WJets'] = 31314.
+    xsec['ZJets'] =  3048.
 else:
 # data files
-    #file['Jun14'] = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_1/ntuple_patskim.root'
-    #file['MB']    = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_2/ntuple_patskim.root'
-    file['Jul16'] = '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_3/ntuple_patskim.root'
-    #file['Prompt']= '/uscms/home/samvel/Code/ttmuj/NtupleMaker/CMSSW_3_6_3/src/Top/Production/test/prod_25_Aug_2010_4/ntuple_patskim.root'
+    file['Jun14'] = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Jun14.root'
+    file['MB']    = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_MB.root'
+    file['Jul16'] = '/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Jul16.root'
+    file['Prompt']= '/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2.79pb-1/ttmuj_Prompt_Aug30.root'
 
 keys = file.keys()
 cutflow = {}

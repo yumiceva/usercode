@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.12 2010/08/26 19:07:40 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.13 2010/08/26 20:38:54 yumiceva Exp $
 //
 //
 
@@ -43,6 +43,11 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
+
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "TrackingTools/IPTools/interface/IPTools.h"
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -111,6 +116,11 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     //iEvent.getByLabel(hltTag_,hlt);
     //const TriggerNames & hltNames_ = iEvent.triggerNames(*hlt);
 
+   // get handle for IP tools
+   edm::ESHandle<TransientTrackBuilder> trackBuilder;
+   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+   reco::Vertex primaryVertex;
+
     // -[ Muons ]-
     Handle<MuonCollection> muons;
     iEvent.getByLabel(muonTag_,muons);
@@ -162,6 +172,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     const METCollection *pfmetCol = pfmetHandle.product();
     pfmet = &(pfmetCol->front());
 
+    
     // MC stuff
     //__________________
     //Event Flavor History Flag
@@ -235,7 +246,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         return false;
         
     // check PVs
-    int ngoodPVs = 0; int npvs = 0;
+    int ngoodPVs = 0; 
+    int npvs = 0;
+    bool IsFirstPVGood = false;
     float cutPVz = 15.;
     if (_isDataInput) cutPVz = 24.;
 
@@ -247,19 +260,25 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       topvtx.vz = pv->z();
       topvtx.ndof = pv->ndof();
       topvtx.rho = pv->position().Rho();
-      _ntuple->vertices.push_back(topvtx);
-      
-      // only check first PV
-      if( npvs==0 && !pv->isFake()
+      topvtx.IsGood = 0.;
+      // PV quality cuts
+      if( !pv->isFake()
 	 &&pv->ndof()>4
 	 &&fabs(pv->z())< cutPVz
 	 &&fabs(pv->position().Rho())<2.0 ) {
 
 	ngoodPVs++;
+	topvtx.IsGood = 1;
+	// check if first PV (hardest) is a good PV
+	if (npvs==0) {
+	  primaryVertex = *pv;
+	  IsFirstPVGood = true;
+	}
       }
+      _ntuple->vertices.push_back(topvtx);
       npvs++;
     }
-    if ( ngoodPVs == 0 ) return false;
+    if ( ! IsFirstPVGood ) return false;
 
     _cutflow->Fill(2);
 
@@ -268,9 +287,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     _ntuple->run   = iEvent.id().run();
     _ntuple->lumi  = iEvent.id().luminosityBlock();
 
-    math::XYZPoint primaryVertex( _ntuple->vertices[0].vx,
-				  _ntuple->vertices[0].vy,
-				  _ntuple->vertices[0].vz);
+    //math::XYZPoint PVpoint( _ntuple->vertices[0].vx,
+    //			    _ntuple->vertices[0].vy,
+    //		    _ntuple->vertices[0].vz);
 
     size_t n_loose=0;
     size_t n_tight=0;
@@ -285,9 +304,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
 
       // calculate deltaR
-      double CaloDeltaR = 3.;
-      double JPTDeltaR = 3.;
-      double PFDeltaR = 3.;
+      double CaloDeltaR = 99.;
+      double JPTDeltaR = 99.;
+      double PFDeltaR = 99.;
 
       for(JetCollection::const_iterator jet = calojets->begin(); jet != calojets->end(); ++jet){
           
@@ -324,17 +343,21 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       
       //if (_debug) cout << "got jpt deltaR" << endl;
       for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet){
-	// cache some variables
-	double chf = jet->chargedHadronEnergyFraction();
-	double cef = jet->chargedEmEnergyFraction();
-	int    nch = jet->chargedMultiplicity();
-	if (jet->pt()>20.
-	    &&abs(jet->eta())<2.4
-	    && chf>0.0
-	     && nch > 0
-	    && cef<0.99
-	    )
-	  {
+
+	// cache some variables 
+        double chf = (jet->correctedJet("RAW")).chargedHadronEnergyFraction();
+        double cef = (jet->correctedJet("RAW")).chargedEmEnergyFraction();
+	double nef = (jet->correctedJet("RAW")).neutralEmEnergyFraction();
+	int    nch = (jet->correctedJet("RAW")).chargedMultiplicity();
+        double nhf = 0.;//((jet->correctedJet("RAW")).neutralHadronEnergy() + (jet->correctedJet("RAW")).HFHadronEnergy() ) / (jet->correctedJet("RAW")).energy();
+	int nconstituents = (jet->correctedJet("RAW")).numberOfDaughters();
+	
+        if (jet->pt()>20.
+            &&abs(jet->eta())<2.4
+            && nhf < 0.99 && nef < 0.99&& nconstituents > 1
+            && chf > 0.&& nch > 0. && cef < 0.99
+            )
+          {
 	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
 	    if(dr<PFDeltaR)
 	      PFDeltaR=dr;
@@ -369,11 +392,15 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topmuon.vy = mu->vy();
 	  topmuon.vz = mu->vz();
 	  topmuon.charge = mu->charge();
-
+	  // IP wrt to beam spot
           topmuon.d0 = -1.* mu->innerTrack()->dxy(point);
-          topmuon.d0err = sqrt( mu->innerTrack()->d0Error() * mu->innerTrack()->d0Error() + beamSpot.BeamWidthX()*beamSpot.BeamWidthX());
-          topmuon.d0wrtPV2d = -1. * mu->innerTrack()->dxy(primaryVertex);
-          //topmuon.d0wrtPV2derr
+          topmuon.d0err = sqrt( mu->innerTrack()->d0Error()*mu->innerTrack()->d0Error() + 0.5* beamSpot.BeamWidthX()*beamSpot.BeamWidthX() + 0.5* beamSpot.BeamWidthY()*beamSpot.BeamWidthY() );
+	  // IP wrt to hardest PV
+	  reco::TransientTrack tt = trackBuilder->build(mu->innerTrack());
+	  std::pair<bool,Measurement1D> IPresult = IPTools::absoluteTransverseImpactParameter(tt, primaryVertex);
+	  topmuon.d0wrtPV2d = IPresult.second.value();
+	  topmuon.d0wrtPV2derr = IPresult.second.error();
+	  
 	  topmuon.muonhits = mu->globalTrack()->hitPattern().numberOfValidMuonHits();
 	  topmuon.trackerhits = mu->innerTrack()->numberOfValidHits();
 	  topmuon.muonstations = mu->numberOfMatches();
@@ -531,7 +558,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	//cout << "n90 = " << n90 << endl;
 	//cout << "fhpd = "<< fhpd << endl;
 	//cout << "pt = " << jet->pt() << endl;
-        if (jet->pt()>30.
+        if (jet->pt()>25.
             &&abs(jet->eta())<2.4
 	    && emf >0.01
             && n90>1
@@ -568,14 +595,17 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
       {
 	// cache some variables
-	double chf = jet->chargedHadronEnergyFraction();
-	double cef = jet->chargedEmEnergyFraction();
-        int    nch = jet->chargedMultiplicity();
+        double chf = (jet->correctedJet("RAW")).chargedHadronEnergyFraction();
+        double cef = (jet->correctedJet("RAW")).chargedEmEnergyFraction();
+        double nef = (jet->correctedJet("RAW")).neutralEmEnergyFraction();
+        int    nch = (jet->correctedJet("RAW")).chargedMultiplicity();
+        double nhf = 0.;//((jet->correctedJet("RAW")).neutralHadronEnergy() + (jet->correctedJet("RAW")).HFHadronEnergy() ) / (jet->correctedJet("RAW")).energy();
+        int nconstituents = (jet->correctedJet("RAW")).numberOfDaughters();
+
         if (jet->pt()>20.
             &&abs(jet->eta())<2.4
-            && chf>0.0
-             && nch > 0
-            && cef<0.99
+            && nhf < 0.99 && nef < 0.99 && nconstituents > 1
+	    && chf > 0. && nch > 0. && cef < 0.99
             )
           {
 
@@ -587,12 +617,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.e  = jet->energy();
             ++npfjets;
 
-	    topjet.id_neutralEmE = jet->neutralEmEnergy();
-	    topjet.id_chargedEmE = jet->chargedEmEnergy();
-	    topjet.id_muonMultiplicity = jet->muonMultiplicity();
+	    topjet.id_neutralEmE = (jet->correctedJet("RAW")).neutralEmEnergy();
+	    topjet.id_chargedEmE = (jet->correctedJet("RAW")).chargedEmEnergy();
+	    topjet.id_muonMultiplicity = (jet->correctedJet("RAW")).muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
-            topjet.ndaughters =jet->numberOfDaughters();
+            topjet.ndaughters = nconstituents;
             topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
             topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );

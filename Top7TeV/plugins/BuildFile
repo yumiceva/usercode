@@ -18,6 +18,9 @@
 <use name=CommonTools/UtilAlgos>
 <use name=RecoLocalCalo/EcalRecAlgos>
 <use name=AnalysisDataFormats/TopObjects>
+<use name=TrackingTools/IPTools>
+<use name=TrackingTools/TransientTrack>
+<use name=TrackingTools/Records>
 
 <library file="*.cc" name=YumicevaTop7TeVPlugins>
  <flags EDM_PLUGIN = 1 >

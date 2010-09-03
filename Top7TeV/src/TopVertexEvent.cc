@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopVertexEvent.cc,v 1.1 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopVertexEvent.cc,v 1.2 2010/08/23 01:49:41 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -27,5 +27,6 @@ void TopVertexEvent::Reset()
   vz = -999;
   ndof = -999;
   rho = -999;
+  IsGood = 0;
 
 }

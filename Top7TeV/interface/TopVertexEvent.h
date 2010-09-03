@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopVertexEvent.h,v 1.1 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopVertexEvent.h,v 1.2 2010/08/23 01:48:56 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -33,7 +33,8 @@ class TopVertexEvent : public TObject
   Float_t vz;
   Float_t ndof;
   Float_t rho;
-    
+  Int_t IsGood;
+
   ClassDef(TopVertexEvent,1);
     
 };

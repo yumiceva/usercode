@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.h,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopMuonEvent.h,v 1.3 2010/08/24 22:00:40 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -48,7 +48,7 @@ public:
     Int_t muonhits;
     Int_t trackerhits;
     Int_t muonstations;
-    Int_t normchi2;
+    Float_t normchi2;
     
     Float_t iso03_track;
     Float_t iso03_ecal;
