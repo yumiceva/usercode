@@ -10,7 +10,6 @@ class Hist:
         self.electrons = {}
         self.jets = {}
         self.M3 = {}
-        self.M3chi2 = {}
         self.MET = {}
         self.Mt = {}
 
@@ -33,7 +32,6 @@ class Hist:
         self.WriteMap(self.electrons,"electrons")
         self.WriteMap(self.jets,"jets")
         self.WriteMap(self.M3,"M3")
-        self.WriteMap(self.M3chi2,"M3")
         self.WriteMap(self.MET,"MET")
         self.WriteMap(self.Mt,"Mt")
         
@@ -48,7 +46,7 @@ class Hist:
     
     def CreateMuon(self, name):
         
-        self.muons['pt'] = TH1F("muon_pt"+name,"p_{T}^{#mu}", 25, 20, 100)
+        self.muons['pt'] = TH1F("muon_pt"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
         self.muons['pt_1jet'] = TH1F("muon_pt_1jet"+name,"p_{T}^{#mu}", 25, 20, 100)
         self.muons['pt_2jet'] = TH1F("muon_pt_2jet"+name,"p_{T}^{#mu}", 25, 20, 100)
         self.muons['pt_3jet'] = TH1F("muon_pt_3jet"+name,"p_{T}^{#mu}", 25, 20, 100)
@@ -70,14 +68,26 @@ class Hist:
         self.muons['reliso_4jet'] = TH1F("muon_reliso_4jet"+name,"Relative Isolation", 30, 0, 1.5)
         self.muons['deltaR'] = TH1F("deltaR"+name,"#DeltaR(#mu,jet)",30, 0, 4)
         self.muons['d0_cut1'] = TH1F("d0_cut1"+name,"#mu Impact Parameter [cm]",20,-0.1,0.1)
-        self.muons['pt_cut1'] = TH1F("muon_pt_cut1"+name,"p_{T}^{#mu}", 25, 0, 100)
-        self.muons['pt_cut2'] = TH1F("muon_pt_cut2"+name,"p_{T}^{#mu}", 25, 0, 100)
+        self.muons['pt_cut1'] = TH1F("muon_pt_cut1"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
+        self.muons['pt_cut2'] = TH1F("muon_pt_cut2"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
+        self.muons['dz'] = TH1F('dz'+name,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.)
         self.SetupXTitle(self.muons)
                         
     def CreateMass(self, name):
+
+        self.M3['M3'] = TH1F("M3"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['3jet'] = TH1F("M3_3jet"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['4jet'] = TH1F("M3_4jet"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['3jet_SSVHEM_1b'] = TH1F("M3_3jet_SSVHEM_1b"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['4jet_SSVHEM_1b'] = TH1F("M3_4jet_SSVHEM_1b"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['M3chi2_hadW_4jet'] = TH1F("M3chi2_hadW_4jet"+name,"hadronic W mass M3-chi2", 20, 0,150)
+        self.M3['M3chi2_hadTop_4jet'] = TH1F("M3chi2_hadTop_4jet"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['M3chi2_hadTop_lepTop_4jet'] = TH2F("M3chi2_hadTop_lepTop_4jet"+name,"hadronic vs leptonic top M3chi2 [GeV/c^{2}]", 40, 0, 1000,40,1,1000)
+        self.M3['M3chi2_normchi2_1st'] = TH1F("M3chi2_normchi2_1st"+name,"#chi^{2}/ndof",30,0,30)
+        self.M3['M3chi2_normchi2_2nd'] = TH1F("M3chi2_normchi2_2nd"+name,"#chi^{2}/ndof",30,0,30)
+        self.M3['M3chi2_normchi2_3th'] = TH1F("M3chi2_normchi2_3th"+name,"#chi^{2}/ndof",30,0,30)
+        self.M3['M3chi2_normchi2_4th'] = TH1F("M3chi2_normchi2_4th"+name,"#chi^{2}/ndof",30,0,30)
         
-        self.M3['3jet'] = TH1F("M3_3jet"+name,"M3 [GeV/c^{2}]", 20, 0, 500)
-        self.M3['4jet'] = TH1F("M3_4jet"+name,"M3 [GeV/c^{2}]", 20, 0, 500)
         self.SetupXTitle(self.M3)
                         
     def CreateMET(self, name):
@@ -85,6 +95,7 @@ class Hist:
         self.MET['MET'] = TH1F("MET"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
         self.MET['phi'] = TH1F("MET_phi"+name,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15)
         self.MET['Ht'] = TH1F("Ht"+name,"H_{T} [GeV]", 30, 0, 160)
+        self.MET['Htlep'] = TH1F("Htlep"+name,"H_{T,lep} [GeV]", 30, 0, 160)
         self.MET['LepWmass'] = TH1F("LepWmass"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
         self.MET['LepWmass_1jet'] = TH1F("LepWmass_1jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
         self.MET['LepWmass_2jet'] = TH1F("LepWmass_2jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
@@ -110,12 +121,21 @@ class Hist:
     def CreateJet(self, name):
 
         self.jets['pt'] = TH1F("jet_pt"+name,"jet p_{T} [GeV/c]",50, 30, 300)
-        self.jets['1_pt'] = TH1F("jet1_pt"+name,"Leading jet p_{T} [GeV/c]",50, 30, 300)
-        self.jets['2_pt'] = TH1F("jet2_pt"+name,"2nd jet p_{T} [GeV/c]",50, 30, 300)
-        self.jets['3_pt'] = TH1F("jet3_pt"+name,"3rd jet p_{T} [GeV/c]",50, 30, 300)
-        self.jets['4_pt'] = TH1F("jet4_pt"+name,"4th jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['1st_pt_N3j'] = TH1F("jet1_pt_N3j"+name,"Leading jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['2nd_pt_N3j'] = TH1F("jet2_pt_N3j"+name,"2nd jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['3th_pt_N3j'] = TH1F("jet3_pt_N3j"+name,"3th jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['1st_pt_N4j'] = TH1F("jet1_pt_N4j"+name,"Leading jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['2nd_pt_N4j'] = TH1F("jet2_pt_N4j"+name,"2nd jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['3th_pt_N4j'] = TH1F("jet3_pt_N4j"+name,"3th jet p_{T} [GeV/c]",50, 30, 300)
+        self.jets['4th_pt_N4j'] = TH1F("jet4_pt_N4j"+name,"4th jet p_{T} [GeV/c]",50, 30, 300)
         self.jets['eta'] = TH1F("jet_eta"+name,"jet #eta",50, -2.4, 2.4)
         self.jets['phi'] = TH1F("jet_phi"+name,"jet #phi",50, 0, 3.15)
+        self.jets['Njets'] = TH1F("Njets"+name,"jet multiplicity",5,0,5)
+        self.jets['Nbjets_TCHPL_N3j'] = TH1F("Nbjets_TCHPL_N3j"+name,"Tagged b-jets",3,0,3)
+        self.jets['Nbjets_TCHPL_N4j'] = TH1F("Nbjets_TCHPL_N4j"+name,"Tagged b-jets",3,0,3)
+        self.jets['Nbjets_SSVHEM_N3j'] = TH1F("Nbjets_SSVHEM_N3j"+name,"Tagged b-jets",3,0,3)
+        self.jets['Nbjets_SSVHEM_N4j'] = TH1F("Nbjets_SSVHEM_N4j"+name,"Tagged b-jets",3,0,3)
+        
         self.SetupXTitle(self.jets)
         
     def SetupXTitle(self, map):

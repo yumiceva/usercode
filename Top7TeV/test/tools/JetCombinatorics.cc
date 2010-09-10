@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.cc,v 1.3 2009/07/30 06:02:21 jengbou Exp $
+ version $Id: JetCombinatorics.cc,v 1.1.4.6 2009/07/13 15:13:37 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -257,76 +257,92 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, st
 			if ( UseFlv_ ) theFlvCorr.push_back( flavorCorrections_[tmpi] );
 		}
 
-		if (verbosef) std::cout<< "[JetCombinatorics] with these 4 jets, make 12 combinations: " <<std::endl;
+		
 
 		//std::cout << " the4jets[ij].size = " << the4jets.size() << std::endl;
-			
-		for (size_t itemplate=0; itemplate!= Template4jCombos_.size(); ++itemplate) {
-			
-			std::string a4template = Template4jCombos_[itemplate];
+		if (verbosef) std::cout<< "[JetCombinatorics] build combinations for the two neutrino hypotheses" << std::endl;
 
-			if (verbosef) std::cout << "[JetCombinatorics] ==> combination: " << a4template << " is # " << itemplate << "/"<<  Template4jCombos_.size()-1 << std::endl;
+		for ( int iw = 0; iw < 2; iw++ ) { // loop over two neutrino solutions
+			TLorentzVector aLepW;
 			
-			Combo acombo;
+			if ( iw == 0 ) aLepW = theLepW_;
+			else aLepW = theOtherLepW_;
+
+			if ( aLepW.E() == 0 ) continue;
+
+			if (verbosef) std::cout <<"[JetCombinatorics] Neutrino hypothesis # " << iw << std::endl;
+
+			if (verbosef) std::cout<< "[JetCombinatorics] with these 4 jets, make 12 combinations: " <<std::endl;
+
 			
-			acombo.SetWp( the4jets[atoi((a4template.substr(0,1)).c_str())] );
-			acombo.SetWq( the4jets[atoi((a4template.substr(1,1)).c_str())] );
-			acombo.SetHadb( the4jets[atoi((a4template.substr(2,1)).c_str())] );
-			acombo.SetLepb( the4jets[atoi((a4template.substr(3,1)).c_str())] );
-			acombo.SetLepW( theLepW_ );
+			for (size_t itemplate=0; itemplate!= Template4jCombos_.size(); ++itemplate) {
+			
+				std::string a4template = Template4jCombos_[itemplate];
 
-			acombo.SetIdWp( the4Ids[atoi((a4template.substr(0,1)).c_str())] );
-			acombo.SetIdWq( the4Ids[atoi((a4template.substr(1,1)).c_str())] );
-			acombo.SetIdHadb( the4Ids[atoi((a4template.substr(2,1)).c_str())] );
-			acombo.SetIdLepb( the4Ids[atoi((a4template.substr(3,1)).c_str())] );
-			//std::cout << " acombo setup" << std::endl;
+				if (verbosef) std::cout << "[JetCombinatorics] ==> combination: " << a4template << " is # " << itemplate << "/"<<  Template4jCombos_.size()-1 << std::endl;
+			
+				Combo acombo;
+			
+				acombo.SetWp( the4jets[atoi((a4template.substr(0,1)).c_str())] );
+				acombo.SetWq( the4jets[atoi((a4template.substr(1,1)).c_str())] );
+				acombo.SetHadb( the4jets[atoi((a4template.substr(2,1)).c_str())] );
+				acombo.SetLepb( the4jets[atoi((a4template.substr(3,1)).c_str())] );
+				acombo.SetLepW( aLepW );
 
-			if ( UseFlv_ ) {
-				acombo.SetFlvCorrWp( theFlvCorr[atoi((a4template.substr(0,1)).c_str())] );
-				acombo.SetFlvCorrWq( theFlvCorr[atoi((a4template.substr(1,1)).c_str())] );
-				acombo.SetFlvCorrHadb( theFlvCorr[atoi((a4template.substr(2,1)).c_str())] );
-				acombo.SetFlvCorrLepb( theFlvCorr[atoi((a4template.substr(3,1)).c_str())] );
-				acombo.ApplyFlavorCorrections();
-			}
-			if ( UsebTagging_ ) {
+				acombo.SetIdWp( the4Ids[atoi((a4template.substr(0,1)).c_str())] );
+				acombo.SetIdWq( the4Ids[atoi((a4template.substr(1,1)).c_str())] );
+				acombo.SetIdHadb( the4Ids[atoi((a4template.substr(2,1)).c_str())] );
+				acombo.SetIdLepb( the4Ids[atoi((a4template.substr(3,1)).c_str())] );
+				//std::cout << " acombo setup" << std::endl;
 
-				acombo.Usebtagging();
-				acombo.SetbDiscPdf(bTagPdffilename_);
-				acombo.SetWp_disc( thebdisc[atoi((a4template.substr(0,1)).c_str())] );
-				acombo.SetWq_disc( thebdisc[atoi((a4template.substr(1,1)).c_str())] );
-				acombo.SetHadb_disc( thebdisc[atoi((a4template.substr(2,1)).c_str())] );
-				acombo.SetLepb_disc( thebdisc[atoi((a4template.substr(3,1)).c_str())] );
+				if ( UseFlv_ ) {
+					acombo.SetFlvCorrWp( theFlvCorr[atoi((a4template.substr(0,1)).c_str())] );
+					acombo.SetFlvCorrWq( theFlvCorr[atoi((a4template.substr(1,1)).c_str())] );
+					acombo.SetFlvCorrHadb( theFlvCorr[atoi((a4template.substr(2,1)).c_str())] );
+					acombo.SetFlvCorrLepb( theFlvCorr[atoi((a4template.substr(3,1)).c_str())] );
+					acombo.ApplyFlavorCorrections();
+				}
+				if ( UsebTagging_ ) {
+
+					acombo.Usebtagging();
+					acombo.SetbDiscPdf(bTagPdffilename_);
+					acombo.SetWp_disc( thebdisc[atoi((a4template.substr(0,1)).c_str())] );
+					acombo.SetWq_disc( thebdisc[atoi((a4template.substr(1,1)).c_str())] );
+					acombo.SetHadb_disc( thebdisc[atoi((a4template.substr(2,1)).c_str())] );
+					acombo.SetLepb_disc( thebdisc[atoi((a4template.substr(3,1)).c_str())] );
 				
-			}
+				}
 
-			acombo.UseMtopConstraint(UseMtop_);
-			// choose value of sigmas
-			acombo.SetSigmas(SigmasTypef);
+				acombo.UseMtopConstraint(UseMtop_);
+				// choose value of sigmas
+				acombo.SetSigmas(SigmasTypef);
 
-			acombo.analyze();
+				acombo.analyze();
 
-			if (verbosef) {
+				if (verbosef) {
 
-			  std::cout << "[JetCombinatorics] ==> combination done:" << std::endl;
-			  acombo.Print();
-			}
-
-			// invariant mass cuts
-			TLorentzVector aHadWP4 = acombo.GetHadW();
-			TLorentzVector aLepWP4 = acombo.GetLepW();
-			TLorentzVector aLepTopP4=acombo.GetLepTop();
+					std::cout << "[JetCombinatorics] ==> combination done:" << std::endl;
+					acombo.Print();
+				}
 			
-			if ( ( aHadWP4.M() > minMassHadW_ && aHadWP4.M() < maxMassHadW_ ) &&
-				 ( aLepWP4.M() > minMassLepW_ && aLepWP4.M() < maxMassLepW_ ) &&
-				 ( aLepTopP4.M() > minMassLepTop_ && aLepTopP4.M() < maxMassLepTop_) ) {
+
+				// invariant mass cuts
+				TLorentzVector aHadWP4 = acombo.GetHadW();
+				TLorentzVector aLepWP4 = acombo.GetLepW();
+				TLorentzVector aLepTopP4=acombo.GetLepTop();
 			
-				allCombos[acombo] = n;
-				allCombosSumEt[acombo] = n;
+				if ( ( aHadWP4.M() > minMassHadW_ && aHadWP4.M() < maxMassHadW_ ) &&
+					 ( aLepWP4.M() > minMassLepW_ && aLepWP4.M() < maxMassLepW_ ) &&
+					 ( aLepTopP4.M() > minMassLepTop_ && aLepTopP4.M() < maxMassLepTop_) ) {
 			
-				n++;
-			}
+					allCombos[acombo] = n;
+					allCombosSumEt[acombo] = n;
+				
+					n++;
+				}
 		
-		}
+			} // 12 combi
+		} // neutrino solutions loop
 	}
 
 	allCombos_ = allCombos;

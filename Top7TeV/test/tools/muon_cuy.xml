@@ -8,6 +8,7 @@
     <TH1 name="reliso_datacalo" source="/muons/muon_reliso_datacalo"/>
     <TH1 name="deltaR_datacalo" source="/muons/deltaR_datacalo"/>
     <TH1 name="d0_cut1_datacalo" source="/muons/d0_cut1_datacalo"/>
+    <TH1 name="dz_datacalo" source="/muons/dz_datacalo"/>
   </validation>
 
   <validation type="TTbar" file="top_plots_TTbar_calo.root" weight="0.0001061747170696587">
@@ -18,6 +19,7 @@
     <TH1 name="reliso_TTbarcalo" source="/muons/muon_reliso_TTbarcalo"/>
     <TH1 name="deltaR_TTbarcalo" source="/muons/deltaR_TTbarcalo"/>
     <TH1 name="d0_cut1_TTbarcalo" source="/muons/d0_cut1_TTbarcalo"/>
+    <TH1 name="dz_TTbarcalo" source="/muons/dz_TTbarcalo"/>
   </validation>
 
   <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
@@ -28,6 +30,7 @@
     <TH1 name="reliso_Wjetscalo" source="/muons/muon_reliso_Wjetscalo"/>
     <TH1 name="deltaR_Wjetscalo" source="/muons/deltaR_Wjetscalo"/>
     <TH1 name="d0_cut1_Wjetscalo" source="/muons/d0_cut1_Wjetscalo"/>
+    <TH1 name="dz_Wjetscalo" source="/muons/dz_Wjetscalo"/>
   </validation>
 
   <validation type="Zjets" file="top_plots_Zjets_calo.root" weight="0.0028094211467931765">
@@ -38,6 +41,7 @@
     <TH1 name="reliso_Zjetscalo" source="/muons/muon_reliso_Zjetscalo"/>
     <TH1 name="deltaR_Zjetscalo" source="/muons/deltaR_Zjetscalo"/>
     <TH1 name="d0_cut1_Zjetscalo" source="/muons/d0_cut1_Zjetscalo"/>
+    <TH1 name="dz_Zjetscalo" source="/muons/dz_Zjetscalo"/>
   </validation>
 
   <validation type="QCD" file="top_plots_QCD_calo.root" weight="0.018205299430890203">
@@ -48,13 +52,25 @@
     <TH1 name="reliso_QCDcalo" source="/muons/muon_reliso_QCDcalo"/>
     <TH1 name="deltaR_QCDcalo" source="/muons/deltaR_QCDcalo"/>
     <TH1 name="d0_cut1_QCDcalo" source="/muons/d0_cut1_QCDcalo"/>
+    <TH1 name="dz_QCDcalo" source="/muons/dz_QCDcalo"/>
+  </validation>
+
+  <validation type="STtch" file="top_plots_STtch_calo.root" weight="3.9595681365436169e-05">
+    <!-- muon -->
+    <TH1 name="pt_STtchcalo" source="/muons/muon_pt_STtchcalo"/>
+    <TH1 name="eta_STtchcalo" source="/muons/muon_eta_STtchcalo"/>
+    <TH1 name="phi_STtchcalo" source="/muons/muon_phi_STtchcalo"/>
+    <TH1 name="reliso_STtchcalo" source="/muons/muon_reliso_STtchcalo"/>
+    <TH1 name="deltaR_STtchcalo" source="/muons/deltaR_STtchcalo"/>
+    <TH1 name="d0_cut1_STtchcalo" source="/muons/d0_cut1_STtchcalo"/>
+    <TH1 name="dz_STtchcalo" source="/muons/dz_STtchcalo"/>
   </validation>
 
 <!--
   <divide name="muon_hltg_pt_ttbar" numerator="tT0j_muon_pt_cut1" denominator="tT0j_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
 -->
 
-  <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="2.79" Stack="true">
+  <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="pt_datacalo" color="top" legend="Data"/>
     <superimposeItem name="pt_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="pt_Zjetscalo" color="top" legend="Zjets"/>
@@ -62,7 +78,7 @@
     <superimposeItem name="pt_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2.79" Stack="true">
+  <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="eta_datacalo" color="top" legend="Data"/>
     <superimposeItem name="eta_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="eta_Zjetscalo" color="top" legend="Zjets"/>
@@ -70,7 +86,7 @@
     <superimposeItem name="eta_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2.79" Stack="true">
+  <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="phi_datacalo" color="top" legend="Data"/>
     <superimposeItem name="phi_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="phi_Zjetscalo" color="top" legend="Zjets"/>
@@ -78,7 +94,7 @@
     <superimposeItem name="phi_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="2.79" Stack="true">
+  <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="reliso_datacalo" color="top" legend="Data"/>
     <superimposeItem name="reliso_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="reliso_Zjetscalo" color="top" legend="Zjets"/>
@@ -86,7 +102,7 @@
     <superimposeItem name="reliso_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_deltaR" title="muon_deltaR" YTitle="Events" Fill="true" Weight="true" Lumi="2.79" Stack="true">
+  <superimpose name="muon_deltaR" title="muon_deltaR" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
     <superimposeItem name="deltaR_datacalo" color="top" legend="Data"/>
     <superimposeItem name="deltaR_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="deltaR_Zjetscalo" color="top" legend="Zjets"/>
@@ -94,12 +110,20 @@
     <superimposeItem name="deltaR_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="2.79" Stack="true">
+  <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0" Ndivisions='505'>
     <superimposeItem name="d0_cut1_datacalo" color="top" legend="Data"/>
     <superimposeItem name="d0_cut1_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="d0_cut1_Zjetscalo" color="top" legend="Zjets"/>
     <superimposeItem name="d0_cut1_QCDcalo" color="top" legend="QCD"/>
     <superimposeItem name="d0_cut1_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="muon_dz" title="muon_dz" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="dz_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="dz_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="dz_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="dz_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="dz_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
 </cuy>

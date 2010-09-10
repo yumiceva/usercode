@@ -5,6 +5,7 @@
 /// constructor
 METzCalculator::METzCalculator() {
 	isComplex_ = false;
+	otherSol_ = 0.;
 }
 
 /// destructor
@@ -24,7 +25,7 @@ METzCalculator::Calculate(int type) {
         double pxnu = MET_.Px();
         double pynu = MET_.Py();
         double pznu = 0.;
-
+	otherSol_ = 0.;
 		
         double a = M_W*M_W - M_mu*M_mu + 2.0*pxmu*pxnu + 2.0*pymu*pynu;
         double A = 4.0*(emu*emu - pzmu*pzmu);
@@ -36,7 +37,7 @@ METzCalculator::Calculate(int type) {
         if (tmproot<0) {
                 isComplex_= true;
                 pznu = - B/(2*A); // take real part of complex roots
-
+		otherSol_ = pznu;
 		//std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
 		}
         else {
@@ -48,23 +49,23 @@ METzCalculator::Calculate(int type) {
 			
 			if (type == 0 ) {
 				// two real roots, pick the one closest to pz of muon
-				if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
-				else pznu = tmpsol1;
+			  if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2; otherSol_ = tmpsol1;}
+			  else { pznu = tmpsol1; otherSol_ = tmpsol2; } 
 				// if pznu is > 300 pick the most central root
 				if ( pznu > 300. ) {
-					if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) pznu = tmpsol1;
-					else pznu = tmpsol2;
+				  if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
+				  else { pznu = tmpsol2; otherSol_ = tmpsol1; }
 				}
 			}
 			if (type == 1 ) {
 				// two real roots, pick the one closest to pz of muon
-				if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2;}
-				else pznu = tmpsol1;
+			  if (TMath::Abs(tmpsol2-pzmu) < TMath::Abs(tmpsol1-pzmu)) { pznu = tmpsol2; otherSol_ = tmpsol1; }
+			  else {pznu = tmpsol1; otherSol_ = tmpsol2; }
 			}
 			if (type == 2 ) {
 				// pick the most central root.
-				if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) pznu = tmpsol1;
-				else pznu = tmpsol2;
+			  if (TMath::Abs(tmpsol1)<TMath::Abs(tmpsol2) ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
+			  else { pznu = tmpsol2; otherSol_ = tmpsol1; }
 			}
 			if (type == 3 ) {
 				// pick the largest value of the cosine
@@ -79,8 +80,8 @@ METzCalculator::Calculate(int type) {
 				double costhcm1 = TMath::Sqrt(1. - sinthcm1*sinthcm1);
 				double costhcm2 = TMath::Sqrt(1. - sinthcm2*sinthcm2);
 
-				if ( costhcm1 > costhcm2 ) pznu = tmpsol1;
-				else pznu = tmpsol2;
+				if ( costhcm1 > costhcm2 ) { pznu = tmpsol1; otherSol_ = tmpsol2; }
+				else { pznu = tmpsol2;otherSol_ = tmpsol1; }
 			}
 		
         }

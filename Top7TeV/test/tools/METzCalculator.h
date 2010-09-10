@@ -6,7 +6,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: METzCalculator.h,v 1.3 2009/07/30 06:02:19 jengbou Exp $
+ version $Id: METzCalculator.h,v 1.1 2010/09/03 16:19:12 yumiceva Exp $
 
 ________________________________________________________________**/
 #include<iostream>
@@ -42,7 +42,7 @@ class METzCalculator {
 	double Calculate(int type = 0);
     /// check for complex root
 	bool IsComplex() const { return isComplex_; };
-
+	double getOther() const { return otherSol_; };
 	void Print() {
 		std::cout << " METzCalculator: pxmu = " << lepton_.Px() << " pzmu= " << lepton_.Pz() << std::endl;
 		std::cout << " METzCalculator: pxnu = " << MET_.Px() << " pynu= " << MET_.Py() << std::endl;
@@ -53,6 +53,7 @@ class METzCalculator {
 	bool isComplex_;
 	TLorentzVector lepton_;
 	TLorentzVector MET_;
+	double otherSol_;
 	
 };
 

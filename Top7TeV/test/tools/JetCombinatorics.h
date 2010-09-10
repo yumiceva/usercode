@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.4 2010/02/05 22:01:38 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.1.4.10 2009/07/13 15:13:36 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -41,6 +41,7 @@ class Combo {
 
 	  useFlv_ = false;
 	  Wp_flv_ = Wq_flv_ = Hadb_flv_ = Lepb_flv_ = 1.;
+	  
 	}
 	~Combo(){};
 
@@ -283,7 +284,7 @@ class JetCombinatorics {
 	std::map< int, std::string > Combinatorics(int k, int max = 6);
 	std::map< int, std::string > NestedCombinatorics();
 
-	void FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<double> bdiscriminators );
+	void FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<double> bdiscriminators);
 	void SetFlavorCorrections(std::vector<double > vector ) { flavorCorrections_ = vector; }
 	void SetMaxNJets(int n) { maxNJets_ = n; }
 	Combo GetCombination(int n=0);
@@ -295,7 +296,7 @@ class JetCombinatorics {
 	  SigmasTypef = type;
 	}
 	void SetLeptonicW( TLorentzVector LepW ) { theLepW_ = LepW; }
-
+	void SetOtherLeptonicW(  TLorentzVector LepW ) { theOtherLepW_ = LepW; }
 	void SetMinMassLepW( double mass ) { minMassLepW_ = mass; }
 	void SetMaxMassLepW( double mass ) { maxMassLepW_ = mass; }
 	void SetMinMassHadW( double mass ) { minMassHadW_ = mass; }
@@ -337,7 +338,8 @@ class JetCombinatorics {
 	bool UseFlv_;
 	
 	TLorentzVector theLepW_;
-
+	TLorentzVector theOtherLepW_;
+	
 	double minMassLepW_;
 	double maxMassLepW_;
 	double minMassHadW_;
