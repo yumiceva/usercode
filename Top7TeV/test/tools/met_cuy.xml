@@ -1,0 +1,183 @@
+<cuy>
+
+  <validation type="data" file="top_plots_data_calo.root" weight="1">
+    <TH1 name="met_datacalo" source="/MET/MET_datacalo"/>
+    <TH1 name="phi_datacalo" source="/MET/MET_phi_datacalo"/>
+    <TH1 name="ht_datacalo" source="/MET/Ht_datacalo"/>
+    <TH1 name="htlep_datacalo" source="/MET/Htlep_datacalo"/>
+    <TH1 name="LepW1j_datacalo" source="/MET/LepWmass_1jet_datacalo"/>
+    <TH1 name="LepW2j_datacalo" source="/MET/LepWmass_2jet_datacalo"/>
+    <TH1 name="LepW3j_datacalo" source="/MET/LepWmass_3jet_datacalo"/>
+    <TH1 name="LepW4j_datacalo" source="/MET/LepWmass_4jet_datacalo"/>
+    <TH1 name="LepWcomplex1j_datacalo" source="/MET/LepWmassComplex_1jet_datacalo"/>
+    <TH1 name="LepWcomplex2j_datacalo" source="/MET/LepWmassComplex_2jet_datacalo"/>
+    <TH1 name="LepWcomplex3j_datacalo" source="/MET/LepWmassComplex_3jet_datacalo"/>
+    <TH1 name="LepWcomplex4j_datacalo" source="/MET/LepWmassComplex_4jet_datacalo"/>
+  </validation>
+
+  <validation type="TTbar" file="top_plots_TTbar_calo.root" weight="0.0001061747170696587">
+    <TH1 name="met_TTbarcalo" source="/MET/MET_TTbarcalo"/>
+    <TH1 name="phi_TTbarcalo" source="/MET/MET_phi_TTbarcalo"/>
+    <TH1 name="ht_TTbarcalo" source="/MET/Ht_TTbarcalo"/>
+    <TH1 name="htlep_TTbarcalo" source="/MET/Htlep_TTbarcalo"/>
+    <TH1 name="LepW1j_TTbarcalo" source="/MET/LepWmass_1jet_TTbarcalo"/>
+    <TH1 name="LepW2j_TTbarcalo" source="/MET/LepWmass_2jet_TTbarcalo"/>
+    <TH1 name="LepW3j_TTbarcalo" source="/MET/LepWmass_3jet_TTbarcalo"/>
+    <TH1 name="LepW4j_TTbarcalo" source="/MET/LepWmass_4jet_TTbarcalo"/>
+    <TH1 name="LepWcomplex1j_TTbarcalo" source="/MET/LepWmassComplex_1jet_TTbarcalo"/>
+    <TH1 name="LepWcomplex2j_TTbarcalo" source="/MET/LepWmassComplex_2jet_TTbarcalo"/>
+    <TH1 name="LepWcomplex3j_TTbarcalo" source="/MET/LepWmassComplex_3jet_TTbarcalo"/>
+    <TH1 name="LepWcomplex4j_TTbarcalo" source="/MET/LepWmassComplex_4jet_TTbarcalo"/>
+  </validation>
+
+  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
+    <TH1 name="met_Wjetscalo" source="/MET/MET_Wjetscalo"/>
+    <TH1 name="phi_Wjetscalo" source="/MET/MET_phi_Wjetscalo"/>
+    <TH1 name="ht_Wjetscalo" source="/MET/Ht_Wjetscalo"/>
+    <TH1 name="htlep_Wjetscalo" source="/MET/Htlep_Wjetscalo"/>
+    <TH1 name="LepW1j_Wjetscalo" source="/MET/LepWmass_1jet_Wjetscalo"/>
+    <TH1 name="LepW2j_Wjetscalo" source="/MET/LepWmass_2jet_Wjetscalo"/>
+    <TH1 name="LepW3j_Wjetscalo" source="/MET/LepWmass_3jet_Wjetscalo"/>
+    <TH1 name="LepW4j_Wjetscalo" source="/MET/LepWmass_4jet_Wjetscalo"/>
+    <TH1 name="LepWcomplex1j_Wjetscalo" source="/MET/LepWmassComplex_1jet_Wjetscalo"/>
+    <TH1 name="LepWcomplex2j_Wjetscalo" source="/MET/LepWmassComplex_2jet_Wjetscalo"/>
+    <TH1 name="LepWcomplex3j_Wjetscalo" source="/MET/LepWmassComplex_3jet_Wjetscalo"/>
+    <TH1 name="LepWcomplex4j_Wjetscalo" source="/MET/LepWmassComplex_4jet_Wjetscalo"/>
+
+  </validation>
+
+  <validation type="Zjets" file="top_plots_Zjets_calo.root" weight="0.0028094211467931765">
+    <TH1 name="met_Zjetscalo" source="/MET/MET_Zjetscalo"/>
+    <TH1 name="phi_Zjetscalo" source="/MET/MET_phi_Zjetscalo"/>
+    <TH1 name="ht_Zjetscalo" source="/MET/Ht_Zjetscalo"/>
+    <TH1 name="htlep_Zjetscalo" source="/MET/Htlep_Zjetscalo"/>
+    <TH1 name="LepW1j_Zjetscalo" source="/MET/LepWmass_1jet_Zjetscalo"/>
+    <TH1 name="LepW2j_Zjetscalo" source="/MET/LepWmass_2jet_Zjetscalo"/>
+    <TH1 name="LepW3j_Zjetscalo" source="/MET/LepWmass_3jet_Zjetscalo"/>
+    <TH1 name="LepW4j_Zjetscalo" source="/MET/LepWmass_4jet_Zjetscalo"/>
+    <TH1 name="LepWcomplex1j_Zjetscalo" source="/MET/LepWmassComplex_1jet_Zjetscalo"/>
+    <TH1 name="LepWcomplex2j_Zjetscalo" source="/MET/LepWmassComplex_2jet_Zjetscalo"/>
+    <TH1 name="LepWcomplex3j_Zjetscalo" source="/MET/LepWmassComplex_3jet_Zjetscalo"/>
+    <TH1 name="LepWcomplex4j_Zjetscalo" source="/MET/LepWmassComplex_4jet_Zjetscalo"/>
+
+  </validation>
+
+  <validation type="QCD" file="top_plots_QCD_calo.root" weight="0.018205299430890203">
+    <TH1 name="met_QCDcalo" source="/MET/MET_QCDcalo"/>
+    <TH1 name="phi_QCDcalo" source="/MET/MET_phi_QCDcalo"/>
+    <TH1 name="ht_QCDcalo" source="/MET/Ht_QCDcalo"/>
+    <TH1 name="htlep_QCDcalo" source="/MET/Htlep_QCDcalo"/>
+    <TH1 name="LepW1j_QCDcalo" source="/MET/LepWmass_1jet_QCDcalo"/>
+    <TH1 name="LepW2j_QCDcalo" source="/MET/LepWmass_2jet_QCDcalo"/>
+    <TH1 name="LepW3j_QCDcalo" source="/MET/LepWmass_3jet_QCDcalo"/>
+    <TH1 name="LepW4j_QCDcalo" source="/MET/LepWmass_4jet_QCDcalo"/>
+    <TH1 name="LepWcomplex1j_QCDcalo" source="/MET/LepWmassComplex_1jet_QCDcalo"/>
+    <TH1 name="LepWcomplex2j_QCDcalo" source="/MET/LepWmassComplex_2jet_QCDcalo"/>
+    <TH1 name="LepWcomplex3j_QCDcalo" source="/MET/LepWmassComplex_3jet_QCDcalo"/>
+    <TH1 name="LepWcomplex4j_QCDcalo" source="/MET/LepWmassComplex_4jet_QCDcalo"/>
+
+  </validation>
+
+<!--
+  <divide name="jet_hltg_pt_ttbar" numerator="tT0j_jet_pt_cut1" denominator="tT0j_jet_pt_nohltgood" DivideOption="B" Option="e1"/>
+-->
+
+  <superimpose name="met" title="met" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="met_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="met_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="met_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="met_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="met_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="phi" title="phi" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="phi_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="phi_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="phi_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="phi_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="phi_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="ht" title="ht" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="ht_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="ht_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="ht_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="ht_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="ht_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="htlep" title="htlep" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="htlep_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="htlep_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="htlep_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="htlep_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="htlep_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepW1j" title="LepW1j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=1">
+    <superimposeItem name="LepW1j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepW1j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW1j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW1j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepW1j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepW2j" title="LepW2j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=2">
+    <superimposeItem name="LepW2j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepW2j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW2j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW2j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepW2j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepW3j" title="LepW3j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=3">
+    <superimposeItem name="LepW3j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepW3j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW3j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW3j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepW3j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepW4j" title="LepW4j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq4">
+    <superimposeItem name="LepW4j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepW4j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW4j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW4j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepW4j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepWcomplex1j" title="LepWcomplex1j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=1">
+    <superimposeItem name="LepWcomplex1j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex1j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex1j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex1j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex1j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepWcomplex2j" title="LepWcomplex2j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=2">
+    <superimposeItem name="LepWcomplex2j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex2j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex2j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex2j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex2j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepWcomplex3j" title="LepWcomplex3j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=3">
+    <superimposeItem name="LepWcomplex3j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex3j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex3j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex3j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex3j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="LepWcomplex4j" title="LepWcomplex4j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=4">
+    <superimposeItem name="LepWcomplex4j_datacalo" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex4j_Wjetscalo" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex4j_Zjetscalo" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex4j_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex4j_TTbarcalo" color="top" legend="TTbar"/>
+  </superimpose>
+
+
+
+</cuy>

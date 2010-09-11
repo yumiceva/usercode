@@ -35,10 +35,14 @@
 """
 
 
-import os, string, re, sys, math
+import os
+import string
+import re
+import sys
+import math
 
 try:
-    import ROOT
+    from ROOT import *
 except:
     print "\nCannot load PYROOT, make sure you have setup ROOT in the path"
     print "and pyroot library is also defined in the variable PYTHONPATH, try:\n"
@@ -48,18 +52,19 @@ except:
 	print " setenv PYTHONPATH $ROOTSYS/lib\n"
     sys.exit()
 
-from ROOT import TFile
-from ROOT import TCanvas
-from ROOT import TLegend
-from ROOT import SetOwnership
-from ROOT import THStack
-from ROOT import TLatex
+#from ROOT import TFile
+#from ROOT import TCanvas
+#from ROOT import TLegend
+#from ROOT import SetOwnership
+#from ROOT import THStack
+#from ROOT import TLatex
 
 from xml.sax import saxutils, make_parser, handler
 from xml.sax.handler import feature_namespaces
 
 import Inspector
 import Style
+
 
 #_______________OPTIONS________________
 import optparse
@@ -146,6 +151,7 @@ class superimposeElement:
 	self.marker = []
 	self.legend = []
 	self.weight = []
+        self.SF = []
 
 class FindIssue(handler.ContentHandler):
     def __init__(self):
@@ -216,6 +222,9 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[aname].Maximum = attrs.get('Maximum',None)
 	    self.superimpose[aname].Minimum = attrs.get('Minimum',None)
 	    self.superimpose[aname].Labels = attrs.get('Labels',None)
+            self.superimpose[aname].Lumi = attrs.get('Lumi',None)
+            self.superimpose[aname].SubBanner = attrs.get('SubBanner',None)
+            self.superimpose[aname].Ndivisions = attrs.get('Ndivisions',None)
 	    self.tmpsupername = aname
 	if name == 'superimposeItem':
 	    #print "in element: " + self.tmpsupername
@@ -223,7 +232,7 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[self.tmpsupername].color.append(attrs.get('color',None))
 	    self.superimpose[self.tmpsupername].marker.append(attrs.get('MarkerStyle',None))
 	    self.superimpose[self.tmpsupername].legend.append(attrs.get('legend',None))
-	    #self.superimpose[self.tmpsupername].weight.append(attrs.get('weight',None))
+	    self.superimpose[self.tmpsupername].SF.append(attrs.get('SF',None))
 
 if __name__ == '__main__':
 
@@ -231,12 +240,29 @@ if __name__ == '__main__':
 
     # style
     thestyle = Style.Style()
-    thestyle.SetStyle()
 
+    HasCMSStyle = False
+    style = None
+    if os.path.isfile('tdrstyle.C'):
+        gROOT.ProcessLine('.L tdrstyle.C')
+        ROOT.setTDRStyle()
+        print "Found tdrstyle.C file, using this style."
+        HasCMSStyle = True
+        if os.path.isfile('CMSTopStyle.cc'):
+            gROOT.ProcessLine('.L CMSTopStyle.cc+')
+            style = CMSTopStyle()
+            style.setupICHEPv1()
+            print "Found CMSTopStyle.cc file, use TOP style if requested in xml file."
+    if not HasCMSStyle:
+        print "Using default style defined in cuy package."
+        thestyle.SetStyle()
+
+    gROOT.ForceStyle()
+    
     printCanvas = False
     printFormat = "png"
     printBanner = False
-    Banner = "CMS Preliminary"
+    Banner = "#splitline{CMS Preliminary}"
     verbose = False
 
     # check options
@@ -485,13 +511,46 @@ if __name__ == '__main__':
 
     thesuper = dh.superimpose
     if verbose : print "= Create superimpose histograms:"
+    datahist = {}
+    tex = {}
     for ikey in thesuper:
 	if verbose : print "== plot name: \""+thesuper[ikey].name+"\" title: \""+thesuper[ikey].title+"\""
 	listname = thesuper[ikey].histos
 	listcolor = thesuper[ikey].color
 	listmarker = thesuper[ikey].marker
 	listlegend = thesuper[ikey].legend
-	#listweight = thesuper[ikey].weight
+	listSF = thesuper[ikey].SF
+        tmplistcolor = []
+        tmplistlegend = []
+        
+        for icolor in xrange(0,len(listcolor)):
+            if listcolor[icolor] == "top" and listlegend[icolor]=="Data":
+                tmplistcolor.append('1')
+                tmplistlegend.append("Data")                                
+            if listcolor[icolor] == "top" and listlegend[icolor]=="TTbar":
+                tmplistcolor.append( style.TtbarColor)
+                tmplistlegend.append(style.TtbarText)
+            if listcolor[icolor] == "top" and listlegend[icolor]=="Wjets":
+                tmplistcolor.append( style.WJetsColor)
+                tmplistlegend.append(style.WJetsText)
+            if listcolor[icolor] == "top" and listlegend[icolor]=="Zjets":
+                tmplistcolor.append( style.DYZJetsColor)
+                tmplistlegend.append(style.DYZJetsText)
+            if listcolor[icolor] == "top" and listlegend[icolor]=="QCD":
+                tmplistcolor.append( style.QCDColor)
+                tmplistlegend.append(style.QCDText)
+            if listcolor[icolor] == "top" and listlegend[icolor]=="ST":
+                tmplistcolor.append( style.SingleTopColor)
+                tmplistlegend.append(style.SingleTopText)
+            if listcolor[icolor] == "top" and listlegend[icolor]=="STtch":
+                tmplistcolor.append( style.ST_t_sColor)
+                tmplistlegend.append(style.ST_t_sText)
+                                                
+
+        if len(tmplistcolor)>0:
+            listcolor = tmplistcolor
+            listlegend = tmplistlegend
+        
 	dolegend = True
 	for il in listlegend:
 	    if il==None: dolegend = False
@@ -510,11 +569,11 @@ if __name__ == '__main__':
 	if thesuper[ikey].profile == "y": profileAxis = "y"
 	doFill = False
 	if thesuper[ikey].Fill == "true": doFill = True
-	if verbose : print "fill option:"+ doFill
+	if verbose : print "fill option:"+ str(doFill)
 	#create canvas
 	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
 	#legend
-	aleg = TLegend(0.6,0.4,0.8,0.6)
+	aleg = TLegend(0.73,0.68,1.0,0.93)
 	SetOwnership( aleg, 0 ) 
 	aleg.SetMargin(0.12)
         aleg.SetTextSize(0.035)
@@ -526,6 +585,9 @@ if __name__ == '__main__':
 
 	stacklist[thesuper[ikey].name] = THStack("astack"+thesuper[ikey].name,thesuper[ikey].title)
 	astack = stacklist[thesuper[ikey].name]
+        datahist[thesuper[ikey].name] = None
+        thisistheMax = 0.
+        defaultXTitle = ""
 	for ihname in listname:
 	
 	    for jkey in thedata:
@@ -563,6 +625,22 @@ if __name__ == '__main__':
 			aweight = 1
 			if thedata[jkey].weight != None and thesuper[ikey].Weight=="true":
 			    aweight = float( thedata[jkey].weight )
+                            if thesuper[ikey].Lumi != None:
+                                aweight = aweight * float(thesuper[ikey].Lumi)
+                                # check if we have additianal SF
+                                aSF = 1.
+                                if listSF[ii] != None:
+                                    tmpSF = listSF[ii]
+                                    if tmpSF.find('*') != -1:
+                                        tmpSFlist = tmpSF.split('*')
+                                        for i_tmpSF in tmpSFlist:
+                                            aSF *= float(i_tmpSF)
+                                    else:
+                                        aSF = tmpSF
+
+                                aweight = aweight * aSF
+                                
+                                if listlegend[ii]=="Data": aweight = 1.
 			if verbose: print " with weight = " + str(aweight)
 			#if listweight[ii]:
 			 #   aweight = float( listweight[ii] )
@@ -577,11 +655,12 @@ if __name__ == '__main__':
 			if not listcolor[ii]:
 			    listcolor[ii] = 1
 			
-			newth.SetLineColor(int(listcolor[ii]))
+			#newth.SetLineColor(int(listcolor[ii]))
 			newth.SetMarkerColor(int(listcolor[ii]))
 			
 			if doFill: newth.SetFillColor(int(listcolor[ii]))
-
+                        else:
+                            newth.SetLineColor(int(listcolor[ii]))
 			if listmarker[ii] != None:
 			    newth.SetMarkerStyle(int(listmarker[ii]))
 			# normalize
@@ -620,7 +699,9 @@ if __name__ == '__main__':
 			if doFill:
 			    if thesuper[ikey].XTitle != None:
 				newth.SetXTitle("")
-			    astack.Add(newth,"HIST")
+                            if listlegend[ii]=="Data": datahist[thesuper[ikey].name] = newth
+                            else:
+                                astack.Add(newth,"HIST")
 			elif thesuper[ikey].Option:
 			    astack.Add(newth,thesuper[ikey].Option)
 			else:
@@ -633,6 +714,7 @@ if __name__ == '__main__':
 			    newth.GetPainter().PaintStat(ROOT.gStyle.GetOptStat(),0);
 			    isFirst=0
 			    tmpsumth = newth.Clone()
+                            defaultXTitle = newth.GetXaxis().GetTitle()
 			else:
 			    tmpsumth.Add(newth)
 			#    newth.SetTitle(thesuper[ikey].title)
@@ -642,34 +724,50 @@ if __name__ == '__main__':
 			#    isFirst=0
 			#else:
 			#    newth.Draw("same")
-			if dolegend and doFill: 
-			    aleg.AddEntry(newth,listlegend[ii],"F")
+			if dolegend and doFill:
+                            if listlegend[ii]=="Data": aleg.AddEntry(newth,listlegend[ii],"PL")
+                            else: aleg.AddEntry(newth,listlegend[ii],"F")
 			elif dolegend:
 			    aleg.AddEntry(newth,listlegend[ii],"P")
-			
+
+			if newth.GetMaximum()>= thisistheMax: thisistheMax=newth.GetMaximum()
 			newth.SetName(tmpname)
 			outputroot.cd()
 			newth.Write()
 	    ii = ii + 1
-
-	
 	if thesuper[ikey].Maximum != None:
 	    astack.SetMaximum( float(thesuper[ikey].Maximum) )
+        else: astack.SetMaximum( thisistheMax * 1.55 )
 	if thesuper[ikey].Minimum != None:
 	    astack.SetMinimum( float(thesuper[ikey].Minimum) )
 	if thesuper[ikey].Stack == "true":
 	    astack.Draw()
+            if thesuper[ikey].Ndivisions !=None: astack.GetHistogram().GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
+            astack.Draw()
 	if thesuper[ikey].Stack == "false" or thesuper[ikey].Stack == None:
 	    astack.Draw()
 	    astack.Draw("nostack")
+            if thesuper[ikey].Ndivisions !=None: astack.GetHistogram().GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
 	if thesuper[ikey].XTitle != None:
 	    astack.GetHistogram().SetXTitle(thesuper[ikey].XTitle)
+            if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetXTitle(thesuper[ikey].XTitle)
+        else:
+            astack.GetHistogram().SetXTitle(defaultXTitle)
+            if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetXTitle(defaultXTitle)
 	if thesuper[ikey].YTitle != None:
 	    astack.GetHistogram().SetYTitle(thesuper[ikey].YTitle)
+            if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetYTitle(thesuper[ikey].YTitle)
 	if doFill:
-	    astack.Draw("sameaxis")
+            if datahist[thesuper[ikey].name] != None:
+#                if thesuper[ikey].Ndivisions !=None: datahist[thesuper[ikey].name].GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
+                datahist[thesuper[ikey].name].Draw("p same")
+                if thesuper[ikey].Ndivisions !=None: datahist[thesuper[ikey].name].GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
+	    #astack.Draw("same") #sameaxis")
+            #if thesuper[ikey].Ndivisions !=None: astack.GetHistogram().GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
 
-	
+        gPad.RedrawAxis()
+	#astack.GetHistogram().GetXaxis().SetTickLength(0)
+        #astack.GetHistogram().GetXaxis().SetLabelOffset(999)
 	#thelabels = []
 	#if thesuper[ikey].Labels != None:
 	#    thelabels = thesuper[ikey].Labels.split(',')
@@ -687,6 +785,7 @@ if __name__ == '__main__':
 	    aleg.Draw()
 	if thesuper[ikey].SetLogy == "true":
 	    cv[thesuper[ikey].name].SetLogy()
+            #gPad.SetLogy()
 	if thesuper[ikey].SetGrid == "true":
 	    cv[thesuper[ikey].name].SetGrid()
 	
@@ -700,17 +799,22 @@ if __name__ == '__main__':
 	#	tmpsumth.SetBinError(iibin, 1/math.sqrt(tmpsumth.GetBinContent(iibin)) )
 			
 	#tmpsumth.Draw("same E1")
-
-	
+            
 	if printBanner:
-	    tex = TLatex(0.35,0.95,Banner)
-	    tex.SetNDC()
-	    tex.SetTextSize(0.05)
-	    tex.Draw()
+            newBanner = Banner
+            if thesuper[ikey].SubBanner != None:
+                newBanner = '#splitline{'+Banner+'}{'+thesuper[ikey].SubBanner+'}'
+                if verbose: print "add sub banner"
+	    tex[thesuper[ikey].name] = TLatex(0.25,0.85,newBanner)
+	    tex[thesuper[ikey].name].SetNDC()
+	    tex[thesuper[ikey].name].SetTextSize(0.035)
+	    tex[thesuper[ikey].name].Draw()
 	
 	cv[thesuper[ikey].name].Update()
+                
 	#cv[thesuper[ikey].name].Print("test.png")
-	
+	#cv[thesuper[ikey].name].UseCurrentStyle()
+        #gPad.SetRightMargin(4)
 	# pause
 	if option.wait:
 	    raw_input( 'Press ENTER to continue\n ' )
@@ -721,7 +825,7 @@ if __name__ == '__main__':
 	    cv[theaddition[ikey].name].Print(theaddition[ikey].name + "." + printFormat)
 	for ikey in thesuper:
 	    cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat)
-	
+    
     
     #outputroot.Write()
     #outputroot.Close()

@@ -1,0 +1,132 @@
+<cuy>
+
+  <validation type="data" file="top_plots_data_calo.root" weight="1">
+    <!-- jet -->
+    <TH1 name="pt_datacalo" source="/jets/jet_pt_datacalo"/>
+    <TH1 name="eta_datacalo" source="/jets/jet_eta_datacalo"/>
+    <TH1 name="phi_datacalo" source="/jets/jet_phi_datacalo"/>
+    <TH1 name="Njets_datacalo" source="/jets/Njets_datacalo"/>
+
+    <TH1 name="met_datacalo" source="/MET/MET_datacalo"/>
+    <TH1 name="metphi_datacalo" source="/MET/MET_phi_datacalo"/>
+    <TH1 name="htlep_datacalo" source="/MET/Htlep_datacalo"/>
+
+    <TH1 name="Mt_datacalo" source="/Mt/Mt_datacalo"/>
+    <TH1 name="M3_3j_datacalo" source="/M3/M3_3jet_datacalo"/>
+    <TH1 name="M3_4j_datacalo" source="/M3/M3_4jet_datacalo"/>
+
+    <TH1 name="deltaR_datacalo" source="/muons/deltaR_datacalo"/>
+
+  </validation>
+
+  <validation type="JPT" file="top_plots_data_JPT.root" weight="1">
+    <!-- jet -->
+    <TH1 name="pt_dataJPT" source="/jets/jet_pt_dataJPT"/>
+    <TH1 name="eta_dataJPT" source="/jets/jet_eta_dataJPT"/>
+    <TH1 name="phi_dataJPT" source="/jets/jet_phi_dataJPT"/>
+    <TH1 name="Njets_dataJPT" source="/jets/Njets_dataJPT"/>
+
+    <TH1 name="met_dataJPT" source="/MET/MET_dataJPT"/>
+    <TH1 name="metphi_dataJPT" source="/MET/MET_phi_dataJPT"/>
+    <TH1 name="htlep_dataJPT" source="/MET/Htlep_dataJPT"/>
+
+    <TH1 name="Mt_dataJPT" source="/Mt/Mt_dataJPT"/>
+    <TH1 name="M3_3j_dataJPT" source="/M3/M3_3jet_dataJPT"/>
+    <TH1 name="M3_4j_dataJPT" source="/M3/M3_4jet_dataJPT"/>
+
+    <TH1 name="deltaR_dataJPT" source="/muons/deltaR_dataJPT"/>
+
+  </validation>
+
+  <validation type="PF" file="top_plots_data_PF.root" weight="1">
+    <!-- jet -->
+    <TH1 name="pt_dataPF" source="/jets/jet_pt_dataPF"/>
+    <TH1 name="eta_dataPF" source="/jets/jet_eta_dataPF"/>
+    <TH1 name="phi_dataPF" source="/jets/jet_phi_dataPF"/>
+    <TH1 name="Njets_dataPF" source="/jets/Njets_dataPF"/>
+
+    <TH1 name="met_dataPF" source="/MET/MET_dataPF"/>
+    <TH1 name="metphi_dataPF" source="/MET/MET_phi_dataPF"/>
+    <TH1 name="htlep_dataPF" source="/MET/Htlep_dataPF"/>
+
+    <TH1 name="Mt_dataPF" source="/Mt/Mt_dataPF"/>
+    <TH1 name="M3_3j_dataPF" source="/M3/M3_3jet_dataPF"/>
+    <TH1 name="M3_4j_dataPF" source="/M3/M3_4jet_dataPF"/>
+
+    <TH1 name="deltaR_dataPF" source="/muons/deltaR_dataPF"/>
+
+  </validation>
+
+
+<!--
+  <divide name="jet_hltg_pt_ttbar" numerator="tT0j_jet_pt_cut1" denominator="tT0j_jet_pt_nohltgood" DivideOption="B" Option="e1"/>
+-->
+
+  <superimpose name="jet_pt" title="jet_pt" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="pt_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="pt_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="pt_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+  <superimpose name="jet_eta" title="jet_eta" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="eta_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="eta_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="eta_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+  <superimpose name="jet_phi" title="jet_phi" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="phi_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="phi_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="phi_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+  <superimpose name="Njets" title="Njets" YTitle="Events" Fill="false" Weight="false" Stack="false" SetLogy="true" Labels="0,1,2,3,#geq 4" Option="HIST" SubBanner="#mu+jets">
+    <superimposeItem name="Njets_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="Njets_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="Njets_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+  <superimpose name="met" title="met" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="met_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="met_dataJPT" color="2" legend="Data tcMET"/>
+    <superimposeItem name="met_dataPF" color="3" legend="Data PFMET"/>
+  </superimpose>
+
+  <superimpose name="met_phi" title="met_phi" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="metphi_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="metphi_dataJPT" color="2" legend="Data tcMET"/>
+    <superimposeItem name="metphi_dataPF" color="3" legend="Data PFMET"/>
+  </superimpose>
+
+  <superimpose name="htlep" title="htlep" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="htlep_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="htlep_dataJPT" color="2" legend="Data tcMET"/>
+    <superimposeItem name="htlep_dataPF" color="3" legend="Data PFMET"/>
+  </superimpose>
+
+  <superimpose name="Mt" title="Mt" YTitle="Events" Fill="false" Weight="false" Stack="false" SubBanner="#mu+jets N_{jets}#geq0">
+    <superimposeItem name="Mt_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="Mt_dataJPT" color="2" legend="Data tcMET"/>
+    <superimposeItem name="Mt_dataPF" color="3" legend="Data PFMET"/>
+  </superimpose>
+
+  <superimpose name="M3_3jet" title="M3_3jet" YTitle="Events" Fill="false" Weight="false" Stack="false" Option="HIST" SubBanner="#mu+jets N_{jets}=3">
+    <superimposeItem name="M3_3j_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="M3_3j_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="M3_3j_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+  <superimpose name="M3_4jet" title="M3_4jet" YTitle="Events" Fill="false" Weight="false" Stack="false" Option="HIST" SubBanner="#mu+jets N_{jets}#geq4">
+    <superimposeItem name="M3_4j_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="M3_4j_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="M3_4j_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+
+  <superimpose name="deltaR" title="deltaR" YTitle="Events" Fill="false" Weight="false" Stack="false" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="deltaR_datacalo" color="1" legend="Data Calo"/>
+    <superimposeItem name="deltaR_dataJPT" color="2" legend="Data JPT"/>
+    <superimposeItem name="deltaR_dataPF" color="3" legend="Data PF"/>
+  </superimpose>
+
+</cuy>
