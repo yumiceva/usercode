@@ -38,18 +38,19 @@ gROOT.ProcessLine('.L LoadTLV.C+')
 txtfile = file("4jetevents_"+JetType+".txt","w")
 
 # input files
-datafilename = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2.88pb-1/ttmuj_data_Sep3.root"
+
+datafilename = "NtupleMaker/ttmuj_data_Sep3.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 if dataType=="TTbar":
-    datafilename = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v5/ttmuj_TTbar.root"
+    datafilename = "NtupleMaker/v5/ttmuj_TTbar.root"
 if dataType=="Wjets":
-    datafilename = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v5/ttmuj_Wjets.root"
+    datafilename = "NtupleMaker/v5/ttmuj_Wjets.root"
 if dataType=="Zjets":
-    datafilename = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v5/ttmuj_Zjets.root"
+    datafilename = "NtupleMaker/v5/ttmuj_Zjets.root"
 if dataType=="QCD":
-    datafilename = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v5/ttmuj_QCD.root"
+    datafilename = "NtupleMaker/v5/ttmuj_QCD.root"
 if dataType=="STtch":
-    datafilename = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v5/ttmuj_STtch.root"
+    datafilename = "NtupleMaker/v5/ttmuj_STtch.root"
 
 tfile = TFile(datafilename)
 print "read file "+datafilename
@@ -365,7 +366,9 @@ for jentry in xrange( entries ):
                 hist.M3['M3chi2_normchi2_3th'].Fill( nextCombo.GetChi2()/3. )
             if icc==3:
                 hist.M3['M3chi2_normchi2_4th'].Fill( nextCombo.GetChi2()/3. )
-
+        
+        MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
+        hist.M3['Mttbar_chi2'].Fill(MttbarP4.M())
         # printout txt file with run,lumi,event
         line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
         #txtfile.write(line)
