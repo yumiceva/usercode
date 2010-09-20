@@ -258,11 +258,8 @@ for jentry in xrange( entries ):
                 hist.jets['1st_pt_N3j'].Fill(p4jets[0].Pt())
                 hist.jets['2nd_pt_N3j'].Fill(p4jets[1].Pt())
                 hist.jets['3th_pt_N3j'].Fill(p4jets[2].Pt())
-                p4HadTop = TLorentzVector()
-                p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
                 hist.MET['LepWmass_3jet'].Fill(p4LepW.M())
                 if METzCalculator.IsComplex(): hist.MET['LepWmassComplex_3jet'].Fill(p4LepW.M())
-                hist.M3['3jet'].Fill( p4HadTop.M() )
                 ntagjets = 0
                 for itag in isTagb['SSVHEM']:
                     if itag: ntagjets += 1
@@ -283,6 +280,10 @@ for jentry in xrange( entries ):
         hist.jets['Njets'].Fill(2)
     if njets == 3:
         hist.jets['Njets'].Fill(3)
+        p4HadTop = TLorentzVector()
+        p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
+        hist.M3['3jet'].Fill( p4HadTop.M() )
+
     if njets >= 4:
         hist.jets['Njets'].Fill(4)
     
