@@ -348,7 +348,7 @@ for jentry in xrange( entries ):
 
         bestCombo = myCombi.GetCombination(0)
         M3p_hadWP4 = bestCombo.GetHadW()
-        M3p_hadTopP4 = bestCombo.GetLepTop()
+        M3p_hadTopP4 = bestCombo.GetHadTop()
         M3p_lepTopP4 = bestCombo.GetLepTop()
         hist.M3['M3chi2_hadW_4jet'].Fill( M3p_hadWP4.M() )
         hist.M3['M3chi2_hadTop_4jet'].Fill( M3p_hadTopP4.M() )
