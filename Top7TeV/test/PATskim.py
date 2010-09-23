@@ -3,7 +3,7 @@
 import string
 
 events= 1000
-inputType = "DATA" # choose MC/DATA
+#inputType = "DATA" # choose MC/DATA
 inputType = "MC"
 
 #eventtype="Jun14"
@@ -251,7 +251,7 @@ usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postf
 getattr(process, "patElectrons"+postfix).embedGenMatch = brunOnMC
 getattr(process, "patMuons"+postfix).embedGenMatch = brunOnMC
 
-if inputType=="MC":
+if inputType=="DATA":
     removeMCMatching(process, ['All'])
 #process.patseq.remove( process.flavorHistorySeq )
 #process.patseq.remove( process.patJetPartonMatchAK5JPTPFlow )
