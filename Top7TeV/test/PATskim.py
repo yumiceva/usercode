@@ -1,37 +1,26 @@
-### Modeled from
-### TopQuarkAnalysis/TopEventProducers/test/tqaf_cfg.py
-### PhysicsTools/PatAlgos/test/patLayer1_fromAOD_full_cfg.py
-### PhysicsTools/PatAlgos/python/patTemplate_cfg.py
-### UserCode/LJMet/Production/test/PatSkim_lite_cfg.py
-### https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideTQAFRecipes
-### https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePATRecipes
-### https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideFrontierConditions
-
 ### General setup ###
 
 import string
 
-events= 100
-inputType = "MC" # choose MC/DATA
+events= 1000
+inputType = "DATA" # choose MC/DATA
+inputType = "MC"
 
-eventtype="TTJets"
+#eventtype="Jun14"
+#eventtype="TTJets"
 #eventtype="Top-s"
 #eventtype="Top-t"
 #eventtype="Top-tW"
-#eventtype="WJets"
+eventtype="WJets"
 #eventtype="ZJets"
 #eventtype="Vqq"
 #eventtype="Wc"
-#eventtype="QCD-Mu15"
-#eventtype="QCD-100to250"
-#eventtype="QCD-250to500"
-#eventtype="QCD-500to1000"
-#eventtype="QCD-1000toInf"
-#eventtype="QCD-Mu5-Pt30"
+#eventtype="QCD"
+
 out = "%s-*-PATskim.root"%eventtype
 outfile = string.replace(out,"*","PAT")
 outntuple = string.replace(out,"*","Ntuple")
-source = "Source.PoolSource.%s-AODSIM-PoolSource"%eventtype
+source = "Source.PoolSource.%s-PoolSource"%eventtype
 
 from PhysicsTools.PatAlgos.patTemplate_cfg import *
 
@@ -41,33 +30,35 @@ process.MessageLogger.cerr = cms.untracked.PSet(
     placeholder = cms.untracked.bool( True )
 )
 process.MessageLogger.cerr_stats.output = 'cout'
+#process.MessageLogger.cout.FwkReport.reportEvery = 500
 process.options.wantSummary = True
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideFrontierConditions
-process.GlobalTag.globaltag = 'START36_V10::All' # Newest 36X conditions for 7TeV startup
-#process.GlobalTag.globaltag = 'START3X_V26::All' # Used for MC samples re-reco'ed in 357
+#process.GlobalTag.globaltag = 'GR_R_36X_V12A::All' # For the Jun 14 re-reco
+#process.GlobalTag.globaltag = 'GR_R_36X_V12B::All' # For the Jul 16 re-reco
+#process.GlobalTag.globaltag = 'GR10_P_V7::All' # For PromptReco
+process.GlobalTag.globaltag = 'GR_R_38X_V9::All' # for all
+if inputType=="MC":
+    process.GlobalTag.globaltag = 'START38_V9::All'
 
 ### Input ###
 # My typical PoolSource
 #process.load(source)
 #process.maxEvents.input = events
 #process.source.skipEvents = 0
-# tT+jet input file
 process.source.fileNames = cms.untracked.vstring(
-    '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
-    #'/store/mc/Spring10/WJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0014/84872812-1F4B-DF11-8A07-00151796C158.root'
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/6A86E9F7-EF7A-DF11-A7AF-0017A4770C34.root',
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/584B5E90-F37A-DF11-A8D5-0017A4770024.root',
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/48CE97B5-F47A-DF11-9BF4-001E0B4A0EFC.root',
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/40ACF3E7-EF7A-DF11-A840-0017A4770430.root',
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/3E6B78EA-F17A-DF11-AEF9-0017A4771030.root',
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/30212CEB-EF7A-DF11-9EAE-0017A4770828.root',
+#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/2EC3A00D-F07A-DF11-9B09-00237DA41368.root'
+
+    # or MC files
+#    '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
+    '/store/mc/Spring10/WJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0014/84872812-1F4B-DF11-8A07-00151796C158.root'   
 )
 process.maxEvents.input = events
-
-### Speed up I/O using patches ###
-# https://twiki.cern.ch/twiki/bin/view/Main/CmsIOWork
-#process.source.cacheSize = cms.untracked.uint32(20*1024*1024)
-#process.AdaptorConfig = cms.Service(
-#    "AdaptorConfig",
-#    enable=cms.untracked.bool(True),
-#    stats = cms.untracked.bool(True),
-#    cacheHint = cms.untracked.string("auto-detect"),
-#    readHint = cms.untracked.string("direct-unbuffered")
-#)
 
 process.TFileService = cms.Service(
     "TFileService",
@@ -80,22 +71,29 @@ process.load("PhysicsTools.PatAlgos.patSequences_cff")
 # Since these are re-RECO samples, the ak5GenJets collection is missing
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePATFAQs#Running_PAT_in_3_3_X_on_a_sa_AN1
 from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
-run36xOn35xInput(process, "ak5GenJets" )
+if inputType=="MC":
+    from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
+    run36xOn35xInput(process, "ak5GenJets" )
+    
 # switch to 8e29 trigger menu and add PAT trigger to patDefaultSequence
-from PhysicsTools.PatAlgos.tools.trigTools import *
-switchOnTrigger( process )
-from PhysicsTools.PatAlgos.patEventContent_cff import patTriggerEventContent
+#from PhysicsTools.PatAlgos.tools.trigTools import *
+#switchOnTrigger( process )
+#from PhysicsTools.PatAlgos.patEventContent_cff import patTriggerEventContent
 # 35X MC re-reco labeled newest trigger REDIGI
-process.patTriggerEvent.processName = 'REDIGI'
-process.patTrigger.processName = 'REDIGI'
+#process.patTriggerEvent.processName = 'HLT'
+#process.patTrigger.processName = 'HLT'
 # shrink the jet content
 # Keep the b-tag discriminators, just not the info used to calculate them,
 # such as tracks and vertices.
+# need to do this for other jet collections
 setTagInfos(
     process,
     "patJets",
     cms.vstring("secondaryVertexTagInfos")
 )
+# Running on real data, we want to turn off all MC matching
+from PhysicsTools.PatAlgos.tools.coreTools import *
+#removeMCMatching(process, ['All'])
 
 ### Muons ###
 process.patMuons.isoDeposits = cms.PSet()
@@ -115,6 +113,18 @@ process.selectedPatMuons.cut = "pt>10. & abs(eta)<2.5 & muonID('AllGlobalMuons')
 process.muonMatch.checkCharge = False
 
 ### Electrons ###
+# We need electrons corrected for EE misalignment
+# https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideEgammaCorrectedElectrons
+#process.load("RecoEgamma.EgammaTools.correctedElectronsProducer_cfi")
+#process.patElectrons.electronSource = "gsfElectrons::PAT"
+process.patElectrons.addElectronID = False
+# If using electron ID (we don't):
+#process.load('RecoEgamma.ElectronIdentification.electronIdSequence_cff')
+#process.eidTight.src = "gsfElectrons::PAT"
+#process.eidLoose.src = "gsfElectrons::PAT"
+#process.eidRobustTight.src = "gsfElectrons::PAT"
+#process.eidRobustHighEnergy.src = "gsfElectrons::PAT"
+#process.eidRobustLoose.src = "gsfElectrons::PAT"
 process.patElectrons.addElectronID = False
 process.patElectrons.isoDeposits = cms.PSet()
 process.patElectrons.embedGsfTrack = False
@@ -137,7 +147,11 @@ process.electronMatch.checkCharge = False
 # Running on Summer09 data using 7TeV JEC
 # Use default patJetCorrFactors in 36X
 #process.patJetCorrFactors.corrSample = 'Summer09_7TeV_ReReco332'
-process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4' # & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
+# get the 7 TeV jet corrections
+from PhysicsTools.PatAlgos.tools.jetTools import *
+switchJECSet( process, "Spring10")
+
+process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4'# & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
 #process.countPatJets.minNumber = 1
 process.patJets.embedGenJetMatch = False
 
@@ -160,47 +174,39 @@ process.patTaus.isoDeposits = cms.PSet()
 process.load('RecoJets.Configuration.RecoJPTJets_cff')
 
 
-addJetCollection(process,cms.InputTag('ak5PFJets'),
-                 'AK5', 'PF',
-                 doJTA = False,
-                 doBTagging = True,
-                 jetCorrLabel = ('AK5','PF'),
-                 doType1MET = False,
-                 doL1Cleaning = False,
-                 doL1Counters = False,
-                 genJetCollection=cms.InputTag("ak5GenJets"),
-                 doJetID = False
-                 )
+#addJetCollection(process,cms.InputTag('ak5PFJets'),
+#                 'AK5', 'PF',
+#                 doJTA = False,
+#                 doBTagging = True,
+#                 jetCorrLabel = ('AK5','PF'),
+#                 doType1MET = False,
+#                 doL1Cleaning = False,
+#                 doL1Counters = False,
+#                 genJetCollection=cms.InputTag("ak5GenJets"),
+#                 doJetID = False
+#                 )
 
-addJetCollection(process,cms.InputTag('JetPlusTrackZSPCorJetAntiKt5'),
-                 'AK5', 'JPT',
-                 doJTA = True,
-                 doBTagging = True,
-                 jetCorrLabel = ('AK5','JPT'),
-                 doType1MET = False,
-                 doL1Cleaning = False,
-                 doL1Counters = False,
-                 genJetCollection=cms.InputTag("ak5GenJets"),
-                 doJetID = True
-                 )
+
 # Embed user data into the PAT objects
 process.load('JetMETCorrections.Configuration.DefaultJEC_cff')
 process.load('RecoJets.Configuration.RecoJPTJets_cff')
-process.patJPTJetUserData = cms.EDProducer(
-    "PATJPTJetUserData",
-    src = cms.InputTag("patJetsAK5JPT")
-)
+#process.patJPTJetUserData = cms.EDProducer(
+#    "PATJPTJetUserData",
+#    src = cms.InputTag("patJetsAK5JPT")
+#)
 # Insert the user data process into the PAT sequence
-process.makePatJets.replace(getattr(process,"patJetsAK5JPT"),getattr(process,"patJetsAK5JPT")*process.patJPTJetUserData)
+#process.makePatJets.replace(getattr(process,"patJetsAK5JPT"),getattr(process,"patJetsAK5JPT")*process.patJPTJetUserData)
 # replace JPT sample by costumized collection
-process.selectedPatJetsAK5JPT.src = "patJPTJetUserData"
+#process.selectedPatJetsAK5JPT.src = "patJPTJetUserData"
 # Apply jet ID
-process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4 & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
-#process.selectedPatJetsAK4PF.cut = 'pt > 20. & abs(eta) < 2.4 & neutralHadronEnergyFraction() < 0.99 & neutralEmEnergyFraction() <\0.99 & nConstituents() > 1 & chargedHadronEnergyFraction() > 0.0 & chargedMultiplicity() > 0.0 & chargedEmEnergyFraction() < 0.99'
+process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4'
+#process.selectedPatJetsAK5JPT = 'pt > 20. & abs(eta) < 2.4'
+#process.selectedPatJetsAK5PF = 'pt > 20. & abs(eta) < 2.4'
+#process.selectedPatJetsAK4PF.cut = 'pt > 20. & abs(eta) < 2.4 & neutralHadronEnergyFraction() < 0.99 & neutralEmEnergyFraction() < 0.99 & nConstituents() > 1 & chargedHadronEnergyFraction() > 0.0 & chargedMultiplicity() > 0.0 & chargedEmEnergyFraction() < 0.99'
 # = MET
-from PhysicsTools.PatAlgos.tools.metTools import *
-addTcMET(process)
-addPfMET(process)
+#from PhysicsTools.PatAlgos.tools.metTools import *
+#addTcMET(process)
+#addPfMET(process)
 
 ### Filters used ###
 
@@ -219,7 +225,7 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 ### Trigger ###
 process.triggerFilter = cms.EDFilter(
     'TopHLTFilter',
-    hltTag = cms.InputTag("TriggerResults::REDIGI")
+    hltTag = cms.InputTag("TriggerResults::HLT")
 )    
 # pat based trigger    
 #process.triggerFilter = cms.EDFilter(
@@ -228,109 +234,103 @@ process.triggerFilter = cms.EDFilter(
 #    path = cms.string("HLT_Mu9")
 #)
 
-### Primary vertex ###
-# The below, provided from DPGAnalysis/Skims, doesn't include a
-# requirement on isFake(), so we use our own home-brewed filter
-#process.primaryVertexFilter = cms.EDFilter(
-#    "GoodVertexFilter",
-#    vertexCollection = cms.InputTag('offlinePrimaryVertices'),
-#    minimumNDOF = cms.uint32(4),
-#    maxAbsZ = cms.double(15),
-#    maxd0 = cms.double(2)
-#)
-# Because the top group keeps fiddling with this, keep the vertex
-# collection for subsequent filtering instead.
-#process.pvFilter = cms.EDFilter(
-#    "PVFilter",
-#    source = cms.string("offlinePrimaryVertices")
-#)
 
-### GEN decay channel, for tT MC events only ###
-process.load("TopQuarkAnalysis.TopEventProducers.sequences.ttGenEvent_cff")
+# PF2PAT
+#
+from PhysicsTools.PatAlgos.tools.pfTools import *
+# An empty postfix means that only PF2PAT is run,
+# otherwise both standard PAT and PF2PAT are run. In the latter case PF2PAT
+# collections have standard names + postfix (e.g. patElectronPFlow)
+postfix = "PFlow"
+brunOnMC = False
+if inputType=="MC": brunOnMC = True
 
-### Flavor history, for W+jet, Z+jet, Vqq, & Wc MC events only ###
-process.load("PhysicsTools.HepMCCandAlgos.flavorHistoryPaths_cfi")
-process.cFlavorHistoryProducer.matchedSrc = "ak5GenJets"
-process.bFlavorHistoryProducer.matchedSrc = "ak5GenJets"
+usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postfix)
 
-### Prune the GEN particle collection ###
-process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
-    src = cms.InputTag("genParticles"),
-    select = cms.vstring(
-    "drop  *",
-     #keeps all particles from the hard matrix element
-    "keep status = 3",
-     #keeps all stable muons and electrons and their (direct) mothers.
-    "+keep (abs(pdgId) = 11 | abs(pdgId) = 13) & status = 1"
-    )
-)
+# turn to false when running on data
+getattr(process, "patElectrons"+postfix).embedGenMatch = brunOnMC
+getattr(process, "patMuons"+postfix).embedGenMatch = brunOnMC
+
+if inputType=="MC":
+    removeMCMatching(process, ['All'])
+#process.patseq.remove( process.flavorHistorySeq )
+#process.patseq.remove( process.patJetPartonMatchAK5JPTPFlow )
+
+addJetCollection(process,cms.InputTag('JetPlusTrackZSPCorJetAntiKt5'),
+                 'AK5', 'JPT',
+                 doJTA = True,
+                 doBTagging = True,
+                 jetCorrLabel = ('AK5','JPT'),
+                 doType1MET = False,
+                 doL1Cleaning = False,
+                 doL1Counters = False,
+                 genJetCollection=cms.InputTag("ak5GenJets"),
+                 doJetID = True
+                 )
+
+# = MET
+from PhysicsTools.PatAlgos.tools.metTools import *
+addTcMET(process)
 
 process.load("Yumiceva.Top7TeV.PATNtupleMaker_cfi")
 process.PATNtupleMaker.inputType = inputType
 process.PATNtupleMaker.ntupleFile = outntuple
 
+### GEN decay channel, for tT MC events only ###
+process.load("TopQuarkAnalysis.TopEventProducers.sequences.ttGenEvent_cff")
+process.load("PhysicsTools.HepMCCandAlgos.flavorHistoryPaths_cfi")
+process.cFlavorHistoryProducer.matchedSrc = "ak5GenJets"
+process.bFlavorHistoryProducer.matchedSrc = "ak5GenJets"
+    
+### Prune the GEN particle collection ###
+process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
+                                            src = cms.InputTag("genParticles"),
+                                            select = cms.vstring(
+    "drop  *",
+    #keeps all particles from the hard matrix element
+    "keep status = 3",
+    #keeps all stable muons and electrons and their (direct) mothers.
+    "+keep (abs(pdgId) = 11 | abs(pdgId) = 13) & status = 1"
+    )
+)   
+
 ### The process path ###
-# For ttbar events
 process.p = cms.Path(
 
     process.scrapingVeto *
     process.HBHENoiseFilter *
     process.triggerFilter *
-        
+
+    #process.gsfElectrons *    
     process.simpleSecondaryVertexHighPurBJetTags *
     process.recoJPTJets *
-    process.ak5JPTJetsL2L3 *
+#    process.ak5JPTJetsL2L3 *
+
+    getattr(process,"patPF2PATSequence"+postfix)*
     
     process.patDefaultSequence *
-#    process.triggerFilter *
     
-    process.makeGenEvt *        # Use only for tT (MC) events
+    process.makeGenEvt *
+    process.flavorHistorySeq *
     process.prunedGenParticles *
+    
+#    process.triggerFilter *
     process.PATNtupleMaker
 
 )
-if eventtype =="WJets" or eventtype=="ZJets" or eventtype=="Vqq" or eventtype=="Wc":
-    process.p = cms.Path(
 
-        process.scrapingVeto *
-        process.HBHENoiseFilter *
-        process.triggerFilter *
-
-        process.simpleSecondaryVertexHighPurBJetTags *
-        process.recoJPTJets *
-        process.ak5JPTJetsL2L3 *
-
-        process.patDefaultSequence *
-        #    process.triggerFilter *
-        process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
-
-        #process.makeGenEvt *        # Use only for tT (MC) events
-        process.prunedGenParticles *
-        process.PATNtupleMaker
-
-   )
-elif eventtype != "TTJets":
-    process.p = cms.Path(
-
-        process.scrapingVeto *
-        process.HBHENoiseFilter *
-        process.triggerFilter *
-
-        process.simpleSecondaryVertexHighPurBJetTags *
-        process.recoJPTJets *
-        process.ak5JPTJetsL2L3 *
-
-        process.patDefaultSequence *
-        #    process.triggerFilter *
-        #process.flavorHistorySeq * # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
-        #process.vFlavor *          # Use only for W+jet, Z+jet, Vqq, Wc (MC) events
-
-        #process.makeGenEvt *        # Use only for tT (MC) events
-        process.prunedGenParticles *
-        process.PATNtupleMaker
-
-    )
+if inputType=="MC":
+    process.p.remove( process.scrapingVeto )
+    process.p.remove( process.HBHENoiseFilter )
+    if eventtype != "TTJets":
+        process.p.remove( process.makeGenEvt )
+    if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
+        process.p.remove( process.flavorHistorySeq )
+else:
+    process.p.remove( process.makeGenEvt )
+    process.p.remove( process.flavorHistorySeq )
+    process.p.remove( process.prunedGenParticles )
 
 ### Output ###
 # For a PAT Skim

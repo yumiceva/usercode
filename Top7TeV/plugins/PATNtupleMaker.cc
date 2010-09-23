@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.13 2010/08/26 20:38:54 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.14 2010/09/03 16:16:42 yumiceva Exp $
 //
 //
 
@@ -61,18 +61,22 @@ using namespace std;
 using namespace edm;
 using namespace reco;
 
-PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig):
-  ntuplefile_(iConfig.getParameter<std::string> ("ntupleFile")),
-  hltTag_(iConfig.getParameter< InputTag >("hltTag")),
-  muonTag_(iConfig.getParameter< InputTag >("MuonTag")),
-  electronTag_(iConfig.getParameter< InputTag >("ElectronTag")),
-  jetTag_(iConfig.getParameter< InputTag >("JetTag")),
-  metTag_(iConfig.getParameter< InputTag >("METTag"))
-
+PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig)
 {
   //now do what ever initialization is needed
 
-  //jetID = new helper::JetIDHelper(iConfig.getParameter<ParameterSet>("JetIDParams"));
+  electronTag_ = iConfig.getParameter< InputTag >("ElectronTag");
+  jetIdLoose_ = iConfig.getParameter<edm::ParameterSet>("jetIdLoose");
+  calojetTag_ = iConfig.getParameter< InputTag >("caloJetTag");
+  JPTjetTag_ = iConfig.getParameter< InputTag >("JPTJetTag");
+  PFjetTag_ = iConfig.getParameter< InputTag >("PFJetTag");
+  ntuplefile_ = iConfig.getParameter<std::string> ("ntupleFile");
+  muonTag_ = iConfig.getParameter< InputTag >("MuonTag");
+  pfjetIdLoose_ = iConfig.getParameter<edm::ParameterSet>("pfjetIdLoose");
+  caloMETTag_ = iConfig.getParameter< InputTag >("caloMETTag");
+  tcMETTag_ = iConfig.getParameter< InputTag >("tcMETTag");
+  PFMETTag_ = iConfig.getParameter< InputTag >("PFMETTag");
+  
   _isDataInput = "DATA" == iConfig.getParameter<std::string>("inputType");
 
   cout << "[PATNtupleMaker] Using " << (_isDataInput ? "DATA" : "MC")
@@ -111,11 +115,6 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
    // reset ntuple containers
    _ntuple->Reset();
 
-    // -[ Trigger ]-
-    //Handle<TriggerResults> hlt;
-    //iEvent.getByLabel(hltTag_,hlt);
-    //const TriggerNames & hltNames_ = iEvent.triggerNames(*hlt);
-
    // get handle for IP tools
    edm::ESHandle<TransientTrackBuilder> trackBuilder;
    iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
@@ -127,13 +126,13 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     // -[ Jets ]-
     Handle<JetCollection> calojets;
-    iEvent.getByLabel(jetTag_,calojets);
+    iEvent.getByLabel(calojetTag_,calojets);
     
     Handle<JetCollection> jptjets;
-    iEvent.getByLabel("patJPTJetUserData",jptjets); //patJetsAK5JPT
+    iEvent.getByLabel(JPTjetTag_,jptjets); //selectedPatJetsAK5JPT
 
     Handle<JetCollection> pfjets;
-    iEvent.getByLabel("patJetsAK5PF",pfjets);
+    iEvent.getByLabel(PFjetTag_,pfjets); //selectedPatJetsPFlow
     
     // -[ Primary Vertices ]-
     Handle<VertexCollection> pvtx;
@@ -153,7 +152,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // -[ MET ]-
     const pat::MET *cmet;
     Handle<METCollection> cmetHandle;
-    iEvent.getByLabel(metTag_, cmetHandle);
+    iEvent.getByLabel(caloMETTag_, cmetHandle);
     //const CaloMETCollection *cmetCol = cmetHandle.product();
     const METCollection *cmetCol = cmetHandle.product();
     cmet = &(cmetCol->front());
@@ -161,14 +160,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // tcMET
     const pat::MET *tcmet;
     Handle<METCollection> tcmetHandle;
-    iEvent.getByLabel("patMETsTC", tcmetHandle);
+    iEvent.getByLabel(tcMETTag_, tcmetHandle); //patMETsTC
     const METCollection *tcmetCol = tcmetHandle.product();
     tcmet = &(tcmetCol->front());
 
     // PFMET
     const pat::MET *pfmet;
     Handle<METCollection> pfmetHandle;
-    iEvent.getByLabel("patMETsPF", pfmetHandle);
+    iEvent.getByLabel(PFMETTag_, pfmetHandle); //patMETsPFlow
     const METCollection *pfmetCol = pfmetHandle.product();
     pfmet = &(pfmetCol->front());
 
@@ -228,20 +227,15 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     //_cutflow->Fill(0);
 
-    //bool hlt_mu_ = false; 
-    //for(size_t itrig = 0; itrig != hlt->size(); itrig++){
-    //    string hltName = hltNames_.triggerName(itrig);
-    //    if(hltName == "HLT_Mu9"&&hlt->accept(itrig))
-    //    {
-    //        hlt_mu_ = true;
-    //        break;
-    //    }
-    //}
-    //if(!hlt_mu_)
-    //    return false;
+    // setup jet ID selectors
+    pat::strbitset bitset_for_caloJPTjets = jetIdLoose_.getBitTemplate();
+    pat::strbitset bitset_for_PFjets = pfjetIdLoose_.getBitTemplate();
 
+    // count number of processed events by analyzer
     _cutflow->Fill(1);
 
+    // PRIMARY VERTEX
+    //__________________
     if(pvtx->size()<1)
         return false;
         
@@ -280,9 +274,10 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     if ( ! IsFirstPVGood ) return false;
 
+    // count PV cut
     _cutflow->Fill(2);
 
-    // Event ID
+    // keep Event ID
     _ntuple->event = iEvent.id().event();
     _ntuple->run   = iEvent.id().run();
     _ntuple->lumi  = iEvent.id().luminosityBlock();
@@ -310,11 +305,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
       for(JetCollection::const_iterator jet = calojets->begin(); jet != calojets->end(); ++jet){
           
+	bool passJetID = false;
+	passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
+
 	if (jet->pt()>30.
-	    &&abs(jet->eta())<2.4
-	    &&jet->emEnergyFraction() >0.01
-	    &&jet->jetID().n90Hits>1
-	    &&jet->jetID().fHPD<0.98)
+	    && fabs(jet->eta())<2.4
+	    && passJetID)
           {
 	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
 	    if(dr<CaloDeltaR)
@@ -324,16 +320,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       //if (_debug) cout << "got calo deltaR" << endl;
       for(JetCollection::const_iterator jet = jptjets->begin(); jet != jptjets->end(); ++jet){
 
-	//double emf = jet->emEnergyFraction();
-	double emf = jet->userFloat("MyemEnergyFraction");
-	double fhpd = jet->userFloat("MyfHPD");
-	int n90 = jet->userFloat("Myn90");
+	bool passJetID = false;
+        passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
 
 	if (jet->pt()>30.
-	    &&abs(jet->eta())<2.4
-	    && emf >0.01
-	    && n90>1
-	    && fhpd<0.98 )
+	    && fabs(jet->eta())<2.4
+	    && passJetID )
 	  {
 	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
 	    if(dr<JPTDeltaR)
@@ -344,20 +336,13 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       //if (_debug) cout << "got jpt deltaR" << endl;
       for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet){
 
-	// cache some variables 
-        double chf = (jet->correctedJet("RAW")).chargedHadronEnergyFraction();
-        double cef = (jet->correctedJet("RAW")).chargedEmEnergyFraction();
-	double nef = (jet->correctedJet("RAW")).neutralEmEnergyFraction();
-	int    nch = (jet->correctedJet("RAW")).chargedMultiplicity();
-        double nhf = 0.;//((jet->correctedJet("RAW")).neutralHadronEnergy() + (jet->correctedJet("RAW")).HFHadronEnergy() ) / (jet->correctedJet("RAW")).energy();
-	int nconstituents = (jet->correctedJet("RAW")).numberOfDaughters();
-	
+	bool passJetID = false;
+        passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
+
         if (jet->pt()>20.
-            &&abs(jet->eta())<2.4
-            && nhf < 0.99 && nef < 0.99&& nconstituents > 1
-            && chf > 0.&& nch > 0. && cef < 0.99
-            )
-          {
+            && fabs(jet->eta())<2.4
+            && passJetID )
+	  {
 	    double dr = deltaR(mu->eta(), mu->phi(), jet->eta(), jet->phi());
 	    if(dr<PFDeltaR)
 	      PFDeltaR=dr;
@@ -514,11 +499,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int ncalojets = 0;
     for(JetCollection::const_iterator jet = calojets->begin(); jet != calojets->end(); ++jet)
     {
+      bool passJetID = false;
+      passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
+
       if (jet->pt()>30.
-            &&abs(jet->eta())<2.4
-            &&jet->emEnergyFraction()>0.01
-            &&jet->jetID().n90Hits>1
-            &&jet->jetID().fHPD<0.98)
+	  && fabs(jet->eta())<2.4
+	  && passJetID )
         {
 
 	  TopJetEvent topjet;
@@ -549,20 +535,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int njptjets = 0;
     for(JetCollection::const_iterator jet = jptjets->begin(); jet != jptjets->end(); ++jet)
       {
-	double emf = jet->userFloat("MyemEnergyFraction");
-        double fhpd = jet->userFloat("MyfHPD");
-        int n90 = jet->userFloat("Myn90");
-	
-	//cout << "got one JPT" << endl;
-	//cout << "emf = " << emf << endl;
-	//cout << "n90 = " << n90 << endl;
-	//cout << "fhpd = "<< fhpd << endl;
-	//cout << "pt = " << jet->pt() << endl;
+	bool passJetID = false;
+        passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
+
         if (jet->pt()>25.
-            &&abs(jet->eta())<2.4
-	    && emf >0.01
-            && n90>1
-            && fhpd<0.98 )
+            && fabs(jet->eta())<2.4
+	    && passJetID )
 	  {
 	    //cout << "pass jet ID for jpt jets" << endl;
 
@@ -594,20 +572,13 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int npfjets = 0;
     for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
       {
-	// cache some variables
-        double chf = (jet->correctedJet("RAW")).chargedHadronEnergyFraction();
-        double cef = (jet->correctedJet("RAW")).chargedEmEnergyFraction();
-        double nef = (jet->correctedJet("RAW")).neutralEmEnergyFraction();
-        int    nch = (jet->correctedJet("RAW")).chargedMultiplicity();
-        double nhf = 0.;//((jet->correctedJet("RAW")).neutralHadronEnergy() + (jet->correctedJet("RAW")).HFHadronEnergy() ) / (jet->correctedJet("RAW")).energy();
-        int nconstituents = (jet->correctedJet("RAW")).numberOfDaughters();
+	bool passJetID = false;
+        passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
 
         if (jet->pt()>20.
-            &&abs(jet->eta())<2.4
-            && nhf < 0.99 && nef < 0.99 && nconstituents > 1
-	    && chf > 0. && nch > 0. && cef < 0.99
-            )
-          {
+            && fabs(jet->eta())<2.4
+            && passJetID)
+	  {
 
             TopJetEvent topjet;
 
@@ -622,7 +593,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    topjet.id_muonMultiplicity = (jet->correctedJet("RAW")).muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
-            topjet.ndaughters = nconstituents;
+            topjet.ndaughters = (jet->correctedJet("RAW")).numberOfDaughters();
             topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
             topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );

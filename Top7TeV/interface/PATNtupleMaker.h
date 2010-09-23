@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.h,v 1.1 2010/08/19 16:03:42 yumiceva Exp $
+// $Id: PATNtupleMaker.h,v 1.2 2010/08/19 19:27:19 yumiceva Exp $
 //
 //
 
@@ -29,8 +29,10 @@
 #include "FWCore/Framework/interface/EDFilter.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-#include "FWCore/Common/interface/TriggerNames.h"
-//#include "RecoJets/JetAlgorithms/interface/JetIDHelper.h"
+
+#include "PhysicsTools/SelectorUtils/interface/JetIDSelectionFunctor.h"
+#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
+
 #include "Yumiceva/Top7TeV/interface/TopEventNtuple.h"
 
 #include "TFile.h"
@@ -54,16 +56,22 @@ private:
   virtual void endJob() ;
   
   // ----------member data ---------------------------
+  JetIDSelectionFunctor                jetIdLoose_;
+  PFJetIDSelectionFunctor              pfjetIdLoose_;
+
   TFile *theFile;
   TTree *ftree;
   std::string ntuplefile_;
 
-  edm::TriggerNames hltNames_;
   edm::InputTag hltTag_;
   edm::InputTag muonTag_;
   edm::InputTag electronTag_;
-  edm::InputTag jetTag_;
-  edm::InputTag metTag_;
+  edm::InputTag calojetTag_;
+  edm::InputTag JPTjetTag_;
+  edm::InputTag PFjetTag_;
+  edm::InputTag caloMETTag_;
+  edm::InputTag tcMETTag_;
+  edm::InputTag PFMETTag_;
 
   TH1 *_cutflow;
   bool _isDataInput;
