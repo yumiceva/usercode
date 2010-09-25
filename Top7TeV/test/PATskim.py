@@ -6,12 +6,14 @@ events= 1000
 #inputType = "DATA" # choose MC/DATA
 inputType = "MC"
 
+hannel = "electron" # muon/electron
+
 #eventtype="Jun14"
-#eventtype="TTJets"
+eventtype="TTJets"
 #eventtype="Top-s"
 #eventtype="Top-t"
 #eventtype="Top-tW"
-eventtype="WJets"
+#eventtype="WJets"
 #eventtype="ZJets"
 #eventtype="Vqq"
 #eventtype="Wc"
@@ -117,7 +119,7 @@ process.muonMatch.checkCharge = False
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideEgammaCorrectedElectrons
 #process.load("RecoEgamma.EgammaTools.correctedElectronsProducer_cfi")
 #process.patElectrons.electronSource = "gsfElectrons::PAT"
-process.patElectrons.addElectronID = False
+#process.patElectrons.addElectronID = False
 # If using electron ID (we don't):
 #process.load('RecoEgamma.ElectronIdentification.electronIdSequence_cff')
 #process.eidTight.src = "gsfElectrons::PAT"
@@ -125,10 +127,11 @@ process.patElectrons.addElectronID = False
 #process.eidRobustTight.src = "gsfElectrons::PAT"
 #process.eidRobustHighEnergy.src = "gsfElectrons::PAT"
 #process.eidRobustLoose.src = "gsfElectrons::PAT"
-process.patElectrons.addElectronID = False
-process.patElectrons.isoDeposits = cms.PSet()
-process.patElectrons.embedGsfTrack = False
-process.patElectrons.embedSuperCluster = False
+#process.patElectrons.addElectronID = False
+#process.patElectrons.isoDeposits = cms.PSet()
+#process.patElectrons.embedGsfTrack = False
+#process.patElectrons.embedSuperCluster = False
+process.patElectrons.usePV = False
 # Embed user data into the PAT objects
 process.patElectronsUserData = cms.EDProducer(
     "PATElectronUserData",
@@ -139,7 +142,7 @@ process.patElectronsUserData = cms.EDProducer(
 process.makePatElectrons.replace(getattr(process,"patElectrons"),getattr(process,"patElectrons")*process.patElectronsUserData)
 # Tell selectedPatElectrons to use the new user collection as input
 process.selectedPatElectrons.src = "patElectronsUserData"
-process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5 & userFloat('CombRelIso')<0.2 & userFloat('SwissCross')<0.95"
+process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5 & userFloat('SwissCross')<0.95"
 #process.countPatElectrons.maxNumber = 0
 process.electronMatch.checkCharge = False
 
@@ -226,7 +229,14 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 process.triggerFilter = cms.EDFilter(
     'TopHLTFilter',
     hltTag = cms.InputTag("TriggerResults::HLT")
-)    
+)
+if channel=="electron":
+    process.triggerFilter = cms.EDFilter("HLTSummaryFilter",
+                                         summary = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
+                                         member  = cms .InputTag("hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter","","HLT"),
+                                         cut     = cms.string("pt>=20"),
+                                         minN    = cms.int32(1)
+                                         )
 # pat based trigger    
 #process.triggerFilter = cms.EDFilter(
 #    'TriggerFilter',
@@ -272,9 +282,14 @@ addJetCollection(process,cms.InputTag('JetPlusTrackZSPCorJetAntiKt5'),
 from PhysicsTools.PatAlgos.tools.metTools import *
 addTcMET(process)
 
+# muon+jets ntuple
 process.load("Yumiceva.Top7TeV.PATNtupleMaker_cfi")
 process.PATNtupleMaker.inputType = inputType
 process.PATNtupleMaker.ntupleFile = outntuple
+# electron+jets ntuple
+process.load("Yumiceva.Top7TeV.PATElectronNtupleMaker_cfi")
+process.PATElectronNtupleMaker.inputType = inputType
+process.PATElectronNtupleMaker.ntupleFile = outntuple
 
 ### GEN decay channel, for tT MC events only ###
 process.load("TopQuarkAnalysis.TopEventProducers.sequences.ttGenEvent_cff")
@@ -316,10 +331,15 @@ process.p = cms.Path(
     process.prunedGenParticles *
     
 #    process.triggerFilter *
-    process.PATNtupleMaker
-
+    process.PATNtupleMaker *
+    process.PATElectronNtupleMaker
 )
 
+if channel == "muon":
+    process.p.remove( process.PATElectronNtupleMaker )
+else:
+    process.p.remove( process.PATNtupleMaker )
+            
 if inputType=="MC":
     process.p.remove( process.scrapingVeto )
     process.p.remove( process.HBHENoiseFilter )
