@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.5 2010/08/24 22:00:40 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.6 2010/08/26 17:58:18 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -78,6 +78,8 @@ public:
     Float_t PFMET;
     Float_t PFMETphi;
     Float_t PFHt;
+
+    Int_t IsZevent; // for e+jets
 
     Int_t flavorHistory; // MC flag
     TopMyGenEvent gen; // MC generator info for ttbar

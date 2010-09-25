@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.14 2010/09/03 16:16:42 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.15 2010/09/23 16:13:37 yumiceva Exp $
 //
 //
 
@@ -63,7 +63,6 @@ using namespace reco;
 
 PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig)
 {
-  //now do what ever initialization is needed
 
   electronTag_ = iConfig.getParameter< InputTag >("ElectronTag");
   jetIdLoose_ = iConfig.getParameter<edm::ParameterSet>("jetIdLoose");
@@ -352,7 +351,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       // Loose muons
       if(
 	 mu->isGlobalMuon()
-	 &&abs(mu->eta())<2.5
+	 &&fabs(mu->eta())<2.5
 	 &&mu->pt()>10.)
 	{
         
@@ -424,14 +423,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         
 	  // Tight Isolated muons
 	  if (mu->isGlobalMuon()&&mu->isTrackerMuon()
-	      &&abs(mu->eta())<2.1
+	      &&fabs(mu->eta())<2.1
 	      &&mu->pt()>20.
 	      &&reliso<0.05
 	      &&mu->innerTrack()->numberOfValidHits()>=11
 	      &&mu->globalTrack()->normalizedChi2()<10.
 	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>0
 	      &&CaloDeltaR>0.3
-	      &&abs(mu->innerTrack()->dxy(point))<0.02)
+	      &&fabs(mu->innerTrack()->dxy(point))<0.02)
 	    {
 	      n_tight++;
 	      IsTightIsoMuon = 1;
@@ -475,7 +474,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(ElectronCollection::const_iterator elec=electrons->begin(); elec!=electrons->end(); ++elec )
     {
         double RelIso = (elec->dr03TkSumPt()+elec->dr03EcalRecHitSumEt()+elec->dr03HcalTowerSumEt())/elec->et();
-        if(elec->et()>15.&&abs(elec->eta())<2.5&&RelIso<0.2) {
+        if(elec->et()>15.&&fabs(elec->eta())<2.5&&RelIso<0.2) {
 	 
 	  n_electron++;
 	  TopElectronEvent topele;

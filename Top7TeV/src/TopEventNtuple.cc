@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.cc,v 1.3 2010/08/24 22:04:19 yumiceva Exp $
+ version $Id: TopEventNtuple.cc,v 1.4 2010/08/26 17:58:22 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -65,6 +65,7 @@ void TopEventNtuple::Reset()
     PFMET = -999;
     PFMETphi = -999;
     PFHt = -999;
+    IsZevent = -1;
 
     flavorHistory = -999;
     gen.Reset();
