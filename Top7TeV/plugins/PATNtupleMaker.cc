@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.15 2010/09/23 16:13:37 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.16 2010/09/25 14:30:16 yumiceva Exp $
 //
 //
 
@@ -389,7 +389,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topmuon.trackerhits = mu->innerTrack()->numberOfValidHits();
 	  topmuon.muonstations = mu->numberOfMatches();
           topmuon.normchi2 = mu->globalTrack()->normalizedChi2();
-	  
+	  topmuon.pixelhits = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement()
+
 	  topmuon.iso03_track = mu->isolationR03().sumPt;
 	  topmuon.iso03_ecal = mu->isolationR03().emEt;
 	  topmuon.iso03_hcal = mu->isolationR03().hadEt;
@@ -428,7 +429,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      &&reliso<0.05
 	      &&mu->innerTrack()->numberOfValidHits()>=11
 	      &&mu->globalTrack()->normalizedChi2()<10.
-	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>0
+	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>1
+	      &&mu->innerTrack()->hitPattern().pixelLayersWithMeasurement()>=1
+	      &&mu->numberOfMatches()>1
 	      &&CaloDeltaR>0.3
 	      &&fabs(mu->innerTrack()->dxy(point))<0.02)
 	    {

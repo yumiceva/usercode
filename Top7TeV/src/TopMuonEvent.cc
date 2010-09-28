@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.cc,v 1.2 2010/08/18 21:13:05 yumiceva Exp $
+ version $Id: TopMuonEvent.cc,v 1.3 2010/08/24 22:04:19 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -37,6 +37,7 @@ void TopMuonEvent::Reset()
   trackerhits = -1;
   muonstations = -1;
   normchi2 = -1;
+  pixelhits = -1;
 
   iso03_track = -1;
   iso03_ecal = -1;
