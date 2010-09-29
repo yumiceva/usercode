@@ -4,7 +4,7 @@ import sys
 import os
 import fileinput
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 2:
     print "\n usage: setupProd.py <path> \n"
     print "   <path> = path to directory where the crab configuration files will be stored.\n"
     sys.exit()
@@ -50,58 +50,72 @@ jsonFiles = ['Cert_132440-137028_7TeV_June14thReReco_Collisions10_JSON_v2_TopFil
              'Cert_139779-1340159_7TeV_July16thReReco_Collisions10_JSON.txt',\
              'Cert_132440-144114_7TeV_StreamExpress_Collisions10_JSON_v2_TopSep11_Filtered_138564-144114.txt']
 
-print "make directories"
+print "==> make directories"
 alldirs = directoriesMuData + directoriesMuMC + directoriesElData + directoriesElMC
 
-for dir in directories:
+if not os.path.isdir(path):
+    os.mkdir(path)
 
-    os.mkdir(path+'\\'+dir)
+for dir in alldirs:
+    apath = path+'/'+dir
+    if os.path.isdir(apath):
+        print apath+" already exists."
+    else:
+        os.mkdir(apath)
+        print apath
+        
+print "==> create cfg files based in "+py_cfg+"\n"
 
-print "create cfg files based in "+py_cfg+"\n"
-
-print "muon channel"
+print "===> for muon channel"
 for dir in directoriesMuData:
 
-    os.system("cp "+py_cfg+" "+path+"\\"+dir)
+    afile = path+"/"+dir+"/"+py_cfg
+    os.system("cp "+py_cfg+" "+afile)
 
-    for line in fileinput.FileInput(py_cfg, inplace=1):
-        line.replace("inputType = \"MC\"","inputType = \"DATA\"")
-        line.replace("channel = \"electron\"","channel = \"muon\"")
-        line.replace("eventtype=\"TTJets\"","eventtype=\""+dir+"\"")
-        
+    for line in fileinput.FileInput(afile, inplace=1):
+        line = line.replace("inputType = \"MC\"","inputType = \"DATA\"")
+        line = line.replace("channel = \"electron\"","channel = \"muon\"")
+        line = line.replace("eventtype=\"TTJets\"","eventtype=\""+dir+"\"")
+        print line,
+    
 for dir in directoriesMuMC:
 
-    os.system("cp "+py_cfg+" "+path+"\\"+dir)
+    afile = path+"/"+dir+"/"+py_cfg
+    os.system("cp "+py_cfg+" "+afile)
 
     type = dir.strip("_Mu")
     
-    for line in fileinput.FileInput(py_cfg, inplace=1):
-        line.replace("inputType = \"DATA\"","inputType = \"MC\"")
-        line.replace("channel = \"electron\"","channel = \"muon\"")
-        line.replace("eventtype=\"TTJets\"","eventtype=\""+type+"\"")
-
-print "electron channel"
+    for line in fileinput.FileInput(afile, inplace=1):
+        line = line.replace("inputType = \"DATA\"","inputType = \"MC\"")
+        line = line.replace("channel = \"electron\"","channel = \"muon\"")
+        line = line.replace("eventtype=\"TTJets\"","eventtype=\""+type+"\"")
+        print line,
+print "===> for electron channel"
 for dir in directoriesElData:
 
-    os.system("cp "+py_cfg+" "+path+"\\"+dir)
+    afile = path+"/"+dir+"/"+py_cfg
+    os.system("cp "+py_cfg+" "+afile)
 
-    for line in fileinput.FileInput(py_cfg, inplace=1):
-        line.replace("inputType = \"MC\"","inputType = \"DATA\"")
-        line.replace("channel = \"muon\"","channel = \"electron\"")
-        line.replace("eventtype=\"TTJets\"","eventtype=\""+dir+"\"")
-
+    for line in fileinput.FileInput(afile, inplace=1):
+        line = line.replace("inputType = \"MC\"","inputType = \"DATA\"")
+        line = line.replace("channel = \"muon\"","channel = \"electron\"")
+        line =line.replace("eventtype=\"TTJets\"","eventtype=\""+dir+"\"")
+        print line,
+        
 for dir in directoriesElMC:
 
-    os.system("cp "+py_cfg+" "+path+"\\"+dir)
+    afile = path+"/"+dir+"/"+py_cfg
+    os.system("cp "+py_cfg+" "+afile)
     
     type = dir.strip("_El")
     
-    for line in fileinput.FileInput(py_cfg, inplace=1):
-        line.replace("inputType = \"DATA\"","inputType = \"MC\"")
-        line.replace("channel = \"muon\"","channel = \"electron\"")
-        line.replace("eventtype=\"TTJets\"","eventtype=\""+type+"\"")
-
-print "create crab configuration files"
+    for line in fileinput.FileInput(afile, inplace=1):
+        line = line.replace("inputType = \"DATA\"","inputType = \"MC\"")
+        line = line.replace("channel = \"muon\"","channel = \"electron\"")
+        line = line.replace("eventtype=\"TTJets\"","eventtype=\""+type+"\"")
+        print line,
+        
+print "==> create crab configuration files"
 
 crabData = '''
 [CMSSW]
@@ -158,18 +172,18 @@ scheduler = condor
 idir = 0
 for dir in directoriesMuData:
 
-    ajson = jsonFiles[i]
+    ajson = jsonFiles[idir]
     
-    os.system("cp json/"+ajson+" "+path+"\\"+dir)
+    os.system("cp json/"+ajson+" "+path+"/"+dir)
 
     adict = {}
-    adict['DATASET'] = datasetsMuData[i]
+    adict['DATASET'] = datasetsMuData[idir]
     adict['JSON'] = ajson
     adict['DIR'] = dir
     
     acrab = crabData%adict
 
-    fileout = open(path+"\\crab.cfg","w")
+    fileout = open(path+"/"+dir+"/crab.cfg","w")
     fileout.writelines(acrab)
     fileout.close()
     idir += 1
@@ -178,12 +192,12 @@ idir = 0
 for dir in directoriesMuMC:
 
     adict = {}
-    adict['DATASET'] = datasetsMuMC[i]
+    adict['DATASET'] = datasetsMuMC[idir]
     adict['DIR'] = dir
     
     acrab = crabMC%adict
     
-    fileout = open(path+"\\crab.cfg","w")
+    fileout = open(path+"/"+dir+"/crab.cfg","w")
     fileout.writelines(acrab)
     fileout.close()
     idir += 1
@@ -191,18 +205,18 @@ for dir in directoriesMuMC:
 idir = 0
 for dir in directoriesElData:
 
-    ajson = jsonFiles[i]
+    ajson = jsonFiles[idir]
 
-    os.system("cp json/"+ajson+" "+path+"\\"+dir)
+    os.system("cp json/"+ajson+" "+path+"/"+dir)
 
     adict = {}
-    adict['DATASET'] = datasetsMuData[i]
+    adict['DATASET'] = datasetsMuData[idir]
     adict['JSON'] = ajson
     adict['DIR'] = dir
 
     acrab = crabData%adict
 
-    fileout = open(path+"\\crab.cfg","w")
+    fileout = open(path+"/"+dir+"/crab.cfg","w")
     fileout.writelines(acrab)
     fileout.close()
     idir += 1
@@ -211,12 +225,12 @@ idir = 0
 for dir in directoriesElMC:
 
     adict = {}
-    adict['DATASET'] = datasetsMuMC[i]
+    adict['DATASET'] = datasetsMuMC[idir]
     adict['DIR'] = dir
 
     acrab = crabMC%adict
 
-    fileout = open(path+"\\crab.cfg","w")
+    fileout = open(path+"/"+dir+"/crab.cfg","w")
     fileout.writelines(acrab)
     fileout.close()
     idir += 1
