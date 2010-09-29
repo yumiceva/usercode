@@ -167,7 +167,8 @@ jobtype = cmssw
 scheduler = condor
 '''
 
-                                                                                                                                                        
+fcrab_data = open("launch_crab_data.csh","w")
+fcrab_mc = open("launch_crab_mc.csh","w")
 
 idir = 0
 for dir in directoriesMuData:
@@ -188,6 +189,15 @@ for dir in directoriesMuData:
     fileout.close()
     idir += 1
 
+    fcrab_data.write("cd "+path+"/"+dir+"\n")
+    fcrab_data.write("crab -create -cfg crab.cfg"+"\n")
+    if dir.find("Prompt")!= -1:
+        fcrab_data.write("crab -submit 500 -c "+dir+"\n")
+        fcrab_data.write("crab -submit 500 -c "+dir+"\n")
+        fcrab_data.write("crab -submit 500 -c "+dir+"\n")
+    else:
+        fcrab_data.write("crab -submit all -c "+dir+"\n")
+    
 idir = 0
 for dir in directoriesMuMC:
 
@@ -202,12 +212,15 @@ for dir in directoriesMuMC:
     fileout.close()
     idir += 1
 
+    fcrab_mc.write("cd "+path+"/"+dir+"\n")
+    fcrab_mc.write("crab -create -cfg crab.cfg -submit all"+"\n")
+    
 idir = 0
 for dir in directoriesElData:
 
     ajson = jsonFiles[idir]
 
-    os.system("cp json/"+ajson+" "+path+"/"+dir)
+    os.system("cp json/"+ajson+" "+path+"/"+dir+"\n")
 
     adict = {}
     adict['DATASET'] = datasetsMuData[idir]
@@ -220,7 +233,16 @@ for dir in directoriesElData:
     fileout.writelines(acrab)
     fileout.close()
     idir += 1
-    
+
+    fcrab_data.write("cd "+path+"/"+dir+"\n")
+    fcrab_data.write("crab -create -cfg crab.cfg"+"\n")
+    if dir.find("Prompt")!= -1:
+        fcrab_data.write("crab -submit 500 -c "+dir+"\n")
+        fcrab_data.write("crab -submit 500 -c "+dir+"\n")
+        fcrab_data.write("crab -submit 500 -c "+dir+"\n")
+    else:
+        fcrab_data.write("crab -submit all -c "+dir+"\n")
+                                            
 idir = 0
 for dir in directoriesElMC:
 
@@ -234,6 +256,13 @@ for dir in directoriesElMC:
     fileout.writelines(acrab)
     fileout.close()
     idir += 1
+
+    fcrab_mc.write("cd "+path+"/"+dir+"\n")
+    fcrab_mc.write("crab -create -cfg crab.cfg -submit all"+"\n")
+
+
+fcrab_data.close()
+fcrab_mc.close()
 
 print "done."
 
