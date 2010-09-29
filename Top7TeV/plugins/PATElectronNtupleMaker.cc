@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.1 2010/09/22 17:23:42 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.2 2010/09/25 14:30:16 yumiceva Exp $
 //
 //
 
@@ -42,6 +42,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
@@ -475,7 +476,8 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	  topmuon.trackerhits = mu->innerTrack()->numberOfValidHits();
 	  topmuon.muonstations = mu->numberOfMatches();
           topmuon.normchi2 = mu->globalTrack()->normalizedChi2();
-	  
+	  topmuon.pixelhits = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
+
 	  topmuon.iso03_track = mu->isolationR03().sumPt;
 	  topmuon.iso03_ecal = mu->isolationR03().emEt;
 	  topmuon.iso03_hcal = mu->isolationR03().hadEt;
@@ -514,8 +516,10 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	      &&reliso<0.05
 	      &&mu->innerTrack()->numberOfValidHits()>=11
 	      &&mu->globalTrack()->normalizedChi2()<10.
-	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>0
+	      &&mu->globalTrack()->hitPattern().numberOfValidMuonHits()>=1
+	      &&mu->innerTrack()->hitPattern().pixelLayersWithMeasurement()>=1
 	      //&&CaloDeltaR>0.3
+	      &&mu->numberOfMatches()>1
 	      &&fabs(mu->innerTrack()->dxy(point))<0.02)
 	    {
 	      IsTightIsoMuon = 1;
@@ -587,6 +591,8 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	  ++ncalojets;
 	  
 	  topjet.ntracks = jet->associatedTracks().size();
+	  const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+          topjet.nSVs = svTagInfo.nVertices();
 	  topjet.ndaughters =jet->numberOfDaughters();
 	  topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
 	  topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
@@ -624,6 +630,8 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	    ++njptjets;
 
 	    topjet.ntracks = jet->associatedTracks().size();
+	    const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+	    topjet.nSVs = svTagInfo.nVertices();
 	    topjet.ndaughters = jet->numberOfDaughters();
 	    topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
 	    topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
@@ -666,7 +674,9 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	    topjet.id_muonMultiplicity = (jet->correctedJet("RAW")).muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
-            topjet.ndaughters = nconstituents;
+            const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+	    topjet.nSVs = svTagInfo.nVertices();
+	    topjet.ndaughters = nconstituents;
             topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
             topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );

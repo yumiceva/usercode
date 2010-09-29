@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.16 2010/09/25 14:30:16 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.17 2010/09/28 15:49:24 yumiceva Exp $
 //
 //
 
@@ -42,6 +42,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
@@ -244,6 +245,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     bool IsFirstPVGood = false;
     float cutPVz = 15.;
     if (_isDataInput) cutPVz = 24.;
+    float refPVz = 0;
 
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
 
@@ -266,6 +268,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	if (npvs==0) {
 	  primaryVertex = *pv;
 	  IsFirstPVGood = true;
+	  refPVz = pv->z();
 	}
       }
       _ntuple->vertices.push_back(topvtx);
@@ -389,7 +392,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  topmuon.trackerhits = mu->innerTrack()->numberOfValidHits();
 	  topmuon.muonstations = mu->numberOfMatches();
           topmuon.normchi2 = mu->globalTrack()->normalizedChi2();
-	  topmuon.pixelhits = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement()
+	  topmuon.pixelhits = mu->innerTrack()->hitPattern().pixelLayersWithMeasurement();
 
 	  topmuon.iso03_track = mu->isolationR03().sumPt;
 	  topmuon.iso03_ecal = mu->isolationR03().emEt;
@@ -433,6 +436,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      &&mu->innerTrack()->hitPattern().pixelLayersWithMeasurement()>=1
 	      &&mu->numberOfMatches()>1
 	      &&CaloDeltaR>0.3
+	      &&fabs(mu->vz() - refPVz)<1.
 	      &&fabs(mu->innerTrack()->dxy(point))<0.02)
 	    {
 	      n_tight++;
@@ -518,6 +522,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  ++ncalojets;
 	  
 	  topjet.ntracks = jet->associatedTracks().size();
+	  const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+	  topjet.nSVs = svTagInfo.nVertices();
 	  topjet.ndaughters =jet->numberOfDaughters();
 	  topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
 	  topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
@@ -555,6 +561,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    ++njptjets;
 
 	    topjet.ntracks = jet->associatedTracks().size();
+	    const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+	    topjet.nSVs = svTagInfo.nVertices();
 	    topjet.ndaughters = jet->numberOfDaughters();
 	    topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
 	    topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
@@ -595,6 +603,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    topjet.id_muonMultiplicity = (jet->correctedJet("RAW")).muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
+	    const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+	    topjet.nSVs = svTagInfo.nVertices();
             topjet.ndaughters = (jet->correctedJet("RAW")).numberOfDaughters();
             topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
             topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );

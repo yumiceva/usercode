@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.h,v 1.4 2010/08/24 22:00:40 yumiceva Exp $
+ version $Id: TopJetEvent.h,v 1.5 2010/08/25 16:03:42 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -42,6 +42,7 @@ public:
 
     //___
     Int_t ntracks;
+    Int_t nSVs;
     Int_t ndaughters;
 
     //___
