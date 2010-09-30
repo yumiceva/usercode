@@ -55,6 +55,7 @@ alldirs = directoriesMuData + directoriesMuMC + directoriesElData + directoriesE
 
 if not os.path.isdir(path):
     os.mkdir(path)
+    print path
 
 for dir in alldirs:
     apath = path+'/'+dir
@@ -63,7 +64,14 @@ for dir in alldirs:
     else:
         os.mkdir(apath)
         print apath
-        
+
+print "==> soft link \"production\" created in current directory to production directory"
+if not os.path.islink("production"):
+    os.system("ln -s "+path+" production")
+else:
+    print "link \"production\" already exists."
+os.system("ls -l production")
+                
 print "==> create cfg files based in "+py_cfg+"\n"
 
 print "===> for muon channel"
