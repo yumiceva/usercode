@@ -27,20 +27,20 @@ source = "Source.PoolSource.%s-PoolSource"%eventtype
 from PhysicsTools.PatAlgos.patTemplate_cfg import *
 
 # Send all CMSSW output to stdout
-process.MessageLogger.cout = process.MessageLogger.cerr
-process.MessageLogger.cerr = cms.untracked.PSet(
-    placeholder = cms.untracked.bool( True )
-)
-process.MessageLogger.cerr_stats.output = 'cout'
+process.load("FWCore.MessageService.MessageLogger_cfi")
+#process.MessageLogger.cout = process.MessageLogger.cerr
+#process.MessageLogger.cerr = cms.untracked.PSet(
+#    placeholder = cms.untracked.bool( True )
+#)
+#process.MessageLogger.cerr_stats.output = 'cout'
 #process.MessageLogger.cout.FwkReport.reportEvery = 500
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
+
 process.options.wantSummary = True
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideFrontierConditions
-#process.GlobalTag.globaltag = 'GR_R_36X_V12A::All' # For the Jun 14 re-reco
-#process.GlobalTag.globaltag = 'GR_R_36X_V12B::All' # For the Jul 16 re-reco
-#process.GlobalTag.globaltag = 'GR10_P_V7::All' # For PromptReco
-process.GlobalTag.globaltag = 'GR_R_38X_V9::All' # for all
+process.GlobalTag.globaltag = 'GR_R_38X_V13::All' # for all
 if inputType=="MC":
-    process.GlobalTag.globaltag = 'START38_V9::All'
+    process.GlobalTag.globaltag = 'START38_V12::All'
 
 ### Input ###
 # My typical PoolSource
@@ -57,8 +57,8 @@ process.source.fileNames = cms.untracked.vstring(
 #    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/2EC3A00D-F07A-DF11-9B09-00237DA41368.root'
 
     # or MC files
-#    '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
-    '/store/mc/Spring10/WJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0014/84872812-1F4B-DF11-8A07-00151796C158.root'   
+    '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
+#    '/store/mc/Spring10/WJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0014/84872812-1F4B-DF11-8A07-00151796C158.root'   
 )
 process.maxEvents.input = events
 
@@ -207,7 +207,8 @@ process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4'
 #process.selectedPatJetsAK5PF = 'pt > 20. & abs(eta) < 2.4'
 #process.selectedPatJetsAK4PF.cut = 'pt > 20. & abs(eta) < 2.4 & neutralHadronEnergyFraction() < 0.99 & neutralEmEnergyFraction() < 0.99 & nConstituents() > 1 & chargedHadronEnergyFraction() > 0.0 & chargedMultiplicity() > 0.0 & chargedEmEnergyFraction() < 0.99'
 
-process.patJets.addTagInfos = cms.bool(False)
+# needed for AOD
+#process.patJets.addTagInfos = cms.bool(False)
 
 # = MET
 #from PhysicsTools.PatAlgos.tools.metTools import *
@@ -234,7 +235,7 @@ process.triggerFilter = cms.EDFilter(
     hltTag = cms.InputTag("TriggerResults::HLT")
 )
 if channel=="electron":
-    process.triggerFilter = cms.EDFilter("HLTSummaryFilter",
+    process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
                                          summary = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
                                          member  = cms .InputTag("hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter","","HLT"),
                                          cut     = cms.string("pt>=20"),

@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopElectronEvent.cc,v 1.3 2010/08/24 22:04:19 yumiceva Exp $
+ version $Id: TopElectronEvent.cc,v 1.4 2010/09/25 14:30:16 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -35,6 +35,11 @@ void TopElectronEvent::Reset()
     pass95 = -1;
 
     IsConversion = -1;
+    etasc = -999;
+    deltaetasc = -999;
+    deltaphisc = -999;
+    sigmaIetaIeta = -999;
+    HoE = -999;
 
     reliso03 = -1;
 

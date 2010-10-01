@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopElectronEvent.h,v 1.3 2010/08/24 22:00:40 yumiceva Exp $
+ version $Id: TopElectronEvent.h,v 1.4 2010/09/25 14:30:16 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -47,7 +47,12 @@ class TopElectronEvent : public TopCandidateEvent
     Int_t pass70;
     Int_t pass95;
     Int_t IsConversion;
-    
+    Float_t etasc;
+    Float_t deltaetasc;
+    Float_t deltaphisc;
+    Float_t sigmaIetaIeta;
+    Float_t HoE;
+
     //___ MC
     TopGenElectronEvent mc;
 

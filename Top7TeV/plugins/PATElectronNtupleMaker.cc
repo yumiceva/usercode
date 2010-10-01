@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.2 2010/09/25 14:30:16 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.3 2010/09/29 20:32:04 yumiceva Exp $
 //
 //
 
@@ -419,7 +419,13 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	  topele.pass70 = int(pass70);
 	  topele.pass95 = int(pass95);
 	  topele.IsConversion = int(tmpIsConversion);
-	  
+	  //cout << " got conversion flag" << endl;
+
+	  topele.etasc = eta_sc;
+	  topele.sigmaIetaIeta = elec->sigmaIetaIeta();
+	  topele.HoE = elec->hadronicOverEm();
+	  topele.deltaphisc = patEle70.DeltaPhi();
+	  topele.deltaetasc = patEle70.DeltaEta();
 	  _ntuple->electrons.push_back( topele );
 	  
 	}
@@ -427,14 +433,14 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 
     // keep at least one loose electron not isolated                                                                                                         
     if ( nel_loose == 0 ) return false;
-    
+    //cout << " got good electron " << endl;
     if ( 1 == nel_tight)
       _cutflow->Fill(3);
 
     // conversion rejection
     if ( 1== nel_tight && !isConversion)
       _cutflow->Fill(4);
-
+    //cout << " pass conversions" << endl;
     for(MuonCollection::const_iterator mu = muons->begin(); mu != muons->end();  ++mu) {
       // Loose muons
       if(
@@ -548,7 +554,9 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
       _cutflow->Fill(5);
     //if(_debug) cout << "look at jets now" << endl;
 
+    
     // Z veto
+    bool isZevent = false;
     int nloose95electrons = 0;
     for(ElectronCollection::const_iterator elec=electrons->begin(); elec!=electrons->end(); ++elec )
       {
@@ -559,24 +567,26 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 
         if(elec->et()>20.&& ( fabs(eta_sc)< 1.4442 || (fabs(eta_sc)>1.566 && fabs(eta_sc)<2.5 )) && RelIso<1.0 ) {
 
-	  if ( pass95 && nloose95electrons==0) p4secondElec = *elec;
-	  nloose95electrons++;
+	  if ( pass95 ) {
+	    p4secondElec = *elec;
+	    nloose95electrons++;
+	    double Zmass = (p4leadingElec.p4() + p4secondElec.p4()).M();
+	    if (Zmass > 76. && Zmass < 106.) isZevent = true;
+
+	  }
 	}
       }
-
-    double Zmass = (p4leadingElec.p4() + p4secondElec.p4()).M();
-    bool isZevent = false;
-    if (Zmass > 76. && Zmass < 106.) isZevent = true;
-
-    if ( !isZevent && nmu_loose == 0 && 1== nel_tight && !isConversion ) _cutflow->Fill(6);
+    //cout << " got Z mass"<<endl;
+    if ( (!isZevent) && nmu_loose == 0 && 1== nel_tight && !isConversion ) _cutflow->Fill(6);
     _ntuple->IsZevent = int(isZevent);
-
+    
     // Calo Jets
     int ncalojets = 0;
     for(JetCollection::const_iterator jet = calojets->begin(); jet != calojets->end(); ++jet)
     {
       bool passJetID = false;
       passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
+      //cout << " got jet id " << passJetID << endl;
 
       if (jet->pt()>30.
 	  &&fabs(jet->eta())<2.4 && passJetID)
@@ -591,6 +601,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	  ++ncalojets;
 	  
 	  topjet.ntracks = jet->associatedTracks().size();
+	  //cout << " get SSV" << endl;
 	  const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
           topjet.nSVs = svTagInfo.nVertices();
 	  topjet.ndaughters =jet->numberOfDaughters();
@@ -607,7 +618,8 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 
         }
     }
-
+    //cout << "got calo jets" << endl;
+    
     // JPT Jets
     int njptjets = 0;
     for(JetCollection::const_iterator jet = jptjets->begin(); jet != jptjets->end(); ++jet)
@@ -646,7 +658,8 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 
 	  }
       }
-
+    //cout << " got JPT jets" << endl;
+    
     // PF Jets
     int npfjets = 0;
     for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
@@ -654,7 +667,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
         int nconstituents = (jet->correctedJet("RAW")).numberOfDaughters();
 
 	bool passJetID = false;
-        passJetID = jetIdLoose_(*jet, bitset_for_PFjets);
+        passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
 
         if (jet->pt()>20.
             &&fabs(jet->eta())<2.4
@@ -691,8 +704,9 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
           }
       }
 
+    //cout << " got PF jets" << endl;
 
-    if ( (Zmass <= 76. ||Zmass >= 106)&& nmu_loose == 0 && 1== nel_tight && !isConversion ) {
+    if ( (!isZevent) && nmu_loose == 0 && 1== nel_tight && !isConversion ) {
 
         if (ncalojets>0)
 	  _cutflow->Fill(7);

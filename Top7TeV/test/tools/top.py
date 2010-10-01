@@ -11,6 +11,7 @@ import histograms
 JetType = "calo"
 dataType = "data"
 ApplyDeltaR = True
+
 if len(sys.argv)>1:
     if sys.argv[1] == "JPT": JetType = "JPT"
     if sys.argv[1] == "PF": JetType = "PF"
@@ -36,26 +37,52 @@ gROOT.ProcessLine('.L LoadTLV.C+')
 
 # output txt file
 txtfile = file("4jetevents_"+JetType+".txt","w")
+# cutflow txt file
+cuttxtfile = file("cutflow_"+JetType+"_"+dataType+".txt","w")
+cutmap = {}
+cutmap['Processed'] = 0
+cutmap['CleanFilters'] = 0
+cutmap['HLT'] = 0
+cutmap['Good PV'] = 0
+cutmap['OneIsoMu'] = 0
+cutmap['LooseMuVeto'] = 0
+cutmap['ElectronVeto'] = 0
+cutmap['Jets1'] = 0
+cutmap['Jets2'] = 0
+cutmap['Jets3'] = 0
+cutmap['Jets4'] = 0
 
 # input files
 
 datafilename = "NtupleMaker/ttmuj_data_Sep3.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 if dataType=="TTbar":
-    datafilename = "NtupleMaker/v5/ttmuj_TTbar.root"
+    datafilename = "../production/TTbar_Mu/TTbar_Mu.root"
 if dataType=="Wjets":
-    datafilename = "NtupleMaker/v5/ttmuj_Wjets.root"
+    datafilename = "../production/Wjets_Mu/Wjets_Mu.root"
 if dataType=="Zjets":
-    datafilename = "NtupleMaker/v5/ttmuj_Zjets.root"
+    datafilename = "../production/Zjets_Mu/Zjets_Mu.root"
 if dataType=="QCD":
-    datafilename = "NtupleMaker/v5/ttmuj_QCD.root"
+    datafilename = "../production/QCD_Mu/QCD_Mu.root"
 if dataType=="STtch":
-    datafilename = "NtupleMaker/v5/ttmuj_STtch.root"
-
+    datafilename = "../production/STtch_Mu.root"
+#if dataType=="STtWch":
+#    datafilename = "../production/STtWch_Mu.root"
+        
 tfile = TFile(datafilename)
 print "read file "+datafilename
 print "use "+JetType+" collections"
 tfile.cd()
+
+# read number of events passing trigger
+TrigHist = ROOT.gDirectory.Get('/triggerFilter/eventCount')
+if TrigHist:
+    cutmap['CleanFilters'] = TrigHist.GetBinContent( 1 )
+    cutmap['HLT'] = TrigHist.GetBinContent( 2 )
+PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
+if PVHist:
+    cutmap['GoodPV'] = PVHist.GetBinContent( 3 )
+
 
 # get tree
 top = ROOT.gDirectory.Get( '/PATNtupleMaker/top' )
@@ -146,8 +173,12 @@ for jentry in xrange( entries ):
             hist.muons['pt_cut1'].Fill(mu.pt)
             hist.muons['d0_cut1'].Fill(mu.d0)
 
-            if math.fabs(mu.d0)<0.02 and mu.muonhits>0 and mu.normchi2<10 and \
-               mu.trackerhits>10:
+            if math.fabs(mu.d0)<0.02 and \
+                   mu.muonhits>1 and \
+                   mu.normchi2<10 and \
+                   mu.trackerhits>=11 and \
+                   mu.muonstations> 1 and \
+                   mu.pixelhits >= 1:
 
                 hist.muons['pt_cut2'].Fill(mu.pt)
                 hist.muons['reliso'].Fill(mu.reliso03)
@@ -164,22 +195,26 @@ for jentry in xrange( entries ):
                             tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                             tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
-                            if tmpdeltaR < 0.001: continue
+                            if tmpdeltaR < 0.1: continue
                             #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
                             if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
                     if aDeltaR < 999: hist.muons['deltaR'].Fill(aDeltaR)
+                    muonVz = mu.vz
+                    hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
                     if not ApplyDeltaR:
-                        ntightmuons += 1
-                        p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
-                        muonVz = mu.vz                                                
+                        if math.fabs(muonVz - PVz)< 1.:
+                            ntightmuons += 1
+                            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
                     elif aDeltaR>0.3:
-                        ntightmuons += 1
-                        p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
-                        muonVz = mu.vz
-    
+                        if math.fabs(muonVz - PVz)< 1.:
+                            ntightmuons += 1
+                            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
+                            
+                    
     if ntightmuons != 1:
         continue
     cut['OneIsoMuon'] += 1
+    cutmap['OneIsoMuon'] +=1
     
     if nloosemuons > 1:
         continue
@@ -193,7 +228,7 @@ for jentry in xrange( entries ):
     hist.muons['pt'].Fill( p4muon.Pt() )
     hist.muons['eta'].Fill( p4muon.Eta() )
     hist.muons['phi'].Fill( p4muon.Phi() )
-    hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
+    #hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
     Wpt = p4muon.Pt() + p4MET.Pt()
     Wpx = p4muon.Px() + p4MET.Px()
     Wpy = p4muon.Py() + p4MET.Py()

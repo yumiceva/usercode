@@ -5,6 +5,8 @@
 #include <TCanvas.h>
 #include <iostream>
 
+#include "MuonSelector.cc"
+
 void top::Loop()
 {
 //   In a ROOT session, you can do:
@@ -26,6 +28,11 @@ void top::Loop()
 
    Long64_t nentries = fChain->GetEntriesFast();
 
+   // setup muon selector
+   MuonSelector muon_selector;
+   // Ref selection V3
+   muon_selector.Version(4);
+
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
       Long64_t ientry = LoadTree(jentry);
@@ -37,14 +44,21 @@ void top::Loop()
       cout << "run: " << ntuple->run << " lumi: " << ntuple->lumi << endl;
 
       // get collections
+      vector< TopVertexEvent > primaryVertices = ntuple->vertices;
       vector< TopMuonEvent > muons = ntuple->muons;
       vector< TopJetEvent > Calojets = ntuple->Calojets;
 
       size_t total_muons = muons.size();
       size_t total_calojets = Calojets.size();
+
+      // get Z position of good primary vertex
+      float PVz = primaryVertices[0].vz;
+      
       // loop over muons in the event
       for ( size_t imu=0; imu < total_muons; ++imu) {
 	
+	// select only good muons
+	if ( ! muon_selector.Pass( muons[imu], Calojets, PVz) ) continue;
 	cout << " muon pt= " << muons[imu].pt << endl;
 	if (muons[imu].pt > 20.) h_muon_pt->Fill( muons[imu].pt );
  

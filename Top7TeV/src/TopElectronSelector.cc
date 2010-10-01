@@ -237,7 +237,9 @@ class TopElectronSelector : public Selector<pat::Electron>  {
             Deta = electron.deltaEtaSuperClusterTrackAtVtx();
             Dphi = electron.deltaPhiSuperClusterTrackAtVtx();          
          }
-      
+	 fDeta = Deta;
+	 fDphi = Dphi;
+
          Double_t eleEt    = electron.p4().Pt();
          Double_t sihih    = electron.sigmaIetaIeta();
          Double_t HoE      = electron.hadronicOverEm();       
@@ -289,9 +291,15 @@ class TopElectronSelector : public Selector<pat::Electron>  {
          return dphi;
       }
       
+  float DeltaPhi() { return fDphi;}
+  float DeltaEta() { return fDeta;}
+
    private: // member variables
+  
       // version of the cuts  
       Version_t version_;
+  float fDphi;
+  float fDeta;
       Bool_t is36xData_;      
       index_type indexSinhih_EB_;
       index_type indexDphi_EB_;

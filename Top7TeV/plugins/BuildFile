@@ -26,6 +26,9 @@
 <use name=RecoEgamma/EgammaTools>
 <use name=MagneticField/Records>
 <use name=MagneticField/Engine>
+<use name=HLTrigger/HLTcore>
+<use name=DataFormats/HLTReco>
+<use name=CommonTools/Utils>
 
 <library file="*.cc" name=YumicevaTop7TeVPlugins>
  <flags EDM_PLUGIN = 1 >
