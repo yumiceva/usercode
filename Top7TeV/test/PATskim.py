@@ -143,6 +143,9 @@ process.makePatElectrons.replace(getattr(process,"patElectrons"),getattr(process
 # Tell selectedPatElectrons to use the new user collection as input
 process.selectedPatElectrons.src = "patElectronsUserData"
 process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5 & userFloat('SwissCross')<0.95"
+if inputType=="MC" or eventtype=="Prompt_MuB" or eventtype=="Prompt_ElB":
+    process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5"
+
 #process.countPatElectrons.maxNumber = 0
 process.electronMatch.checkCharge = False
 
