@@ -88,11 +88,16 @@ for dir in alldirs:
         os.mkdir(apath)
         print apath
 
-print "==> soft link \"production\" created in current directory to production directory"
+print "==> create soft link \"production\" in current directory to production directory"
 if not os.path.islink("production"):
     os.system("ln -s "+path+" production")
 else:
-    print "link \"production\" already exists."
+    print "link \"production\" already exists. remove current link and create a new one"
+    print "old link:"
+    os.system("ls -l production")
+    os.system("rm production")
+    os.system("ln -s "+path+" production")
+    print "new link:"
 os.system("ls -l production")
                 
 print "==> create cfg files based in "+py_cfg+"\n"
@@ -216,7 +221,7 @@ if DoMuons:
         os.system("cp json/"+ajson+" "+path+"/"+dir)
         
         adict = {}
-        adict['DATASET'] = datasetsMuData[dir]
+        adict['DATASET'] = directoriesMuData[dir]
         adict['JSON'] = ajson
         adict['DIR'] = dir
         
@@ -239,7 +244,7 @@ if DoMuons:
     for dir in directoriesMuMC.keys():
 
         adict = {}
-        adict['DATASET'] = datasetsMuMC[dir]
+        adict['DATASET'] = directoriesMuMC[dir]
         adict['DIR'] = dir
     
         acrab = crabMC%adict
@@ -260,7 +265,7 @@ if DoElectrons:
         os.system("cp json/"+ajson+" "+path+"/"+dir+"\n")
         
         adict = {}
-        adict['DATASET'] = datasetsMuData[dir]
+        adict['DATASET'] = directoriesElData[dir]
         adict['JSON'] = ajson
         adict['DIR'] = dir
         
@@ -283,7 +288,7 @@ if DoElectrons:
     for dir in directoriesElMC.keys():
 
         adict = {}
-        adict['DATASET'] = datasetsMuMC[dir]
+        adict['DATASET'] = directoriesElMC[dir]
         adict['DIR'] = dir
 
         acrab = crabMC%adict
