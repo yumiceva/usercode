@@ -39,37 +39,38 @@ gROOT.ProcessLine('.L LoadTLV.C+')
 txtfile = file("4jetevents_"+JetType+".txt","w")
 # cutflow txt file
 cuttxtfile = file("cutflow_"+JetType+"_"+dataType+".txt","w")
+
 cutmap = {}
 cutmap['Processed'] = 0
 cutmap['CleanFilters'] = 0
 cutmap['HLT'] = 0
-cutmap['Good PV'] = 0
+cutmap['GoodPV'] = 0
 cutmap['OneIsoMu'] = 0
 cutmap['LooseMuVeto'] = 0
 cutmap['ElectronVeto'] = 0
-cutmap['Jets1'] = 0
-cutmap['Jets2'] = 0
-cutmap['Jets3'] = 0
-cutmap['Jets4'] = 0
+cutmap['Jets>0'] = 0
+cutmap['Jets>1'] = 0
+cutmap['Jets>2'] = 0
+cutmap['Jets>3'] = 0
 
 # input files
-
-datafilename = "NtupleMaker/ttmuj_data_Sep3.root"
+data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
+datafilename = "Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 if dataType=="TTbar":
-    datafilename = "../production/TTbar_Mu/TTbar_Mu.root"
+    datafilename = "MC/V00-01-04/TTbar_Mu.root"
 if dataType=="Wjets":
-    datafilename = "../production/Wjets_Mu/Wjets_Mu.root"
+    datafilename = "MC/V00-01-04/Wjets_Mu.root"
 if dataType=="Zjets":
-    datafilename = "../production/Zjets_Mu/Zjets_Mu.root"
+    datafilename = "MC/V00-01-04/Zjets_Mu.root"
 if dataType=="QCD":
-    datafilename = "../production/QCD_Mu/QCD_Mu.root"
+    datafilename = "MC/V00-01-04/QCD_Mu.root"
 if dataType=="STtch":
-    datafilename = "../production/STtch_Mu.root"
+    datafilename = "MC/V00-01-04/STtch_Mu.root"
 #if dataType=="STtWch":
 #    datafilename = "../production/STtWch_Mu.root"
         
-tfile = TFile(datafilename)
+tfile = TFile(data_repo+datafilename)
 print "read file "+datafilename
 print "use "+JetType+" collections"
 tfile.cd()
@@ -79,10 +80,11 @@ TrigHist = ROOT.gDirectory.Get('/triggerFilter/eventCount')
 if TrigHist:
     cutmap['CleanFilters'] = TrigHist.GetBinContent( 1 )
     cutmap['HLT'] = TrigHist.GetBinContent( 2 )
+tfile.cd()
 PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
 if PVHist:
     cutmap['GoodPV'] = PVHist.GetBinContent( 3 )
-
+tfile.cd()
 
 # get tree
 top = ROOT.gDirectory.Get( '/PATNtupleMaker/top' )
@@ -91,12 +93,13 @@ entries = top.GetEntriesFast()
 
 evt = TopEventNtuple()
 top.SetBranchAddress('top.', evt)
-cut = {}
+
+#cut = {}
 #cut['processed'] = cut['OneIsoMuon'] = cut['VetoElectron'] = 0
 #cut['1jet'] = cut['2jet'] = cut['3jet'] = cut['4jet'] = 0
-cutkeys = ['processed','NoDeltaR','OneIsoMuon','VetoLooseMu','VetoElectron','1jet','2jet','3jet','4jet']
-for i in cutkeys:
-    cut[i] = 0
+#cutkeys = ['processed','NoDeltaR','OneIsoMuon','VetoLooseMu','VetoElectron','1jet','2jet','3jet','4jet']
+#for i in cutkeys:
+#    cut[i] = 0
 
 
 # create histograms
@@ -117,7 +120,7 @@ for jentry in xrange( entries ):
     if nb <= 0 or not hasattr( evt, 'run' ):
         continue
 
-    cut['processed'] += 1
+    #cut['processed'] += 1
 
     if jentry%50000 == 0:
         print "Processing entry = "+str(jentry)
@@ -185,7 +188,7 @@ for jentry in xrange( entries ):
                 
                 if mu.reliso03<0.05:
 
-                    cut['NoDeltaR'] += 1
+                    #cut['NoDeltaR'] += 1
                     tmpp4Mu = TLorentzVector()
                     tmpp4Jet= TLorentzVector()
                     aDeltaR = 999
@@ -213,16 +216,15 @@ for jentry in xrange( entries ):
                     
     if ntightmuons != 1:
         continue
-    cut['OneIsoMuon'] += 1
-    cutmap['OneIsoMuon'] +=1
+    cutmap['OneIsoMu'] +=1
     
     if nloosemuons > 1:
         continue
-    cut['VetoLooseMu'] += 1
+    cutmap['LooseMuVeto'] += 1
     for ele in electrons:
         nelec += 1
     if nelec > 0 : continue
-    cut['VetoElectron'] += 1
+    cutmap['ElectronVeto'] += 1
 
     # inclusive
     hist.muons['pt'].Fill( p4muon.Pt() )
@@ -299,6 +301,8 @@ for jentry in xrange( entries ):
                 for itag in isTagb['SSVHEM']:
                     if itag: ntagjets += 1
                 if ntagjets>0 and njets==3:
+                    p4HadTop = TLorentzVector()
+                    p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
                     hist.M3['3jet_SSVHEM_1b'].Fill(p4HadTop.M())
                                             
             if njets >=4:
@@ -323,13 +327,13 @@ for jentry in xrange( entries ):
         hist.jets['Njets'].Fill(4)
     
     if njets > 0:
-        cut['1jet'] += 1
+        cutmap['Jets>0'] += 1
         hist.Mt['Mt_1jet'].Fill( WMt )
     if njets > 1:
-        cut['2jet'] += 1
+        cutmap['Jets>1'] += 1
         hist.Mt['Mt_2jet'].Fill( WMt )
     if njets > 2:
-        cut['3jet'] += 1
+        cutmap['Jets>2'] += 1
         hist.Mt['Mt_3jet'].Fill( WMt )
         ntagjets = 0
         for itag in isTagb['TCHPL']:
@@ -341,7 +345,7 @@ for jentry in xrange( entries ):
         hist.jets['Nbjets_SSVHEM_N3j'].Fill(ntagjets)
         
     if njets > 3:
-        cut['4jet'] += 1
+        cutmap['Jets>3'] += 1
         hist.Mt['Mt_4jet'].Fill( WMt )
         ntagjets = 0
         for itag in isTagb['TCHPL']:
@@ -351,8 +355,7 @@ for jentry in xrange( entries ):
         for itag in isTagb['SSVHEM']:
             if itag: ntagjets += 1
         hist.jets['Nbjets_SSVHEM_N4j'].Fill(ntagjets)
-        if ntagjets > 0:
-            hist.M3['4jet_SSVHEM_1b'].Fill(M3_hadTopP4.M())
+
         # jet combination
         myCombi = JetCombinatorics()
         myCombi.SetLeptonicW(p4LepW)
@@ -369,6 +372,9 @@ for jentry in xrange( entries ):
         M3_hadTopP4 = M3Combo.GetHadTop();
         M3_lepTopP4 = M3Combo.GetLepTop();
         hist.M3['4jet'].Fill(M3_hadTopP4.M())
+        if ntagjets > 0:
+            hist.M3['4jet_SSVHEM_1b'].Fill(M3_hadTopP4.M())
+                        
         # M3Prime
         myCombi.Clear()
         myCombi = JetCombinatorics()
@@ -420,8 +426,17 @@ for jentry in xrange( entries ):
             #ij += 1
 print "done."
 print "Cut flow Table"
-for key in cutkeys:
-    print key + " " + str(cut[key])
+cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
+
+for key in cutmapkeys:
+    print key + " " + str(cutmap[key])
+
+txtname = "cutflow_"+JetType+"_"+dataType+".txt"
+filecut = open(txtname,"w")
+for key in cutmapkeys:
+    filecut.write(key + " " + str(cutmap[key])+"\n")
+filecut.close()
+print "cut flow save in file "+txtname
 
 #cv1 = TCanvas('muon_pt','muon_pt',600,600)
 #hist.muons['pt'].Draw()
