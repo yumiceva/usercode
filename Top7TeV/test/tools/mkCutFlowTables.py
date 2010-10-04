@@ -13,7 +13,7 @@ if len(sys.argv)>1:
 
 if len(sys.argv)>2:
     IsMC = True
-    Lumi = sys.argv[2]
+    Lumi = float(sys.argv[2])
 
 
 Nevents = {}
@@ -63,17 +63,17 @@ else:
 keys = file.keys()
 cutflow = {}
 cutlabel = {}
-cutlabel[0] = 'Processed'
-cutlabel[1] = 'CleanFilters'
-cutlabel[2] = 'HLT'
-cutlabel[3] = 'Good PV'
-cutlabel[4] = 'One Iso mu'
-cutlabel[5] = 'Loose mu veto'
-cutlabel[6] = 'Electron veto'
-cutlabel[7] = 'Jets$\\geq$1'
-cutlabel[8] = 'Jets$\\geq$2'
-cutlabel[9] = 'Jets$\\geq$3'
-cutlabel[10] = 'Jets$\\geq$4'
+cutlabel['Processed'] = 'Processed'
+cutlabel['CleanFilters'] = 'CleanFilters'
+cutlabel['HLT'] = 'HLT'
+cutlabel['GoodPV'] = 'Good PV'
+cutlabel['OneIsoMu'] = 'One Iso mu'
+cutlabel['LooseMuVeto'] = 'Loose mu veto'
+cutlabel['ElectronVeto'] = 'Electron veto'
+cutlabel['Jets>0'] = 'Jets$\\geq$1'
+cutlabel['Jets>1'] = 'Jets$\\geq$2'
+cutlabel['Jets>2'] = 'Jets$\\geq$3'
+cutlabel['Jets>3'] = 'Jets$\\geq$4'
 
 allmap = {}
 
@@ -97,13 +97,13 @@ for sample in keys:
     
     scale = 1.
     if IsMC:
-        scale = ( L * xsec[ sample ] / cutmap[0] )
+        scale = ( Lumi * xsec[ sample ] / cutmap['CleanFilters'] )
 
     ilabel = 0
     for key in cutmap.keys():
 
         cutmap[ key ] = scale * cutmap[ key]
-        print " cut "+str(key) + " ("+cutlabel[ilabel]+") "+" = "+str( round(cutmap[key],1) )
+        print " cut "+str(key) + " ("+cutlabel[key]+") "+" = "+str( round(cutmap[key],1) )
         if allmap.has_key(key):
             allmap[ key ] += cutmap[ key ]
         else:
@@ -114,12 +114,15 @@ for sample in keys:
 print " TOTAL"
 ilabel=0
 for key in allmap.keys():
-    print " cut "+str(key) + " ("+cutlabel[ilabel]+") "+" = "+str( round(allmap[key],1) )
+    print " cut "+str(key) + " ("+cutlabel[key]+") "+" = "+str( round(allmap[key],1) )
     ilabel += 1
     
 cutflow["Total"] = allmap
 
 # write latex
+sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','Jets>0','Jets>1','Jets>2','Jets>3']
+
+         
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','Total']
 if not IsMC:
     #tablelist = ['MB','Jun14','Jul16','Prompt','Total']
@@ -139,7 +142,7 @@ outtex.write('''
 \\begin{centering}
 ''')
 if IsMC:
-    outtex.write('\\begin{tabular}{|l|c|c|c|c|c|c|} \hline \n')
+    outtex.write('\\begin{tabular}{|l|r|r|r|r|r|r|} \hline \n')
     #outtex.write('Cut & ttbar & Wjets & Zjets & QCD & STtch \hline')
     line = "Cut"
     for sample in tablelist:
@@ -147,17 +150,17 @@ if IsMC:
     outtex.write(line+" \\\ \hline \n")
 else:
     #outtex.write('\\begin{tabular}{|l|c|c|c|c|c|} \hline \n')
-    outtex.write('\\begin{tabular}{|l|c|} \hline \n')
+    outtex.write('\\begin{tabular}{|l|r|} \hline \n')
     line = "Cut"
     for sample in tablelist:
         line += sss+label[sample]
     outtex.write(line+" \\\ \hline \n")
 
 ilabel = 0                   
-for key in allmap.keys():
-
+#for key in allmap.keys():
+for key in sortedcutlist:
     
-    line = cutlabel[ilabel]
+    line = cutlabel[key]
     
     for sample in tablelist:
         cutmap = cutflow[sample]
@@ -178,7 +181,7 @@ outtex.write(''' \hline
 \end{table}
 ''')
 
-print "cutflow.tex written."
+print "file "+texname+ " has been written."
 
     
 

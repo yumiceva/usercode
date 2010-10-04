@@ -1,25 +1,117 @@
 #! /usr/bin/env python
 
+"""
+   top.py
+
+   Script to create histograms and cut flow table for lepton+jets.
+   
+   usage: %prog 
+   -b, --batch : run in batch mode without graphics.
+   -d, --deltaR : enable/dissable deltaR(muon,jet) cut. Default is enable.
+   -j, --jet = JET: Jet and MET type: calo, JPT, PF
+   -m, --MET = MET: MET threshold.
+   -p, --jetpt = JETPT: jet pT threhold.
+   -s, --sample = SAMPLE: Ntuple sample: data, TTbar, Wjets, Zjets, QCD, etc. 
+   -v, --verbose : verbose output.
+   -w, --wait : Pause script after plotting a new superposition of histograms.
+      
+   Francisco Yumiceva (yumiceva@fnal.gov)
+   Fermilab 2010
+   
+"""
+
+
 from ROOT import *
 
 import sys
 import os
 import math
-
+import re
 import histograms
 
+#________CONFIG_______OPTIONS________________
+import optparse
+
+USAGE = re.compile(r'(?s)\s*usage: (.*?)(\n[ \t]*\n|$)')
+
+def nonzero(self): # will become the nonzero method of optparse.Values
+    "True if options were given"
+    for v in self.__dict__.itervalues():
+        if v is not None: return True
+        return False
+    
+optparse.Values.__nonzero__ = nonzero # dynamically fix optparse.Values
+
+class ParsingError(Exception): pass
+
+optionstring=""
+
+def exit(msg=""):
+    raise SystemExit(msg or optionstring.replace("%prog",sys.argv[0]))
+
+def parse(docstring, arglist=None):
+    global optionstring
+    optionstring = docstring
+    match = USAGE.search(optionstring)
+    if not match: raise ParsingError("Cannot find the option string")
+    optlines = match.group(1).splitlines()
+    try:
+        p = optparse.OptionParser(optlines[0])
+        for line in optlines[1:]:
+            opt, help=line.split(':')[:2]
+            short,long=opt.split(',')[:2]
+            if '=' in opt:
+                action='store'
+                long=long.split('=')[0]
+            else:
+                action='store_true'
+            p.add_option(short.strip(),long.strip(),
+                         action = action, help = help.strip())
+    except (IndexError,ValueError):
+        raise ParsingError("Cannot parse the option string correctly")
+    return p.parse_args(arglist)
+
+#____________END______CONFIG____OPTIONS________________________________________
+                                                                                                                                
+
+# Options
 JetType = "calo"
 dataType = "data"
 ApplyDeltaR = True
+METCut = -1.
+verbose = False
+MinJetPt = 30.
 
-if len(sys.argv)>1:
-    if sys.argv[1] == "JPT": JetType = "JPT"
-    if sys.argv[1] == "PF": JetType = "PF"
+# check options
+option,args = parse(__doc__)
+#if option.help:
+#    exit()
 
-    if len(sys.argv)>2: dataType = sys.argv[2]
-    if len(sys.argv)>3:
-        ApplyDeltaR = False
-        print "deltaR cut will be removed."
+if option.batch:
+    ROOT.gROOT.SetBatch()
+    print "running ROOT in batch mode."
+if option.verbose:
+    verbose = True
+
+if option.deltaR:
+    ApplyDeltaR = option.deltaR
+    if not ApplyDeltaR: print "deltaR cut will be removed."
+    
+if option.jet:
+    JetType = option.jet
+print "jet collection: " + JetType
+    
+if option.MET:
+    METCut = float(option.met)
+print "MET > "+str(METCut)
+
+if option.jetpt:
+    MinJetPt = float(option.jetpt)
+print "jet pT > "+str(MinJetPt)
+
+if option.sample:
+    dataType = option.sample
+print "sample: "+dataType
 
 gROOT.Reset()
 # Plot Style
@@ -45,6 +137,7 @@ cutmap['Processed'] = 0
 cutmap['CleanFilters'] = 0
 cutmap['HLT'] = 0
 cutmap['GoodPV'] = 0
+cutmap['MET'] = 0
 cutmap['OneIsoMu'] = 0
 cutmap['LooseMuVeto'] = 0
 cutmap['ElectronVeto'] = 0
@@ -142,6 +235,11 @@ for jentry in xrange( entries ):
     if JetType == "PF":
         p4MET.SetPtEtaPhiE(evt.PFMET, 0,evt.PFMETphi,evt.PFMET )
         Ht = evt.PFHt
+
+    if p4MET.Et() <= METCut:
+        continue
+    cutmap['MET'] +=1
+    
     # some counters
     nPVs = 0
     nloosemuons = 0
@@ -194,7 +292,7 @@ for jentry in xrange( entries ):
                     aDeltaR = 999
                     for jet in jets:
                         
-                        if jet.pt>30.:
+                        if jet.pt>MinJetPt:
                             tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                             tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
@@ -264,10 +362,10 @@ for jentry in xrange( entries ):
     #count again jets
     njets = 0
     for jet in jets:
-        if jet.pt>30:
+        if jet.pt>MinJetPt:
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
             tmpdeltaR = p4muon.DeltaR(tmpp4Jet)
-            if tmpdeltaR < 0.001: continue
+            if tmpdeltaR < 0.1: continue
             njets += 1
 
             p4jets.append( TLorentzVector() )
