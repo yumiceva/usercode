@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.1.4.10 2009/07/13 15:13:36 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.2 2010/09/10 22:33:13 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -66,10 +66,16 @@ class Combo {
 	  hdisc_b_ = (TH1F*) gDirectory->Get("hdiscNorm_b");
 	  hdisc_cl_ = (TH1F*) gDirectory->Get("hdiscNorm_cl");
 	}
-	void SetSigmas(int type=0) {
+	void SetSigmas(int type=0,bool isMC=true) {
+
+	  if (! isMC) {
+	    MW = 80.4;
+	    Mtop_h = Mtop_l = 173.3;
+	    //leave default sigmas for the moment
+	  }
 
 	  // type == 0 take defaults
-	  if (type==1) {
+	  if (type==1 && isMC) {
 	    // JES +10%
 	    MW = 87.2;
 	    Mtop_h = 193.2;
@@ -78,7 +84,7 @@ class Combo {
 	    sigmaHadt = 22.8;
 	    sigmaLept = 26.3;
 	  }
-	  if (type==-1) {
+	  if (type==-1 && isMC) {
             // JES -10%
             MW = 81.6;
             Mtop_h = 169.3;

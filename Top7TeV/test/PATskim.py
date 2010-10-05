@@ -133,18 +133,18 @@ process.muonMatch.checkCharge = False
 #process.patElectrons.embedSuperCluster = False
 process.patElectrons.usePV = False
 # Embed user data into the PAT objects
-process.patElectronsUserData = cms.EDProducer(
-    "PATElectronUserData",
-    src = cms.InputTag("patElectrons"),
-    ecalRecHitsEBsrc = cms.InputTag("reducedEcalRecHitsEB")
-)
+#process.patElectronsUserData = cms.EDProducer(
+#    "PATElectronUserData",
+#    src = cms.InputTag("patElectrons"),
+#    ecalRecHitsEBsrc = cms.InputTag("reducedEcalRecHitsEB")
+#)
 # Insert the user data process into the PAT sequence
-process.makePatElectrons.replace(getattr(process,"patElectrons"),getattr(process,"patElectrons")*process.patElectronsUserData)
+#process.makePatElectrons.replace(getattr(process,"patElectrons"),getattr(process,"patElectrons")*process.patElectronsUserData)
 # Tell selectedPatElectrons to use the new user collection as input
-process.selectedPatElectrons.src = "patElectronsUserData"
-process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5 & userFloat('SwissCross')<0.95"
-if inputType=="MC" or eventtype=="Prompt_MuB" or eventtype=="Prompt_ElB":
-    process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5"
+#process.selectedPatElectrons.src = "patElectronsUserData"
+process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5 " #& userFloat('SwissCross')<0.95"
+#if inputType=="MC" or eventtype=="Prompt_MuB" or eventtype=="Prompt_ElB":
+#    process.selectedPatElectrons.cut = "et>15 & abs(eta)<2.5"
 
 #process.countPatElectrons.maxNumber = 0
 process.electronMatch.checkCharge = False
@@ -163,9 +163,11 @@ process.patJets.embedGenJetMatch = False
 
 ### New SSVHP b-tag ###
 # https://hypernews.cern.ch/HyperNews/CMS/get/btag/525/2.html
-process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertex3TrkES_cfi")
-process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertexHighPurBJetTags_cfi")
-process.patJets.discriminatorSources += [cms.InputTag("simpleSecondaryVertexHighPurBJetTags")]
+# for 36x MC
+if inputType=="MC":
+    process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertex3TrkES_cfi")
+    process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertexHighPurBJetTags_cfi")
+    process.patJets.discriminatorSources += [cms.InputTag("simpleSecondaryVertexHighPurBJetTags")]
 
 ### Photons ###
 process.patPhotons.isoDeposits = cms.PSet()
@@ -232,16 +234,38 @@ process.scrapingVeto = cms.EDFilter(
 ### Remove events with anomalous HCAL noise ###
 process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
-### Trigger ###
-process.triggerFilter = cms.EDFilter(
-    'TopHLTFilter',
-    hltTag = cms.InputTag("TriggerResults::HLT")
-)
+### Triggers ###
+
+# muon trigger
+process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
+                                     summary = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
+                                     member  = cms .InputTag("HLTMu9","","HLT"),
+                                     cut     = cms.string(""),
+                                     minN    = cms.int32(1)
+                                     )
+
 if channel=="electron":
+    elefilter = "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter"
+    triggerptcut = ""
+    if eventtype == 'Sep17_135821-139459_El':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
+    if eventtype == 'Sep17_139779-140159_El':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
+    if eventtype == 'Sep17_140160-141881_El':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
+    if eventtype == 'Sep17_141956-143962_El':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt15PixelMatchFilter"
+    if eventtype == 'Sep17_144011-144114_El':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt15CaloEleIdPixelMatchFilter"
+    if eventtype == "Sep17_146428-146644_El":
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt17CaloEleIdPixelMatchFilter"
+    if inputType == "MC":
+        elefilter = "HLT_Ele15_SW_L1R"
+        triggerptcut = "pt>17"
     process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
                                          summary = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
-                                         member  = cms .InputTag("hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter","","HLT"),
-                                         cut     = cms.string("pt>=20"),
+                                         member  = cms .InputTag(elefilter,"","HLT"),
+                                         cut     = cms.string(triggerptcut),
                                          minN    = cms.int32(1)
                                          )
 # pat based trigger    
@@ -355,6 +379,7 @@ if inputType=="MC":
     if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
         process.p.remove( process.flavorHistorySeq )
 else:
+    process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
     process.p.remove( process.makeGenEvt )
     process.p.remove( process.flavorHistorySeq )
     process.p.remove( process.prunedGenParticles )

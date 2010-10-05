@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.3 2010/09/29 20:32:04 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.4 2010/10/01 23:06:37 yumiceva Exp $
 //
 //
 
@@ -346,11 +346,11 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     //if (_debug) cout << "begin loop over muons" << endl;
 
     // electron ID
-    bool use36xData = true;
-    if (! _isDataInput) use36xData = false;
+    //bool use36xData = true;
+    //if (! _isDataInput) use36xData = false;
 
-    TopElectronSelector patEle70(TopElectronSelector::wp70, use36xData);
-    TopElectronSelector patEle95(TopElectronSelector::wp95, use36xData);
+    TopElectronSelector patEle70(TopElectronSelector::wp70, false);
+    TopElectronSelector patEle95(TopElectronSelector::wp95, false);
 
     // Loose Electrons
     bool isConversion = false;

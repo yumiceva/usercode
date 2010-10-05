@@ -30,10 +30,7 @@ directoriesElData = {}
 directoriesMuMC = {}
 directoriesElMC = {}
 
-directoriesMuData['Jun14MB_Mu'] = '/MinimumBias/Commissioning10-SD_Mu-Jun14thSkim_v1/RECO' #'/MinimumBias/Run2010A-Sep17ReReco_v2/RECO'
-directoriesMuData['Jun14Mu_Mu'] = '/Mu/Run2010A-Jun14thReReco_v1/RECO'
-directoriesMuData['Jul16_Mu'] = '/Mu/Run2010A-Jul16thReReco-v1/RECO'
-directoriesMuData['Prompt_MuA'] = '/Mu/Run2010A-PromptReco-v4/RECO' # 137437-144114
+directoriesMuData['Sep17ReReco'] = '/Mu/Run2010A-Sep17ReReco_v2/RECO'# 135821   144114
 directoriesMuData['Prompt_MuB'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946...
 
 directoriesMuMC['TTbar_Mu'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
@@ -45,28 +42,45 @@ directoriesMuMC['QCD_Mu'] = '/InclusiveMu15/Spring10-START3X_V26_S09-v1/GEN-SIM-
 directoriesMuMC['Wc_Mu'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SIM-RECO'
 directoriesMuMC['Vqq_Mu'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 
-directoriesElData['Jun14MB_El']= '/MinimumBias/Commissioning10-SD_EG-Jun14thSkim_v1/RECO'
-directoriesElData['Jun14EG_El']= '/EG/Run2010A-Jun14thReReco_v1/RECO'
-directoriesElData['Jul16_El'] ='/EG/Run2010A-Jul16thReReco-v1/RECO'
-directoriesElData['Prompt_ElA'] = '/EG/Run2010A-PromptReco-v4/RECO'
-directoriesElData['Prompt_ElB'] = '/EG/Run2010A-PromptReco-v4/RECO'
+
+directoriesElData['Sep17_135821-139459_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
+directoriesElData['Sep17_139779-140159_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
+directoriesElData['Sep17_140160-141881_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
+directoriesElData['Sep17_141956-143962_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_SW, Oct 1st json
+directoriesElData['Sep17_144011-144114_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_SW_CaloID, Oct 1st json
+directoriesElData['Prompt_146428-146644_ElB'] = '/Electron/Run2010B-PromptReco-v2/RECO'  #trig:Ele17_SW_CaloID, Oct 1st json
+
 
 directoriesElMC['TTbar_El'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesElMC['Wjets_El'] = '/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesElMC['Zjets_El'] = '/ZJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesElMC['STtch_El'] = '/SingleTop_tChannel-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesElMC['STtWch_El']= '/SingleTop_tWChannel-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['QCD_El'] = '/QCD_EMEnriched_Pt80to170/Spring10-START3X_V26_S09-v3/GEN-SIM-RECO'
+directoriesElMC['QCDEMEn2030_El'] = '/QCD_EMEnriched_Pt20to30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['QCDEMEn3080_El'] = '/QCD_EMEnriched_Pt30to80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['QCDEMEn80170_El'] = '/QCD_EMEnriched_Pt80to170/Spring10-START3X_V26_S09-v3/GEN-SIM-RECO'
+directoriesElMC['QCDBCtoE2030_El'] = '/QCD_BCtoE_Pt20to30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['QCDBCtoE3080_El'] = '/QCD_BCtoE_Pt30to80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['QCDBCtoE80170_El'] = '/QCD_BCtoE_Pt80to170/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['PhoJet40100_El'] = '/PhotonJets_Pt40to100-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['PhoJet100200_El'] = '/PhotonJets_Pt100to200-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['PhoJet200Inf_El'] = '/PhotonJets_Pt200toInf-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesElMC['Wc_El'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SIM-RECO'
 directoriesElMC['Vqq_El'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 
+
 jsonFilesMu = {}
 jsonFilesEl = {}
-jsonFilesMu['Jun14MB_Mu'] = jsonFilesEl['Jun14MB_El'] = 'Cert_132440-137028_7TeV_June14thReReco_Collisions10_JSON_v2_TopFiltered_135059-137028.txt'
-jsonFilesMu['Jun14Mu_Mu'] = jsonFilesEl['Jun14EG_El'] = 'Cert_132440-137028_7TeV_June14thReReco_Collisions10_JSON_v2_TopFiltered_135059-137028.txt'
-jsonFilesMu['Jul16_Mu'] = jsonFilesEl['Jul16_El'] = 'Cert_139779-1340159_7TeV_July16thReReco_Collisions10_JSON.txt'
-jsonFilesMu['Prompt_MuA'] = jsonFilesEl['Prompt_ElA'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesMu['Prompt_MuB'] = jsonFilesEl['Prompt_ElB'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+
+jsonFilesMu['Sep17ReReco'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesMu['Prompt_MuB'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+
+jsonFilesEl['Sep17_135821-139459_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesEl['Sep17_139779-140159_El'] = 'Cert_139779-1340159_7TeV_July16thReReco_Collisions10_JSON.txt'
+jsonFilesEl['Sep17_140160-141881_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesEl['Sep17_141956-143962_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesEl['Sep17_144011-144114_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesEl['Prompt_146428-146644_ElB'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
 
 print "==> make directories"
 alldirs = []

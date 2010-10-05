@@ -7,18 +7,42 @@ import commands
 #________________________________________________________________
 
 if len(sys.argv) < 2:
-    print " usage: statusProd.py path-directory <getoutput>"
+    print " usage: statusProd.py path-directory <getoutput/report/lumi>"
     sys.exit()
 
 
 path = sys.argv[1]
 current = os.getcwd()
 cmdcrab = "-status -c "
+doLumi = False
 if len(sys.argv)==3:
-    cmdcrab = "-getoutput all -c "
+    cmdcrab = "-"+sys.argv[2]+" all -c "
+    if sys.argv[2]=="lumi":
+        doLumi = True
 
 dirs = os.listdir(path)
 
+if doLumi:
+
+    cmdlumi = "lumiCalc.py -c frontier://LumiProd/CMS_LUMI_PROD --nowarning overview -i "
+    totallumi = 0
+    
+    for adir in dirs:
+        print "calculating luminosity for "+adir
+        thejson = path+"/"+adir+"/"+adir+"/res/lumiSummary.json"
+        output = commands.getstatusoutput(cmdlumi+thejson)
+        lines = output[1].split('\n')
+        theline = lines[len(lines)-2]
+        tmplist = theline.split()
+        alumi = tmplist[len(tmplist)-2]
+        alumi = float(alumi)/1.e6
+        print "==> recorded in pb-1 "+str(round(alumi,2))
+        totallumi += alumi
+
+    print "==> total recorded luminosity in pb-1 "+str(round(totallumi,2))
+    sys.exit()
+
+    
 for adir in dirs:
 
     cmd = "cd "+path+"/"+adir
