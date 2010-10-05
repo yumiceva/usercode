@@ -6,7 +6,7 @@ events= 1000
 #inputType = "DATA" # choose MC/DATA
 inputType = "MC"
 
-channel = "electron" # muon/electron
+channel = "muon" # muon/electron
 
 #eventtype="Jun14"
 eventtype="TTJets"
@@ -237,16 +237,19 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 ### Triggers ###
 
 # muon trigger
+triggerprocess = "HLT"
+if inputType == "MC": triggerprocess = "REDIGI" # for 36x MC
+
 process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
-                                     summary = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
-                                     member  = cms .InputTag("HLTMu9","","HLT"),
+                                     summary = cms.InputTag("hltTriggerSummaryAOD","",triggerprocess),
+                                     member  = cms .InputTag("hltSingleMu9L3Filtered9","",triggerprocess),
                                      cut     = cms.string(""),
                                      minN    = cms.int32(1)
                                      )
 
 if channel=="electron":
     elefilter = "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter"
-    triggerptcut = ""
+    triggercut = "et>17"
     if eventtype == 'Sep17_135821-139459_El':
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
     if eventtype == 'Sep17_139779-140159_El':
@@ -260,14 +263,15 @@ if channel=="electron":
     if eventtype == "Sep17_146428-146644_El":
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt17CaloEleIdPixelMatchFilter"
     if inputType == "MC":
-        elefilter = "HLT_Ele15_SW_L1R"
-        triggerptcut = "pt>17"
+        elefilter = "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter"
+    
     process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
-                                         summary = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
-                                         member  = cms .InputTag(elefilter,"","HLT"),
-                                         cut     = cms.string(triggerptcut),
+                                         summary = cms.InputTag("hltTriggerSummaryAOD","",triggerprocess),
+                                         member  = cms .InputTag(elefilter,"",triggerprocess),
+                                         cut     = cms.string(triggercut),
                                          minN    = cms.int32(1)
                                          )
+
 # pat based trigger    
 #process.triggerFilter = cms.EDFilter(
 #    'TriggerFilter',
