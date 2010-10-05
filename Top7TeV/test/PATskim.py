@@ -6,7 +6,7 @@ events= 1000
 #inputType = "DATA" # choose MC/DATA
 inputType = "MC"
 
-channel = "muon" # muon/electron
+channel = "electron" # muon/electron
 
 #eventtype="Jun14"
 eventtype="TTJets"

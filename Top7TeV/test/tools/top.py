@@ -9,11 +9,12 @@
    -b, --batch : run in batch mode without graphics.
    -d, --deltaR : enable/dissable deltaR(muon,jet) cut. Default is enable.
    -j, --jet = JET: Jet and MET type: calo, JPT, PF
+   -n, --nolistofruns : do not write text file with run,lumi,event of those passing the selection.
    -m, --MET = MET: MET threshold.
    -p, --jetpt = JETPT: jet pT threhold.
    -s, --sample = SAMPLE: Ntuple sample: data, TTbar, Wjets, Zjets, QCD, etc. 
    -v, --verbose : verbose output.
-   -w, --wait : Pause script after plotting a new superposition of histograms.
+   -w, --wait : Pause script after plotting a new superpositin of histograms.
       
    Francisco Yumiceva (yumiceva@fnal.gov)
    Fermilab 2010
@@ -81,6 +82,7 @@ ApplyDeltaR = True
 METCut = -1.
 verbose = False
 MinJetPt = 30.
+printlistofruns = True
 
 # check options
 option,args = parse(__doc__)
@@ -93,6 +95,11 @@ if option.batch:
 if option.verbose:
     verbose = True
 
+if option.nolistofruns:
+    printlistofruns = True
+else:
+    printlistofruns = False
+    
 if option.deltaR:
     ApplyDeltaR = option.deltaR
     if not ApplyDeltaR: print "deltaR cut will be removed."
@@ -128,7 +135,8 @@ gROOT.ProcessLine('.L JetCombinatorics.cc+')
 gROOT.ProcessLine('.L LoadTLV.C+')
 
 # output txt file
-txtfile = file("4jetevents_"+JetType+".txt","w")
+txtfilename = "2jetevents_"+JetType+"_"+dataType+".txt"
+txtfile = file(txtfilename,"w")
 # cutflow txt file
 cuttxtfile = file("cutflow_"+JetType+"_"+dataType+".txt","w")
 
@@ -430,6 +438,17 @@ for jentry in xrange( entries ):
     if njets > 1:
         cutmap['Jets>1'] += 1
         hist.Mt['Mt_2jet'].Fill( WMt )
+        # temporal
+        line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+        txtfile.write(line)
+        line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
+        txtfile.write(line)
+        ij = 0
+        for iijet in p4jets:
+            line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij])
+            txtfile.write(line+'\n')
+            ij += 1
+                                                                                                    
     if njets > 2:
         cutmap['Jets>2'] += 1
         hist.Mt['Mt_3jet'].Fill( WMt )
@@ -510,18 +529,20 @@ for jentry in xrange( entries ):
         MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
         hist.M3['Mttbar_chi2'].Fill(MttbarP4.M())
         # printout txt file with run,lumi,event
-        line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
-        #txtfile.write(line)
-        # printout txt file
-        #line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
-        #txtfile.write(line)
-        #line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
-        #txtfile.write(line)
-        #ij = 0
-        #for iijet in p4jets:
-            #line= str(iijet.E()) +' '+str(iijet.Pt)+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij]) 
-            #txtfile.write(line+'\n')
-            #ij += 1
+        if printlistofruns:
+            line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
+            txtfile.write(line)
+        # printout flat file
+        #else:
+        #    line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+        #    txtfile.write(line)
+        #    line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
+        #    txtfile.write(line)
+        #    ij = 0
+        #    for iijet in p4jets:
+        #        line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij]) 
+        #        txtfile.write(line+'\n')
+        #        ij += 1
 print "done."
 print "Cut flow Table"
 cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
@@ -549,4 +570,7 @@ hist.SetTFile(outroot)
 hist.Write()
 
 print "File "+outname+" has been written."
+
+print "flat file "+txtfilename +" has been written."
+
 #raw_input ("Enter to quit:")
