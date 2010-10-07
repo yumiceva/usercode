@@ -4,6 +4,24 @@ import sys
 import os
 import commands
 
+
+#________________________________________________________________
+def get_list_files(directory):
+
+    dir = []
+    
+    dir = os.listdir(directory)
+    
+    lfiles = []
+    for f in dir:
+
+        if f.endswith(".root"):
+            
+            lfiles.append(directory+"/"+f)
+                
+    return lfiles
+
+                                    
 #________________________________________________________________
 
 if len(sys.argv) < 2:
@@ -28,6 +46,7 @@ if doLumi:
     totallumi = 0
     
     for adir in dirs:
+        if not os.path.isdir(adir): continue
         print "calculating luminosity for "+adir
         thejson = path+"/"+adir+"/"+adir+"/res/lumiSummary.json"
         output = commands.getstatusoutput(cmdlumi+thejson)
@@ -44,20 +63,61 @@ if doLumi:
 
     
 for adir in dirs:
-
-    cmd = "cd "+path+"/"+adir
-    os.chdir(path+"/"+adir)
-    print cmd
-    if os.path.isdir(adir):
+    
+    if os.path.isdir(path+"/"+adir):
+        cmd = "cd "+path+"/"+adir
+        os.chdir(path+"/"+adir)
+        print cmd
+                
         cmd = "crab "+cmdcrab+adir
         print cmd
         output = commands.getstatusoutput(cmd)
         lines = output[1].split('\n')
         #print lines
-        if len(sys.argv)==3:
-            cmd = "hadd "+adir+".root "+adir+"/res/*.root"
-            print cmd
-            output = commands.getstatusoutput(cmd)
+        if len(sys.argv)>2 and sys.argv[2]=="getoutput":
+
+            listofroot = get_list_files(adir+"/res/")
+            nfiles = 0
+            tmplistoffiles = []
+            atmplist = []
+            maxfiles = 500
+            if len(listofroot) > maxfiles:
+                for iroot in listofroot:
+                    if iroot.find(".root")==-1: continue
+                    if nfiles <= maxfiles:
+                        atmplist.append(iroot)
+                    if nfiles == maxfiles:
+                        tmplistoffiles.append(atmplist)
+                        nfiles = 0
+                        atmplist = []
+                    else: nfiles += 1
+                istrfile = 1
+                for ii in tmplistoffiles:
+                    linefiles = ""
+                    for jj in ii:
+                        linefiles = linefiles +" "+jj
+                    haddedfile = adir+"_"+str(istrfile)+".root"
+                    cmd = "hadd "+haddedfile + linefiles
+                    #print cmd
+                    print "hadd block "+str(istrfile)
+                    output = commands.getstatusoutput(cmd)
+                    print output[1]
+                    istrfile += 1
+                linefiles = ""
+                for kk in range(1,istrfile):
+                    linefiles = linefiles + " " +adir+"_"+str(kk)+".root"
+                cmd = "hadd "+adir+".root "+linefiles
+                print cmd
+                output = commands.getstatusoutput(cmd)
+                print output[1]
+                for kk in range(1,istrfile+1):
+                    cmd = "rm "+adir+"_"+str(kk)+".root"
+                    print cmd
+                    output = commands.getstatusoutput(cmd)
+            else:    
+                cmd = "hadd "+adir+".root "+adir+"/res/*.root"
+                print cmd
+                output = commands.getstatusoutput(cmd)
             
         totaljobs = 0
         donejobs = 0

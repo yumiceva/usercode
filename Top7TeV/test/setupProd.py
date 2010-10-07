@@ -247,7 +247,7 @@ if DoMuons:
         
         fcrab_data.write("cd "+path+"/"+dir+"\n")
         fcrab_data.write("crab -create -cfg crab.cfg"+"\n")
-        if dir.find("Prompt")!= -1:
+        if dir.find("Prompt")!= -1 or dir.find("Sep17")!=-1:
             fcrab_data.write("crab -submit 500 -c "+dir+"\n")
             fcrab_data.write("crab -submit 500 -c "+dir+"\n")
             fcrab_data.write("crab -submit 500 -c "+dir+"\n")
