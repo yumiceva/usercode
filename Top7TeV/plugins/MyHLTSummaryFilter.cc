@@ -2,8 +2,8 @@
  *
  * See header file for documentation
  *
- *  $Date: 2009/09/28 11:25:02 $
- *  $Revision: 1.2 $
+ *  $Date: 2010/10/01 23:07:15 $
+ *  $Revision: 1.1 $
  *
  *  \author Martin Grunewald
  *
@@ -85,6 +85,7 @@ MyHLTSummaryFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
      const bool accept(n>=min_N_);
      LogInfo("MyHLTSummaryFilter")
        << " Filter objects: " << n << "/" << n1;
+     if (accept) eventCount->Fill( 1 );
      return accept;
    }
    
@@ -101,6 +102,7 @@ MyHLTSummaryFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
      const bool accept(n>=min_N_);
      LogInfo("MyHLTSummaryFilter")
        << " Collection objects: " << n << "/" <<n1-n0;
+     if (accept) eventCount->Fill( 1 );
      return accept;
    }
 
