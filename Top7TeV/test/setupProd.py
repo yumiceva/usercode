@@ -33,6 +33,7 @@ directoriesElMC = {}
 directoriesMuData['Sep17ReReco'] = '/Mu/Run2010A-Sep17ReReco_v2/RECO'# 135821   144114
 directoriesMuData['Prompt_MuB'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946...
 
+
 directoriesMuMC['TTbar_Mu'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesMuMC['Wjets_Mu'] = '/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesMuMC['Zjets_Mu'] = '/ZJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
@@ -72,8 +73,9 @@ directoriesElMC['Vqq_El'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-S
 jsonFilesMu = {}
 jsonFilesEl = {}
 
-jsonFilesMu['Sep17ReReco'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesMu['Prompt_MuB'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesMu['Sep17ReReco'] = 'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesMu['Prompt_MuB'] = 'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
+
 
 jsonFilesEl['Sep17_135821-139459_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
 jsonFilesEl['Sep17_139779-140159_El'] = 'Cert_139779-1340159_7TeV_July16thReReco_Collisions10_JSON.txt'

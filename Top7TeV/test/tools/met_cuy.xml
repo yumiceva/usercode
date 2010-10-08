@@ -30,7 +30,7 @@
     <TH1 name="LepWcomplex4j_TTbarcalo" source="/MET/LepWmassComplex_4jet_TTbarcalo"/>
   </validation>
 
-  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
+  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031105370061920686">
     <TH1 name="met_Wjetscalo" source="/MET/MET_Wjetscalo"/>
     <TH1 name="phi_Wjetscalo" source="/MET/MET_phi_Wjetscalo"/>
     <TH1 name="ht_Wjetscalo" source="/MET/Ht_Wjetscalo"/>
@@ -82,7 +82,7 @@
   <divide name="jet_hltg_pt_ttbar" numerator="tT0j_jet_pt_cut1" denominator="tT0j_jet_pt_nohltgood" DivideOption="B" Option="e1"/>
 -->
 
-  <superimpose name="met" title="met" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="met" title="met" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="met_datacalo" color="top" legend="Data"/>
     <superimposeItem name="met_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="met_Zjetscalo" color="top" legend="Zjets"/>
@@ -90,7 +90,7 @@
     <superimposeItem name="met_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="phi" title="phi" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="phi" title="phi" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="phi_datacalo" color="top" legend="Data"/>
     <superimposeItem name="phi_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="phi_Zjetscalo" color="top" legend="Zjets"/>
@@ -98,7 +98,7 @@
     <superimposeItem name="phi_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="ht" title="ht" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="ht" title="ht" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="ht_datacalo" color="top" legend="Data"/>
     <superimposeItem name="ht_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="ht_Zjetscalo" color="top" legend="Zjets"/>
@@ -106,7 +106,7 @@
     <superimposeItem name="ht_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="htlep" title="htlep" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+  <superimpose name="htlep" title="htlep" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
     <superimposeItem name="htlep_datacalo" color="top" legend="Data"/>
     <superimposeItem name="htlep_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="htlep_Zjetscalo" color="top" legend="Zjets"/>
@@ -114,7 +114,7 @@
     <superimposeItem name="htlep_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepW1j" title="LepW1j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=1">
+  <superimpose name="LepW1j" title="LepW1j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=1">
     <superimposeItem name="LepW1j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepW1j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepW1j_Zjetscalo" color="top" legend="Zjets"/>
@@ -122,7 +122,7 @@
     <superimposeItem name="LepW1j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepW2j" title="LepW2j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=2">
+  <superimpose name="LepW2j" title="LepW2j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=2">
     <superimposeItem name="LepW2j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepW2j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepW2j_Zjetscalo" color="top" legend="Zjets"/>
@@ -130,7 +130,7 @@
     <superimposeItem name="LepW2j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepW3j" title="LepW3j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=3">
+  <superimpose name="LepW3j" title="LepW3j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=3">
     <superimposeItem name="LepW3j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepW3j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepW3j_Zjetscalo" color="top" legend="Zjets"/>
@@ -138,7 +138,7 @@
     <superimposeItem name="LepW3j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepW4j" title="LepW4j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq4">
+  <superimpose name="LepW4j" title="LepW4j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq4">
     <superimposeItem name="LepW4j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepW4j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepW4j_Zjetscalo" color="top" legend="Zjets"/>
@@ -146,7 +146,7 @@
     <superimposeItem name="LepW4j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepWcomplex1j" title="LepWcomplex1j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=1">
+  <superimpose name="LepWcomplex1j" title="LepWcomplex1j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=1">
     <superimposeItem name="LepWcomplex1j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepWcomplex1j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepWcomplex1j_Zjetscalo" color="top" legend="Zjets"/>
@@ -154,7 +154,7 @@
     <superimposeItem name="LepWcomplex1j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepWcomplex2j" title="LepWcomplex2j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=2">
+  <superimpose name="LepWcomplex2j" title="LepWcomplex2j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=2">
     <superimposeItem name="LepWcomplex2j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepWcomplex2j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepWcomplex2j_Zjetscalo" color="top" legend="Zjets"/>
@@ -162,7 +162,7 @@
     <superimposeItem name="LepWcomplex2j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepWcomplex3j" title="LepWcomplex3j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=3">
+  <superimpose name="LepWcomplex3j" title="LepWcomplex3j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=3">
     <superimposeItem name="LepWcomplex3j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepWcomplex3j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepWcomplex3j_Zjetscalo" color="top" legend="Zjets"/>
@@ -170,7 +170,7 @@
     <superimposeItem name="LepWcomplex3j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="LepWcomplex4j" title="LepWcomplex4j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=4">
+  <superimpose name="LepWcomplex4j" title="LepWcomplex4j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=4">
     <superimposeItem name="LepWcomplex4j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="LepWcomplex4j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="LepWcomplex4j_Zjetscalo" color="top" legend="Zjets"/>

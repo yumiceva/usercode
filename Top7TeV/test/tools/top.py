@@ -11,6 +11,7 @@
    -j, --jet = JET: Jet and MET type: calo, JPT, PF
    -n, --nolistofruns : do not write text file with run,lumi,event of those passing the selection.
    -m, --MET = MET: MET threshold.
+   -O, --OutputDir = OUTPUTDIR: name of output directory
    -p, --jetpt = JETPT: jet pT threhold.
    -s, --sample = SAMPLE: Ntuple sample: data, TTbar, Wjets, Zjets, QCD, etc. 
    -v, --verbose : verbose output.
@@ -83,6 +84,7 @@ METCut = -1.
 verbose = False
 MinJetPt = 30.
 printlistofruns = True
+OutputDir = "./"
 
 # check options
 option,args = parse(__doc__)
@@ -96,9 +98,9 @@ if option.verbose:
     verbose = True
 
 if option.nolistofruns:
-    printlistofruns = True
-else:
     printlistofruns = False
+else:
+    printlistofruns = True
     
 if option.deltaR:
     ApplyDeltaR = option.deltaR
@@ -120,6 +122,10 @@ if option.sample:
     dataType = option.sample
 print "sample: "+dataType
 
+if option.OutputDir:
+    OutputDir = option.OutputDir
+print "output directory: " + OutputDir
+
 gROOT.Reset()
 # Plot Style
 gROOT.ProcessLine('.L tdrstyle.C')
@@ -135,10 +141,8 @@ gROOT.ProcessLine('.L JetCombinatorics.cc+')
 gROOT.ProcessLine('.L LoadTLV.C+')
 
 # output txt file
-txtfilename = "2jetevents_"+JetType+"_"+dataType+".txt"
-txtfile = file(txtfilename,"w")
-# cutflow txt file
-cuttxtfile = file("cutflow_"+JetType+"_"+dataType+".txt","w")
+txtfilename = "4jetevents_"+JetType+"_"+dataType+".txt"
+txtfile = file(OutputDir+"/"+txtfilename,"w")
 
 cutmap = {}
 cutmap['Processed'] = 0
@@ -156,18 +160,24 @@ cutmap['Jets>3'] = 0
 
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
-datafilename = "Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
+
+datafilename = "Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
+#"Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
+#datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/Sep17ReReco/Sep17ReReco.root"
 if dataType=="TTbar":
-    datafilename = "MC/V00-01-04/TTbar_Mu.root"
+    datafilename = "MC/V00-01-04-03/TTbar_Mu.root"
+if dataType=="sync":
+    datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root"
+    data_repo = ""
 if dataType=="Wjets":
-    datafilename = "MC/V00-01-04/Wjets_Mu.root"
+    datafilename = "MC/V00-01-04-03/Wjets_Mu.root"
 if dataType=="Zjets":
-    datafilename = "MC/V00-01-04/Zjets_Mu.root"
+    datafilename = "MC/V00-01-04-03/Zjets_Mu.root"
 if dataType=="QCD":
-    datafilename = "MC/V00-01-04/QCD_Mu.root"
+    datafilename = "MC/V00-01-04-03/QCD_Mu.root"
 if dataType=="STtch":
-    datafilename = "MC/V00-01-04/STtch_Mu.root"
+    datafilename = "MC/V00-01-04-03/STtch_Mu.root"
 #if dataType=="STtWch":
 #    datafilename = "../production/STtWch_Mu.root"
         
@@ -283,7 +293,7 @@ for jentry in xrange( entries ):
             hist.muons['d0_cut1'].Fill(mu.d0)
 
             if math.fabs(mu.d0)<0.02 and \
-                   mu.muonhits>1 and \
+                   mu.muonhits>0 and \
                    mu.normchi2<10 and \
                    mu.trackerhits>=11 and \
                    mu.muonstations> 1 and \
@@ -294,7 +304,12 @@ for jentry in xrange( entries ):
                 
                 if mu.reliso03<0.05:
 
-                    #cut['NoDeltaR'] += 1
+                    muonVz = mu.vz
+                    hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
+                    
+                    if math.fabs(muonVz - PVz) >= 1.:
+                        continue
+                    
                     tmpp4Mu = TLorentzVector()
                     tmpp4Jet= TLorentzVector()
                     aDeltaR = 999
@@ -304,20 +319,18 @@ for jentry in xrange( entries ):
                             tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                             tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
-                            if tmpdeltaR < 0.1: continue
+                            if tmpdeltaR < 0.1 and JetType!="calo": continue
                             #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
                             if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
+
                     if aDeltaR < 999: hist.muons['deltaR'].Fill(aDeltaR)
-                    muonVz = mu.vz
-                    hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
+                    
                     if not ApplyDeltaR:
-                        if math.fabs(muonVz - PVz)< 1.:
-                            ntightmuons += 1
-                            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
+                        ntightmuons += 1
+                        p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
                     elif aDeltaR>0.3:
-                        if math.fabs(muonVz - PVz)< 1.:
-                            ntightmuons += 1
-                            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
+                        ntightmuons += 1
+                        p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
                             
                     
     if ntightmuons != 1:
@@ -373,7 +386,7 @@ for jentry in xrange( entries ):
         if jet.pt>MinJetPt:
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
             tmpdeltaR = p4muon.DeltaR(tmpp4Jet)
-            if tmpdeltaR < 0.1: continue
+            if tmpdeltaR < 0.1 and JetType!="calo": continue
             njets += 1
 
             p4jets.append( TLorentzVector() )
@@ -439,15 +452,15 @@ for jentry in xrange( entries ):
         cutmap['Jets>1'] += 1
         hist.Mt['Mt_2jet'].Fill( WMt )
         # temporal
-        line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
-        txtfile.write(line)
-        line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
-        txtfile.write(line)
-        ij = 0
-        for iijet in p4jets:
-            line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij])
-            txtfile.write(line+'\n')
-            ij += 1
+        #line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+        #txtfile.write(line)
+        #line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
+        #txtfile.write(line)
+        #ij = 0
+        #for iijet in p4jets:
+        #    line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij])
+        #    txtfile.write(line+'\n')
+        #    ij += 1
                                                                                                     
     if njets > 2:
         cutmap['Jets>2'] += 1
@@ -533,16 +546,16 @@ for jentry in xrange( entries ):
             line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
             txtfile.write(line)
         # printout flat file
-        #else:
-        #    line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
-        #    txtfile.write(line)
-        #    line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
-        #    txtfile.write(line)
-        #    ij = 0
-        #    for iijet in p4jets:
-        #        line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij]) 
-        #        txtfile.write(line+'\n')
-        #        ij += 1
+        else:
+            line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+            txtfile.write(line)
+            line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
+            txtfile.write(line)
+            ij = 0
+            for iijet in p4jets:
+                line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij]) 
+                txtfile.write(line+'\n')
+                ij += 1
 print "done."
 print "Cut flow Table"
 cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
@@ -551,7 +564,7 @@ for key in cutmapkeys:
     print key + " " + str(cutmap[key])
 
 txtname = "cutflow_"+JetType+"_"+dataType+".txt"
-filecut = open(txtname,"w")
+filecut = open(OutputDir+txtname,"w")
 for key in cutmapkeys:
     filecut.write(key + " " + str(cutmap[key])+"\n")
 filecut.close()
@@ -565,7 +578,7 @@ print "cut flow save in file "+txtname
 outname = "top_plots_"+dataType+"_"+JetType+".root"
 if not ApplyDeltaR:
     outname = "top_plots_"+dataType+"_"+JetType+"_NoDeltaR.root"
-outroot = TFile(outname,"RECREATE")
+outroot = TFile(OutputDir+"/"+outname,"RECREATE")
 hist.SetTFile(outroot)
 hist.Write()
 

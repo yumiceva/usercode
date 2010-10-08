@@ -18,7 +18,7 @@
     <TH1 name="Mttbar_chi2_TTbarcalo" source="/M3/Mttbar_chi2_TTbarcalo"/>
   </validation>
 
-  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
+  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031105370061920686">
     <TH1 name="M3_3j_Wjetscalo" source="/M3/M3_3jet_Wjetscalo"/>
     <TH1 name="M3_4j_Wjetscalo" source="/M3/M3_4jet_Wjetscalo"/>
     <TH1 name="Mt_Wjetscalo" source="/Mt/Mt_Wjetscalo"/>
@@ -50,7 +50,7 @@
 -->
 
 
-  <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="Mt_datacalo" color="top" legend="Data"/>
     <superimposeItem name="Mt_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="Mt_Zjetscalo" color="top" legend="Zjets"/>
@@ -58,7 +58,7 @@
     <superimposeItem name="Mt_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3_3j" title="M3_3j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}=3" Ndivisions="505">
+  <superimpose name="M3_3j" title="M3_3j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}=3" Ndivisions="505">
     <superimposeItem name="M3_3j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="M3_3j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="M3_3j_Zjetscalo" color="top" legend="Zjets"/>
@@ -66,7 +66,7 @@
     <superimposeItem name="M3_3j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3_4j" title="M3_4j" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
+  <superimpose name="M3_4j" title="M3_4j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3_4j_datacalo" color="top" legend="Data"/>
     <superimposeItem name="M3_4j_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="M3_4j_Zjetscalo" color="top" legend="Zjets"/>
@@ -74,7 +74,7 @@
     <superimposeItem name="M3_4j_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3chi2_hadW_4jet" title="M3chi2_hadW_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
+  <superimpose name="M3chi2_hadW_4jet" title="M3chi2_hadW_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3chi2_hadW_4jet_datacalo" color="top" legend="Data"/>
     <superimposeItem name="M3chi2_hadW_4jet_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadW_4jet_Zjetscalo" color="top" legend="Zjets"/>
@@ -82,7 +82,7 @@
     <superimposeItem name="M3chi2_hadW_4jet_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3chi2_hadTop_4jet" title="M3chi2_hadTop_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
+  <superimpose name="M3chi2_hadTop_4jet" title="M3chi2_hadTop_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3chi2_hadTop_4jet_datacalo" color="top" legend="Data"/>
     <superimposeItem name="M3chi2_hadTop_4jet_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadTop_4jet_Zjetscalo" color="top" legend="Zjets"/>
@@ -90,7 +90,7 @@
     <superimposeItem name="M3chi2_hadTop_4jet_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Mttbar" title="Mttbar" YTitle="Events" Fill="true" Weight="true" Lumi="2.88" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="Mttbar" title="Mttbar" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="Mttbar_chi2_datacalo" color="top" legend="Data"/>
     <superimposeItem name="Mttbar_chi2_Wjetscalo" color="top" legend="Wjets"/>
     <superimposeItem name="Mttbar_chi2_Zjetscalo" color="top" legend="Zjets"/>
