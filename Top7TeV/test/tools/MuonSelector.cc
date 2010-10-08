@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MuonSelector.cc,v 1.2 2010/09/10 22:33:13 yumiceva Exp $
+ version $Id: MuonSelector.cc,v 1.1 2010/10/04 19:07:08 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -87,7 +87,7 @@ public:
         fabs(muon.eta)<2.1 &&
 	muon.IsTrackerMuon==1 &&
         fabs(muon.d0)<0.02 &&
-        muon.muonhits>1 &&
+        muon.muonhits>0 &&
         muon.normchi2<10 &&
         muon.trackerhits>=11 &&
 	muon.reliso03 <0.05 &&
