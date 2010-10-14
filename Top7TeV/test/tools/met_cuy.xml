@@ -30,7 +30,7 @@
     <TH1 name="LepWcomplex4j_TTbarcalo" source="/MET/LepWmassComplex_4jet_TTbarcalo"/>
   </validation>
 
-  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031105370061920686">
+  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
     <TH1 name="met_Wjetscalo" source="/MET/MET_Wjetscalo"/>
     <TH1 name="phi_Wjetscalo" source="/MET/MET_phi_Wjetscalo"/>
     <TH1 name="ht_Wjetscalo" source="/MET/Ht_Wjetscalo"/>

@@ -8,12 +8,15 @@
    usage: %prog 
    -b, --batch : run in batch mode without graphics.
    -d, --deltaR : enable/dissable deltaR(muon,jet) cut. Default is enable.
+   -f, --flavor = FLAVOR: flavor for Vqq samples. 1 = bb, 2 = c(c), 3 = light
+   -i, --isolation = ISO: lepton isolation cut.
    -j, --jet = JET: Jet and MET type: calo, JPT, PF
-   -n, --nolistofruns : do not write text file with run,lumi,event of those passing the selection.
-   -m, --MET = MET: MET threshold.
+   -l, --listofruns : write text file with run,lumi,event of those passing the selection.
+   -M, --MET = MET: MET threshold.
    -O, --OutputDir = OUTPUTDIR: name of output directory
    -p, --jetpt = JETPT: jet pT threhold.
-   -s, --sample = SAMPLE: Ntuple sample: data, TTbar, Wjets, Zjets, QCD, etc. 
+   -s, --sample = SAMPLE: Ntuple sample: data, TTbar, Wjets, Zjets, QCD, etc.
+   -t, --txt : write text file with events with > 1 jet.
    -v, --verbose : verbose output.
    -w, --wait : Pause script after plotting a new superpositin of histograms.
       
@@ -83,13 +86,20 @@ ApplyDeltaR = True
 METCut = -1.
 verbose = False
 MinJetPt = 30.
-printlistofruns = True
+IsoCut = 0.05
+printlistofruns = False
+printtxtfile = False
 OutputDir = "./"
+Flavor = 0
+FlavorStr = ""
 
 # check options
 option,args = parse(__doc__)
 #if option.help:
 #    exit()
+
+if not option.sample:
+    exit()
 
 if option.batch:
     ROOT.gROOT.SetBatch()
@@ -97,11 +107,14 @@ if option.batch:
 if option.verbose:
     verbose = True
 
-if option.nolistofruns:
-    printlistofruns = False
-else:
+if option.listofruns:
     printlistofruns = True
-    
+    print "We will write a file with run,event,lumi information"
+
+if option.txt:
+    printtxtfile = True
+    print "we will write a txt file with jet kinematics"
+
 if option.deltaR:
     ApplyDeltaR = option.deltaR
     if not ApplyDeltaR: print "deltaR cut will be removed."
@@ -111,8 +124,12 @@ if option.jet:
 print "jet collection: " + JetType
     
 if option.MET:
-    METCut = float(option.met)
+    METCut = float(option.MET)
 print "MET > "+str(METCut)
+
+if option.isolation:
+    IsoCut = float(option.isolation)
+print "Isolation > " +str(IsoCut)
 
 if option.jetpt:
     MinJetPt = float(option.jetpt)
@@ -123,8 +140,16 @@ if option.sample:
 print "sample: "+dataType
 
 if option.OutputDir:
-    OutputDir = option.OutputDir
+    OutputDir = option.OutputDir+"/"
 print "output directory: " + OutputDir
+
+if option.flavor:
+    Flavor = int(option.flavor)
+    if Flavor == 1: FlavorStr = "bb"
+    if Flavor == 2: FlavorStr = "cc"
+    if Flavor == 3: FlavorStr = "light"
+    print "Selecting MC sample with flavor "+FlavorStr
+
 
 gROOT.Reset()
 # Plot Style
@@ -141,9 +166,17 @@ gROOT.ProcessLine('.L JetCombinatorics.cc+')
 gROOT.ProcessLine('.L LoadTLV.C+')
 
 # output txt file
-txtfilename = "4jetevents_"+JetType+"_"+dataType+".txt"
-txtfile = file(OutputDir+"/"+txtfilename,"w")
+txtfilename = "2jetevents_"+JetType+"_"+dataType+".txt"
+txtfile = None
+if printlistofruns:
+    txtfile = file(OutputDir+"/"+txtfilename,"w")
 
+runfilename = "2jetList_"+JetType+"_"+dataType+".txt"
+runfile= None
+if printtxtfile:
+    runfile = file(OutputDir+"/"+txtfilename,"w")
+
+        
 cutmap = {}
 cutmap['Processed'] = 0
 cutmap['CleanFilters'] = 0
@@ -161,7 +194,8 @@ cutmap['Jets>3'] = 0
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
-datafilename = "Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
+datafilename = "Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
+#"Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
 #"Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 #datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/Sep17ReReco/Sep17ReReco.root"
@@ -178,9 +212,13 @@ if dataType=="QCD":
     datafilename = "MC/V00-01-04-03/QCD_Mu.root"
 if dataType=="STtch":
     datafilename = "MC/V00-01-04-03/STtch_Mu.root"
-#if dataType=="STtWch":
-#    datafilename = "../production/STtWch_Mu.root"
-        
+if dataType=="STtWch":
+    datafilename = "MC/V00-01-04-03/STtWch_Mu.root"
+if dataType=="Wc":
+    datafilename = "MC/V00-01-04-03/Wc_Mu.root"
+if dataType=="Vqq":
+    datafilename = "MC/V00-01-04-03/Vqq_Mu.root"
+
 tfile = TFile(data_repo+datafilename)
 print "read file "+datafilename
 print "use "+JetType+" collections"
@@ -236,6 +274,24 @@ for jentry in xrange( entries ):
     if jentry%50000 == 0:
         print "Processing entry = "+str(jentry)
 
+    # check h.f. if requested
+    if Flavor != 0:
+        passFlavor = False
+        
+        evtflavor = evt.flavorHistory
+
+        if dataType=="Wjets" and Flavor==1 and evtflavor==5: passFlavor = True
+        if dataType=="Wjets" and Flavor==2 and evtflavor==6: passFlavor = True
+        if dataType=="Wjets" and Flavor==3 and evtflavor==11: passFlavor = True
+
+        if dataType=="Wc" and Flavor==2 and evtflavor==4: passFlavor = True
+
+        if dataType=="Vqq" and Flavor==1 and (evtflavor==1 or evtflavor==2): passFlavor = True
+        if dataType=="Vqq" and Flavor==2 and (evtflavor==3 or evtflavor==4): passFlavor = True
+
+        if not passFlavor:
+            continue
+    
     # get collections
     vertices = evt.vertices
     muons = evt.muons
@@ -302,7 +358,7 @@ for jentry in xrange( entries ):
                 hist.muons['pt_cut2'].Fill(mu.pt)
                 hist.muons['reliso'].Fill(mu.reliso03)
                 
-                if mu.reliso03<0.05:
+                if mu.reliso03 < IsoCut:
 
                     muonVz = mu.vz
                     hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
@@ -380,6 +436,10 @@ for jentry in xrange( entries ):
     if METzCalculator.IsComplex(): hist.MET['LepWmassComplex'].Fill(p4LepW.M())
 
     hist.jets['Njets'].Fill(0)
+
+    # count events beyong 500 GeV for M3
+    N500 = 0
+    
     #count again jets
     njets = 0
     for jet in jets:
@@ -423,7 +483,14 @@ for jentry in xrange( entries ):
                     p4HadTop = TLorentzVector()
                     p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
                     hist.M3['3jet_SSVHEM_1b'].Fill(p4HadTop.M())
-                                            
+                ntagjets = 0
+                for itag in isTagb['TCHPL']:
+                    if itag: ntagjets += 1
+                if ntagjets>0 and njets==3:
+                    p4HadTop = TLorentzVector()
+                    p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
+                    hist.M3['3jet_TCHPL_1b'].Fill(p4HadTop.M())
+                                
             if njets >=4:
                 hist.jets['1st_pt_N4j'].Fill(p4jets[0].Pt())
                 hist.jets['2nd_pt_N4j'].Fill(p4jets[1].Pt())
@@ -441,7 +508,8 @@ for jentry in xrange( entries ):
         p4HadTop = TLorentzVector()
         p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
         hist.M3['3jet'].Fill( p4HadTop.M() )
-
+        if p4HadTop.M() > 500: N500 += 1
+        
     if njets >= 4:
         hist.jets['Njets'].Fill(4)
     
@@ -451,17 +519,22 @@ for jentry in xrange( entries ):
     if njets > 1:
         cutmap['Jets>1'] += 1
         hist.Mt['Mt_2jet'].Fill( WMt )
-        # temporal
-        #line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
-        #txtfile.write(line)
-        #line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
-        #txtfile.write(line)
-        #ij = 0
-        #for iijet in p4jets:
-        #    line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij])
-        #    txtfile.write(line+'\n')
-        #    ij += 1
-                                                                                                    
+        #
+        if printtxtfile:
+            line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+            txtfile.write(line)
+            line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
+            txtfile.write(line)
+            ij = 0
+            for iijet in p4jets:
+                line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij])
+                txtfile.write(line+'\n')
+                ij += 1
+        #
+        if printlistofruns:
+            line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
+            runfile.write(line)
+                                    
     if njets > 2:
         cutmap['Jets>2'] += 1
         hist.Mt['Mt_3jet'].Fill( WMt )
@@ -477,15 +550,7 @@ for jentry in xrange( entries ):
     if njets > 3:
         cutmap['Jets>3'] += 1
         hist.Mt['Mt_4jet'].Fill( WMt )
-        ntagjets = 0
-        for itag in isTagb['TCHPL']:
-            if itag: ntagjets += 1
-        hist.jets['Nbjets_TCHPL_N4j'].Fill(ntagjets)
-        ntagjets = 0
-        for itag in isTagb['SSVHEM']:
-            if itag: ntagjets += 1
-        hist.jets['Nbjets_SSVHEM_N4j'].Fill(ntagjets)
-
+                            
         # jet combination
         myCombi = JetCombinatorics()
         myCombi.SetLeptonicW(p4LepW)
@@ -502,6 +567,19 @@ for jentry in xrange( entries ):
         M3_hadTopP4 = M3Combo.GetHadTop();
         M3_lepTopP4 = M3Combo.GetLepTop();
         hist.M3['4jet'].Fill(M3_hadTopP4.M())
+        if M3_hadTopP4.M() > 500: N500 += 1
+        
+        ntagjets = 0
+        for itag in isTagb['TCHPL']:
+            if itag: ntagjets += 1
+        hist.jets['Nbjets_TCHPL_N4j'].Fill(ntagjets)
+        if ntagjets > 0:
+            hist.M3['4jet_TCHPL_1b'].Fill(M3_hadTopP4.M())
+                        
+        ntagjets = 0
+        for itag in isTagb['SSVHEM']:
+            if itag: ntagjets += 1
+        hist.jets['Nbjets_SSVHEM_N4j'].Fill(ntagjets)
         if ntagjets > 0:
             hist.M3['4jet_SSVHEM_1b'].Fill(M3_hadTopP4.M())
                         
@@ -542,21 +620,23 @@ for jentry in xrange( entries ):
         MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
         hist.M3['Mttbar_chi2'].Fill(MttbarP4.M())
         # printout txt file with run,lumi,event
-        if printlistofruns:
-            line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
-            txtfile.write(line)
+        #if printlistofruns:
+        #    line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
+        #    txtfile.write(line)
         # printout flat file
-        else:
-            line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
-            txtfile.write(line)
-            line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
-            txtfile.write(line)
-            ij = 0
-            for iijet in p4jets:
-                line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij]) 
-                txtfile.write(line+'\n')
-                ij += 1
+        #else:
+            #line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+            #txtfile.write(line)
+            #line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
+            #txtfile.write(line)
+            #ij = 0
+            #for iijet in p4jets:
+            #    line= str(iijet.E()) +' '+str(iijet.Pt())+' '+str(iijet.Eta())+' '+str(iijet.Phi()) +' '+str(bdisc['TCHP'][ij]) 
+            #    txtfile.write(line+'\n')
+            #    ij += 1
 print "done."
+print "M3 events with > 500 GeV: "+str(N500)
+
 print "Cut flow Table"
 cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
 
@@ -576,6 +656,9 @@ print "cut flow save in file "+txtname
 #hist.muons['eta'].Draw()
 
 outname = "top_plots_"+dataType+"_"+JetType+".root"
+if Flavor != 0:
+    outname = "top_plots_"+dataType+"_"+JetType+"_"+FlavorStr+".root"
+    
 if not ApplyDeltaR:
     outname = "top_plots_"+dataType+"_"+JetType+"_NoDeltaR.root"
 outroot = TFile(OutputDir+"/"+outname,"RECREATE")
@@ -584,6 +667,9 @@ hist.Write()
 
 print "File "+outname+" has been written."
 
-print "flat file "+txtfilename +" has been written."
-
+if printtxtfile:
+    print "flat file "+txtfilename +" has been written."
+if printlistofruns:
+    print "flat file "+runfilename +" has been written."
+    
 #raw_input ("Enter to quit:")

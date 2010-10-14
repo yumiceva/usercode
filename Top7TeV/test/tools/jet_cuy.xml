@@ -38,7 +38,7 @@
     <TH1 name="Nbjets_SSVHEM_N4j_TTbarcalo" source="/jets/Nbjets_SSVHEM_N4j_TTbarcalo"/>
   </validation>
 
-  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031105370061920686">
+  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
     <!-- jet -->
     <TH1 name="pt_Wjetscalo" source="/jets/jet_pt_Wjetscalo"/>
     <TH1 name="eta_Wjetscalo" source="/jets/jet_eta_Wjetscalo"/>

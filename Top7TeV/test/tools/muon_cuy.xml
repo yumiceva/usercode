@@ -22,7 +22,7 @@
     <TH1 name="dz_TTbarcalo" source="/muons/dz_TTbarcalo"/>
   </validation>
 
-  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031105370061920686">
+  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
     <!-- muon -->
     <TH1 name="pt_Wjetscalo" source="/muons/muon_pt_Wjetscalo"/>
     <TH1 name="eta_Wjetscalo" source="/muons/muon_eta_Wjetscalo"/>

@@ -46,7 +46,7 @@ if doLumi:
     totallumi = 0
     
     for adir in dirs:
-        if not os.path.isdir(adir): continue
+        if not os.path.isdir(path+"/"+adir): continue
         print "calculating luminosity for "+adir
         thejson = path+"/"+adir+"/"+adir+"/res/lumiSummary.json"
         output = commands.getstatusoutput(cmdlumi+thejson)
