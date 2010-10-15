@@ -174,7 +174,7 @@ if printlistofruns:
 runfilename = "2jetList_"+JetType+"_"+dataType+".txt"
 runfile= None
 if printtxtfile:
-    runfile = file(OutputDir+"/"+txtfilename,"w")
+    runfile = file(OutputDir+"/"+runfilename,"w")
 
         
 cutmap = {}
@@ -182,6 +182,8 @@ cutmap['Processed'] = 0
 cutmap['CleanFilters'] = 0
 cutmap['HLT'] = 0
 cutmap['GoodPV'] = 0
+if Flavor != 0:
+    cutmap['Flavor'] = 0
 cutmap['MET'] = 0
 cutmap['OneIsoMu'] = 0
 cutmap['LooseMuVeto'] = 0
@@ -205,9 +207,9 @@ if dataType=="sync":
     datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root"
     data_repo = ""
 if dataType=="Wjets":
-    datafilename = "MC/V00-01-04-03/Wjets_Mu.root"
+    datafilename = "MC/V00-01-04-04/Wjets_Mu.root"
 if dataType=="Zjets":
-    datafilename = "MC/V00-01-04-03/Zjets_Mu.root"
+    datafilename = "MC/V00-01-04-04/Zjets_Mu.root"
 if dataType=="QCD":
     datafilename = "MC/V00-01-04-03/QCD_Mu.root"
 if dataType=="STtch":
@@ -215,9 +217,9 @@ if dataType=="STtch":
 if dataType=="STtWch":
     datafilename = "MC/V00-01-04-03/STtWch_Mu.root"
 if dataType=="Wc":
-    datafilename = "MC/V00-01-04-03/Wc_Mu.root"
+    datafilename = "MC/V00-01-04-04/Wc_Mu.root"
 if dataType=="Vqq":
-    datafilename = "MC/V00-01-04-03/Vqq_Mu.root"
+    datafilename = "MC/V00-01-04-04/Vqq_Mu.root"
 
 tfile = TFile(data_repo+datafilename)
 print "read file "+datafilename
@@ -274,7 +276,10 @@ for jentry in xrange( entries ):
     if jentry%50000 == 0:
         print "Processing entry = "+str(jentry)
 
-    # check h.f. if requested
+    # flavor history for MC V+jets
+    if dataType=="Wjets" or dataType=="Zjets" or dataType=="Wc" or dataType=="Vqq":
+        hist.various['flavor'].Fill(evt.flavorHistory)
+    # check if flavor is requested
     if Flavor != 0:
         passFlavor = False
         
@@ -291,6 +296,7 @@ for jentry in xrange( entries ):
 
         if not passFlavor:
             continue
+        cutmap['Flavor'] += 1
     
     # get collections
     vertices = evt.vertices
@@ -375,7 +381,7 @@ for jentry in xrange( entries ):
                             tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                             tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
-                            if tmpdeltaR < 0.1 and JetType!="calo": continue
+                            if tmpdeltaR < 0.1 and JetType=="JPT": continue
                             #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
                             if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
 
@@ -446,7 +452,7 @@ for jentry in xrange( entries ):
         if jet.pt>MinJetPt:
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
             tmpdeltaR = p4muon.DeltaR(tmpp4Jet)
-            if tmpdeltaR < 0.1 and JetType!="calo": continue
+            if tmpdeltaR < 0.1 and JetType=="JPT": continue
             njets += 1
 
             p4jets.append( TLorentzVector() )
@@ -639,7 +645,9 @@ print "M3 events with > 500 GeV: "+str(N500)
 
 print "Cut flow Table"
 cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
-
+if Flavor != 0:
+    cutmapkeys =[ "CleanFilters","HLT","GoodPV","Flavor","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
+    
 for key in cutmapkeys:
     print key + " " + str(cutmap[key])
 

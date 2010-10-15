@@ -12,7 +12,8 @@ class Hist:
         self.M3 = {}
         self.MET = {}
         self.Mt = {}
-
+        self.various = {}
+        
         self.tfile = TFile()
         
     def SetTFile(self, tfile):
@@ -26,7 +27,8 @@ class Hist:
         self.CreateMET(name)
         self.CreateMt(name)
         self.CreateJet(name)
-
+        self.CreateVarious(name)
+        
     def Write(self):
         self.WriteMap(self.muons,"muons")
         self.WriteMap(self.electrons,"electrons")
@@ -34,6 +36,7 @@ class Hist:
         self.WriteMap(self.M3,"M3")
         self.WriteMap(self.MET,"MET")
         self.WriteMap(self.Mt,"Mt")
+        self.WriteMap(self.Various,"various")
         
     def WriteMap(self, map, name):
         if self.tfile.IsOpen():
@@ -42,8 +45,14 @@ class Hist:
                 self.tfile.mkdir(name)
             self.tfile.cd(name)
             for key in map.keys():
-                map[key].Write()
-    
+                if map[key].GetEntries>0:
+                    map[key].Write()
+                else:
+                    print "Empty histogram: "+map[key].GetName()+" it will not be written to file."
+
+    def CreateVarious(self, name):
+        self.various['flavor'] = TH1F("flavor"+name,"Flavor History",12,0,12)
+        
     def CreateMuon(self, name):
         
         self.muons['pt'] = TH1F("muon_pt"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)

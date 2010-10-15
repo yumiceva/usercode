@@ -31,8 +31,8 @@ directoriesMuMC = {}
 directoriesElMC = {}
 
 directoriesMuData['Sep17ReReco'] = '/Mu/Run2010A-Sep17ReReco_v2/RECO'# 135821   144114
-directoriesMuData['Prompt_MuB'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946...
-
+directoriesMuData['Prompt_MuB_1'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946...
+directoriesMuData['Prompt_MuB_2'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946... 
 
 directoriesMuMC['TTbar_Mu'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesMuMC['WJets_Mu'] = '/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
@@ -74,7 +74,8 @@ jsonFilesMu = {}
 jsonFilesEl = {}
 
 jsonFilesMu['Sep17ReReco'] = 'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesMu['Prompt_MuB'] = 'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesMu['Prompt_MuB_1'] = 'Cert_132440-147196_Oct15_JSON.txt' 
+jsonFilesMu['Prompt_MuB_1'] = 'Cert_147197-147454_Oct15_JSON.txt'
 
 
 jsonFilesEl['Sep17_135821-139459_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
@@ -108,7 +109,7 @@ print "==> create soft link \"production\" in current directory to production di
 if not os.path.islink("production"):
     os.system("ln -s "+path+" production")
 else:
-    print "link \"production\" already exists. remove current link and create a new one"
+    print "link \"production\" already exists, remove current link and create a new one"
     print "old link:"
     os.system("ls -l production")
     os.system("rm production")

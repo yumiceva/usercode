@@ -238,7 +238,7 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # muon trigger
 triggerprocess = "HLT"
-if inputType == "MC": triggerprocess = "REDIGI" # for 36x MC
+if inputType == "MC" and eventtype!="Wc": triggerprocess = "REDIGI" # for 36x MC
 
 process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
                                      summary = cms.InputTag("hltTriggerSummaryAOD","",triggerprocess),
