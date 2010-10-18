@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.4 2010/10/01 23:06:37 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.5 2010/10/05 19:01:14 yumiceva Exp $
 //
 //
 
@@ -293,7 +293,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     int ngoodPVs = 0; 
     int npvs = 0;
     bool IsFirstPVGood = false;
-    float cutPVz = 15.;
+    float cutPVz = 24.;
     if (_isDataInput) cutPVz = 24.;
 
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
@@ -588,7 +588,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
       passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
       //cout << " got jet id " << passJetID << endl;
 
-      if (jet->pt()>30.
+      if (jet->pt()>20.
 	  &&fabs(jet->eta())<2.4 && passJetID)
         {
 
@@ -627,7 +627,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 	bool passJetID = false;
         passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
 
-        if (jet->pt()>25.
+        if (jet->pt()>20.
             &&fabs(jet->eta())<2.4
 	    && passJetID)
 	  {

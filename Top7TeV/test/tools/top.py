@@ -192,11 +192,15 @@ cutmap['Jets>0'] = 0
 cutmap['Jets>1'] = 0
 cutmap['Jets>2'] = 0
 cutmap['Jets>3'] = 0
+# additioanl counter
+N500gev3j = 0
+N500gev4j = 0
 
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
-datafilename = "Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
+datafilename = "Data/10.93pb-1/ttmuj_Oct15_10.93pb-1.root"
+#"Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
 #"Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
 #"Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
@@ -207,9 +211,9 @@ if dataType=="sync":
     datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root"
     data_repo = ""
 if dataType=="Wjets":
-    datafilename = "MC/V00-01-04-04/Wjets_Mu.root"
+    datafilename = "MC/V00-01-04-04/WJets_Mu.root"
 if dataType=="Zjets":
-    datafilename = "MC/V00-01-04-04/Zjets_Mu.root"
+    datafilename = "MC/V00-01-04-04/ZJets_Mu.root"
 if dataType=="QCD":
     datafilename = "MC/V00-01-04-03/QCD_Mu.root"
 if dataType=="STtch":
@@ -278,16 +282,16 @@ for jentry in xrange( entries ):
 
     # flavor history for MC V+jets
     if dataType=="Wjets" or dataType=="Zjets" or dataType=="Wc" or dataType=="Vqq":
-        hist.various['flavor'].Fill(evt.flavorHistory)
+        hist.Various['flavor'].Fill(evt.flavorHistory)
     # check if flavor is requested
     if Flavor != 0:
         passFlavor = False
         
         evtflavor = evt.flavorHistory
 
-        if dataType=="Wjets" and Flavor==1 and evtflavor==5: passFlavor = True
-        if dataType=="Wjets" and Flavor==2 and evtflavor==6: passFlavor = True
-        if dataType=="Wjets" and Flavor==3 and evtflavor==11: passFlavor = True
+        if (dataType=="Wjets" or dataType=="Zjets") and Flavor==1 and evtflavor==5: passFlavor = True
+        if (dataType=="Wjets" or dataType=="Zjets") and Flavor==2 and evtflavor==6: passFlavor = True
+        if (dataType=="Wjets" or dataType=="Zjets") and Flavor==3 and evtflavor==11: passFlavor = True
 
         if dataType=="Wc" and Flavor==2 and evtflavor==4: passFlavor = True
 
@@ -443,9 +447,7 @@ for jentry in xrange( entries ):
 
     hist.jets['Njets'].Fill(0)
 
-    # count events beyong 500 GeV for M3
-    N500 = 0
-    
+        
     #count again jets
     njets = 0
     for jet in jets:
@@ -514,7 +516,8 @@ for jentry in xrange( entries ):
         p4HadTop = TLorentzVector()
         p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
         hist.M3['3jet'].Fill( p4HadTop.M() )
-        if p4HadTop.M() > 500: N500 += 1
+        if p4HadTop.M() > 500.:
+            N500gev3j += 1
         
     if njets >= 4:
         hist.jets['Njets'].Fill(4)
@@ -573,7 +576,8 @@ for jentry in xrange( entries ):
         M3_hadTopP4 = M3Combo.GetHadTop();
         M3_lepTopP4 = M3Combo.GetLepTop();
         hist.M3['4jet'].Fill(M3_hadTopP4.M())
-        if M3_hadTopP4.M() > 500: N500 += 1
+        if M3_hadTopP4.M() > 500.:
+            N500gev4j += 1
         
         ntagjets = 0
         for itag in isTagb['TCHPL']:
@@ -641,7 +645,8 @@ for jentry in xrange( entries ):
             #    txtfile.write(line+'\n')
             #    ij += 1
 print "done."
-print "M3 events with > 500 GeV: "+str(N500)
+print "M3 3jets events with > 500 GeV: "+str(N500gev3j)
+print "M3 4jets events with > 500 GeV: "+str(N500gev4j)
 
 print "Cut flow Table"
 cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]

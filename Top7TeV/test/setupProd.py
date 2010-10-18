@@ -44,12 +44,12 @@ directoriesMuMC['Wc_Mu'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SI
 directoriesMuMC['Vqq_Mu'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 
 
-directoriesElData['Sep17_135821-139459_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
-directoriesElData['Sep17_139779-140159_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
-directoriesElData['Sep17_140160-141881_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
-directoriesElData['Sep17_141956-143962_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_SW, Oct 1st json
-directoriesElData['Sep17_144011-144114_El'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_SW_CaloID, Oct 1st json
-directoriesElData['Prompt_146428-146644_ElB'] = '/Electron/Run2010B-PromptReco-v2/RECO'  #trig:Ele17_SW_CaloID, Oct 1st json
+directoriesElData['TrigA'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
+directoriesElData['TrigB'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
+directoriesElData['TrigC'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
+directoriesElData['PromptRecoTrigC'] = '/Electron/Run2010B-PromptReco-v2/RECO'
+directoriesElData['TrigD'] = '/Electron/Run2010B-PromptReco-v2/RECO'
+directoriesElData['TrigE'] = '/Electron/Run2010B-PromptReco-v2/RECO'  #trig:Ele17_SW_CaloID, Oct 1st json
 
 
 directoriesElMC['TTbar_El'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
@@ -73,17 +73,16 @@ directoriesElMC['Vqq_El'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-S
 jsonFilesMu = {}
 jsonFilesEl = {}
 
-jsonFilesMu['Sep17ReReco'] = 'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesMu['Sep17ReReco'] = 'Cert_147197-147454_Oct15_JSON.txt' #'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
 jsonFilesMu['Prompt_MuB_1'] = 'Cert_132440-147196_Oct15_JSON.txt' 
-jsonFilesMu['Prompt_MuB_1'] = 'Cert_147197-147454_Oct15_JSON.txt'
+jsonFilesMu['Prompt_MuB_2'] = 'Cert_147197-147454_Oct15_JSON.txt'
 
-
-jsonFilesEl['Sep17_135821-139459_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesEl['Sep17_139779-140159_El'] = 'Cert_139779-1340159_7TeV_July16thReReco_Collisions10_JSON.txt'
-jsonFilesEl['Sep17_140160-141881_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesEl['Sep17_141956-143962_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesEl['Sep17_144011-144114_El'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesEl['Prompt_146428-146644_ElB'] = 'Cert_132440-146729_7TeV_StreamExpress_Collisions10_JSON.txt'
+jsonFilesEl['TrigA'] = 'Cert_132440-140040_El_Oct15_JSON.txt'
+jsonFilesEl['TrigB'] = 'Cert_140041-143962_El_Oct15_JSON.txt'
+jsonFilesEl['TrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
+jsonFilesEl['PromptRecoTrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
+jsonFilesEl['TrigD'] = 'Cert_146428-147116_El_Oct15_JSON.txt'
+jsonFilesEl['TrigE'] = 'Cert_147117_El_Oct15_JSON.txt'
 
 print "==> make directories"
 alldirs = []

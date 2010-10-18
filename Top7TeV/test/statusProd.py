@@ -49,6 +49,9 @@ if doLumi:
         if not os.path.isdir(path+"/"+adir): continue
         print "calculating luminosity for "+adir
         thejson = path+"/"+adir+"/"+adir+"/res/lumiSummary.json"
+        if not os.path.isfile(thejson):
+            print " no lumiSummary.json file for this folder. skip dataset."
+            continue
         output = commands.getstatusoutput(cmdlumi+thejson)
         lines = output[1].split('\n')
         theline = lines[len(lines)-2]

@@ -4,16 +4,25 @@ from ROOT import *
 
 import sys,os, math
 
+path = "./"
 IsMC = False
-Lumi = 4.54 # in pb-1
-JetType = "calo"
+Lumi = 10.93 # in pb-1
+JetType = "JPT" #calo
 
-if len(sys.argv)>1:
-    JetType = sys.argv[1]
+if len(sys.argv) < 2:
+    print "usage: mkCutFlowTables.py <path to files> <JPT/calo> <Lumi for MC>"
+    sys.exit()
 
-if len(sys.argv)>2:
-    IsMC = True
-    Lumi = float(sys.argv[2])
+if len(sys.argv) > 1:
+
+    path = sys.argv[1]
+    
+    if len(sys.argv)>2:
+        JetType = sys.argv[2]
+
+        if len(sys.argv)>3:
+            IsMC = True
+            Lumi = float(sys.argv[3])
 
 
 Nevents = {}
@@ -22,29 +31,33 @@ file = {}
 label = {}
 # MC files
 if IsMC:
-    file['ttbar'] = 'cutflow_'+JetType+'_TTbar.txt'
-    file['QCD']   = 'cutflow_'+JetType+'_QCD.txt'
-    file['Wjets'] = 'cutflow_'+JetType+'_Wjets.txt'
-    file['Zjets'] = 'cutflow_'+JetType+'_Zjets.txt'
-    file['tch'] = 'cutflow_'+JetType+'_STtch.txt'
-
+    file['ttbar'] = path+'/cutflow_'+JetType+'_TTbar.txt'
+    file['QCD']   = path+'/cutflow_'+JetType+'_QCD.txt'
+    file['Wjets'] = path+'/cutflow_'+JetType+'_Wjets.txt'
+    file['Zjets'] = path+'/cutflow_'+JetType+'_Zjets.txt'
+    file['tch'] = path+'/cutflow_'+JetType+'_STtch.txt'
+    file['tWch'] = path+'/cutflow_'+JetType+'_STtWch.txt'
+    
     xsec['ttbar'] =   157.5
     xsec['QCD']   = 79688.
     xsec['Wjets'] = 31314.
     xsec['Zjets'] =  3048.
     xsec['tch'] = 20.93
-
+    xsec['tWch'] = 10.6
+    
     Nevents['ttbar'] = 1483404.
     Nevents['QCD']   = 4377187.
     Nevents['Wjets'] = 10068895.
     Nevents['Zjets'] = 1084921.
     Nevents['tch'] = 528593.
-
+    Nevents['tWch'] = 466437.
+    
     label['ttbar'] = '$t\\overline{t}$'
     label['QCD'] = 'QCD'
     label['Wjets'] = '$W\\rightarrow l\\nu$'
     label['Zjets'] = '$Z\\rightarrow l\\nu$'
     label['tch'] = 't channel'
+    label['tWch'] = 'tW channel'
     label['Total'] = 'Total'
 else:
 # data files
@@ -57,8 +70,16 @@ else:
     #label['MB'] = 'Jun 14th MinimumBias'
     #label['Jul16'] = 'Jul 16th'
     #label['Prompt'] = 'PromptReco'
-    file['data'] = 'cutflow_'+JetType+'_data.txt'
-    label['data'] = 'Data'
+    file['dataJPT'] = path+'/cutflow_JPT_data.txt'
+    file['datacalo'] = path+'/cutflow_calo_data.txt'
+    file['dataJPTMET'] = path+'_MET/cutflow_JPT_data.txt'
+    file['datacaloMET'] = path+'_MET/cutflow_calo_data.txt'
+        
+    label['dataJPT'] = 'JPT Ref. Sel.'
+    label['datacalo'] = 'Calo Ref. Sel.'
+    label['dataJPTMET'] = 'JPT MET$>$20, Iso$<$0.1'
+    label['datacaloMET'] ='Calo MET$>$20, Iso$<$0.1'
+    
     
 keys = file.keys()
 cutflow = {}
@@ -89,7 +110,8 @@ for sample in keys:
         acut = tmplist[1]
         #print cutname
         #print acut
-        if sample=="data":
+        #if sample=="data":
+        if sample.find("data")!=-1:
             cutmap[ cutname ] = int(float(acut))
         else:
             cutmap[ cutname ] = float(acut)
@@ -123,10 +145,10 @@ cutflow["Total"] = allmap
 sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','Jets>0','Jets>1','Jets>2','Jets>3']
 
          
-tablelist = ['ttbar','Wjets','Zjets','QCD','tch','Total']
+tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','Total']
 if not IsMC:
     #tablelist = ['MB','Jun14','Jul16','Prompt','Total']
-    tablelist = ['data']
+    tablelist = ['dataJPT','datacalo','dataJPTMET','datacaloMET']
 
 texname = "cutflow_"+JetType+"_data.tex"
 
@@ -142,7 +164,7 @@ outtex.write('''
 \\begin{centering}
 ''')
 if IsMC:
-    outtex.write('\\begin{tabular}{|l|r|r|r|r|r|r|} \hline \n')
+    outtex.write('\\begin{tabular}{|l|r|r|r|r|r|r|r|} \hline \n')
     #outtex.write('Cut & ttbar & Wjets & Zjets & QCD & STtch \hline')
     line = "Cut"
     for sample in tablelist:
@@ -150,7 +172,7 @@ if IsMC:
     outtex.write(line+" \\\ \hline \n")
 else:
     #outtex.write('\\begin{tabular}{|l|c|c|c|c|c|} \hline \n')
-    outtex.write('\\begin{tabular}{|l|r|} \hline \n')
+    outtex.write('\\begin{tabular}{|l|r|r|r|r|} \hline \n')
     line = "Cut"
     for sample in tablelist:
         line += sss+label[sample]
@@ -165,8 +187,8 @@ for key in sortedcutlist:
     for sample in tablelist:
         cutmap = cutflow[sample]
         acut = cutmap[key]
-        stracut = str(acut)
-        stracut = stracut.strip('.0')
+        stracut = str(int(acut))
+        #stracut = stracut.strip('.0')
         if IsMC:
             acut = round(cutmap[key],1)
             stracut = str(acut)

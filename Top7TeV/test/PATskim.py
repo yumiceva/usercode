@@ -248,20 +248,17 @@ process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
                                      )
 
 if channel=="electron":
-    elefilter = "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter"
-    triggercut = "et>17"
-    if eventtype == 'Sep17_135821-139459_El':
-        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
-    if eventtype == 'Sep17_139779-140159_El':
-        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
-    if eventtype == 'Sep17_140160-141881_El':
-        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt15PixelMatchFilter"
-    if eventtype == 'Sep17_141956-143962_El':
+    elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt10PixelMatchFilter"
+    triggercut = ""
+    if eventtype == 'TrigB':
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt15PixelMatchFilter"
-    if eventtype == 'Sep17_144011-144114_El':
+    if eventtype == 'TrigC' or eventtype == 'PromptRecoTrigC':
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt15CaloEleIdPixelMatchFilter"
-    if eventtype == "Sep17_146428-146644_El":
+    if eventtype == 'TrigD':
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt17CaloEleIdPixelMatchFilter"
+    if eventtype == 'TrigE':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt17TightEleIdDphiFilter"
+    # the trigger filter will anyways be removed for MC     
     if inputType == "MC":
         elefilter = "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter"
     
@@ -378,6 +375,8 @@ else:
 if inputType=="MC":
     process.p.remove( process.scrapingVeto )
     process.p.remove( process.HBHENoiseFilter )
+    if channel == "electron":
+        proces.p.remove( process.triggerFilter )
     if eventtype != "TTJets":
         process.p.remove( process.makeGenEvt )
     if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":

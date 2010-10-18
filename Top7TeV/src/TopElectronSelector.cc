@@ -90,7 +90,7 @@ class TopElectronSelector : public Selector<pat::Electron>  {
             set("hoe_EB",      1.5e-01); 
             set("sihih_EE",    3.0e-02);
             set("dphi_EE",     7.0e-01);
-            set("deta_EE",     10000. ); 
+            set("deta_EE",     1.0e-01); 
             set("hoe_EE",      7.0e-02);
             set("relIso",      1.0e-00);
             set("d0",          false  );
@@ -103,7 +103,7 @@ class TopElectronSelector : public Selector<pat::Electron>  {
             set("hoe_EB",      2.5e-02);
             set("sihih_EE",    3.0e-02);
             set("dphi_EE",     2.0e-02);
-            set("deta_EE",     10000. ); 
+            set("deta_EE",     5.0e-03); 
             set("hoe_EE",      2.5e-02);
             set("relIso",      1.0e-01); 
             set("d0",          2.0e-02);
@@ -125,7 +125,7 @@ class TopElectronSelector : public Selector<pat::Electron>  {
          }
          else if (version == deta70){
             set("deta_EB",     4.0e-03);
-            set("deta_EE",     10000. );
+            set("deta_EE",     5.0e-03);
             set("relIso",      1.0e-01); 
             set("d0",          2.0e-02);
             set("Et",          30.0   );

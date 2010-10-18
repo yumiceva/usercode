@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.17 2010/09/28 15:49:24 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.18 2010/09/29 20:32:04 yumiceva Exp $
 //
 //
 
@@ -243,7 +243,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int ngoodPVs = 0; 
     int npvs = 0;
     bool IsFirstPVGood = false;
-    float cutPVz = 15.;
+    float cutPVz = 24.;
     if (_isDataInput) cutPVz = 24.;
     float refPVz = 0;
 
@@ -508,7 +508,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       bool passJetID = false;
       passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
 
-      if (jet->pt()>30.
+      if (jet->pt()>20.
 	  && fabs(jet->eta())<2.4
 	  && passJetID )
         {
@@ -546,7 +546,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	bool passJetID = false;
         passJetID = jetIdLoose_(*jet, bitset_for_caloJPTjets);
 
-        if (jet->pt()>25.
+        if (jet->pt()>20.
             && fabs(jet->eta())<2.4
 	    && passJetID )
 	  {

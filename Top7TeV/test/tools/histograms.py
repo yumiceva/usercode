@@ -12,7 +12,7 @@ class Hist:
         self.M3 = {}
         self.MET = {}
         self.Mt = {}
-        self.various = {}
+        self.Various = {}
         
         self.tfile = TFile()
         
@@ -51,7 +51,8 @@ class Hist:
                     print "Empty histogram: "+map[key].GetName()+" it will not be written to file."
 
     def CreateVarious(self, name):
-        self.various['flavor'] = TH1F("flavor"+name,"Flavor History",12,0,12)
+        self.Various['flavor'] = TH1F("flavor"+name,"Flavor History",12,0,12)
+        self.SetupXTitle(self.Various)
         
     def CreateMuon(self, name):
         
