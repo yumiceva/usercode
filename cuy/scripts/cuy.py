@@ -671,7 +671,7 @@ if __name__ == '__main__':
                                 if listSF[ii] != None:
                                     # SF enable
                                     tmpSF =listSF[ii]
-                                    keySF = None
+                                    keySF = ""
                                     # first check if SF is given as a file and check the key
                                     if len(listSF[ii].split(":"))>1:
                                         keySF = listSF[ii].split(":")[1]
