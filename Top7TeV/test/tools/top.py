@@ -188,10 +188,10 @@ cutmap['MET'] = 0
 cutmap['OneIsoMu'] = 0
 cutmap['LooseMuVeto'] = 0
 cutmap['ElectronVeto'] = 0
-cutmap['Jets>0'] = 0
-cutmap['Jets>1'] = 0
-cutmap['Jets>2'] = 0
-cutmap['Jets>3'] = 0
+cutmap['1Jet'] = 0
+cutmap['2Jet'] = 0
+cutmap['3Jet'] = 0
+cutmap['4Jet'] = 0
 # additioanl counter
 N500gev3j = 0
 N500gev4j = 0
@@ -320,10 +320,7 @@ for jentry in xrange( entries ):
         p4MET.SetPtEtaPhiE(evt.PFMET, 0,evt.PFMETphi,evt.PFMET )
         Ht = evt.PFHt
 
-    if p4MET.Et() <= METCut:
-        continue
-    cutmap['MET'] +=1
-    
+
     # some counters
     nPVs = 0
     nloosemuons = 0
@@ -411,6 +408,11 @@ for jentry in xrange( entries ):
     if nelec > 0 : continue
     cutmap['ElectronVeto'] += 1
 
+    # MET cut if requested
+    if p4MET.Et() <= METCut:
+        continue
+    cutmap['MET'] +=1
+                
     # inclusive
     hist.muons['pt'].Fill( p4muon.Pt() )
     hist.muons['eta'].Fill( p4muon.Eta() )
@@ -508,26 +510,45 @@ for jentry in xrange( entries ):
                 if METzCalculator.IsComplex(): hist.MET['LepWmassComplex_4jet'].Fill(p4LepW.M())
 
     if njets==1:
+        cutmap['1Jet'] += 1
         hist.jets['Njets'].Fill(1)
+        hist.muons['pt_1jet'].Fill( p4muon.Pt() )
+        hist.Mt['Mt_1jet'].Fill( WMt )
+        hist.MET['MET_1jet'].Fill( p4MET.Pt() )
     if njets == 2:
+        cutmap['2Jet'] += 1
         hist.jets['Njets'].Fill(2)
+        hist.muons['pt_2jet'].Fill( p4muon.Pt() )
+        hist.Mt['Mt_2jet'].Fill( WMt )
+        hist.MET['MET_2jet'].Fill( p4MET.Pt() )
     if njets == 3:
+        cutmap['3Jet'] += 1
         hist.jets['Njets'].Fill(3)
+        hist.muons['pt_3jet'].Fill( p4muon.Pt() )
+        hist.Mt['Mt_3jet'].Fill( WMt )
+        hist.MET['MET_3jet'].Fill( p4MET.Pt() )
         p4HadTop = TLorentzVector()
         p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
         hist.M3['3jet'].Fill( p4HadTop.M() )
         if p4HadTop.M() > 500.:
             N500gev3j += 1
-        
-    if njets >= 4:
-        hist.jets['Njets'].Fill(4)
+
+        ntagjets = 0
+        for itag in isTagb['TCHPL']:
+            if itag: ntagjets += 1
+        hist.jets['Nbjets_TCHPL_N3j'].Fill(ntagjets)
+        if ntagjets > 0:
+            hist.M3['3jet_TCHPL_1b'].Fill(p4HadTop.M())
+                
+        ntagjets = 0
+        for itag in isTagb['SSVHEM']:
+            if itag: ntagjets += 1
+        hist.jets['Nbjets_SSVHEM_N3j'].Fill(ntagjets)
+        if ntagjets > 0:
+            hist.M3['3jet_SSVHEM_1b'].Fill(p4HadTop.M())
+                                                                        
     
-    if njets > 0:
-        cutmap['Jets>0'] += 1
-        hist.Mt['Mt_1jet'].Fill( WMt )
     if njets > 1:
-        cutmap['Jets>1'] += 1
-        hist.Mt['Mt_2jet'].Fill( WMt )
         #
         if printtxtfile:
             line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
@@ -543,23 +564,14 @@ for jentry in xrange( entries ):
         if printlistofruns:
             line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
             runfile.write(line)
-                                    
-    if njets > 2:
-        cutmap['Jets>2'] += 1
-        hist.Mt['Mt_3jet'].Fill( WMt )
-        ntagjets = 0
-        for itag in isTagb['TCHPL']:
-            if itag: ntagjets += 1
-        hist.jets['Nbjets_TCHPL_N3j'].Fill(ntagjets)
-        ntagjets = 0
-        for itag in isTagb['SSVHEM']:
-            if itag: ntagjets += 1
-        hist.jets['Nbjets_SSVHEM_N3j'].Fill(ntagjets)
-        
+                                            
     if njets > 3:
-        cutmap['Jets>3'] += 1
+        # inclusive
+        hist.jets['Njets'].Fill(4)
         hist.Mt['Mt_4jet'].Fill( WMt )
-                            
+        hist.MET['MET_4jet'].Fill( p4MET.Pt() )
+        hist.muons['pt_4jet'].Fill( p4muon.Pt() )
+        
         # jet combination
         myCombi = JetCombinatorics()
         myCombi.SetLeptonicW(p4LepW)

@@ -71,30 +71,58 @@ for adir in dirs:
         cmd = "cd "+path+"/"+adir
         os.chdir(path+"/"+adir)
         print cmd
-                
-        cmd = "crab "+cmdcrab+adir
-        print cmd
-        output = commands.getstatusoutput(cmd)
-        lines = output[1].split('\n')
-        #print lines
-        if len(sys.argv)>2 and sys.argv[2]=="getoutput":
 
+        if sys.argv[2]!="hadd":
+            cmd = "crab "+cmdcrab+adir
+            print cmd
+            output = commands.getstatusoutput(cmd)
+            lines = output[1].split('\n')
+
+            totaljobs = 0
+            donejobs = 0
+            for line in lines:
+                if line.find("Total Jobs")!=-1:
+                    totaljobs = line.split()[1]
+                if line.find("Jobs Done")!=-1:
+                    donejobs = line.split()[1]
+            if sys.argv[2]=="status":
+                print " Total Jobs "+str(totaljobs)
+                print " Jobs Done  "+str(donejobs)
+                                                                                            
+        
+        if len(sys.argv)>2 and (sys.argv[2]=="getoutput" or sys.argv[2]=="hadd"):
+
+            if not os.path.isdir(adir+"/res/"):
+                print " no output files skip this dataset."
+                continue
+            if os.path.isfile(adir+".root"):
+                print " merged root file already exits. we will not merge again."
+                continue
             listofroot = get_list_files(adir+"/res/")
             nfiles = 0
             tmplistoffiles = []
             atmplist = []
             maxfiles = 500
             if len(listofroot) > maxfiles:
+                print " total number of root files = "+str(len(listofroot))
+                                                           
                 for iroot in listofroot:
                     if iroot.find(".root")==-1: continue
                     if nfiles <= maxfiles:
                         atmplist.append(iroot)
                     if nfiles == maxfiles:
                         tmplistoffiles.append(atmplist)
+                        print " block of files to add = "+str(len(tmplistoffiles)) +" with "+str(len(atmplist))+" files"
                         nfiles = 0
-                        atmplist = []
+                        atmplist = []                        
                     else: nfiles += 1
+                if nfiles!= 0:
+                    tmplistoffiles.append(atmplist)
+                    print " block of files to add = "+str(len(tmplistoffiles)) +" with "+str(len(atmplist))+" files"
+                    nfiles = 0
+                                            
                 istrfile = 1
+
                 for ii in tmplistoffiles:
                     linefiles = ""
                     for jj in ii:
@@ -104,7 +132,8 @@ for adir in dirs:
                     #print cmd
                     print "hadd block "+str(istrfile)
                     output = commands.getstatusoutput(cmd)
-                    print output[1]
+                    print output[0]
+                    #print output[1]
                     istrfile += 1
                 linefiles = ""
                 for kk in range(1,istrfile):
@@ -113,7 +142,7 @@ for adir in dirs:
                 print cmd
                 output = commands.getstatusoutput(cmd)
                 print output[1]
-                for kk in range(1,istrfile+1):
+                for kk in range(1,istrfile):
                     cmd = "rm "+adir+"_"+str(kk)+".root"
                     print cmd
                     output = commands.getstatusoutput(cmd)
@@ -122,17 +151,7 @@ for adir in dirs:
                 print cmd
                 output = commands.getstatusoutput(cmd)
             
-        totaljobs = 0
-        donejobs = 0
-        for line in lines:
-            if line.find("Total Jobs")!=-1:
-                totaljobs = line.split()[1]
-            if line.find("Jobs Done")!=-1:
-                donejobs = line.split()[1]
-        if len(sys.argv)<3:
-            print " Total Jobs "+str(totaljobs)
-            print " Jobs Done  "+str(donejobs)
-        
+                
     else:
         print "no status because crab was not run in directory "+adir
     os.chdir(current)

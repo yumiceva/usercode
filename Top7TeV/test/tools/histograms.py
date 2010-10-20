@@ -106,6 +106,10 @@ class Hist:
     def CreateMET(self, name):
 
         self.MET['MET'] = TH1F("MET"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
+        self.MET['MET_1jet'] = TH1F("MET_1jet"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
+        self.MET['MET_2jet'] = TH1F("MET_2jet"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
+        self.MET['MET_3jet'] = TH1F("MET_3jet"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
+        self.MET['MET_4jet'] = TH1F("MET_4jet"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
         self.MET['phi'] = TH1F("MET_phi"+name,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15)
         self.MET['Ht'] = TH1F("Ht"+name,"H_{T} [GeV]", 30, 0, 160)
         self.MET['Htlep'] = TH1F("Htlep"+name,"H_{T,lep} [GeV]", 30, 0, 160)

@@ -114,9 +114,9 @@
 
   <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="Mt_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="Mt_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="Mt_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="Mt_QCDcalo" color="top" legend="QCD"/>
+    <superimposeItem name="Mt_Wjetscalo" color="top" legend="Wjets" SF="0.95"/>
+    <superimposeItem name="Mt_Zjetscalo" color="top" legend="Zjets" SF="0.95"/>
+    <superimposeItem name="Mt_QCDcalo" color="top" legend="QCD" SF="1.44"/>
     <superimposeItem name="Mt_STcalo" color="top" legend="ST"/>
     <superimposeItem name="Mt_TTbarcalo" color="top" legend="TTbar"/>
   </superimpose>
