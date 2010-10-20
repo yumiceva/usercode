@@ -22,7 +22,8 @@
    -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
    -f, --flag    = FLAG: create a baneer
-   -l, --list    = LIST: list of objects in the ROOT file. 
+   -l, --list    = LIST: list of objects in the ROOT file.
+   -o, --output  = OUTPUT: output directory
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
    -t, --tag     = TAG: tag name for XML configuration file.
    -v, --verbose : verbose output.
@@ -198,6 +199,7 @@ class FindIssue(handler.ContentHandler):
 	    self.addition[aname].Weight = attrs.get('Wight',None)
 	    self.addition[aname].Normalize = attrs.get('Normalize',None)
 	    self.addition[aname].SetGrid = attrs.get('SetGrid',None)
+            self.addition[aname].Lumi = attrs.get('Lumi',None)
 	if name == 'additionItem':
 	    #print "in element: " + self.tmpsupername
 	    self.addition[self.tmpaddname].histos.append(attrs.get('name',None))
@@ -225,6 +227,7 @@ class FindIssue(handler.ContentHandler):
             self.superimpose[aname].Lumi = attrs.get('Lumi',None)
             self.superimpose[aname].SubBanner = attrs.get('SubBanner',None)
             self.superimpose[aname].Ndivisions = attrs.get('Ndivisions',None)
+            self.superimpose[aname].PlotDiff = attrs.get('PlotDiff',None)
 	    self.tmpsupername = aname
 	if name == 'superimposeItem':
 	    #print "in element: " + self.tmpsupername
@@ -264,7 +267,8 @@ if __name__ == '__main__':
     printBanner = False
     Banner = "#splitline{CMS Preliminary}"
     verbose = False
-
+    OutputDir = "./"
+    
     # check options
     option,args = parse(__doc__)
     if not args and not option: exit()
@@ -275,6 +279,9 @@ if __name__ == '__main__':
     if option.verbose:
 	verbose = True
 
+    if option.output:
+        OutputDir = option.output
+        
     if option.list:
 	ins = Inspector.Inspector()
 	ins.Verbose(True)
@@ -389,6 +396,23 @@ if __name__ == '__main__':
 	    #if thedata[jkey].weight != None and theaddition[ikey].Weight == "true":
 		aweight = float(listweight[ihnameIt])
 		#aweight = float(thedata[jkey].weight)
+                
+                if theaddition[ikey].Lumi != None:
+                    aweight = aweight * float(theaddition[ikey].Lumi)
+                    # check if we have additianal SF
+                    #aSF = 1.
+                    #if listSF[ii] != None:
+                    #    tmpSF = listSF[ii]
+                    #    if tmpSF.find('*') != -1:
+                    #        tmpSFlist = tmpSF.split('*')
+                    #        for i_tmpSF in tmpSFlist:
+                    #            aSF *= float(i_tmpSF)
+                    #        else:
+                    #            aSF = tmpSF
+                    #            
+                    #aweight = aweight * aSF
+                                    
+                                                                                                                                                                                                                                                                                                                                                                                            
 	    for jkey in thedata:
 		tmpkeys = thedata[jkey].histos.keys()
 		for tmpname in tmpkeys:
@@ -512,6 +536,7 @@ if __name__ == '__main__':
     thesuper = dh.superimpose
     if verbose : print "= Create superimpose histograms:"
     datahist = {}
+    ratiohist = {}
     tex = {}
     for ikey in thesuper:
 	if verbose : print "== plot name: \""+thesuper[ikey].name+"\" title: \""+thesuper[ikey].title+"\""
@@ -580,12 +605,25 @@ if __name__ == '__main__':
         aleg.SetFillColor(10)
 	aleg.SetBorderSize(0)
 
+        # check if diff plot requested
+        makeDiffPlot = False
+        if thesuper[ikey].PlotDiff == "true":
+            makeDiffPlot = True
+            #cv[thesuper[ikey].name+"_diff"] = TCanvas(thesuper[ikey].name+"_diff",thesuper[ikey].title,700,700)
+            #cv[thesuper[ikey].name].cd()
+            pad1 = TPad("pad1","histogram",0.01,0.25,0.99,0.99)
+            pad2 = TPad("pad2","ratio",0.01,0.01,0.99,0.24)
+            pad1.Draw()
+            pad2.Draw()
+            pad1.cd()
+            
 	isFirst = 1
 	ii = 0
 
 	stacklist[thesuper[ikey].name] = THStack("astack"+thesuper[ikey].name,thesuper[ikey].title)
 	astack = stacklist[thesuper[ikey].name]
         datahist[thesuper[ikey].name] = None
+        ratiohist[thesuper[ikey].name] = None # for plot diff
         thisistheMax = 0.
         defaultXTitle = ""
 	for ihname in listname:
@@ -629,16 +667,32 @@ if __name__ == '__main__':
                                 aweight = aweight * float(thesuper[ikey].Lumi)
                                 # check if we have additianal SF
                                 aSF = 1.
+                                
                                 if listSF[ii] != None:
-                                    tmpSF = listSF[ii]
+                                    # SF enable
+                                    tmpSF =listSF[ii]
+                                    keySF = None
+                                    # first check if SF is given as a file and check the key
+                                    if len(listSF[ii].split(":"))>1:
+                                        keySF = listSF[ii].split(":")[1]
+                                    if os.isfile(listSF[ii].split(":")[0]):
+                                        SFfile = open(listSF[ii].split(":")[0])
+                                        for sfline in SFfile:
+                                            if sfline.find("#")!=-1: continue
+                                            if sfline.find(listlegend[icolor])!=-1 and sfline.find(keySF)!=-1:
+                                                
+                                                tmpSF = sfline.split()[2]
+                                                break
+                                    
                                     if tmpSF.find('*') != -1:
                                         tmpSFlist = tmpSF.split('*')
                                         for i_tmpSF in tmpSFlist:
                                             aSF *= float(i_tmpSF)
                                     else:
-                                        aSF = tmpSF
+                                        aSF = float(tmpSF)
 
                                 aweight = aweight * aSF
+                                if verbose: print " with SF = "+str(aSF)
                                 
                                 if listlegend[ii]=="Data": aweight = 1.
 			if verbose: print " with weight = " + str(aweight)
@@ -764,7 +818,7 @@ if __name__ == '__main__':
                 if thesuper[ikey].Ndivisions !=None: datahist[thesuper[ikey].name].GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
 	    #astack.Draw("same") #sameaxis")
             #if thesuper[ikey].Ndivisions !=None: astack.GetHistogram().GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
-
+            
         gPad.RedrawAxis()
 	#astack.GetHistogram().GetXaxis().SetTickLength(0)
         #astack.GetHistogram().GetXaxis().SetLabelOffset(999)
@@ -784,10 +838,16 @@ if __name__ == '__main__':
 	if dolegend: 
 	    aleg.Draw()
 	if thesuper[ikey].SetLogy == "true":
-	    cv[thesuper[ikey].name].SetLogy()
+            if makeDiffPlot:
+                pad1.SetLogy()
+            else:
+                cv[thesuper[ikey].name].SetLogy()
             #gPad.SetLogy()
 	if thesuper[ikey].SetGrid == "true":
-	    cv[thesuper[ikey].name].SetGrid()
+            if makeDiffPlot:
+                pad1.SetGrid()
+            else:
+                cv[thesuper[ikey].name].SetGrid()
 	
 	# test smearing
 	#rn = ROOT.TRandom(12345)
@@ -811,6 +871,20 @@ if __name__ == '__main__':
 	    tex[thesuper[ikey].name].Draw()
 	
 	cv[thesuper[ikey].name].Update()
+
+        if makeDiffPlot:
+            
+            ratiohist[thesuper[ikey].name+"_diff"] = datahist[thesuper[ikey].name].Clone(thesuper[ikey].name+"_diff")
+            ratiohist[thesuper[ikey].name+"_diff"].Reset()
+            if astack.GetStack().Last().GetEntries() != 0: 
+                ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
+                #cv[thesuper[ikey].name].Clear()
+                pad2.cd()
+                ratiohist[thesuper[ikey].name+"_diff"].Draw()
+                pad2.SetGrid()
+                pad2.Update()
+            else:
+                print "stack plot has zero entries for "+thesuper[ikey].name + " skip data/MC ratio plot"
                 
 	#cv[thesuper[ikey].name].Print("test.png")
 	#cv[thesuper[ikey].name].UseCurrentStyle()
@@ -822,9 +896,9 @@ if __name__ == '__main__':
     if printCanvas:
 	
 	for ikey in theaddition:
-	    cv[theaddition[ikey].name].Print(theaddition[ikey].name + "." + printFormat)
+	    cv[theaddition[ikey].name].Print(OutputDir+theaddition[ikey].name + "." + printFormat)
 	for ikey in thesuper:
-	    cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat)
+	    cv[thesuper[ikey].name].Print(OutputDir+thesuper[ikey].name + "." + printFormat)
     
     
     #outputroot.Write()
