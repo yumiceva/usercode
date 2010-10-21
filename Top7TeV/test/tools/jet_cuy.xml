@@ -177,11 +177,11 @@
 
   <superimpose name="Njets" title="Njets" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SetLogy="true" Labels="0,1,2,3,#geq 4" SubBanner="#mu+jets" Minimum="1" PlotDiff="true">
     <superimposeItem name="Njets_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="Njets_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:allMM" Error="1."/>
+    <superimposeItem name="Njets_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:allMM" Error="1."/>
 <!--    <superimposeItem name="Njets_STtchJPT" color="top" legend="ST"/> -->
-    <superimposeItem name="Njets_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:allMM"/>
-    <superimposeItem name="Njets_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:allMM"/>
-<!--    <superimposeItem name="Njets_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:allMM"/> -->
+    <superimposeItem name="Njets_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:allMM"/>
+    <superimposeItem name="Njets_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:allMM"/>
+<!--    <superimposeItem name="Njets_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:allMM"/> -->
     <superimposeItem name="Njets_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 

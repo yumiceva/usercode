@@ -1,0 +1,43 @@
+# SF file for MET>20 reliso<0.1 selection
+############################
+# MM 
+Wjets 0jetinclusiveMM 0.95
+Zjets 0jetinclusiveMM 0.95
+QCD 0jetinclusiveMM 1.44
+# 1
+Wjets 1jetMM 1.01
+Zjets 1jetMM 1.01
+QCD 1jetMM 2.54
+# 2
+Wjets 2jetMM 1.30
+Zjets 2jetMM 1.30
+QCD 2jetMM 1.46
+# 3
+Wjets 3jetMM 1.28
+Zjets 3jetMM 1.28
+QCD 3jetMM 3.09
+# 4
+Wjets 4jetMM 1.15
+Zjets 4jetMM 1.15
+QCD 4jetMM 7.62
+############################
+# IKS inclusive
+Wjets 0jetinclusiveIKS 0.94
+Zjets 0jetinclusiveIKS 0.94
+QCD 0jetinclusiveIKS 2.25
+# 1
+Wjets 1jetIKS 1.02
+Zjets 1jetIKS 1.02
+QCD 1jetIKS 2.6
+# 2
+Wjets 2jetIKS 1.30
+Zjets 2jetIKS 1.30
+QCD 2jetIKS 2.07
+# 3
+Wjets 3jetIKS 1.49
+Zjets 3jetIKS 1.49
+QCD 3jetIKS 2.30
+# 4
+Wjets 4jetIKS 1.75
+Zjets 4jetIKS 1.75
+QCD 4jetIKS 3.82

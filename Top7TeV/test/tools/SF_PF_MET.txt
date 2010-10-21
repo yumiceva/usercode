@@ -1,0 +1,19 @@
+# SF file for MET>20 reliso<0.1 selection
+# IKS 
+# 1
+Wjets 1jetIKS 0.98
+Zjets 1jetIKS 0.98
+QCD 1jetIKS 2.68
+# 2
+Wjets 2jetIKS 1.24
+Zjets 2jetIKS 1.24
+QCD 2jetIKS 1.48
+# 3
+Wjets 3jetIKS 1.31
+Zjets 3jetIKS 1.31
+QCD 3jetIKS 2.54
+# 4
+Wjets 4jetIKS 1.22
+Zjets 4jetIKS 1.22
+QCD 4jetIKS 4.61
+#####################

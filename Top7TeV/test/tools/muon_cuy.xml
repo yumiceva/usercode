@@ -96,57 +96,57 @@
 
   <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="pt_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="pt_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="pt_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="pt_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="pt_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="pt_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="pt_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
     <superimposeItem name="pt_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="eta_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="eta_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="eta_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="eta_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="eta_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="eta_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="eta_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
     <superimposeItem name="eta_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="phi_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="phi_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="phi_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="phi_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="phi_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="phi_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
+    <superimposeItem name="phi_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
     <superimposeItem name="phi_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="muon_pt_1jet" title="muon_pt_1jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=1" PlotDiff="true">
     <superimposeItem name="pt_1jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="pt_1jet_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:1jetMM"/>
-    <superimposeItem name="pt_1jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:1jetMM"/>
-    <superimposeItem name="pt_1jet_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:1jetMM"/>
+    <superimposeItem name="pt_1jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:1jetMM"/>
+    <superimposeItem name="pt_1jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:1jetMM"/>
+    <superimposeItem name="pt_1jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM"/>
     <superimposeItem name="pt_1jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="muon_pt_2jet" title="muon_pt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=2" PlotDiff="true">
     <superimposeItem name="pt_2jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="pt_2jet_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:2jetMM"/>
-    <superimposeItem name="pt_2jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:2jetMM"/>
-    <superimposeItem name="pt_2jet_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:2jetMM"/>
+    <superimposeItem name="pt_2jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:2jetMM"/>
+    <superimposeItem name="pt_2jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:2jetMM"/>
+    <superimposeItem name="pt_2jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:2jetMM"/>
     <superimposeItem name="pt_2jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="muon_pt_3jet" title="muon_pt_3jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=3" PlotDiff="true">
     <superimposeItem name="pt_3jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="pt_3jet_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:3jetMM"/>
-    <superimposeItem name="pt_3jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:3jetMM"/>
-    <superimposeItem name="pt_3jet_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:3jetMM"/>
+    <superimposeItem name="pt_3jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:3jetMM"/>
+    <superimposeItem name="pt_3jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:3jetMM"/>
+    <superimposeItem name="pt_3jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:3jetMM"/>
     <superimposeItem name="pt_3jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="muon_pt_4jet" title="muon_pt_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" PlotDiff="true">
     <superimposeItem name="pt_4jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="pt_4jet_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:4jetMM"/>
-    <superimposeItem name="pt_4jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:4jetMM"/>
-    <superimposeItem name="pt_4jet_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:4jetMM"/>
+    <superimposeItem name="pt_4jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:4jetMM"/>
+    <superimposeItem name="pt_4jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:4jetMM"/>
+    <superimposeItem name="pt_4jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:4jetMM"/>
     <superimposeItem name="pt_4jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
