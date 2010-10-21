@@ -770,7 +770,7 @@ if __name__ == '__main__':
                             lerrX = []
                             lerrY = []
                             for iibin in range(0,newth.GetNbinsX()):
-                                content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(listError[ii].Error)
+                                content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(listError[ii])
                                 lxx.append( newth.GetBinCenter( ibin ) )
                                 lyy.append( newth.GetBinContent(iibin) )
                                 lerrX.append( 0. )
