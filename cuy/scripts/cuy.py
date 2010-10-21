@@ -774,7 +774,7 @@ if __name__ == '__main__':
                                 content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(listError[ii])
                                 lxx.append( newth.GetBinCenter( iibin ) )
                                 lyy.append( newth.GetBinContent(iibin) )
-                                lerrX.append( newth.GetBinWidth(iibin) )
+                                lerrX.append( 0.5*newth.GetBinWidth(iibin) )
                                 lerrY.append( content )
                             
                             xarray.fromlist( lxx)
@@ -863,8 +863,8 @@ if __name__ == '__main__':
             errorgraph[thesuper[ikey].name] = TGraphErrors(astack.GetStack().Last().GetNbinsX(), xarray, yarray, xerr_array, yerr_array)
             errorgraph[thesuper[ikey].name].SetFillColor(920+3);
             errorgraph[thesuper[ikey].name].SetFillStyle(3354);
-            errorgraph[thesuper[ikey].name].Draw("E3 same")
- 
+            errorgraph[thesuper[ikey].name].Draw("E2 same")
+            aleg.AddEntry(errorgraph[thesuper[ikey].name],"QCD uncert.","F")
 	#astack.GetHistogram().GetXaxis().SetTickLength(0)
          
         #astack.GetHistogram().GetXaxis().SetLabelOffset(999)
