@@ -632,6 +632,11 @@ if __name__ == '__main__':
         errorgraph[thesuper[ikey].name] = None # error band
         thisistheMax = 0.
         defaultXTitle = ""
+        xarray = array('d')
+        yarray = array('d')
+        xerr_array = array('d')
+        yerr_array = array('d')
+
 	for ihname in listname:
 	
 	    for jkey in thedata:
@@ -668,11 +673,7 @@ if __name__ == '__main__':
 			# get weight
 			aweight = 1
                         SFforallbins = {} #used for jet bins
-                        xarray = array('d')
-                        yarray = array('d')
-                        xerr_array = array('d')
-                        yerr_array = array('d')
-                                                                                                            
+                                                                                                                                    
 			if thedata[jkey].weight != None and thesuper[ikey].Weight=="true":
 			    aweight = float( thedata[jkey].weight )
                             if thesuper[ikey].Lumi != None:
