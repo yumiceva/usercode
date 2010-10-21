@@ -770,11 +770,11 @@ if __name__ == '__main__':
                             lyy = []
                             lerrX = []
                             lerrY = []
-                            for iibin in range(0,newth.GetNbinsX()):
+                            for iibin in range(1,newth.GetNbinsX()+1):
                                 content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(listError[ii])
                                 lxx.append( newth.GetBinCenter( iibin ) )
                                 lyy.append( newth.GetBinContent(iibin) )
-                                lerrX.append( 0. )
+                                lerrX.append( newth.GetBinSize(iibin) )
                                 lerrY.append( content )
                             
                             xarray.fromlist( lxx)
