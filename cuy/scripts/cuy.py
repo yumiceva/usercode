@@ -774,7 +774,7 @@ if __name__ == '__main__':
                                 content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(listError[ii])
                                 lxx.append( newth.GetBinCenter( iibin ) )
                                 lyy.append( newth.GetBinContent(iibin) )
-                                lerrX.append( newth.GetBinSize(iibin) )
+                                lerrX.append( newth.GetBinWidth(iibin) )
                                 lerrY.append( content )
                             
                             xarray.fromlist( lxx)
