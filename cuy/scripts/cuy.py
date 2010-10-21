@@ -693,7 +693,7 @@ if __name__ == '__main__':
                                             for sfline in SFfile:
                                                 if sfline.find("#")!=-1: continue
                                                 if keySF.find("all")!=-1:
-                                                    tmpSF = 1.                                                    
+                                                    tmpSF = "1"                                                    
                                                     # get SF for all jet bins
                                                     tmpallkey = keySF.strip("all")
                                                     
