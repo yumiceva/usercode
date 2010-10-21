@@ -41,6 +41,7 @@ import string
 import re
 import sys
 import math
+from array import array
 
 try:
     from ROOT import *
@@ -153,6 +154,7 @@ class superimposeElement:
 	self.legend = []
 	self.weight = []
         self.SF = []
+        self.Error = []
 
 class FindIssue(handler.ContentHandler):
     def __init__(self):
@@ -236,7 +238,7 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[self.tmpsupername].marker.append(attrs.get('MarkerStyle',None))
 	    self.superimpose[self.tmpsupername].legend.append(attrs.get('legend',None))
 	    self.superimpose[self.tmpsupername].SF.append(attrs.get('SF',None))
-
+            self.superimpose[self.tmpsupername].Error.append(attrs.get('Error',None))
 if __name__ == '__main__':
 
 
@@ -545,9 +547,10 @@ if __name__ == '__main__':
 	listmarker = thesuper[ikey].marker
 	listlegend = thesuper[ikey].legend
 	listSF = thesuper[ikey].SF
+        listError = thesuper[ikey].Error
         tmplistcolor = []
         tmplistlegend = []
-        
+        orglistlegend = listlegend
         for icolor in xrange(0,len(listcolor)):
             if listcolor[icolor] == "top" and listlegend[icolor]=="Data":
                 tmplistcolor.append('1')
@@ -624,6 +627,7 @@ if __name__ == '__main__':
 	astack = stacklist[thesuper[ikey].name]
         datahist[thesuper[ikey].name] = None
         ratiohist[thesuper[ikey].name] = None # for plot diff
+        errorgraph[thesuper[ikey].name] = None # error band
         thisistheMax = 0.
         defaultXTitle = ""
 	for ihname in listname:
@@ -661,6 +665,12 @@ if __name__ == '__main__':
 			
 			# get weight
 			aweight = 1
+                        SFforallbins = {} #used for jet bins
+                        xarray = array('d')
+                        yarray = array('d')
+                        xerr_array = array('d')
+                        yerr_array = array('d')
+                                                                                                            
 			if thedata[jkey].weight != None and thesuper[ikey].Weight=="true":
 			    aweight = float( thedata[jkey].weight )
                             if thesuper[ikey].Lumi != None:
@@ -675,16 +685,26 @@ if __name__ == '__main__':
                                     # first check if SF is given as a file and check the key
                                     if len(listSF[ii].split(":"))>1:
                                         keySF = listSF[ii].split(":")[1]
-                                    if os.isfile(listSF[ii].split(":")[0]):
-                                        SFfile = open(listSF[ii].split(":")[0])
-                                        for sfline in SFfile:
-                                            if sfline.find("#")!=-1: continue
-                                            if sfline.find(listlegend[icolor])!=-1 and sfline.find(keySF)!=-1:
+                                        if os.path.isfile(listSF[ii].split(":")[0]):
+                                            SFfile = open(listSF[ii].split(":")[0])
+                                            for sfline in SFfile:
+                                                if sfline.find("#")!=-1: continue
+                                                if keySF.find("all")!=-1:
+                                                    tmpSF = 1.                                                    
+                                                    # get SF for all jet bins
+                                                    tmpallkey = keySF.strip("all")
+                                                    
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("1jet"+tmpallkey)!=-1: SFforallbins[1]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("2jet"+tmpallkey)!=-1: SFforallbins[2]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("3jet"+tmpallkey)!=-1: SFforallbins[3]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("4jet"+tmpallkey)!=-1: SFforallbins[4]=sfline.split()[2]
                                                 
-                                                tmpSF = sfline.split()[2]
-                                                break
+                                                elif sfline.find(orglistlegend[ii])!=-1 and sfline.find(keySF)!=-1:
+                                               
+                                                     tmpSF = sfline.split()[2]
+                                                     break
                                     
-                                    if tmpSF.find('*') != -1:
+                                    elif tmpSF.find('*') != -1:
                                         tmpSFlist = tmpSF.split('*')
                                         for i_tmpSF in tmpSFlist:
                                             aSF *= float(i_tmpSF)
@@ -692,8 +712,10 @@ if __name__ == '__main__':
                                         aSF = float(tmpSF)
 
                                 aweight = aweight * aSF
-                                if verbose: print " with SF = "+str(aSF)
-                                
+                                if verbose:
+                                    print " with gloabl SF = "+str(aSF)
+                                    print " with binned SF = "
+                                    print SFforallbins
                                 if listlegend[ii]=="Data": aweight = 1.
 			if verbose: print " with weight = " + str(aweight)
 			#if listweight[ii]:
@@ -729,26 +751,35 @@ if __name__ == '__main__':
 
 			    for ilabel in thelabels:
 				newth.GetXaxis().SetBinLabel(ib,ilabel)
+                                # scale if binned SF
+                                if SFforallbins.has_key(ib):
+                                    tmpcontent = newth.GetBinContent(ib) * float(SFforallbins[ib])
+                                    newth.SetBinContent(ib, tmpcontent)
 				#if ib==1:
 				    #newth.GetXaxis().SetBinLabel(ib,"")
 				#newth.GetHistogram().GetXaxis().SetBinLabel(ib,ilabel)
 				ib += 1
-			    #if aweight==0.0081:
-			#	newth.SetBinContent(1, newth.GetBinContent(1) / 0.28756)
-			 #   if aweight==0.0883:
-				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.01953)
-			    #if aweight==0.0731:
-				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.0367)
-			    #if aweight==0.4003:
-				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.5683)
-			    #if aweight==0.003:
-				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.21173)
-			    #if aweight==0.0027:
-				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.26394)
-			    #if aweight==0.0034:
-				#newth.SetBinContent(1, newth.GetBinContent(1) / 0.26394)
 
-
+                        # get error band
+                        if thesuper[ikey].Error != None:
+                            lxx = []
+                            lyy = []
+                            lerrX = []
+                            lerrY = []
+                            for iibin in range(0,newth.GetNbinsX()):
+                                content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(thesuper[ikey].Error)
+                                lxx.append( newth.GetBinCenter( ibin ) )
+                                lyy.append( newth.GetBinContent(iibin) )
+                                lerrX.append( 0. )
+                                lerrY.append( content )
+                            
+                            xarray.fromlist( lxx)
+                            #yarray.fromlist( lyy)
+                            xerr_array.fromlist( lerrX )
+                            yerr_array.fromlist( lerrY )
+                                                            
+                            #errorgraph[thesuper[ikey].name] = TGraphErrors(newth.GetNbinsX(), xarray, yarray, xerr_array, yerr_array)
+                            
 			# stack histograms
 			if doFill:
 			    if thesuper[ikey].XTitle != None:
@@ -820,7 +851,16 @@ if __name__ == '__main__':
             #if thesuper[ikey].Ndivisions !=None: astack.GetHistogram().GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
             
         gPad.RedrawAxis()
+
+        if doPlotError:
+            lyy = []
+            for iibin in range(0,astack.GetStack().Last().GetNbinsX()):
+                content = astack.GetStack().Last().GetBinContent(iibin)
+                lyy.append( content )
+            yarray.fromlist( lyy)   
+            errorgraph[thesuper[ikey].name] = TGraphErrors(astack.GetStack().Last().GetNbinsX(), xarray, yarray, xerr_array, yerr_array) 
 	#astack.GetHistogram().GetXaxis().SetTickLength(0)
+        
         #astack.GetHistogram().GetXaxis().SetLabelOffset(999)
 	#thelabels = []
 	#if thesuper[ikey].Labels != None:
