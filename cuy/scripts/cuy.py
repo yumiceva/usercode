@@ -548,6 +548,7 @@ if __name__ == '__main__':
 	listlegend = thesuper[ikey].legend
 	listSF = thesuper[ikey].SF
         listError = thesuper[ikey].Error
+        doPlotError = False
         tmplistcolor = []
         tmplistlegend = []
         orglistlegend = listlegend
@@ -762,6 +763,7 @@ if __name__ == '__main__':
 
                         # get error band
                         if thesuper[ikey].Error != None:
+                            doPlotError = True
                             lxx = []
                             lyy = []
                             lerrX = []
@@ -774,11 +776,9 @@ if __name__ == '__main__':
                                 lerrY.append( content )
                             
                             xarray.fromlist( lxx)
-                            #yarray.fromlist( lyy)
                             xerr_array.fromlist( lerrX )
                             yerr_array.fromlist( lerrY )
-                                                            
-                            #errorgraph[thesuper[ikey].name] = TGraphErrors(newth.GetNbinsX(), xarray, yarray, xerr_array, yerr_array)
+                            
                             
 			# stack histograms
 			if doFill:
@@ -858,9 +858,13 @@ if __name__ == '__main__':
                 content = astack.GetStack().Last().GetBinContent(iibin)
                 lyy.append( content )
             yarray.fromlist( lyy)   
-            errorgraph[thesuper[ikey].name] = TGraphErrors(astack.GetStack().Last().GetNbinsX(), xarray, yarray, xerr_array, yerr_array) 
+            errorgraph[thesuper[ikey].name] = TGraphErrors(astack.GetStack().Last().GetNbinsX(), xarray, yarray, xerr_array, yerr_array)
+            errorgraph[thesuper[ikey].name].SetFillColor(920+3);
+            errorgraph[thesuper[ikey].name].SetFillStyle(3354);
+            errorgraph[thesuper[ikey].name].Draw("E3 same")
+ 
 	#astack.GetHistogram().GetXaxis().SetTickLength(0)
-        
+         
         #astack.GetHistogram().GetXaxis().SetLabelOffset(999)
 	#thelabels = []
 	#if thesuper[ikey].Labels != None:
@@ -923,6 +927,17 @@ if __name__ == '__main__':
                 ratiohist[thesuper[ikey].name+"_diff"].Draw()
                 pad2.SetGrid()
                 pad2.Update()
+
+                #if doPlotError:
+                #    lyy = []
+                #    for iibin in range(0,astack.GetStack().Last().GetNbinsX()):
+                #        content = astack.GetStack().Last().GetBinContent(iibin)
+                #        lyy.append( content )
+                #        yarray.fromlist( lyy)
+                #        errorgraph[thesuper[ikey].name] = TGraphErrors(astack.GetStack().Last().GetNbinsX(), xarray, yarray, xerr_array, yerr_array)
+                #        errorgraph[thesuper[ikey].name].SetFillColor(920+3);
+                #        errorgraph[thesuper[ikey].name].SetFillStyle(3354);
+                #        errorgraph[thesuper[ikey].name].Draw("E3 same")
             else:
                 print "stack plot has zero entries for "+thesuper[ikey].name + " skip data/MC ratio plot"
                 
