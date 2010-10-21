@@ -763,7 +763,7 @@ if __name__ == '__main__':
 				ib += 1
 
                         # get error band
-                        if listError[ii].Error != None:
+                        if listError[ii] != None:
                             doPlotError = True
                             lxx = []
                             lyy = []
