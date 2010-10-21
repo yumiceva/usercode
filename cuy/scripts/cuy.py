@@ -755,8 +755,8 @@ if __name__ == '__main__':
 			    for ilabel in thelabels:
 				newth.GetXaxis().SetBinLabel(ib,ilabel)
                                 # scale if binned SF
-                                if SFforallbins.has_key(ib):
-                                    tmpcontent = newth.GetBinContent(ib) * float(SFforallbins[ib])
+                                if SFforallbins.has_key(ib-1):
+                                    tmpcontent = newth.GetBinContent(ib) * float(SFforallbins[ib-1])
                                     newth.SetBinContent(ib, tmpcontent)
 				#if ib==1:
 				    #newth.GetXaxis().SetBinLabel(ib,"")
@@ -926,6 +926,7 @@ if __name__ == '__main__':
                 ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
                 #cv[thesuper[ikey].name].Clear()
                 pad2.cd()
+                ratiohist[thesuper[ikey].name+"_diff"].SetYTitle("Data/MC")
                 ratiohist[thesuper[ikey].name+"_diff"].Draw()
                 pad2.SetGrid()
                 pad2.Update()
