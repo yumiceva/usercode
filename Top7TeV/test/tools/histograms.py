@@ -93,7 +93,7 @@ class Hist:
         self.M3['3jet_TCHPL_1b'] = TH1F("M3_3jet_TCHPL_1b"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
         self.M3['4jet_TCHPL_1b'] = TH1F("M3_4jet_TCHPL_1b"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)
         self.M3['M3chi2_hadW_4jet'] = TH1F("M3chi2_hadW_4jet"+name,"hadronic W mass M3-chi2", 20, 0,150)
-        self.M3['M3chi2_hadTop_4jet'] = TH1F("M3chi2_hadTop_4jet"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 1000)
+        self.M3['M3chi2_hadTop_4jet'] = TH1F("M3chi2_hadTop_4jet"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 800)
         self.M3['M3chi2_hadTop_lepTop_4jet'] = TH2F("M3chi2_hadTop_lepTop_4jet"+name,"hadronic vs leptonic top M3chi2 [GeV/c^{2}]", 40, 0, 1000,40,1,1000)
         self.M3['M3chi2_normchi2_1st'] = TH1F("M3chi2_normchi2_1st"+name,"#chi^{2}/ndof",30,0,30)
         self.M3['M3chi2_normchi2_2nd'] = TH1F("M3chi2_normchi2_2nd"+name,"#chi^{2}/ndof",30,0,30)

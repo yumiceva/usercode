@@ -199,7 +199,7 @@ N500gev4j = 0
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
-datafilename = "Data/10.93pb-1/ttmuj_Oct15_10.93pb-1.root"
+datafilename = "Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
 #"Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
 #"Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
@@ -567,6 +567,7 @@ for jentry in xrange( entries ):
                                             
     if njets > 3:
         # inclusive
+        cutmap['4Jet'] += 1
         hist.jets['Njets'].Fill(4)
         hist.Mt['Mt_4jet'].Fill( WMt )
         hist.MET['MET_4jet'].Fill( p4MET.Pt() )
@@ -661,14 +662,16 @@ print "M3 3jets events with > 500 GeV: "+str(N500gev3j)
 print "M3 4jets events with > 500 GeV: "+str(N500gev4j)
 
 print "Cut flow Table"
-cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
+cutmapkeys =[ "CleanFilters","HLT","GoodPV","OneIsoMu","LooseMuVeto","ElectronVeto","MET","1Jet","2Jet","3Jet","4Jet"]
 if Flavor != 0:
-    cutmapkeys =[ "CleanFilters","HLT","GoodPV","Flavor","OneIsoMu","LooseMuVeto","ElectronVeto","Jets>0","Jets>1","Jets>2","Jets>3"]
+    cutmapkeys =[ "CleanFilters","HLT","GoodPV","Flavor","OneIsoMu","LooseMuVeto","ElectronVeto","MET","1Jet","2Jet","3Jet","4Jet"]
     
 for key in cutmapkeys:
     print key + " " + str(cutmap[key])
 
 txtname = "cutflow_"+JetType+"_"+dataType+".txt"
+if Flavor != 0:
+    txtname = "cutflow_"+JetType+"_"+dataType+"_"+FlavorStr+".txt"
 filecut = open(OutputDir+txtname,"w")
 for key in cutmapkeys:
     filecut.write(key + " " + str(cutmap[key])+"\n")

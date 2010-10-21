@@ -1,228 +1,228 @@
 <cuy>
 
-  <validation type="data" file="top_plots_data_calo.root" weight="1">
+  <validation type="data" file="res_10.93pb-1_MET/top_plots_data_JPT.root" weight="1">
     <!-- jet -->
-    <TH1 name="pt_datacalo" source="/jets/jet_pt_datacalo"/>
-    <TH1 name="eta_datacalo" source="/jets/jet_eta_datacalo"/>
-    <TH1 name="phi_datacalo" source="/jets/jet_phi_datacalo"/>
-    <TH1 name="1pt_N3j_datacalo" source="/jets/jet1_pt_N3j_datacalo"/>
-    <TH1 name="2pt_N3j_datacalo" source="/jets/jet2_pt_N3j_datacalo"/>
-    <TH1 name="3pt_N3j_datacalo" source="/jets/jet3_pt_N3j_datacalo"/>
-    <TH1 name="1pt_N4j_datacalo" source="/jets/jet1_pt_N4j_datacalo"/>
-    <TH1 name="2pt_N4j_datacalo" source="/jets/jet2_pt_N4j_datacalo"/>
-    <TH1 name="3pt_N4j_datacalo" source="/jets/jet3_pt_N4j_datacalo"/>
-    <TH1 name="4pt_N4j_datacalo" source="/jets/jet4_pt_N4j_datacalo"/>
-    <TH1 name="Njets_datacalo" source="/jets/Njets_datacalo"/>
-    <TH1 name="Nbjets_TCHPL_N3j_datacalo" source="/jets/Nbjets_TCHPL_N3j_datacalo"/>
-    <TH1 name="Nbjets_TCHPL_N4j_datacalo" source="/jets/Nbjets_TCHPL_N4j_datacalo"/>
-    <TH1 name="Nbjets_SSVHEM_N3j_datacalo" source="/jets/Nbjets_SSVHEM_N3j_datacalo"/>
-    <TH1 name="Nbjets_SSVHEM_N4j_datacalo" source="/jets/Nbjets_SSVHEM_N4j_datacalo"/>
+    <TH1 name="pt_dataJPT" source="/jets/jet_pt_dataJPT"/>
+    <TH1 name="eta_dataJPT" source="/jets/jet_eta_dataJPT"/>
+    <TH1 name="phi_dataJPT" source="/jets/jet_phi_dataJPT"/>
+    <TH1 name="1pt_N3j_dataJPT" source="/jets/jet1_pt_N3j_dataJPT"/>
+    <TH1 name="2pt_N3j_dataJPT" source="/jets/jet2_pt_N3j_dataJPT"/>
+    <TH1 name="3pt_N3j_dataJPT" source="/jets/jet3_pt_N3j_dataJPT"/>
+    <TH1 name="1pt_N4j_dataJPT" source="/jets/jet1_pt_N4j_dataJPT"/>
+    <TH1 name="2pt_N4j_dataJPT" source="/jets/jet2_pt_N4j_dataJPT"/>
+    <TH1 name="3pt_N4j_dataJPT" source="/jets/jet3_pt_N4j_dataJPT"/>
+    <TH1 name="4pt_N4j_dataJPT" source="/jets/jet4_pt_N4j_dataJPT"/>
+    <TH1 name="Njets_dataJPT" source="/jets/Njets_dataJPT"/>
+    <TH1 name="Nbjets_TCHPL_N3j_dataJPT" source="/jets/Nbjets_TCHPL_N3j_dataJPT"/>
+    <TH1 name="Nbjets_TCHPL_N4j_dataJPT" source="/jets/Nbjets_TCHPL_N4j_dataJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N3j_dataJPT" source="/jets/Nbjets_SSVHEM_N3j_dataJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N4j_dataJPT" source="/jets/Nbjets_SSVHEM_N4j_dataJPT"/>
   </validation>
 
-  <validation type="TTbar" file="top_plots_TTbar_calo.root" weight="0.0001061747170696587">
+  <validation type="TTbar" file="res_10.93pb-1_MET/top_plots_TTbar_JPT.root" weight="0.0001061747170696587">
     <!-- jet -->
-    <TH1 name="pt_TTbarcalo" source="/jets/jet_pt_TTbarcalo"/>
-    <TH1 name="eta_TTbarcalo" source="/jets/jet_eta_TTbarcalo"/>
-    <TH1 name="phi_TTbarcalo" source="/jets/jet_phi_TTbarcalo"/>
-    <TH1 name="1pt_N3j_TTbarcalo" source="/jets/jet1_pt_N3j_TTbarcalo"/>
-    <TH1 name="2pt_N3j_TTbarcalo" source="/jets/jet2_pt_N3j_TTbarcalo"/>
-    <TH1 name="3pt_N3j_TTbarcalo" source="/jets/jet3_pt_N3j_TTbarcalo"/>
-    <TH1 name="1pt_N4j_TTbarcalo" source="/jets/jet1_pt_N4j_TTbarcalo"/>
-    <TH1 name="2pt_N4j_TTbarcalo" source="/jets/jet2_pt_N4j_TTbarcalo"/>
-    <TH1 name="3pt_N4j_TTbarcalo" source="/jets/jet3_pt_N4j_TTbarcalo"/>
-    <TH1 name="4pt_N4j_TTbarcalo" source="/jets/jet4_pt_N4j_TTbarcalo"/>
-    <TH1 name="Njets_TTbarcalo" source="/jets/Njets_TTbarcalo"/>
-    <TH1 name="Nbjets_TCHPL_N3j_TTbarcalo" source="/jets/Nbjets_TCHPL_N3j_TTbarcalo"/>
-    <TH1 name="Nbjets_TCHPL_N4j_TTbarcalo" source="/jets/Nbjets_TCHPL_N4j_TTbarcalo"/>
-    <TH1 name="Nbjets_SSVHEM_N3j_TTbarcalo" source="/jets/Nbjets_SSVHEM_N3j_TTbarcalo"/>
-    <TH1 name="Nbjets_SSVHEM_N4j_TTbarcalo" source="/jets/Nbjets_SSVHEM_N4j_TTbarcalo"/>
+    <TH1 name="pt_TTbarJPT" source="/jets/jet_pt_TTbarJPT"/>
+    <TH1 name="eta_TTbarJPT" source="/jets/jet_eta_TTbarJPT"/>
+    <TH1 name="phi_TTbarJPT" source="/jets/jet_phi_TTbarJPT"/>
+    <TH1 name="1pt_N3j_TTbarJPT" source="/jets/jet1_pt_N3j_TTbarJPT"/>
+    <TH1 name="2pt_N3j_TTbarJPT" source="/jets/jet2_pt_N3j_TTbarJPT"/>
+    <TH1 name="3pt_N3j_TTbarJPT" source="/jets/jet3_pt_N3j_TTbarJPT"/>
+    <TH1 name="1pt_N4j_TTbarJPT" source="/jets/jet1_pt_N4j_TTbarJPT"/>
+    <TH1 name="2pt_N4j_TTbarJPT" source="/jets/jet2_pt_N4j_TTbarJPT"/>
+    <TH1 name="3pt_N4j_TTbarJPT" source="/jets/jet3_pt_N4j_TTbarJPT"/>
+    <TH1 name="4pt_N4j_TTbarJPT" source="/jets/jet4_pt_N4j_TTbarJPT"/>
+    <TH1 name="Njets_TTbarJPT" source="/jets/Njets_TTbarJPT"/>
+    <TH1 name="Nbjets_TCHPL_N3j_TTbarJPT" source="/jets/Nbjets_TCHPL_N3j_TTbarJPT"/>
+    <TH1 name="Nbjets_TCHPL_N4j_TTbarJPT" source="/jets/Nbjets_TCHPL_N4j_TTbarJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N3j_TTbarJPT" source="/jets/Nbjets_SSVHEM_N3j_TTbarJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N4j_TTbarJPT" source="/jets/Nbjets_SSVHEM_N4j_TTbarJPT"/>
   </validation>
 
-  <validation type="Wjets" file="top_plots_Wjets_calo.root" weight="0.0031099738352619627">
+  <validation type="Wjets" file="res_10.93pb-1_MET/top_plots_Wjets_JPT.root" weight="0.0031099738352619627">
     <!-- jet -->
-    <TH1 name="pt_Wjetscalo" source="/jets/jet_pt_Wjetscalo"/>
-    <TH1 name="eta_Wjetscalo" source="/jets/jet_eta_Wjetscalo"/>
-    <TH1 name="phi_Wjetscalo" source="/jets/jet_phi_Wjetscalo"/>
-    <TH1 name="1pt_N3j_Wjetscalo" source="/jets/jet1_pt_N3j_Wjetscalo"/>
-    <TH1 name="2pt_N3j_Wjetscalo" source="/jets/jet2_pt_N3j_Wjetscalo"/>
-    <TH1 name="3pt_N3j_Wjetscalo" source="/jets/jet3_pt_N3j_Wjetscalo"/>
-    <TH1 name="1pt_N4j_Wjetscalo" source="/jets/jet1_pt_N4j_Wjetscalo"/>
-    <TH1 name="2pt_N4j_Wjetscalo" source="/jets/jet2_pt_N4j_Wjetscalo"/>
-    <TH1 name="3pt_N4j_Wjetscalo" source="/jets/jet3_pt_N4j_Wjetscalo"/>
-    <TH1 name="4pt_N4j_Wjetscalo" source="/jets/jet4_pt_N4j_Wjetscalo"/>
-    <TH1 name="Njets_Wjetscalo" source="/jets/Njets_Wjetscalo"/>
-    <TH1 name="Nbjets_TCHPL_N3j_Wjetscalo" source="/jets/Nbjets_TCHPL_N3j_Wjetscalo"/>
-    <TH1 name="Nbjets_TCHPL_N4j_Wjetscalo" source="/jets/Nbjets_TCHPL_N4j_Wjetscalo"/>
-    <TH1 name="Nbjets_SSVHEM_N3j_Wjetscalo" source="/jets/Nbjets_SSVHEM_N3j_Wjetscalo"/>
-    <TH1 name="Nbjets_SSVHEM_N4j_Wjetscalo" source="/jets/Nbjets_SSVHEM_N4j_Wjetscalo"/>
+    <TH1 name="pt_WjetsJPT" source="/jets/jet_pt_WjetsJPT"/>
+    <TH1 name="eta_WjetsJPT" source="/jets/jet_eta_WjetsJPT"/>
+    <TH1 name="phi_WjetsJPT" source="/jets/jet_phi_WjetsJPT"/>
+    <TH1 name="1pt_N3j_WjetsJPT" source="/jets/jet1_pt_N3j_WjetsJPT"/>
+    <TH1 name="2pt_N3j_WjetsJPT" source="/jets/jet2_pt_N3j_WjetsJPT"/>
+    <TH1 name="3pt_N3j_WjetsJPT" source="/jets/jet3_pt_N3j_WjetsJPT"/>
+    <TH1 name="1pt_N4j_WjetsJPT" source="/jets/jet1_pt_N4j_WjetsJPT"/>
+    <TH1 name="2pt_N4j_WjetsJPT" source="/jets/jet2_pt_N4j_WjetsJPT"/>
+    <TH1 name="3pt_N4j_WjetsJPT" source="/jets/jet3_pt_N4j_WjetsJPT"/>
+    <TH1 name="4pt_N4j_WjetsJPT" source="/jets/jet4_pt_N4j_WjetsJPT"/>
+    <TH1 name="Njets_WjetsJPT" source="/jets/Njets_WjetsJPT"/>
+    <TH1 name="Nbjets_TCHPL_N3j_WjetsJPT" source="/jets/Nbjets_TCHPL_N3j_WjetsJPT"/>
+    <TH1 name="Nbjets_TCHPL_N4j_WjetsJPT" source="/jets/Nbjets_TCHPL_N4j_WjetsJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N3j_WjetsJPT" source="/jets/Nbjets_SSVHEM_N3j_WjetsJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N4j_WjetsJPT" source="/jets/Nbjets_SSVHEM_N4j_WjetsJPT"/>
   </validation>
 
-  <validation type="Zjets" file="top_plots_Zjets_calo.root" weight="0.0028094211467931765">
+  <validation type="Zjets" file="res_10.93pb-1_MET/top_plots_Zjets_JPT.root" weight="0.0028094211467931765">
     <!-- jet -->
-    <TH1 name="pt_Zjetscalo" source="/jets/jet_pt_Zjetscalo"/>
-    <TH1 name="eta_Zjetscalo" source="/jets/jet_eta_Zjetscalo"/>
-    <TH1 name="phi_Zjetscalo" source="/jets/jet_phi_Zjetscalo"/>
-    <TH1 name="1pt_N3j_Zjetscalo" source="/jets/jet1_pt_N3j_Zjetscalo"/>
-    <TH1 name="2pt_N3j_Zjetscalo" source="/jets/jet2_pt_N3j_Zjetscalo"/>
-    <TH1 name="3pt_N3j_Zjetscalo" source="/jets/jet3_pt_N3j_Zjetscalo"/>
-    <TH1 name="1pt_N4j_Zjetscalo" source="/jets/jet1_pt_N4j_Zjetscalo"/>
-    <TH1 name="2pt_N4j_Zjetscalo" source="/jets/jet2_pt_N4j_Zjetscalo"/>
-    <TH1 name="3pt_N4j_Zjetscalo" source="/jets/jet3_pt_N4j_Zjetscalo"/>
-    <TH1 name="4pt_N4j_Zjetscalo" source="/jets/jet4_pt_N4j_Zjetscalo"/>
-    <TH1 name="Njets_Zjetscalo" source="/jets/Njets_Zjetscalo"/>
-    <TH1 name="Nbjets_TCHPL_N3j_Zjetscalo" source="/jets/Nbjets_TCHPL_N3j_Zjetscalo"/>
-    <TH1 name="Nbjets_TCHPL_N4j_Zjetscalo" source="/jets/Nbjets_TCHPL_N4j_Zjetscalo"/>
-    <TH1 name="Nbjets_SSVHEM_N3j_Zjetscalo" source="/jets/Nbjets_SSVHEM_N3j_Zjetscalo"/>
-    <TH1 name="Nbjets_SSVHEM_N4j_Zjetscalo" source="/jets/Nbjets_SSVHEM_N4j_Zjetscalo"/>
+    <TH1 name="pt_ZjetsJPT" source="/jets/jet_pt_ZjetsJPT"/>
+    <TH1 name="eta_ZjetsJPT" source="/jets/jet_eta_ZjetsJPT"/>
+    <TH1 name="phi_ZjetsJPT" source="/jets/jet_phi_ZjetsJPT"/>
+    <TH1 name="1pt_N3j_ZjetsJPT" source="/jets/jet1_pt_N3j_ZjetsJPT"/>
+    <TH1 name="2pt_N3j_ZjetsJPT" source="/jets/jet2_pt_N3j_ZjetsJPT"/>
+    <TH1 name="3pt_N3j_ZjetsJPT" source="/jets/jet3_pt_N3j_ZjetsJPT"/>
+    <TH1 name="1pt_N4j_ZjetsJPT" source="/jets/jet1_pt_N4j_ZjetsJPT"/>
+    <TH1 name="2pt_N4j_ZjetsJPT" source="/jets/jet2_pt_N4j_ZjetsJPT"/>
+    <TH1 name="3pt_N4j_ZjetsJPT" source="/jets/jet3_pt_N4j_ZjetsJPT"/>
+    <TH1 name="4pt_N4j_ZjetsJPT" source="/jets/jet4_pt_N4j_ZjetsJPT"/>
+    <TH1 name="Njets_ZjetsJPT" source="/jets/Njets_ZjetsJPT"/>
+    <TH1 name="Nbjets_TCHPL_N3j_ZjetsJPT" source="/jets/Nbjets_TCHPL_N3j_ZjetsJPT"/>
+    <TH1 name="Nbjets_TCHPL_N4j_ZjetsJPT" source="/jets/Nbjets_TCHPL_N4j_ZjetsJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N3j_ZjetsJPT" source="/jets/Nbjets_SSVHEM_N3j_ZjetsJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N4j_ZjetsJPT" source="/jets/Nbjets_SSVHEM_N4j_ZjetsJPT"/>
   </validation>
 
-  <validation type="QCD" file="top_plots_QCD_calo.root" weight="0.018205299430890203">
+  <validation type="QCD" file="res_10.93pb-1_MET/top_plots_QCD_JPT.root" weight="0.018205299430890203">
     <!-- jet -->
-    <TH1 name="pt_QCDcalo" source="/jets/jet_pt_QCDcalo"/>
-    <TH1 name="eta_QCDcalo" source="/jets/jet_eta_QCDcalo"/>
-    <TH1 name="phi_QCDcalo" source="/jets/jet_phi_QCDcalo"/>
-    <TH1 name="1pt_N3j_QCDcalo" source="/jets/jet1_pt_N3j_QCDcalo"/>
-    <TH1 name="2pt_N3j_QCDcalo" source="/jets/jet2_pt_N3j_QCDcalo"/>
-    <TH1 name="3pt_N3j_QCDcalo" source="/jets/jet3_pt_N3j_QCDcalo"/>
-    <TH1 name="1pt_N4j_QCDcalo" source="/jets/jet1_pt_N4j_QCDcalo"/>
-    <TH1 name="2pt_N4j_QCDcalo" source="/jets/jet2_pt_N4j_QCDcalo"/>
-    <TH1 name="3pt_N4j_QCDcalo" source="/jets/jet3_pt_N4j_QCDcalo"/>
-    <TH1 name="4pt_N4j_QCDcalo" source="/jets/jet4_pt_N4j_QCDcalo"/>
-    <TH1 name="Njets_QCDcalo" source="/jets/Njets_QCDcalo"/>
-    <TH1 name="Nbjets_TCHPL_N3j_QCDcalo" source="/jets/Nbjets_TCHPL_N3j_QCDcalo"/>
-    <TH1 name="Nbjets_TCHPL_N4j_QCDcalo" source="/jets/Nbjets_TCHPL_N4j_QCDcalo"/>
-    <TH1 name="Nbjets_SSVHEM_N3j_QCDcalo" source="/jets/Nbjets_SSVHEM_N3j_QCDcalo"/>
-    <TH1 name="Nbjets_SSVHEM_N4j_QCDcalo" source="/jets/Nbjets_SSVHEM_N4j_QCDcalo"/>
+    <TH1 name="pt_QCDJPT" source="/jets/jet_pt_QCDJPT"/>
+    <TH1 name="eta_QCDJPT" source="/jets/jet_eta_QCDJPT"/>
+    <TH1 name="phi_QCDJPT" source="/jets/jet_phi_QCDJPT"/>
+    <TH1 name="1pt_N3j_QCDJPT" source="/jets/jet1_pt_N3j_QCDJPT"/>
+    <TH1 name="2pt_N3j_QCDJPT" source="/jets/jet2_pt_N3j_QCDJPT"/>
+    <TH1 name="3pt_N3j_QCDJPT" source="/jets/jet3_pt_N3j_QCDJPT"/>
+    <TH1 name="1pt_N4j_QCDJPT" source="/jets/jet1_pt_N4j_QCDJPT"/>
+    <TH1 name="2pt_N4j_QCDJPT" source="/jets/jet2_pt_N4j_QCDJPT"/>
+    <TH1 name="3pt_N4j_QCDJPT" source="/jets/jet3_pt_N4j_QCDJPT"/>
+    <TH1 name="4pt_N4j_QCDJPT" source="/jets/jet4_pt_N4j_QCDJPT"/>
+    <TH1 name="Njets_QCDJPT" source="/jets/Njets_QCDJPT"/>
+    <TH1 name="Nbjets_TCHPL_N3j_QCDJPT" source="/jets/Nbjets_TCHPL_N3j_QCDJPT"/>
+    <TH1 name="Nbjets_TCHPL_N4j_QCDJPT" source="/jets/Nbjets_TCHPL_N4j_QCDJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N3j_QCDJPT" source="/jets/Nbjets_SSVHEM_N3j_QCDJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N4j_QCDJPT" source="/jets/Nbjets_SSVHEM_N4j_QCDJPT"/>
   </validation>
 
-  <validation type="STtch" file="top_plots_STtch_calo.root" weight="3.9595681365436169e-05">
+  <validation type="STtch" file="res_10.93pb-1_MET/top_plots_STtch_JPT.root" weight="3.9595681365436169e-05">
     <!-- jet -->
-    <TH1 name="pt_STtchcalo" source="/jets/jet_pt_STtchcalo"/>
-    <TH1 name="eta_STtchcalo" source="/jets/jet_eta_STtchcalo"/>
-    <TH1 name="phi_STtchcalo" source="/jets/jet_phi_STtchcalo"/>
-    <TH1 name="1pt_N3j_STtchcalo" source="/jets/jet1_pt_N3j_STtchcalo"/>
-    <TH1 name="2pt_N3j_STtchcalo" source="/jets/jet2_pt_N3j_STtchcalo"/>
-    <TH1 name="3pt_N3j_STtchcalo" source="/jets/jet3_pt_N3j_STtchcalo"/>
-    <TH1 name="1pt_N4j_STtchcalo" source="/jets/jet1_pt_N4j_STtchcalo"/>
-    <TH1 name="2pt_N4j_STtchcalo" source="/jets/jet2_pt_N4j_STtchcalo"/>
-    <TH1 name="3pt_N4j_STtchcalo" source="/jets/jet3_pt_N4j_STtchcalo"/>
-    <TH1 name="4pt_N4j_STtchcalo" source="/jets/jet4_pt_N4j_STtchcalo"/>
-    <TH1 name="Njets_STtchcalo" source="/jets/Njets_STtchcalo"/>
-    <TH1 name="Nbjets_TCHPL_N3j_STtchcalo" source="/jets/Nbjets_TCHPL_N3j_STtchcalo"/>
-    <TH1 name="Nbjets_TCHPL_N4j_STtchcalo" source="/jets/Nbjets_TCHPL_N4j_STtchcalo"/>
-    <TH1 name="Nbjets_SSVHEM_N3j_STtchcalo" source="/jets/Nbjets_SSVHEM_N3j_STtchcalo"/>
-    <TH1 name="Nbjets_SSVHEM_N4j_STtchcalo" source="/jets/Nbjets_SSVHEM_N4j_STtchcalo"/>
+    <TH1 name="pt_STtchJPT" source="/jets/jet_pt_STtchJPT"/>
+    <TH1 name="eta_STtchJPT" source="/jets/jet_eta_STtchJPT"/>
+    <TH1 name="phi_STtchJPT" source="/jets/jet_phi_STtchJPT"/>
+    <TH1 name="1pt_N3j_STtchJPT" source="/jets/jet1_pt_N3j_STtchJPT"/>
+    <TH1 name="2pt_N3j_STtchJPT" source="/jets/jet2_pt_N3j_STtchJPT"/>
+    <TH1 name="3pt_N3j_STtchJPT" source="/jets/jet3_pt_N3j_STtchJPT"/>
+    <TH1 name="1pt_N4j_STtchJPT" source="/jets/jet1_pt_N4j_STtchJPT"/>
+    <TH1 name="2pt_N4j_STtchJPT" source="/jets/jet2_pt_N4j_STtchJPT"/>
+    <TH1 name="3pt_N4j_STtchJPT" source="/jets/jet3_pt_N4j_STtchJPT"/>
+    <TH1 name="4pt_N4j_STtchJPT" source="/jets/jet4_pt_N4j_STtchJPT"/>
+    <TH1 name="Njets_STtchJPT" source="/jets/Njets_STtchJPT"/>
+    <TH1 name="Nbjets_TCHPL_N3j_STtchJPT" source="/jets/Nbjets_TCHPL_N3j_STtchJPT"/>
+    <TH1 name="Nbjets_TCHPL_N4j_STtchJPT" source="/jets/Nbjets_TCHPL_N4j_STtchJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N3j_STtchJPT" source="/jets/Nbjets_SSVHEM_N3j_STtchJPT"/>
+    <TH1 name="Nbjets_SSVHEM_N4j_STtchJPT" source="/jets/Nbjets_SSVHEM_N4j_STtchJPT"/>
   </validation>
 
 <!--
   <divide name="jet_hltg_pt_ttbar" numerator="tT0j_jet_pt_cut1" denominator="tT0j_jet_pt_nohltgood" DivideOption="B" Option="e1"/>
 -->
 
-  <superimpose name="jet_pt" title="jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
-    <superimposeItem name="pt_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="pt_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="pt_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="pt_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="pt_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="jet_pt" title="jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="pt_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="pt_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="pt_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="pt_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="pt_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="1jet_pt" title="1jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true">
-    <superimposeItem name="1pt_N3j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="1pt_N3j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="1pt_N3j_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="1pt_N3j_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="1pt_N3j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="1jet_pt" title="1jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true">
+    <superimposeItem name="1pt_N3j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="1pt_N3j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="1pt_N3j_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="1pt_N3j_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="1pt_N3j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="2jet_pt" title="2jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true">
-    <superimposeItem name="2pt_N3j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="2pt_N3j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="2pt_N3j_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="2pt_N3j_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="2pt_N3j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="2jet_pt" title="2jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true">
+    <superimposeItem name="2pt_N3j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="2pt_N3j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="2pt_N3j_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="2pt_N3j_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="2pt_N3j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="3jet_pt" title="3jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true">
-    <superimposeItem name="3pt_N3j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="3pt_N3j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="3pt_N3j_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="3pt_N3j_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="3pt_N3j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="3jet_pt" title="3jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true">
+    <superimposeItem name="3pt_N3j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="3pt_N3j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="3pt_N3j_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="3pt_N3j_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="3pt_N3j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="4jet_pt" title="4jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true">
-    <superimposeItem name="4pt_N4j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="4pt_N4j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="4pt_N4j_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="4pt_N4j_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="4pt_N4j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="4jet_pt" title="4jet_pt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true">
+    <superimposeItem name="4pt_N4j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="4pt_N4j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="4pt_N4j_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="4pt_N4j_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="4pt_N4j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
 
-  <superimpose name="jet_eta" title="jet_eta" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
-    <superimposeItem name="eta_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="eta_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="eta_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="eta_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="eta_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="jet_eta" title="jet_eta" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="eta_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="eta_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="eta_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="eta_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="eta_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="jet_phi" title="jet_phi" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
-    <superimposeItem name="phi_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="phi_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="phi_Zjetscalo" color="top" legend="Zjets"/>
-    <superimposeItem name="phi_QCDcalo" color="top" legend="QCD"/>
-    <superimposeItem name="phi_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="jet_phi" title="jet_phi" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+    <superimposeItem name="phi_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="phi_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="phi_ZjetsJPT" color="top" legend="Zjets"/>
+    <superimposeItem name="phi_QCDJPT" color="top" legend="QCD"/>
+    <superimposeItem name="phi_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Njets" title="Njets" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SetLogy="true" Labels="0,1,2,3,#geq 4" SubBanner="#mu+jets">
-    <superimposeItem name="Njets_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="Njets_QCDcalo" color="top" legend="QCD"/>
-<!--    <superimposeItem name="Njets_STtchcalo" color="top" legend="ST"/> -->
-    <superimposeItem name="Njets_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="Njets_Zjetscalo" color="top" legend="Zjets"/>
-<!--    <superimposeItem name="Njets_QCDcalo" color="top" legend="QCD"/> -->
-    <superimposeItem name="Njets_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="Njets" title="Njets" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SetLogy="true" Labels="0,1,2,3,#geq 4" SubBanner="#mu+jets" Minimum="1" PlotDiff="true">
+    <superimposeItem name="Njets_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="Njets_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:allMM" Error="1."/>
+<!--    <superimposeItem name="Njets_STtchJPT" color="top" legend="ST"/> -->
+    <superimposeItem name="Njets_WjetsJPT" color="top" legend="Wjets" SF="SF_MET.txt:allMM"/>
+    <superimposeItem name="Njets_ZjetsJPT" color="top" legend="Zjets" SF="SF_MET.txt:allMM"/>
+<!--    <superimposeItem name="Njets_QCDJPT" color="top" legend="QCD" SF="SF_MET.txt:allMM"/> -->
+    <superimposeItem name="Njets_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Nbjets_TCHPL_N3j" title="Nbjets_TCHPL_N3j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
-    <superimposeItem name="Nbjets_TCHPL_N3j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="Nbjets_TCHPL_N3j_QCDcalo" color="top" legend="QCD"/>
-<!--    <superimposeItem name="Nbjets_TCHPL_N3j_STtchcalo" color="top" legend="ST"/> -->
-    <superimposeItem name="Nbjets_TCHPL_N3j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="Nbjets_TCHPL_N3j_Zjetscalo" color="top" legend="Zjets"/>
-<!--    <superimposeItem name="Nbjets_TCHPL_N3j_QCDcalo" color="top" legend="QCD"/> -->
-    <superimposeItem name="Nbjets_TCHPL_N3j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="Nbjets_TCHPL_N3j" title="Nbjets_TCHPL_N3j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
+    <superimposeItem name="Nbjets_TCHPL_N3j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="Nbjets_TCHPL_N3j_QCDJPT" color="top" legend="QCD"/>
+<!--    <superimposeItem name="Nbjets_TCHPL_N3j_STtchJPT" color="top" legend="ST"/> -->
+    <superimposeItem name="Nbjets_TCHPL_N3j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="Nbjets_TCHPL_N3j_ZjetsJPT" color="top" legend="Zjets"/>
+<!--    <superimposeItem name="Nbjets_TCHPL_N3j_QCDJPT" color="top" legend="QCD"/> -->
+    <superimposeItem name="Nbjets_TCHPL_N3j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Nbjets_TCHPL_N4j" title="Nbjets_TCHPL_N4j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
-    <superimposeItem name="Nbjets_TCHPL_N4j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="Nbjets_TCHPL_N4j_QCDcalo" color="top" legend="QCD"/>
-<!--    <superimposeItem name="Nbjets_TCHPL_N4j_STtchcalo" color="top" legend="ST"/> -->
-    <superimposeItem name="Nbjets_TCHPL_N4j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="Nbjets_TCHPL_N4j_Zjetscalo" color="top" legend="Zjets"/>
-<!--    <superimposeItem name="Nbjets_TCHPL_N4j_QCDcalo" color="top" legend="QCD"/> -->
-    <superimposeItem name="Nbjets_TCHPL_N4j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="Nbjets_TCHPL_N4j" title="Nbjets_TCHPL_N4j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
+    <superimposeItem name="Nbjets_TCHPL_N4j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="Nbjets_TCHPL_N4j_QCDJPT" color="top" legend="QCD"/>
+<!--    <superimposeItem name="Nbjets_TCHPL_N4j_STtchJPT" color="top" legend="ST"/> -->
+    <superimposeItem name="Nbjets_TCHPL_N4j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="Nbjets_TCHPL_N4j_ZjetsJPT" color="top" legend="Zjets"/>
+<!--    <superimposeItem name="Nbjets_TCHPL_N4j_QCDJPT" color="top" legend="QCD"/> -->
+    <superimposeItem name="Nbjets_TCHPL_N4j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Nbjets_SSVHEM_N3j" title="Nbjets_SSVHEM_N3j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
-    <superimposeItem name="Nbjets_SSVHEM_N3j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="Nbjets_SSVHEM_N3j_QCDcalo" color="top" legend="QCD"/>
-<!--    <superimposeItem name="Nbjets_SSVHEM_N3j_STtchcalo" color="top" legend="ST"/> -->
-    <superimposeItem name="Nbjets_SSVHEM_N3j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="Nbjets_SSVHEM_N3j_Zjetscalo" color="top" legend="Zjets"/>
-<!--    <superimposeItem name="Nbjets_SSVHEM_N3j_QCDcalo" color="top" legend="QCD"/> -->
-    <superimposeItem name="Nbjets_SSVHEM_N3j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="Nbjets_SSVHEM_N3j" title="Nbjets_SSVHEM_N3j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
+    <superimposeItem name="Nbjets_SSVHEM_N3j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="Nbjets_SSVHEM_N3j_QCDJPT" color="top" legend="QCD"/>
+<!--    <superimposeItem name="Nbjets_SSVHEM_N3j_STtchJPT" color="top" legend="ST"/> -->
+    <superimposeItem name="Nbjets_SSVHEM_N3j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="Nbjets_SSVHEM_N3j_ZjetsJPT" color="top" legend="Zjets"/>
+<!--    <superimposeItem name="Nbjets_SSVHEM_N3j_QCDJPT" color="top" legend="QCD"/> -->
+    <superimposeItem name="Nbjets_SSVHEM_N3j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Nbjets_SSVHEM_N4j" title="Nbjets_SSVHEM_N4j" YTitle="Events" Fill="true" Weight="true" Lumi="4.42" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
-    <superimposeItem name="Nbjets_SSVHEM_N4j_datacalo" color="top" legend="Data"/>
-    <superimposeItem name="Nbjets_SSVHEM_N4j_QCDcalo" color="top" legend="QCD"/>
-<!--    <superimposeItem name="Nbjets_SSVHEM_N4j_STtchcalo" color="top" legend="ST"/> -->
-    <superimposeItem name="Nbjets_SSVHEM_N4j_Wjetscalo" color="top" legend="Wjets"/>
-    <superimposeItem name="Nbjets_SSVHEM_N4j_Zjetscalo" color="top" legend="Zjets"/>
-<!--    <superimposeItem name="Nbjets_SSVHEM_N4j_QCDcalo" color="top" legend="QCD"/> -->
-    <superimposeItem name="Nbjets_SSVHEM_N4j_TTbarcalo" color="top" legend="TTbar"/>
+  <superimpose name="Nbjets_SSVHEM_N4j" title="Nbjets_SSVHEM_N4j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SetLogy="true" Labels="0,1,2" SubBanner="#mu+jets">
+    <superimposeItem name="Nbjets_SSVHEM_N4j_dataJPT" color="top" legend="Data"/>
+    <superimposeItem name="Nbjets_SSVHEM_N4j_QCDJPT" color="top" legend="QCD"/>
+<!--    <superimposeItem name="Nbjets_SSVHEM_N4j_STtchJPT" color="top" legend="ST"/> -->
+    <superimposeItem name="Nbjets_SSVHEM_N4j_WjetsJPT" color="top" legend="Wjets"/>
+    <superimposeItem name="Nbjets_SSVHEM_N4j_ZjetsJPT" color="top" legend="Zjets"/>
+<!--    <superimposeItem name="Nbjets_SSVHEM_N4j_QCDJPT" color="top" legend="QCD"/> -->
+    <superimposeItem name="Nbjets_SSVHEM_N4j_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
 
 </cuy>

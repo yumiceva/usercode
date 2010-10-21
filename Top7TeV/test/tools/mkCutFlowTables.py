@@ -91,10 +91,11 @@ cutlabel['GoodPV'] = 'Good PV'
 cutlabel['OneIsoMu'] = 'One Iso mu'
 cutlabel['LooseMuVeto'] = 'Loose mu veto'
 cutlabel['ElectronVeto'] = 'Electron veto'
-cutlabel['Jets>0'] = 'Jets$\\geq$1'
-cutlabel['Jets>1'] = 'Jets$\\geq$2'
-cutlabel['Jets>2'] = 'Jets$\\geq$3'
-cutlabel['Jets>3'] = 'Jets$\\geq$4'
+cutlabel['MET'] = 'MET'
+cutlabel['1Jet'] = '1 jet'
+cutlabel['2Jet'] = '2 jets'
+cutlabel['3Jet'] = '3 jets'
+cutlabel['4Jet'] = '\geq$4 jets'
 
 allmap = {}
 
@@ -118,7 +119,7 @@ for sample in keys:
     txtfile.close()
     
     scale = 1.
-    if IsMC:
+    if IsMC and Lumi>0:
         scale = ( Lumi * xsec[ sample ] / cutmap['CleanFilters'] )
 
     ilabel = 0
@@ -142,7 +143,7 @@ for key in allmap.keys():
 cutflow["Total"] = allmap
 
 # write latex
-sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','Jets>0','Jets>1','Jets>2','Jets>3']
+sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
 
          
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','Total']
