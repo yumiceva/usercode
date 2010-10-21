@@ -539,6 +539,7 @@ if __name__ == '__main__':
     if verbose : print "= Create superimpose histograms:"
     datahist = {}
     ratiohist = {}
+    errorgraph = {}
     tex = {}
     for ikey in thesuper:
 	if verbose : print "== plot name: \""+thesuper[ikey].name+"\" title: \""+thesuper[ikey].title+"\""
