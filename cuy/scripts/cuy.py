@@ -856,7 +856,7 @@ if __name__ == '__main__':
 
         if doPlotError:
             lyy = []
-            for iibin in range(0,astack.GetStack().Last().GetNbinsX()):
+            for iibin in range(1,astack.GetStack().Last().GetNbinsX()+1):
                 content = astack.GetStack().Last().GetBinContent(iibin)
                 lyy.append( content )
             yarray.fromlist( lyy)   
