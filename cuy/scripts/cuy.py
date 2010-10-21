@@ -949,16 +949,18 @@ if __name__ == '__main__':
 	#cv[thesuper[ikey].name].Print("test.png")
 	#cv[thesuper[ikey].name].UseCurrentStyle()
         #gPad.SetRightMargin(4)
-	# pause
+	cv[thesuper[ikey].name].Print(OutputDir+thesuper[ikey].name + "." + printFormat)
+        # pause
 	if option.wait:
 	    raw_input( 'Press ENTER to continue\n ' )
+        
 	    
     if printCanvas:
 	
 	for ikey in theaddition:
 	    cv[theaddition[ikey].name].Print(OutputDir+theaddition[ikey].name + "." + printFormat)
-	for ikey in thesuper:
-	    cv[thesuper[ikey].name].Print(OutputDir+thesuper[ikey].name + "." + printFormat)
+	#for ikey in thesuper:
+	#    cv[thesuper[ikey].name].Print(OutputDir+thesuper[ikey].name + "." + printFormat)
     
     
     #outputroot.Write()
