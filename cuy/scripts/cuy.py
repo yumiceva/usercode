@@ -707,7 +707,7 @@ if __name__ == '__main__':
                                                      tmpSF = sfline.split()[2]
                                                      break
                                     
-                                    elif tmpSF.find('*') != -1:
+                                    if tmpSF.find('*') != -1:
                                         tmpSFlist = tmpSF.split('*')
                                         for i_tmpSF in tmpSFlist:
                                             aSF *= float(i_tmpSF)
