@@ -861,9 +861,11 @@ if __name__ == '__main__':
                 lyy.append( content )
             yarray.fromlist( lyy)   
             errorgraph[thesuper[ikey].name] = TGraphErrors(astack.GetStack().Last().GetNbinsX(), xarray, yarray, xerr_array, yerr_array)
-            errorgraph[thesuper[ikey].name].SetFillColor(920+3);
-            errorgraph[thesuper[ikey].name].SetFillStyle(3354);
+            errorgraph[thesuper[ikey].name].SetName(thesuper[ikey].name)
+            errorgraph[thesuper[ikey].name].SetFillColor(920+3)
+            errorgraph[thesuper[ikey].name].SetFillStyle(3354)
             errorgraph[thesuper[ikey].name].Draw("E2 same")
+            
             aleg.AddEntry(errorgraph[thesuper[ikey].name],"QCD uncert.","F")
 	#astack.GetHistogram().GetXaxis().SetTickLength(0)
          
