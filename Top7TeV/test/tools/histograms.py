@@ -57,10 +57,10 @@ class Hist:
     def CreateMuon(self, name):
         
         self.muons['pt'] = TH1F("muon_pt"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
-        self.muons['pt_1jet'] = TH1F("muon_pt_1jet"+name,"p_{T}^{#mu}", 25, 20, 100)
-        self.muons['pt_2jet'] = TH1F("muon_pt_2jet"+name,"p_{T}^{#mu}", 25, 20, 100)
-        self.muons['pt_3jet'] = TH1F("muon_pt_3jet"+name,"p_{T}^{#mu}", 25, 20, 100)
-        self.muons['pt_4jet'] = TH1F("muon_pt_4jet"+name,"p_{T}^{#mu}", 25, 20, 100)
+        self.muons['pt_1jet'] = TH1F("muon_pt_1jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.muons['pt_2jet'] = TH1F("muon_pt_2jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.muons['pt_3jet'] = TH1F("muon_pt_3jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.muons['pt_4jet'] = TH1F("muon_pt_4jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
         self.muons['eta'] = TH1F("muon_eta"+name,"#eta^{#mu}", 20, -2.1, 2.1)
         self.muons['eta_1jet'] = TH1F("muon_eta_1jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)
         self.muons['eta_2jet'] = TH1F("muon_eta_2jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)

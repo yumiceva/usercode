@@ -70,16 +70,26 @@ else:
     #label['MB'] = 'Jun 14th MinimumBias'
     #label['Jul16'] = 'Jul 16th'
     #label['Prompt'] = 'PromptReco'
-    file['dataJPT'] = path+'/cutflow_JPT_data.txt'
-    file['datacalo'] = path+'/cutflow_calo_data.txt'
-    file['dataJPTMET'] = path+'_MET/cutflow_JPT_data.txt'
-    file['datacaloMET'] = path+'_MET/cutflow_calo_data.txt'
-        
-    label['dataJPT'] = 'JPT Ref. Sel.'
-    label['datacalo'] = 'Calo Ref. Sel.'
-    label['dataJPTMET'] = 'JPT MET$>$20, Iso$<$0.1'
-    label['datacaloMET'] ='Calo MET$>$20, Iso$<$0.1'
-    
+    if os.path.isfile(path+'/cutflow_JPT_data.txt'):
+        file['dataJPT'] = path+'/cutflow_JPT_data.txt'
+        label['dataJPT'] = 'JPT Ref. Sel.'
+    if os.path.isfile(path+'/cutflow_calo_data.txt'):
+        file['datacalo'] = path+'/cutflow_calo_data.txt'
+        label['datacalo'] = 'Calo Ref. Sel.'
+    if os.path.isfile(path+'/cutflow_PF_data.txt'):
+        file['dataPF'] = path+'/cutflow_PF_data.txt'
+        label['dataPF'] = 'PF Ref. Sel.'
+    if os.path.isfile(path+'_MET/cutflow_JPT_data.txt'):
+        file['dataJPTMET'] = path+'_MET/cutflow_JPT_data.txt'
+        label['dataJPTMET'] = 'JPT MET$>$20, Iso$<$0.1'
+    if os.path.isfile(path+'_MET/cutflow_calo_data.txt'):    
+        file['datacaloMET'] = path+'_MET/cutflow_calo_data.txt'
+        label['datacaloMET'] = 'Calo MET$>$20, Iso$<$0.1'
+    if os.path.isfile(path+'_MET/cutflow_PF_data.txt'):
+        file['dataPFMET'] = path+'_MET/cutflow_PF_data.txt'
+        label['dataPFMET'] = 'PF MET$>$20, Iso$<$0.1'
+
+                    
     
 keys = file.keys()
 cutflow = {}
@@ -95,7 +105,7 @@ cutlabel['MET'] = 'MET'
 cutlabel['1Jet'] = '1 jet'
 cutlabel['2Jet'] = '2 jets'
 cutlabel['3Jet'] = '3 jets'
-cutlabel['4Jet'] = '\geq$4 jets'
+cutlabel['4Jet'] = '$\geq$4 jets'
 
 allmap = {}
 
@@ -144,13 +154,19 @@ cutflow["Total"] = allmap
 
 # write latex
 sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
+if IsMC:
+    cutlabel['CleanFilters'] = 'Processed'
 
          
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','Total']
+if Lumi<=0:
+    tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch']
+    
 if not IsMC:
     #tablelist = ['MB','Jun14','Jul16','Prompt','Total']
     tablelist = ['dataJPT','datacalo','dataJPTMET','datacaloMET']
-
+    tablelist = ['datacaloMET','dataJPTMET','dataPFMET']
+    
 texname = "cutflow_"+JetType+"_data.tex"
 
 if IsMC:
@@ -165,15 +181,19 @@ outtex.write('''
 \\begin{centering}
 ''')
 if IsMC:
-    outtex.write('\\begin{tabular}{|l|r|r|r|r|r|r|r|} \hline \n')
+    aline = '\\begin{tabular}{|l|r|r|r|r|r|r|r|} \hline \n'
+    if Lumi<=0:
+        aline = '\\begin{tabular}{|l|r|r|r|r|r|r|} \hline \n'
+    outtex.write(aline)
     #outtex.write('Cut & ttbar & Wjets & Zjets & QCD & STtch \hline')
     line = "Cut"
     for sample in tablelist:
         line += sss+label[sample]
     outtex.write(line+" \\\ \hline \n")
 else:
-    #outtex.write('\\begin{tabular}{|l|c|c|c|c|c|} \hline \n')
-    outtex.write('\\begin{tabular}{|l|r|r|r|r|} \hline \n')
+    aline = '\\begin{tabular}{|l|r|r|r|} \hline \n'
+    
+    outtex.write(aline)
     line = "Cut"
     for sample in tablelist:
         line += sss+label[sample]

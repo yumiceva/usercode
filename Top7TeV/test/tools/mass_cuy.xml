@@ -169,7 +169,7 @@
     <superimposeItem name="Mt_1jet_dataJPT" color="top" legend="Data"/>
     <superimposeItem name="Mt_1jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:1jetMM"/>
     <superimposeItem name="Mt_1jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="Mt_1jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM"/>
+    <superimposeItem name="Mt_1jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM" Error="1."/>
     <superimposeItem name="Mt_1jet_STJPT" color="top" legend="ST"/>
     <superimposeItem name="Mt_1jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
@@ -178,7 +178,7 @@
     <superimposeItem name="Mt_2jet_dataJPT" color="top" legend="Data"/>
     <superimposeItem name="Mt_2jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:2jetMM"/>
     <superimposeItem name="Mt_2jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:2jetMM"/>
-    <superimposeItem name="Mt_2jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:2jetMM"/>
+    <superimposeItem name="Mt_2jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:2jetMM" Error="1."/>
     <superimposeItem name="Mt_2jet_STJPT" color="top" legend="ST"/>
     <superimposeItem name="Mt_2jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
@@ -187,7 +187,7 @@
     <superimposeItem name="Mt_3jet_dataJPT" color="top" legend="Data"/>
     <superimposeItem name="Mt_3jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:3jetMM"/>
     <superimposeItem name="Mt_3jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:3jetMM"/>
-    <superimposeItem name="Mt_3jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:3jetMM"/>
+    <superimposeItem name="Mt_3jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:3jetMM" Error="1."/>
     <superimposeItem name="Mt_3jet_STJPT" color="top" legend="ST"/>
     <superimposeItem name="Mt_3jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
@@ -196,7 +196,7 @@
     <superimposeItem name="Mt_4jet_dataJPT" color="top" legend="Data"/>
     <superimposeItem name="Mt_4jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:4jetMM"/>
     <superimposeItem name="Mt_4jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:4jetMM"/>
-    <superimposeItem name="Mt_4jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:4jetMM"/>
+    <superimposeItem name="Mt_4jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:4jetMM" Error="1."/>
     <superimposeItem name="Mt_4jet_STJPT" color="top" legend="ST"/>
     <superimposeItem name="Mt_4jet_TTbarJPT" color="top" legend="TTbar"/>
   </superimpose>
