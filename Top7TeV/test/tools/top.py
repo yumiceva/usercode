@@ -92,6 +92,7 @@ printtxtfile = False
 OutputDir = "./"
 Flavor = 0
 FlavorStr = ""
+doReverseIso = False
 
 # check options
 option,args = parse(__doc__)
@@ -199,12 +200,16 @@ N500gev4j = 0
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
-datafilename = "Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
+datafilename = "Data/15.08pb-1/ttmuj_15.08pb-1_Oct22_new.root" #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
 #"Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
 #"Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 #datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/Sep17ReReco/Sep17ReReco.root"
+
+if dataType=="dataReverseIso":
+    doReverseIso = True
+    print "Apply reverse isolation"
 if dataType=="TTbar":
     datafilename = "MC/V00-01-04-03/TTbar_Mu.root"
 if dataType=="sync":
@@ -343,10 +348,34 @@ for jentry in xrange( entries ):
     
     for mu in muons:
 
-        #deltaR = mu.CalodeltaR
-        #if JetType == "JPT": deltaR = mu.JPTdeltaR
-        #if JetType == "PF": deltaR = mu.PFdeltaR
-        
+        # check if reverse isolation requested
+        if doReverseIso:
+
+            tmpp4Mu = TLorentzVector()
+            tmpp4Jet= TLorentzVector()
+            aDeltaR = 999
+            for jet in jets:
+                
+                if jet.pt>MinJetPt:
+                    tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
+                    tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
+                    tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
+                    if tmpdeltaR < 0.1 and JetType=="JPT": continue
+                    #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
+                    if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
+                                                                                                                                                                            
+            if mu.pt>20. and math.fabs(mu.eta)<2.1 and mu.IsTrackerMuon==1 and \
+               mu.muonhits>0 and mu.normchi2<10 and \
+               mu.trackerhits>=11 and mu.muonstations> 1 and \
+               mu.pixelhits >= 1 and \
+               math.fabs(mu.vz - PVz) >= 1. and aDeltaR>0.3 and \
+               math.fabs(mu.d0)>0.02 and mu.reliso03>0.1:
+
+                ntightmuons += 1
+                p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
+                hist.muons['reliso'].Fill(mu.reliso03)
+                continue                        
+                
         # check loose iso muons
         if mu.reliso03<0.2:
             nloosemuons +=1

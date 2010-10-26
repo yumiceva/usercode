@@ -66,7 +66,7 @@ if doLumi:
 
     
 for adir in dirs:
-    
+
     if os.path.isdir(path+"/"+adir):
         cmd = "cd "+path+"/"+adir
         os.chdir(path+"/"+adir)
@@ -94,9 +94,11 @@ for adir in dirs:
 
             if not os.path.isdir(adir+"/res/"):
                 print " no output files skip this dataset."
+                os.chdir(current)
                 continue
             if os.path.isfile(adir+".root"):
                 print " merged root file already exits. we will not merge again."
+                os.chdir(current)
                 continue
             listofroot = get_list_files(adir+"/res/")
             nfiles = 0
