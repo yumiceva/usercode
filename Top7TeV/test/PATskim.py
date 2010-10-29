@@ -240,12 +240,17 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 triggerprocess = "HLT"
 if inputType == "MC" and eventtype!="Wc": triggerprocess = "REDIGI" # for 36x MC
 
-process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
-                                     summary = cms.InputTag("hltTriggerSummaryAOD","",triggerprocess),
-                                     member  = cms .InputTag("hltSingleMu9L3Filtered9","",triggerprocess),
-                                     cut     = cms.string(""),
-                                     minN    = cms.int32(1)
-                                     )
+if channel=="muon":
+    mufilter = "hltSingleMu9L3Filtered9"
+    if eventtype == "TrigB":
+        mufilter = "hltSingleMu15L3Filtered15"
+        
+    process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
+                                         summary = cms.InputTag("hltTriggerSummaryAOD","",triggerprocess),
+                                         member  = cms .InputTag(mufilter,"",triggerprocess),
+                                         cut     = cms.string(""),
+                                         minN    = cms.int32(1)
+                                         )
 
 if channel=="electron":
     elefilter = "hltL1NonIsoHLTNonIsoSingleElectronLWEt10PixelMatchFilter"
@@ -258,6 +263,9 @@ if channel=="electron":
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt17CaloEleIdPixelMatchFilter"
     if eventtype == 'TrigE':
         elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt17TightEleIdDphiFilter"
+    if eventtype == 'TrigF':
+        elefilter = "hltL1NonIsoHLTNonIsoSingleElectronEt22TighterEleIdDphiFilter"
+                
     # the trigger filter will anyways be removed for MC     
     if inputType == "MC":
         elefilter = "hltL1NonIsoHLTNonIsoSinglePhotonEt10HcalIsolFilter"

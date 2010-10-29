@@ -23,6 +23,7 @@ class Hist:
 
         name = '_'+name
         self.CreateMuon(name)
+        self.CreateElectron(name)
         self.CreateMass(name)
         self.CreateMET(name)
         self.CreateMt(name)
@@ -76,13 +77,44 @@ class Hist:
         self.muons['reliso_2jet'] = TH1F("muon_reliso_2jet"+name,"Relative Isolation", 30, 0, 1.5)
         self.muons['reliso_3jet'] = TH1F("muon_reliso_3jet"+name,"Relative Isolation", 30, 0, 1.5)
         self.muons['reliso_4jet'] = TH1F("muon_reliso_4jet"+name,"Relative Isolation", 30, 0, 1.5)
-        self.muons['deltaR'] = TH1F("deltaR"+name,"#DeltaR(#mu,jet)",30, 0, 4)
+        self.muons['deltaR_cut0'] = TH1F("deltaR_cut0"+name,"#DeltaR(#mu,jet)",80, 0, 4)
+        self.muons['deltaR'] = TH1F("deltaR"+name,"#DeltaR(#mu,jet)",80, 0, 4)
         self.muons['d0_cut1'] = TH1F("d0_cut1"+name,"#mu Impact Parameter [cm]",20,-0.1,0.1)
         self.muons['pt_cut1'] = TH1F("muon_pt_cut1"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
         self.muons['pt_cut2'] = TH1F("muon_pt_cut2"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
         self.muons['dz'] = TH1F('dz'+name,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.)
         self.SetupXTitle(self.muons)
-                        
+
+    def CreateElectron(self, name):
+
+        self.electrons['pt'] = TH1F("electron_pt"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.electrons['pt_1jet'] = TH1F("electron_pt_1jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.electrons['pt_2jet'] = TH1F("electron_pt_2jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.electrons['pt_3jet'] = TH1F("electron_pt_3jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.electrons['pt_4jet'] = TH1F("electron_pt_4jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.electrons['eta'] = TH1F("electron_eta"+name,"#eta^{#mu}", 20, -2.1, 2.1)
+        self.electrons['eta_1jet'] = TH1F("electron_eta_1jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)
+        self.electrons['eta_2jet'] = TH1F("electron_eta_2jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)
+        self.electrons['eta_3jet'] = TH1F("electron_eta_3jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)
+        self.electrons['eta_4jet'] = TH1F("electron_eta_4jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)
+        self.electrons['phi'] = TH1F("electron_phi"+name,"#phi^{#mu}", 20, 0, 3.15)
+        self.electrons['phi_1jet'] = TH1F("electron_phi_1jet"+name,"#phi^{#mu}", 20, 0, 3.15)
+        self.electrons['phi_2jet'] = TH1F("electron_phi_2jet"+name,"#phi^{#mu}", 20, 0, 3.15)
+        self.electrons['phi_3jet'] = TH1F("electron_phi_3jet"+name,"#phi^{#mu}", 20, 0, 3.15)
+        self.electrons['phi_4jet'] = TH1F("electron_phi_4jet"+name,"#phi^{#mu}", 20, 0, 3.15)
+        self.electrons['reliso'] = TH1F("electron_reliso"+name,"Relative Isolation", 30, 0, 1.5)
+        self.electrons['reliso_1jet'] = TH1F("electron_reliso_1jet"+name,"Relative Isolation", 30, 0, 1.5)
+        self.electrons['reliso_2jet'] = TH1F("electron_reliso_2jet"+name,"Relative Isolation", 30, 0, 1.5)
+        self.electrons['reliso_3jet'] = TH1F("electron_reliso_3jet"+name,"Relative Isolation", 30, 0, 1.5)
+        self.electrons['reliso_4jet'] = TH1F("electron_reliso_4jet"+name,"Relative Isolation", 30, 0, 1.5)
+        self.electrons['deltaR_cut0'] = TH1F("electron_deltaR_cut0"+name,"#DeltaR(#mu,jet)",80, 0, 4)
+        self.electrons['deltaR'] = TH1F("electron_deltaR"+name,"#DeltaR(#mu,jet)",80, 0, 4)
+        self.electrons['d0_cut1'] = TH1F("electron_d0_cut1"+name,"#mu Impact Parameter [cm]",20,-0.1,0.1)
+        self.electrons['pt_cut1'] = TH1F("electron_pt_cut1"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
+        self.electrons['pt_cut2'] = TH1F("electron_pt_cut2"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
+        self.electrons['dz'] = TH1F('electron_dz'+name,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.)
+        self.SetupXTitle(self.electrons)
+        
     def CreateMass(self, name):
 
         self.M3['M3'] = TH1F("M3"+name,"M3 [GeV/c^{2}]", 40, 0, 1000)

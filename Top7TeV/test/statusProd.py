@@ -152,7 +152,7 @@ for adir in dirs:
                 cmd = "hadd "+adir+".root "+adir+"/res/*.root"
                 print cmd
                 output = commands.getstatusoutput(cmd)
-            
+                print output[0]
                 
     else:
         print "no status because crab was not run in directory "+adir

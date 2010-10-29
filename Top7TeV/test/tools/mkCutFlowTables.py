@@ -7,7 +7,7 @@ import sys,os, math
 path = "./"
 IsMC = False
 Lumi = 10.93 # in pb-1
-JetType = "JPT" #calo
+JetType = "PF" #calo
 
 if len(sys.argv) < 2:
     print "usage: mkCutFlowTables.py <path to files> <JPT/calo> <Lumi for MC>"
@@ -87,7 +87,7 @@ else:
         label['datacaloMET'] = 'Calo MET$>$20, Iso$<$0.1'
     if os.path.isfile(path+'_MET/cutflow_PF_data.txt'):
         file['dataPFMET'] = path+'_MET/cutflow_PF_data.txt'
-        label['dataPFMET'] = 'PF MET$>$20, Iso$<$0.1'
+        label['dataPFMET'] = 'PF MET$>$20, Iso$<$0.1, p^{jet}_{T}>25'
 
                     
     

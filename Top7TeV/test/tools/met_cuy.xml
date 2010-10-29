@@ -1,100 +1,119 @@
 <cuy>
 
-  <validation type="data" file="res_10.93pb-1_MET/top_plots_data_JPT.root" weight="1">
-    <TH1 name="met_dataJPT" source="/MET/MET_dataJPT"/>
-    <TH1 name="met_1jet_dataJPT" source="/MET/MET_1jet_dataJPT"/>
-    <TH1 name="met_2jet_dataJPT" source="/MET/MET_2jet_dataJPT"/>
-    <TH1 name="met_3jet_dataJPT" source="/MET/MET_3jet_dataJPT"/>
-    <TH1 name="met_4jet_dataJPT" source="/MET/MET_4jet_dataJPT"/>
-    <TH1 name="phi_dataJPT" source="/MET/MET_phi_dataJPT"/>
-    <TH1 name="ht_dataJPT" source="/MET/Ht_dataJPT"/>
-    <TH1 name="htlep_dataJPT" source="/MET/Htlep_dataJPT"/>
-    <TH1 name="LepW1j_dataJPT" source="/MET/LepWmass_1jet_dataJPT"/>
-    <TH1 name="LepW2j_dataJPT" source="/MET/LepWmass_2jet_dataJPT"/>
-    <TH1 name="LepW3j_dataJPT" source="/MET/LepWmass_3jet_dataJPT"/>
-    <TH1 name="LepW4j_dataJPT" source="/MET/LepWmass_4jet_dataJPT"/>
-    <TH1 name="LepWcomplex1j_dataJPT" source="/MET/LepWmassComplex_1jet_dataJPT"/>
-    <TH1 name="LepWcomplex2j_dataJPT" source="/MET/LepWmassComplex_2jet_dataJPT"/>
-    <TH1 name="LepWcomplex3j_dataJPT" source="/MET/LepWmassComplex_3jet_dataJPT"/>
-    <TH1 name="LepWcomplex4j_dataJPT" source="/MET/LepWmassComplex_4jet_dataJPT"/>
+  <validation type="data" file="res_10.93pb-1_MET/top_plots_data_PF.root" weight="1">
+    <TH1 name="met_dataPF" source="/MET/MET_dataPF"/>
+    <TH1 name="met_1jet_dataPF" source="/MET/MET_1jet_dataPF"/>
+    <TH1 name="met_2jet_dataPF" source="/MET/MET_2jet_dataPF"/>
+    <TH1 name="met_3jet_dataPF" source="/MET/MET_3jet_dataPF"/>
+    <TH1 name="met_4jet_dataPF" source="/MET/MET_4jet_dataPF"/>
+    <TH1 name="phi_dataPF" source="/MET/MET_phi_dataPF"/>
+    <TH1 name="ht_dataPF" source="/MET/Ht_dataPF"/>
+    <TH1 name="htlep_dataPF" source="/MET/Htlep_dataPF"/>
+    <TH1 name="LepW1j_dataPF" source="/MET/LepWmass_1jet_dataPF"/>
+    <TH1 name="LepW2j_dataPF" source="/MET/LepWmass_2jet_dataPF"/>
+    <TH1 name="LepW3j_dataPF" source="/MET/LepWmass_3jet_dataPF"/>
+    <TH1 name="LepW4j_dataPF" source="/MET/LepWmass_4jet_dataPF"/>
+    <TH1 name="LepWcomplex1j_dataPF" source="/MET/LepWmassComplex_1jet_dataPF"/>
+    <TH1 name="LepWcomplex2j_dataPF" source="/MET/LepWmassComplex_2jet_dataPF"/>
+    <TH1 name="LepWcomplex3j_dataPF" source="/MET/LepWmassComplex_3jet_dataPF"/>
+    <TH1 name="LepWcomplex4j_dataPF" source="/MET/LepWmassComplex_4jet_dataPF"/>
   </validation>
 
-  <validation type="TTbar" file="res_10.93pb-1_MET/top_plots_TTbar_JPT.root" weight="0.0001061747170696587">
-    <TH1 name="met_TTbarJPT" source="/MET/MET_TTbarJPT"/>
-    <TH1 name="met_1jet_TTbarJPT" source="/MET/MET_1jet_TTbarJPT"/>
-    <TH1 name="met_2jet_TTbarJPT" source="/MET/MET_2jet_TTbarJPT"/>
-    <TH1 name="met_3jet_TTbarJPT" source="/MET/MET_3jet_TTbarJPT"/>
-    <TH1 name="met_4jet_TTbarJPT" source="/MET/MET_4jet_TTbarJPT"/>
-    <TH1 name="phi_TTbarJPT" source="/MET/MET_phi_TTbarJPT"/>
-    <TH1 name="ht_TTbarJPT" source="/MET/Ht_TTbarJPT"/>
-    <TH1 name="htlep_TTbarJPT" source="/MET/Htlep_TTbarJPT"/>
-    <TH1 name="LepW1j_TTbarJPT" source="/MET/LepWmass_1jet_TTbarJPT"/>
-    <TH1 name="LepW2j_TTbarJPT" source="/MET/LepWmass_2jet_TTbarJPT"/>
-    <TH1 name="LepW3j_TTbarJPT" source="/MET/LepWmass_3jet_TTbarJPT"/>
-    <TH1 name="LepW4j_TTbarJPT" source="/MET/LepWmass_4jet_TTbarJPT"/>
-    <TH1 name="LepWcomplex1j_TTbarJPT" source="/MET/LepWmassComplex_1jet_TTbarJPT"/>
-    <TH1 name="LepWcomplex2j_TTbarJPT" source="/MET/LepWmassComplex_2jet_TTbarJPT"/>
-    <TH1 name="LepWcomplex3j_TTbarJPT" source="/MET/LepWmassComplex_3jet_TTbarJPT"/>
-    <TH1 name="LepWcomplex4j_TTbarJPT" source="/MET/LepWmassComplex_4jet_TTbarJPT"/>
+  <validation type="dataReverse" file="res_10.93pb-1_MET/top_plots_dataReverse_PF.root" weight="1">
+    <TH1 name="met_dataReversePF" source="/MET/MET_dataReversePF"/>
+    <TH1 name="met_1jet_dataReversePF" source="/MET/MET_1jet_dataReversePF"/>
+    <TH1 name="met_2jet_dataReversePF" source="/MET/MET_2jet_dataReversePF"/>
+    <TH1 name="met_3jet_dataReversePF" source="/MET/MET_3jet_dataReversePF"/>
+    <TH1 name="met_4jet_dataReversePF" source="/MET/MET_4jet_dataReversePF"/>
+    <TH1 name="phi_dataReversePF" source="/MET/MET_phi_dataReversePF"/>
+    <TH1 name="ht_dataReversePF" source="/MET/Ht_dataReversePF"/>
+    <TH1 name="htlep_dataReversePF" source="/MET/Htlep_dataReversePF"/>
+    <TH1 name="LepW1j_dataReversePF" source="/MET/LepWmass_1jet_dataReversePF"/>
+    <TH1 name="LepW2j_dataReversePF" source="/MET/LepWmass_2jet_dataReversePF"/>
+    <TH1 name="LepW3j_dataReversePF" source="/MET/LepWmass_3jet_dataReversePF"/>
+    <TH1 name="LepW4j_dataReversePF" source="/MET/LepWmass_4jet_dataReversePF"/>
+    <TH1 name="LepWcomplex1j_dataReversePF" source="/MET/LepWmassComplex_1jet_dataReversePF"/>
+    <TH1 name="LepWcomplex2j_dataReversePF" source="/MET/LepWmassComplex_2jet_dataReversePF"/>
+    <TH1 name="LepWcomplex3j_dataReversePF" source="/MET/LepWmassComplex_3jet_dataReversePF"/>
+    <TH1 name="LepWcomplex4j_dataReversePF" source="/MET/LepWmassComplex_4jet_dataReversePF"/>
   </validation>
 
-  <validation type="Wjets" file="res_10.93pb-1_MET/top_plots_Wjets_JPT.root" weight="0.0031099738352619627">
-    <TH1 name="met_WjetsJPT" source="/MET/MET_WjetsJPT"/>
-    <TH1 name="met_1jet_WjetsJPT" source="/MET/MET_1jet_WjetsJPT"/>
-    <TH1 name="met_2jet_WjetsJPT" source="/MET/MET_2jet_WjetsJPT"/>
-    <TH1 name="met_3jet_WjetsJPT" source="/MET/MET_3jet_WjetsJPT"/>
-    <TH1 name="met_4jet_WjetsJPT" source="/MET/MET_4jet_WjetsJPT"/>
-    <TH1 name="phi_WjetsJPT" source="/MET/MET_phi_WjetsJPT"/>
-    <TH1 name="ht_WjetsJPT" source="/MET/Ht_WjetsJPT"/>
-    <TH1 name="htlep_WjetsJPT" source="/MET/Htlep_WjetsJPT"/>
-    <TH1 name="LepW1j_WjetsJPT" source="/MET/LepWmass_1jet_WjetsJPT"/>
-    <TH1 name="LepW2j_WjetsJPT" source="/MET/LepWmass_2jet_WjetsJPT"/>
-    <TH1 name="LepW3j_WjetsJPT" source="/MET/LepWmass_3jet_WjetsJPT"/>
-    <TH1 name="LepW4j_WjetsJPT" source="/MET/LepWmass_4jet_WjetsJPT"/>
-    <TH1 name="LepWcomplex1j_WjetsJPT" source="/MET/LepWmassComplex_1jet_WjetsJPT"/>
-    <TH1 name="LepWcomplex2j_WjetsJPT" source="/MET/LepWmassComplex_2jet_WjetsJPT"/>
-    <TH1 name="LepWcomplex3j_WjetsJPT" source="/MET/LepWmassComplex_3jet_WjetsJPT"/>
-    <TH1 name="LepWcomplex4j_WjetsJPT" source="/MET/LepWmassComplex_4jet_WjetsJPT"/>
+  <validation type="TTbar" file="res_10.93pb-1_MET/top_plots_TTbar_PF.root" weight="0.0001061747170696587">
+    <TH1 name="met_TTbarPF" source="/MET/MET_TTbarPF"/>
+    <TH1 name="met_1jet_TTbarPF" source="/MET/MET_1jet_TTbarPF"/>
+    <TH1 name="met_2jet_TTbarPF" source="/MET/MET_2jet_TTbarPF"/>
+    <TH1 name="met_3jet_TTbarPF" source="/MET/MET_3jet_TTbarPF"/>
+    <TH1 name="met_4jet_TTbarPF" source="/MET/MET_4jet_TTbarPF"/>
+    <TH1 name="phi_TTbarPF" source="/MET/MET_phi_TTbarPF"/>
+    <TH1 name="ht_TTbarPF" source="/MET/Ht_TTbarPF"/>
+    <TH1 name="htlep_TTbarPF" source="/MET/Htlep_TTbarPF"/>
+    <TH1 name="LepW1j_TTbarPF" source="/MET/LepWmass_1jet_TTbarPF"/>
+    <TH1 name="LepW2j_TTbarPF" source="/MET/LepWmass_2jet_TTbarPF"/>
+    <TH1 name="LepW3j_TTbarPF" source="/MET/LepWmass_3jet_TTbarPF"/>
+    <TH1 name="LepW4j_TTbarPF" source="/MET/LepWmass_4jet_TTbarPF"/>
+    <TH1 name="LepWcomplex1j_TTbarPF" source="/MET/LepWmassComplex_1jet_TTbarPF"/>
+    <TH1 name="LepWcomplex2j_TTbarPF" source="/MET/LepWmassComplex_2jet_TTbarPF"/>
+    <TH1 name="LepWcomplex3j_TTbarPF" source="/MET/LepWmassComplex_3jet_TTbarPF"/>
+    <TH1 name="LepWcomplex4j_TTbarPF" source="/MET/LepWmassComplex_4jet_TTbarPF"/>
+  </validation>
+
+  <validation type="Wjets" file="res_10.93pb-1_MET/top_plots_Wjets_PF.root" weight="0.0031099738352619627">
+    <TH1 name="met_WjetsPF" source="/MET/MET_WjetsPF"/>
+    <TH1 name="met_1jet_WjetsPF" source="/MET/MET_1jet_WjetsPF"/>
+    <TH1 name="met_2jet_WjetsPF" source="/MET/MET_2jet_WjetsPF"/>
+    <TH1 name="met_3jet_WjetsPF" source="/MET/MET_3jet_WjetsPF"/>
+    <TH1 name="met_4jet_WjetsPF" source="/MET/MET_4jet_WjetsPF"/>
+    <TH1 name="phi_WjetsPF" source="/MET/MET_phi_WjetsPF"/>
+    <TH1 name="ht_WjetsPF" source="/MET/Ht_WjetsPF"/>
+    <TH1 name="htlep_WjetsPF" source="/MET/Htlep_WjetsPF"/>
+    <TH1 name="LepW1j_WjetsPF" source="/MET/LepWmass_1jet_WjetsPF"/>
+    <TH1 name="LepW2j_WjetsPF" source="/MET/LepWmass_2jet_WjetsPF"/>
+    <TH1 name="LepW3j_WjetsPF" source="/MET/LepWmass_3jet_WjetsPF"/>
+    <TH1 name="LepW4j_WjetsPF" source="/MET/LepWmass_4jet_WjetsPF"/>
+    <TH1 name="LepWcomplex1j_WjetsPF" source="/MET/LepWmassComplex_1jet_WjetsPF"/>
+    <TH1 name="LepWcomplex2j_WjetsPF" source="/MET/LepWmassComplex_2jet_WjetsPF"/>
+    <TH1 name="LepWcomplex3j_WjetsPF" source="/MET/LepWmassComplex_3jet_WjetsPF"/>
+    <TH1 name="LepWcomplex4j_WjetsPF" source="/MET/LepWmassComplex_4jet_WjetsPF"/>
 
   </validation>
 
-  <validation type="Zjets" file="res_10.93pb-1_MET/top_plots_Zjets_JPT.root" weight="0.0028094211467931765">
-    <TH1 name="met_ZjetsJPT" source="/MET/MET_ZjetsJPT"/>
-    <TH1 name="met_1jet_ZjetsJPT" source="/MET/MET_1jet_ZjetsJPT"/>
-    <TH1 name="met_2jet_ZjetsJPT" source="/MET/MET_2jet_ZjetsJPT"/>
-    <TH1 name="met_3jet_ZjetsJPT" source="/MET/MET_3jet_ZjetsJPT"/>
-    <TH1 name="met_4jet_ZjetsJPT" source="/MET/MET_4jet_ZjetsJPT"/>
-    <TH1 name="phi_ZjetsJPT" source="/MET/MET_phi_ZjetsJPT"/>
-    <TH1 name="ht_ZjetsJPT" source="/MET/Ht_ZjetsJPT"/>
-    <TH1 name="htlep_ZjetsJPT" source="/MET/Htlep_ZjetsJPT"/>
-    <TH1 name="LepW1j_ZjetsJPT" source="/MET/LepWmass_1jet_ZjetsJPT"/>
-    <TH1 name="LepW2j_ZjetsJPT" source="/MET/LepWmass_2jet_ZjetsJPT"/>
-    <TH1 name="LepW3j_ZjetsJPT" source="/MET/LepWmass_3jet_ZjetsJPT"/>
-    <TH1 name="LepW4j_ZjetsJPT" source="/MET/LepWmass_4jet_ZjetsJPT"/>
-    <TH1 name="LepWcomplex1j_ZjetsJPT" source="/MET/LepWmassComplex_1jet_ZjetsJPT"/>
-    <TH1 name="LepWcomplex2j_ZjetsJPT" source="/MET/LepWmassComplex_2jet_ZjetsJPT"/>
-    <TH1 name="LepWcomplex3j_ZjetsJPT" source="/MET/LepWmassComplex_3jet_ZjetsJPT"/>
-    <TH1 name="LepWcomplex4j_ZjetsJPT" source="/MET/LepWmassComplex_4jet_ZjetsJPT"/>
+  <validation type="Zjets" file="res_10.93pb-1_MET/top_plots_Zjets_PF.root" weight="0.0028094211467931765">
+    <TH1 name="met_ZjetsPF" source="/MET/MET_ZjetsPF"/>
+    <TH1 name="met_1jet_ZjetsPF" source="/MET/MET_1jet_ZjetsPF"/>
+    <TH1 name="met_2jet_ZjetsPF" source="/MET/MET_2jet_ZjetsPF"/>
+    <TH1 name="met_3jet_ZjetsPF" source="/MET/MET_3jet_ZjetsPF"/>
+    <TH1 name="met_4jet_ZjetsPF" source="/MET/MET_4jet_ZjetsPF"/>
+    <TH1 name="phi_ZjetsPF" source="/MET/MET_phi_ZjetsPF"/>
+    <TH1 name="ht_ZjetsPF" source="/MET/Ht_ZjetsPF"/>
+    <TH1 name="htlep_ZjetsPF" source="/MET/Htlep_ZjetsPF"/>
+    <TH1 name="LepW1j_ZjetsPF" source="/MET/LepWmass_1jet_ZjetsPF"/>
+    <TH1 name="LepW2j_ZjetsPF" source="/MET/LepWmass_2jet_ZjetsPF"/>
+    <TH1 name="LepW3j_ZjetsPF" source="/MET/LepWmass_3jet_ZjetsPF"/>
+    <TH1 name="LepW4j_ZjetsPF" source="/MET/LepWmass_4jet_ZjetsPF"/>
+    <TH1 name="LepWcomplex1j_ZjetsPF" source="/MET/LepWmassComplex_1jet_ZjetsPF"/>
+    <TH1 name="LepWcomplex2j_ZjetsPF" source="/MET/LepWmassComplex_2jet_ZjetsPF"/>
+    <TH1 name="LepWcomplex3j_ZjetsPF" source="/MET/LepWmassComplex_3jet_ZjetsPF"/>
+    <TH1 name="LepWcomplex4j_ZjetsPF" source="/MET/LepWmassComplex_4jet_ZjetsPF"/>
 
   </validation>
 
-  <validation type="QCD" file="res_10.93pb-1_MET/top_plots_QCD_JPT.root" weight="0.018205299430890203">
-    <TH1 name="met_QCDJPT" source="/MET/MET_QCDJPT"/>
-    <TH1 name="met_1jet_QCDJPT" source="/MET/MET_1jet_QCDJPT"/>
-    <TH1 name="met_2jet_QCDJPT" source="/MET/MET_2jet_QCDJPT"/>
-    <TH1 name="met_3jet_QCDJPT" source="/MET/MET_3jet_QCDJPT"/>
-    <TH1 name="met_4jet_QCDJPT" source="/MET/MET_4jet_QCDJPT"/>
-    <TH1 name="phi_QCDJPT" source="/MET/MET_phi_QCDJPT"/>
-    <TH1 name="ht_QCDJPT" source="/MET/Ht_QCDJPT"/>
-    <TH1 name="htlep_QCDJPT" source="/MET/Htlep_QCDJPT"/>
-    <TH1 name="LepW1j_QCDJPT" source="/MET/LepWmass_1jet_QCDJPT"/>
-    <TH1 name="LepW2j_QCDJPT" source="/MET/LepWmass_2jet_QCDJPT"/>
-    <TH1 name="LepW3j_QCDJPT" source="/MET/LepWmass_3jet_QCDJPT"/>
-    <TH1 name="LepW4j_QCDJPT" source="/MET/LepWmass_4jet_QCDJPT"/>
-    <TH1 name="LepWcomplex1j_QCDJPT" source="/MET/LepWmassComplex_1jet_QCDJPT"/>
-    <TH1 name="LepWcomplex2j_QCDJPT" source="/MET/LepWmassComplex_2jet_QCDJPT"/>
-    <TH1 name="LepWcomplex3j_QCDJPT" source="/MET/LepWmassComplex_3jet_QCDJPT"/>
-    <TH1 name="LepWcomplex4j_QCDJPT" source="/MET/LepWmassComplex_4jet_QCDJPT"/>
+  <validation type="QCD" file="res_10.93pb-1_MET/top_plots_QCD_PF.root" weight="0.018205299430890203">
+    <TH1 name="met_QCDPF" source="/MET/MET_QCDPF"/>
+    <TH1 name="met_1jet_QCDPF" source="/MET/MET_1jet_QCDPF"/>
+    <TH1 name="met_2jet_QCDPF" source="/MET/MET_2jet_QCDPF"/>
+    <TH1 name="met_3jet_QCDPF" source="/MET/MET_3jet_QCDPF"/>
+    <TH1 name="met_4jet_QCDPF" source="/MET/MET_4jet_QCDPF"/>
+    <TH1 name="phi_QCDPF" source="/MET/MET_phi_QCDPF"/>
+    <TH1 name="ht_QCDPF" source="/MET/Ht_QCDPF"/>
+    <TH1 name="htlep_QCDPF" source="/MET/Htlep_QCDPF"/>
+    <TH1 name="LepW1j_QCDPF" source="/MET/LepWmass_1jet_QCDPF"/>
+    <TH1 name="LepW2j_QCDPF" source="/MET/LepWmass_2jet_QCDPF"/>
+    <TH1 name="LepW3j_QCDPF" source="/MET/LepWmass_3jet_QCDPF"/>
+    <TH1 name="LepW4j_QCDPF" source="/MET/LepWmass_4jet_QCDPF"/>
+    <TH1 name="LepWcomplex1j_QCDPF" source="/MET/LepWmassComplex_1jet_QCDPF"/>
+    <TH1 name="LepWcomplex2j_QCDPF" source="/MET/LepWmassComplex_2jet_QCDPF"/>
+    <TH1 name="LepWcomplex3j_QCDPF" source="/MET/LepWmassComplex_3jet_QCDPF"/>
+    <TH1 name="LepWcomplex4j_QCDPF" source="/MET/LepWmassComplex_4jet_QCDPF"/>
 
   </validation>
 
@@ -103,131 +122,135 @@
 -->
 
   <superimpose name="met" title="met" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
-    <superimposeItem name="met_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="met_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="met_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:0jetinclusiveMM"/>
-    <superimposeItem name="met_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:0jetinclusiveMM" Error="1."/>
-    <superimposeItem name="met_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="met_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="met_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>
+    <superimposeItem name="met_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="met_1jet" title="met_1jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=1" PlotDiff="true">
-    <superimposeItem name="met_1jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="met_1jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_1jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_1jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM" Error="1."/>
-    <superimposeItem name="met_1jet_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="met_1jet_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="met_1jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_1jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_1jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>
+<!--    <superimposeItem name="met_1jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="358." Error="0.5"/>-->
+    <superimposeItem name="met_1jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="met_2jet" title="met_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=2" PlotDiff="true">
-    <superimposeItem name="met_2jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="met_2jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_2jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_2jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM" Error="1."/>
-    <superimposeItem name="met_2jet_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="met_2jet_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="met_2jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_2jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_2jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>
+<!--    <superimposeItem name="met_2jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="79." Error="0.5"/>-->
+    <superimposeItem name="met_2jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="met_3jet" title="met_3jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=3" PlotDiff="true">
-    <superimposeItem name="met_3jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="met_3jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_3jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_3jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM" Error="1."/>
-    <superimposeItem name="met_3jet_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="met_3jet_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="met_3jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_3jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_3jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>
+<!--    <superimposeItem name="met_3jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="26." Error="0.5"/>-->
+    <superimposeItem name="met_3jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="met_4jet" title="met_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" PlotDiff="true">
-    <superimposeItem name="met_4jet_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="met_4jet_WjetsJPT" color="top" legend="Wjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_4jet_ZjetsJPT" color="top" legend="Zjets" SF="SF_JPT_MET.txt:1jetMM"/>
-    <superimposeItem name="met_4jet_QCDJPT" color="top" legend="QCD" SF="SF_JPT_MET.txt:1jetMM" Error="1."/>
-    <superimposeItem name="met_4jet_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="met_4jet_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="met_4jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_4jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="met_4jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>
+<!--    <superimposeItem name="met_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="11." Error="0.5"/>-->
+    <superimposeItem name="met_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="phi" title="phi" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
-    <superimposeItem name="phi_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="phi_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="phi_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="phi_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="phi_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="phi_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="phi_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="phi_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="phi_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="phi_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="ht" title="ht" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
-    <superimposeItem name="ht_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="ht_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="ht_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="ht_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="ht_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="ht_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="ht_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="ht_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="ht_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="ht_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="htlep" title="htlep" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
-    <superimposeItem name="htlep_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="htlep_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="htlep_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="htlep_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="htlep_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="htlep_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="htlep_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="htlep_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="htlep_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="htlep_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepW1j" title="LepW1j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=1">
-    <superimposeItem name="LepW1j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepW1j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepW1j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepW1j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepW1j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepW1j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepW1j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW1j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW1j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepW1j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepW2j" title="LepW2j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=2">
-    <superimposeItem name="LepW2j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepW2j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepW2j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepW2j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepW2j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepW2j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepW2j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW2j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW2j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepW2j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepW3j" title="LepW3j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=3">
-    <superimposeItem name="LepW3j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepW3j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepW3j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepW3j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepW3j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepW3j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepW3j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW3j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW3j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepW3j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepW4j" title="LepW4j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4">
-    <superimposeItem name="LepW4j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepW4j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepW4j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepW4j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepW4j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepW4j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepW4j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepW4j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepW4j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepW4j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepWcomplex1j" title="LepWcomplex1j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=1">
-    <superimposeItem name="LepWcomplex1j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepWcomplex1j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepWcomplex1j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepWcomplex1j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepWcomplex1j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepWcomplex1j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex1j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex1j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex1j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex1j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepWcomplex2j" title="LepWcomplex2j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=2">
-    <superimposeItem name="LepWcomplex2j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepWcomplex2j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepWcomplex2j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepWcomplex2j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepWcomplex2j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepWcomplex2j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex2j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex2j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex2j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex2j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepWcomplex3j" title="LepWcomplex3j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=3">
-    <superimposeItem name="LepWcomplex3j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepWcomplex3j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepWcomplex3j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepWcomplex3j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepWcomplex3j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepWcomplex3j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex3j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex3j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex3j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex3j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="LepWcomplex4j" title="LepWcomplex4j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=4">
-    <superimposeItem name="LepWcomplex4j_dataJPT" color="top" legend="Data"/>
-    <superimposeItem name="LepWcomplex4j_WjetsJPT" color="top" legend="Wjets"/>
-    <superimposeItem name="LepWcomplex4j_ZjetsJPT" color="top" legend="Zjets"/>
-    <superimposeItem name="LepWcomplex4j_QCDJPT" color="top" legend="QCD"/>
-    <superimposeItem name="LepWcomplex4j_TTbarJPT" color="top" legend="TTbar"/>
+    <superimposeItem name="LepWcomplex4j_dataPF" color="top" legend="Data"/>
+    <superimposeItem name="LepWcomplex4j_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="LepWcomplex4j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="LepWcomplex4j_QCDPF" color="top" legend="QCD"/>
+    <superimposeItem name="LepWcomplex4j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
 

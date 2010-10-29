@@ -17,3 +17,22 @@ Wjets 4jetIKS 1.22
 Zjets 4jetIKS 1.22
 QCD 4jetIKS 4.61
 #####################
+# MM
+# 1
+Wjets 1jetMM 0.99
+Zjets 1jetMM 0.99
+QCD 1jetMM 2.63
+# 2
+Wjets 2jetMM 1.19
+Zjets 2jetMM 1.19
+QCD 2jetMM 1.84
+# 3
+Wjets 3jetMM 1.24
+Zjets 3jetMM 1.24
+QCD 3jetMM 3.25
+# 4
+Wjets 4jetMM 1.12
+Zjets 4jetMM 1.12
+QCD 4jetMM 7.91
+#####################
+
