@@ -155,6 +155,7 @@ class superimposeElement:
 	self.weight = []
         self.SF = []
         self.Error = []
+        self.Norm = []
 
 class FindIssue(handler.ContentHandler):
     def __init__(self):
@@ -239,6 +240,8 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[self.tmpsupername].legend.append(attrs.get('legend',None))
 	    self.superimpose[self.tmpsupername].SF.append(attrs.get('SF',None))
             self.superimpose[self.tmpsupername].Error.append(attrs.get('Error',None))
+            self.superimpose[self.tmpsupername].Norm.append(attrs.get('Normalize',None))
+            
 if __name__ == '__main__':
 
 
@@ -720,6 +723,8 @@ if __name__ == '__main__':
                                     print " with binned SF = "
                                     print SFforallbins
                                 if listlegend[ii]=="Data": aweight = 1.
+                                if ath.GetName().find("data")!=-1: aweight = aSF
+                                
 			if verbose: print " with weight = " + str(aweight)
 			#if listweight[ii]:
 			 #   aweight = float( listweight[ii] )
@@ -728,6 +733,12 @@ if __name__ == '__main__':
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
 
                         newth.Sumw2()
+                        
+                        print listofnorm
+                        if listofnorm[ii] == "true":
+                            newth.Scale(1./newth.GetEntries())
+                            if verbose: print " histogram has been normalized before applying weight"
+                            
 			newth.Scale(aweight)
 			
 			# check if we have color
