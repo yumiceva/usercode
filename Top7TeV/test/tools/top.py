@@ -169,12 +169,12 @@ gROOT.ProcessLine('.L LoadTLV.C+')
 # output txt file
 txtfilename = "2jetevents_"+JetType+"_"+dataType+".txt"
 txtfile = None
-if printlistofruns:
+if printtxtfile:
     txtfile = file(OutputDir+"/"+txtfilename,"w")
 
 runfilename = "2jetList_"+JetType+"_"+dataType+".txt"
 runfile= None
-if printtxtfile:
+if printlistofruns:
     runfile = file(OutputDir+"/"+runfilename,"w")
 
         
@@ -275,6 +275,8 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
+    if ientry > 100000: break
+    
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
             
@@ -370,7 +372,7 @@ for jentry in xrange( entries ):
                mu.trackerhits>=11 and mu.muonstations> 1 and \
                mu.pixelhits >= 1 and \
                math.fabs(mu.vz - PVz) >= 1. and aDeltaR>0.3 and \
-               ( (math.fabs(mu.d0)>0.02 and mu.reliso03<0.1) or (math.fabs(mu.d0)<0.02 and mu.reliso03>0.1)):
+               ( math.fabs(mu.d0)>0.02 or mu.reliso03>0.1 ):
 
                 ntightmuons += 1
                 p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
@@ -378,7 +380,7 @@ for jentry in xrange( entries ):
                 continue                        
 
         if doReverseIso: continue
-        print "here"
+        
         # check loose iso muons
         if mu.reliso03<0.2:
             nloosemuons +=1
@@ -440,6 +442,8 @@ for jentry in xrange( entries ):
     if nelec > 0 : continue
     cutmap['ElectronVeto'] += 1
 
+    hist.MET['phi_cut0'].Fill( p4MET.Phi() )
+    
     # MET cut if requested
     if p4MET.Et() <= METCut:
         continue
@@ -547,12 +551,16 @@ for jentry in xrange( entries ):
         hist.jets['Njets'].Fill(1)
         hist.muons['pt_1jet'].Fill( p4muon.Pt() )
         hist.Mt['Mt_1jet'].Fill( WMt )
+        hist.MET['Ht_1jet'].Fill( Ht )
+        hist.MET['Htlep_1jet'].Fill(p4MET.Pt() + p4muon.Pt())            
         hist.MET['MET_1jet'].Fill( p4MET.Pt() )
     if njets == 2:
         cutmap['2Jet'] += 1
         hist.jets['Njets'].Fill(2)
         hist.muons['pt_2jet'].Fill( p4muon.Pt() )
         hist.Mt['Mt_2jet'].Fill( WMt )
+        hist.MET['Ht_2jet'].Fill( Ht )
+        hist.MET['Htlep_2jet'].Fill(p4MET.Pt() + p4muon.Pt())        
         hist.MET['MET_2jet'].Fill( p4MET.Pt() )
     if njets == 3:
         cutmap['3Jet'] += 1
@@ -603,6 +611,8 @@ for jentry in xrange( entries ):
         cutmap['4Jet'] += 1
         hist.jets['Njets'].Fill(4)
         hist.Mt['Mt_4jet'].Fill( WMt )
+        hist.MET['Ht_4jet'].Fill( Ht )
+        hist.MET['Htlep_4jet'].Fill(p4MET.Pt() + p4muon.Pt())                
         hist.MET['MET_4jet'].Fill( p4MET.Pt() )
         hist.muons['pt_4jet'].Fill( p4muon.Pt() )
         

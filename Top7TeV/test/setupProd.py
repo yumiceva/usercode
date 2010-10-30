@@ -51,6 +51,11 @@ directoriesMuMC['QCD_Mu'] = '/InclusiveMu15/Spring10-START3X_V26_S09-v1/GEN-SIM-
 directoriesMuMC['Wc_Mu'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SIM-RECO'
 directoriesMuMC['Vqq_Mu'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 
+# run these samples with condor_g in unl
+directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['TTbar_matchingup_Mu'] = '/TTJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
+directoriesMuMC['TTbar_matchingdown_Mu'] = '/TTJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
 
 directoriesElData['TrigA'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
 directoriesElData['TrigB'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
@@ -227,6 +232,35 @@ jobtype = cmssw
 scheduler = condor
 '''
 
+crabMCg = '''
+[CMSSW]
+datasetpath = %(DATASET)s
+pset = PATskim.py
+total_number_of_events = -1
+events_per_job = 25000
+
+[USER]
+return_data = 1
+copy_data = 0
+ui_working_dir = %(DIR)s
+storage_element = cmssrm.fnal.gov
+storage_path = /srm/managerv2?SFN=/11/
+user_remote_dir = /store/user/ttmuj/
+publish_data = 0
+publish_data_name = Summer10_363_v2
+dbs_url_for_publication = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+check_user_remote_dir = 0
+
+[CRAB]
+jobtype = cmssw
+scheduler = condor_g
+
+[EDG]
+se_white_list = unl
+
+'''
+
+
 fcrab_data = open("launch_crab_data.csh","w")
 fcrab_mc = open("launch_crab_mc.csh","w")
 
@@ -262,11 +296,18 @@ if DoMuons:
     for dir in directoriesMuMC.keys():
 
         adict = {}
+        docondorg = False
         adict['DATASET'] = directoriesMuMC[dir]
+        if directoriesMuMC[dir].find(":g")!=-1:
+            docondorg = True
+            adict['DATASET'] = directoriesMuMC[dir].strip(":g")
+        
         adict['DIR'] = dir
     
         acrab = crabMC%adict
-    
+        if docondorg:
+            acrab = crabMCg%adict
+            
         fileout = open(path+"/"+dir+"/crab.cfg","w")
         fileout.writelines(acrab)
         fileout.close()
