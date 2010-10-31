@@ -733,8 +733,8 @@ if __name__ == '__main__':
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
 
                         newth.Sumw2()
-                        
-                        print listofnorm
+                        listofnorm = thesuper[ikey].Norm
+                        #print listofnorm
                         if listofnorm[ii] == "true":
                             newth.Scale(1./newth.GetEntries())
                             if verbose: print " histogram has been normalized before applying weight"
