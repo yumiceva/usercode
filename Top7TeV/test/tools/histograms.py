@@ -131,8 +131,8 @@ class Hist:
         self.M3['M3chi2_normchi2_2nd'] = TH1F("M3chi2_normchi2_2nd"+name,"#chi^{2}/ndof",30,0,30)
         self.M3['M3chi2_normchi2_3th'] = TH1F("M3chi2_normchi2_3th"+name,"#chi^{2}/ndof",30,0,30)
         self.M3['M3chi2_normchi2_4th'] = TH1F("M3chi2_normchi2_4th"+name,"#chi^{2}/ndof",30,0,30)
-        self.M3['Mttbar_chi2'] = TH1F('Mttbar_chi2'+name,"m_{t#bar{t}} [GeV]",28,200,1600)
-
+        self.M3['Mttbar_chi2'] = TH1F('Mttbar_chi2'+name,"m_{t#bar{t}} [GeV/c^{2}]",28,200,1600)
+        self.M3['pt_ttbar'] = TH1F("pt_ttbar"+name,"p_{T}(t#bar{t}) [GeV]",50,0,1000)
         self.SetupXTitle(self.M3)
                         
     def CreateMET(self, name):

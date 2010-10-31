@@ -200,7 +200,8 @@ N500gev4j = 0
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
-datafilename = "Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
+datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
+#"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/15.08pb-1/ttmuj_15.08pb-1_Oct22_new.root" #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
 #"Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
@@ -212,24 +213,24 @@ if dataType=="dataReverse":
     doReverseIso = True
     print "Apply reverse isolation"
 if dataType=="TTbar":
-    datafilename = "MC/V00-01-04-03/TTbar_Mu.root"
+    datafilename = "MC/V00-01-04-07/TTbar_Mu.root"
 if dataType=="sync":
     datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root"
     data_repo = ""
 if dataType=="Wjets":
-    datafilename = "MC/V00-01-04-04/WJets_Mu.root"
+    datafilename = "MC/V00-01-04-07/WJets_Mu.root"
 if dataType=="Zjets":
-    datafilename = "MC/V00-01-04-04/ZJets_Mu.root"
+    datafilename = "MC/V00-01-04-07/ZJets_Mu.root"
 if dataType=="QCD":
-    datafilename = "MC/V00-01-04-03/QCD_Mu.root"
+    datafilename = "MC/V00-01-04-07/QCD_Mu.root"
 if dataType=="STtch":
-    datafilename = "MC/V00-01-04-03/STtch_Mu.root"
+    datafilename = "MC/V00-01-04-07/STtch_Mu.root"
 if dataType=="STtWch":
-    datafilename = "MC/V00-01-04-03/STtWch_Mu.root"
+    datafilename = "MC/V00-01-04-07/STtWch_Mu.root"
 if dataType=="Wc":
-    datafilename = "MC/V00-01-04-04/Wc_Mu.root"
+    datafilename = "MC/V00-01-04-07/Wc_Mu.root"
 if dataType=="Vqq":
-    datafilename = "MC/V00-01-04-04/Vqq_Mu.root"
+    datafilename = "MC/V00-01-04-07/Vqq_Mu.root"
 
 tfile = TFile(data_repo+datafilename)
 print "read file "+datafilename
@@ -275,7 +276,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    if ientry > 100000: break
+    #if ientry > 100000: break
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
@@ -685,6 +686,7 @@ for jentry in xrange( entries ):
         
         MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
         hist.M3['Mttbar_chi2'].Fill(MttbarP4.M())
+        hist.M3['pt_ttbar'].Fill(MttbarP4.Pt())
         # printout txt file with run,lumi,event
         #if printlistofruns:
         #    line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"

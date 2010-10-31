@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="data" file="res_10.93pb-1_MET/top_plots_data_PF.root" weight="1">
+  <validation type="data" file="res_22pb-1_MET/top_plots_data_PF.root" weight="1">
     <TH1 name="M3_3j_dataPF" source="/M3/M3_3jet_dataPF"/>
     <TH1 name="M3_4j_dataPF" source="/M3/M3_4jet_dataPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_dataPF" source="/M3/M3_4jet_SSVHEM_1b_dataPF"/>
@@ -15,7 +15,7 @@
     <TH1 name="Mttbar_chi2_dataPF" source="/M3/Mttbar_chi2_dataPF"/>
   </validation>
 
-  <validation type="dataReverse" file="res_10.93pb-1_MET/top_plots_dataReverse_PF.root" weight="1">
+  <validation type="dataReverse" file="res_22pb-1_MET/top_plots_dataReverse_PF.root" weight="1">
     <TH1 name="M3_3j_dataReversePF" source="/M3/M3_3jet_dataReversePF"/>
     <TH1 name="M3_4j_dataReversePF" source="/M3/M3_4jet_dataReversePF"/>
     <TH1 name="M3_4j_SSVHEM_1b_dataReversePF" source="/M3/M3_4jet_SSVHEM_1b_dataReversePF"/>
@@ -30,7 +30,7 @@
     <TH1 name="Mttbar_chi2_dataReversePF" source="/M3/Mttbar_chi2_dataReversePF"/>
   </validation>
 
-  <validation type="TTbar" file="res_10.93pb-1_MET/top_plots_TTbar_PF.root" weight="0.0001061747170696587">
+  <validation type="TTbar" file="res_22pb-1_MET/top_plots_TTbar_PF.root" weight="0.0001061747170696587">
     <TH1 name="M3_3j_TTbarPF" source="/M3/M3_3jet_TTbarPF"/>
     <TH1 name="M3_4j_TTbarPF" source="/M3/M3_4jet_TTbarPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_TTbarPF" source="/M3/M3_4jet_SSVHEM_1b_TTbarPF"/>
@@ -45,7 +45,7 @@
     <TH1 name="Mttbar_chi2_TTbarPF" source="/M3/Mttbar_chi2_TTbarPF"/>
   </validation>
 
-  <validation type="Wjets" file="res_10.93pb-1_MET/top_plots_Wjets_PF.root" weight="0.0031099738352619627">
+  <validation type="Wjets" file="res_22pb-1_MET/top_plots_Wjets_PF.root" weight="0.0031099738352619627">
     <TH1 name="M3_3j_WjetsPF" source="/M3/M3_3jet_WjetsPF"/>
     <TH1 name="M3_4j_WjetsPF" source="/M3/M3_4jet_WjetsPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_WjetsPF" source="/M3/M3_4jet_SSVHEM_1b_WjetsPF"/>
@@ -60,7 +60,7 @@
     <TH1 name="Mttbar_chi2_WjetsPF" source="/M3/Mttbar_chi2_WjetsPF"/>
   </validation>
 
-  <validation type="Zjets" file="res_10.93pb-1_MET/top_plots_Zjets_PF.root" weight="0.0028094211467931765">
+  <validation type="Zjets" file="res_22pb-1_MET/top_plots_Zjets_PF.root" weight="0.0028094211467931765">
     <TH1 name="M3_3j_ZjetsPF" source="/M3/M3_3jet_ZjetsPF"/>
     <TH1 name="M3_4j_ZjetsPF" source="/M3/M3_4jet_ZjetsPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_ZjetsPF" source="/M3/M3_4jet_SSVHEM_1b_ZjetsPF"/>
@@ -75,7 +75,7 @@
     <TH1 name="Mttbar_chi2_ZjetsPF" source="/M3/Mttbar_chi2_ZjetsPF"/>
   </validation>
 
-  <validation type="QCD" file="res_10.93pb-1_MET/top_plots_QCD_PF.root" weight="0.018205299430890203">
+  <validation type="QCD" file="res_22pb-1_MET/top_plots_QCD_PF.root" weight="0.018205299430890203">
     <TH1 name="M3_3j_QCDPF" source="/M3/M3_3jet_QCDPF"/>
     <TH1 name="M3_4j_QCDPF" source="/M3/M3_4jet_QCDPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_QCDPF" source="/M3/M3_4jet_SSVHEM_1b_QCDPF"/>
@@ -90,7 +90,7 @@
     <TH1 name="Mttbar_chi2_QCDPF" source="/M3/Mttbar_chi2_QCDPF"/>
   </validation>
 
-  <validation type="STtch" file="res_10.93pb-1_MET/top_plots_STtch_PF.root" weight="3.9595681365436169e-05">
+  <validation type="STtch" file="res_22pb-1_MET/top_plots_STtch_PF.root" weight="3.9595681365436169e-05">
     <TH1 name="M3_3j_STtchPF" source="/M3/M3_3jet_STtchPF"/>
     <TH1 name="M3_4j_STtchPF" source="/M3/M3_4jet_STtchPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_STtchPF" source="/M3/M3_4jet_SSVHEM_1b_STtchPF"/>
@@ -105,7 +105,7 @@
     <TH1 name="Mttbar_chi2_STtchPF" source="/M3/Mttbar_chi2_STtchPF"/>
   </validation>
 
-  <validation type="STtWch" file="res_10.93pb-1_MET/top_plots_STtWch_PF.root" weight="2.2725469891968262e-05">
+  <validation type="STtWch" file="res_22pb-1_MET/top_plots_STtWch_PF.root" weight="2.2725469891968262e-05">
     <TH1 name="M3_3j_STtWchPF" source="/M3/M3_3jet_STtWchPF"/>
     <TH1 name="M3_4j_STtWchPF" source="/M3/M3_4jet_STtWchPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_STtWchPF" source="/M3/M3_4jet_SSVHEM_1b_STtWchPF"/>
@@ -171,7 +171,7 @@
   </addition>
 
 
-  <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="Mt_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mt_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
     <superimposeItem name="Mt_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
@@ -180,7 +180,7 @@
     <superimposeItem name="Mt_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Mt_1jet" title="Mt_1jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=1" PlotDiff="true">
+  <superimpose name="Mt_1jet" title="Mt_1jet" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}=1" PlotDiff="true">
     <superimposeItem name="Mt_1jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mt_1jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
     <superimposeItem name="Mt_1jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
@@ -190,7 +190,7 @@
     <superimposeItem name="Mt_1jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Mt_2jet" title="Mt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=2" PlotDiff="true">
+  <superimpose name="Mt_2jet" title="Mt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}=2" PlotDiff="true">
     <superimposeItem name="Mt_2jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mt_2jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:2jetMM"/>
     <superimposeItem name="Mt_2jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:2jetMM"/>
@@ -200,7 +200,7 @@
     <superimposeItem name="Mt_2jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Mt_3jet" title="Mt_3jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=3" PlotDiff="true">
+  <superimpose name="Mt_3jet" title="Mt_3jet" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}=3" PlotDiff="true">
     <superimposeItem name="Mt_3jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mt_3jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:3jetMM"/>
     <superimposeItem name="Mt_3jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:3jetMM"/>
@@ -210,7 +210,7 @@
     <superimposeItem name="Mt_3jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Mt_4jet" title="Mt_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" PlotDiff="true">
+  <superimpose name="Mt_4jet" title="Mt_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" PlotDiff="true">
     <superimposeItem name="Mt_4jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mt_4jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:4jetMM"/>
     <superimposeItem name="Mt_4jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:4jetMM"/>
@@ -220,7 +220,7 @@
     <superimposeItem name="Mt_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3_3j" title="M3_3j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}=3" Ndivisions="505">
+  <superimpose name="M3_3j" title="M3_3j" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}=3" Ndivisions="505">
     <superimposeItem name="M3_3j_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_3j_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_3j_ZjetsPF" color="top" legend="Zjets"/>
@@ -229,7 +229,7 @@
     <superimposeItem name="M3_3j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3_4j" title="M3_4j" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
+  <superimpose name="M3_4j" title="M3_4j" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3_4j_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_4j_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_4j_ZjetsPF" color="top" legend="Zjets"/>
@@ -238,7 +238,7 @@
     <superimposeItem name="M3_4j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3_4j_SSVHEM_1b" title="M3_4j_SSVHEM_1b" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4, N_{b tag jets}#geq1" Ndivisions="505">
+  <superimpose name="M3_4j_SSVHEM_1b" title="M3_4j_SSVHEM_1b" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq4, N_{b tag jets}#geq1" Ndivisions="505">
     <superimposeItem name="M3_4j_SSVHEM_1b_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_4j_SSVHEM_1b_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_4j_SSVHEM_1b_ZjetsPF" color="top" legend="Zjets"/>
@@ -247,7 +247,7 @@
     <superimposeItem name="M3_4j_SSVHEM_1b_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 <!--
-  <superimpose name="M3_4j_TCHPL_1b" title="M3_4j_TCHPL_1b" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4, N_{b tag jets}#geq1" Ndivisions="505">
+  <superimpose name="M3_4j_TCHPL_1b" title="M3_4j_TCHPL_1b" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq4, N_{b tag jets}#geq1" Ndivisions="505">
     <superimposeItem name="M3_4j_TCHPL_1b_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_4j_TCHPL_1b_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_4j_TCHPL_1b_ZjetsPF" color="top" legend="Zjets"/>
@@ -256,7 +256,7 @@
     <superimposeItem name="M3_4j_TCHPL_1b_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 -->
-  <superimpose name="M3chi2_hadW_4jet" title="M3chi2_hadW_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
+  <superimpose name="M3chi2_hadW_4jet" title="M3chi2_hadW_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3chi2_hadW_4jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3chi2_hadW_4jet_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadW_4jet_ZjetsPF" color="top" legend="Zjets"/>
@@ -265,7 +265,7 @@
     <superimposeItem name="M3chi2_hadW_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="M3chi2_hadTop_4jet" title="M3chi2_hadTop_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
+  <superimpose name="M3chi2_hadTop_4jet" title="M3chi2_hadTop_4jet" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3chi2_hadTop_4jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3chi2_hadTop_4jet_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadTop_4jet_ZjetsPF" color="top" legend="Zjets"/>
@@ -274,7 +274,7 @@
     <superimposeItem name="M3chi2_hadTop_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="Mttbar" title="Mttbar" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true">
+  <superimpose name="Mttbar" title="Mttbar" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true">
     <superimposeItem name="Mttbar_chi2_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mttbar_chi2_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="Mttbar_chi2_ZjetsPF" color="top" legend="Zjets"/>
@@ -288,23 +288,23 @@
     <additionItem name="M3_3j_dataPF"   weight="1."/>
     <additionItem name="M3_4j_dataPF"   weight="1."/>
   </addition>
-  <addition name="M3_3jincl_TTbarPF" title="M3_3jincl_TTbarPF" YTitle="Events" Lumi="10.93"> 
+  <addition name="M3_3jincl_TTbarPF" title="M3_3jincl_TTbarPF" YTitle="Events" Lumi="21.89"> 
     <additionItem name="M3_3j_TTbarPF"   weight="0.0001061747170696587"/>
     <additionItem name="M3_4j_TTbarPF"   weight="0.0001061747170696587"/>
   </addition>
-  <addition name="M3_3jincl_WjetsPF" title="M3_3jincl_WjetsPF" YTitle="Events" Lumi="10.93"> 
+  <addition name="M3_3jincl_WjetsPF" title="M3_3jincl_WjetsPF" YTitle="Events" Lumi="21.89"> 
     <additionItem name="M3_3j_WjetsPF"   weight="0.0031099738352619627"/>
     <additionItem name="M3_4j_WjetsPF"   weight="0.0031099738352619627"/>
   </addition>
-  <addition name="M3_3jincl_ZjetsPF" title="M3_3jincl_ZjetsPF" YTitle="Events" Lumi="10.93"> 
+  <addition name="M3_3jincl_ZjetsPF" title="M3_3jincl_ZjetsPF" YTitle="Events" Lumi="21.89"> 
     <additionItem name="M3_3j_ZjetsPF"   weight="0.0028094211467931765"/>
     <additionItem name="M3_4j_ZjetsPF"   weight="0.0028094211467931765"/>
   </addition>
-  <addition name="M3_3jincl_QCDPF" title="M3_3jincl_QCDPF" YTitle="Events" Lumi="10.93"> 
+  <addition name="M3_3jincl_QCDPF" title="M3_3jincl_QCDPF" YTitle="Events" Lumi="21.89"> 
     <additionItem name="M3_3j_QCDPF"   weight="0.018205299430890203"/>
     <additionItem name="M3_4j_QCDPF"   weight="0.018205299430890203"/>
   </addition>
-  <addition name="M3_3jincl_STPF" title="M3_3jincl_STPF" YTitle="Events" Lumi="10.93"> 
+  <addition name="M3_3jincl_STPF" title="M3_3jincl_STPF" YTitle="Events" Lumi="21.89"> 
     <additionItem name="M3_3j_STtchPF"   weight="3.9595681365436169e-05"/>
     <additionItem name="M3_4j_STtchPF"   weight="3.9595681365436169e-05"/>
     <additionItem name="M3_3j_STtWchPF"   weight="2.2725469891968262e-05"/>
@@ -312,7 +312,7 @@
   </addition>
 
 
-  <superimpose name="M3_3jincl" title="M3_3jincl" YTitle="Events" Fill="true" Weight="true" Lumi="10.93" Stack="true" SubBanner="#mu+jets N_{jets}#geq3" Ndivisions="505">
+  <superimpose name="M3_3jincl" title="M3_3jincl" YTitle="Events" Fill="true" Weight="true" Lumi="21.89" Stack="true" SubBanner="#mu+jets N_{jets}#geq3" Ndivisions="505">
     <superimposeItem name="M3_3jincl_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_3jincl_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_3jincl_ZjetsPF" color="top" legend="Zjets"/>
