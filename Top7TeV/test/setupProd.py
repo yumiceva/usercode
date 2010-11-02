@@ -56,6 +56,16 @@ directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_scaleup_7TeV-madgraph/Summer10-ST
 directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
 directoriesMuMC['TTbar_matchingup_Mu'] = '/TTJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
 directoriesMuMC['TTbar_matchingdown_Mu'] = '/TTJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
+directoriesMuMC['WJets_scaleup_Mu'] = '/WJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
+directoriesMuMC['WJets_scaledown_Mu'] = '/WJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
+directoriesMuMC['ZJets_scaleup_Mu'] = '/ZJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
+directoriesMuMC['ZJets_scaledown_Mu'] = '/ZJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
+directoriesMuMC['WJets_matchingup_Mu'] = '/WJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v3/GEN-SIM-RECO'
+directoriesMuMC['WJets_matchingdown_Mu'] = '/WJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['ZJets_matchingup_Mu'] = '/ZJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['ZJets_matchingdown_Mu'] = '/ZJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
+#directoriesMuMC['Vqq_scaleup_Mu'] = '/VQQJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO' #in Lyon
+#directoriesMuMC['Vqq_scaledown_Mu'] = '/VQQJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
 
 directoriesElData['TrigA'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
 directoriesElData['TrigB'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
@@ -63,13 +73,14 @@ directoriesElData['TrigC'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele1
 directoriesElData['PromptRecoTrigC'] = '/Electron/Run2010B-PromptReco-v2/RECO'
 directoriesElData['TrigD'] = '/Electron/Run2010B-PromptReco-v2/RECO'
 directoriesElData['TrigE'] = '/Electron/Run2010B-PromptReco-v2/RECO'  #trig:Ele17_SW_CaloID, Oct 1st json
+directoriesElData['TrigF'] = '/Electron/Run2010B-PromptReco-v2/RECO'
 
 jsonFilesEl['TrigA'] = 'Cert_132440-140040_El_Oct15_JSON.txt'
 jsonFilesEl['TrigB'] = 'Cert_140041-143962_El_Oct15_JSON.txt'
 jsonFilesEl['TrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
 jsonFilesEl['PromptRecoTrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
 jsonFilesEl['TrigD'] = 'Cert_146428-147116_El_Oct15_JSON.txt'
-jsonFilesEl['TrigE'] = 'Cert_147117-148818_El_Oct29_JSON.tx'
+jsonFilesEl['TrigE'] = 'Cert_147117-148818_El_Oct29_JSON.txt'
 jsonFilesEl['TrigF'] = 'Cert_148819-148864_El_Oct29_JSON.txt'
 
 

@@ -238,7 +238,11 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # muon trigger
 triggerprocess = "HLT"
-if inputType == "MC" and eventtype!="Wc": triggerprocess = "REDIGI" # for 36x MC
+if inputType == "MC" and eventtype!="Wc":
+    triggerprocess = "REDIGI" # for 36x M
+if inputType.find("_scale")!=-1 or inputType.find("_matching")!=-1:
+    triggerprocess = "HLT"
+
 
 if channel=="muon":
     mufilter = "hltSingleMu9L3Filtered9"
@@ -384,7 +388,7 @@ if inputType=="MC":
     process.p.remove( process.scrapingVeto )
     process.p.remove( process.HBHENoiseFilter )
     if channel == "electron":
-        proces.p.remove( process.triggerFilter )
+        process.p.remove( process.triggerFilter )
     if eventtype != "TTJets":
         process.p.remove( process.makeGenEvt )
     if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
