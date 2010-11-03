@@ -301,6 +301,15 @@ if inputType=="MC": brunOnMC = True
 
 usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postfix)
 
+if channel=="electron":
+    postfixLoose = "PFlowLoose"
+    usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postfixLoose)
+    getattr(process, "patElectrons"+postfixLoose).embedGenMatch = brunOnMC
+    getattr(process, "patMuons"+postfixLoose).embedGenMatch = brunOnMC
+    process.patElectronsPFlowLoose.pfElectronSource = 'pfAllElectronsPFlowLoose'
+    process.patElectronsPFlowLoose.isoDeposits = cms.PSet()
+    process.patElectronsPFlowLoose.isolationValues = cms.PSet()
+    
 # turn to false when running on data
 getattr(process, "patElectrons"+postfix).embedGenMatch = brunOnMC
 getattr(process, "patMuons"+postfix).embedGenMatch = brunOnMC
@@ -367,7 +376,7 @@ process.p = cms.Path(
 #    process.ak5JPTJetsL2L3 *
 
     getattr(process,"patPF2PATSequence"+postfix)*
-    
+    getattr(process,"patPF2PATSequencePFlowLoose")*
     process.patDefaultSequence *
     
     process.makeGenEvt *
@@ -381,6 +390,7 @@ process.p = cms.Path(
 
 if channel == "muon":
     process.p.remove( process.PATElectronNtupleMaker )
+    process.p.remove( process.patPF2PATSequencePFlowLoose )
 else:
     process.p.remove( process.PATNtupleMaker )
             

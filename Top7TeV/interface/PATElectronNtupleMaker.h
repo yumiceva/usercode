@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.h,v 1.1 2010/09/22 17:23:42 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.h,v 1.2 2010/09/25 14:30:16 yumiceva Exp $
 //
 //
 
@@ -68,6 +68,7 @@ private:
   edm::InputTag hltTag_;
   edm::InputTag muonTag_;
   edm::InputTag electronTag_;
+  edm::InputTag PFelectronTag_;
   edm::InputTag calojetTag_;
   edm::InputTag JPTjetTag_;
   edm::InputTag PFjetTag_;

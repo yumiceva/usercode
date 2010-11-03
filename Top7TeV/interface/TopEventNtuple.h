@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.6 2010/08/26 17:58:18 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.7 2010/09/25 14:30:16 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -64,7 +64,8 @@ public:
 
     //_____ electrons _____________________________
     std::vector< TopElectronEvent > electrons;
-    
+    std::vector< TopElectronEvent > PFelectrons;
+
     //_____ vertices ______________________________
     std::vector< TopVertexEvent > vertices;
     

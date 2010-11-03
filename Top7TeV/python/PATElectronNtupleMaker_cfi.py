@@ -10,6 +10,7 @@ PATElectronNtupleMaker = cms.EDFilter(
         hltTag = cms.InputTag("TriggerResults::REDIGI"),
         MuonTag = cms.InputTag("selectedPatMuons"),
         ElectronTag = cms.InputTag("selectedPatElectrons"),
+        PFElectronTag = cms.InputTag("patElectronsPFlowLoose"),
         caloJetTag= cms.InputTag("selectedPatJets"),
         JPTJetTag= cms.InputTag("selectedPatJetsAK5JPT"),
         PFJetTag= cms.InputTag("selectedPatJetsPFlow"),

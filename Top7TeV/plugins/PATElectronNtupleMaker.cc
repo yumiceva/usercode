@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.5 2010/10/05 19:01:14 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.6 2010/10/18 20:00:05 yumiceva Exp $
 //
 //
 
@@ -75,6 +75,7 @@ PATElectronNtupleMaker::PATElectronNtupleMaker(const edm::ParameterSet& iConfig)
 {
 
   electronTag_ = iConfig.getParameter< InputTag >("ElectronTag");
+  PFelectronTag_ = iConfig.getParameter< InputTag >("PFElectronTag");
   jetIdLoose_ = iConfig.getParameter<edm::ParameterSet>("jetIdLoose");
   calojetTag_ = iConfig.getParameter< InputTag >("caloJetTag");
   JPTjetTag_ = iConfig.getParameter< InputTag >("JPTJetTag");
@@ -160,9 +161,13 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     beamSpot = *beamSpotHandle;
     math::XYZPoint point(beamSpot.x0(),beamSpot.y0(), beamSpot.z0());
 
-    // -[ Electrons ]-
+    // -[ Electrons ]- GSF
     Handle<ElectronCollection> electrons;
     iEvent.getByLabel(electronTag_,electrons);
+
+    // -[ Electrons ]- pFlow electron
+    Handle<ElectronCollection> PFelectrons;
+    iEvent.getByLabel(PFelectronTag_,PFelectrons);
 
     // -[ MET ]-
     const pat::MET *cmet;
@@ -433,6 +438,72 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
 
     // keep at least one loose electron not isolated                                                                                                         
     if ( nel_loose == 0 ) return false;
+
+    // store PF electron
+    for(ElectronCollection::const_iterator elec=PFelectrons->begin(); elec!=PFelectrons->end(); ++elec )
+      {
+        double RelIso = (elec->dr03TkSumPt()+elec->dr03EcalRecHitSumEt()+elec->dr03HcalTowerSumEt())/elec->et();
+        double eta_sc = elec->superCluster()->eta();
+
+        bool pass70 = patEle70(*elec);
+        bool pass95 = patEle95(*elec);
+        bool IsTight = false;
+
+        bool tmpIsConversion = false;
+
+        if(elec->et()>30.&& ( (eta_sc > -2.5 && eta_sc < -1.566)||(fabs(eta_sc)<1.4442)||(eta_sc > 1.566 && eta_sc< 2.5) ) ) {
+          if ( fabs( elec->dB() ) < 0.02 && pass70 && RelIso < 0.1 ) {
+
+            IsTight = true;
+
+            double nhits = elec->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+
+            ConversionFinder convFinder;
+            ConversionInfo convInfo = convFinder.getConversionInfo(*elec, gTracks, bField);
+            double e1_dist = convInfo.dist();
+            double e1_dcot = convInfo.dcot();
+            bool ise1Conv =  fabs(e1_dist) < 0.02 && fabs(e1_dcot) < 0.02 ;
+
+            if ( ise1Conv || nhits>0 ) {
+              tmpIsConversion = true;
+            }
+          }
+
+          TopElectronEvent topele;
+
+          topele.eta = elec->eta();
+          topele.phi = elec->phi();
+          topele.pt = elec->pt();
+          topele.e  = elec->energy();
+          topele.vx = elec->vx();
+          topele.vy = elec->vy();
+          topele.vz = elec->vz();
+          topele.charge = elec->charge();
+          topele.d0 = elec->dB();
+          topele.d0err = sqrt( elec->gsfTrack()->d0Error()*elec->gsfTrack()->d0Error() + 0.5* beamSpot.BeamWidthX()*beamSpot.BeamWidthX() + 0.5* beamSpot.BeamWidthY()*beamSpot.BeamWidthY() );
+	  // IP wrt to hardest PV
+	  reco::TransientTrack tt = trackBuilder->build(elec->gsfTrack());
+	  std::pair<bool,Measurement1D> IPresult = IPTools::absoluteTransverseImpactParameter(tt, primaryVertex);
+          topele.d0wrtPV2d = IPresult.second.value();
+          topele.d0wrtPV2derr = IPresult.second.error();
+
+          topele.reliso03 = RelIso;
+          topele.IsTight = int(IsTight);
+          topele.pass70 = int(pass70);
+          topele.pass95 = int(pass95);
+          topele.IsConversion = int(tmpIsConversion);
+
+          topele.etasc = eta_sc;
+          topele.sigmaIetaIeta = elec->sigmaIetaIeta();
+          topele.HoE = elec->hadronicOverEm();
+          topele.deltaphisc = patEle70.DeltaPhi();
+          topele.deltaetasc = patEle70.DeltaEta();
+          _ntuple->PFelectrons.push_back( topele );
+
+        }
+      }
+
+
     //cout << " got good electron " << endl;
     if ( 1 == nel_tight)
       _cutflow->Fill(3);
