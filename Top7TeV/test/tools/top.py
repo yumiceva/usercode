@@ -230,7 +230,7 @@ data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
 if dataType=="data":
     top.Add(data_repo+"Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root")
-    
+    top.Add(data_repo+"Data/34.72pb-1/ttmuj_12.83pb-1_Nov5.root") #total 34.72pb-1
 if dataType=="dataReverse":
     doReverseIso = True
     print "Apply reverse isolation"
@@ -239,19 +239,19 @@ if dataType=="TTbar":
 if dataType=="sync":
     top.Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root")
 if dataType=="Wjets":
-    top.Add("MC/V00-01-04-07/WJets_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/WJets_Mu.root")
 if dataType=="Zjets":
-    top.Add("MC/V00-01-04-07/ZJets_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/ZJets_Mu.root")
 if dataType=="QCD":
-    top.Add("MC/V00-01-04-07/QCD_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/QCD_Mu.root")
 if dataType=="STtch":
-    top.Add("MC/V00-01-04-07/STtch_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/STtch_Mu.root")
 if dataType=="STtWch":
-    top.Add("MC/V00-01-04-07/STtWch_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/STtWch_Mu.root")
 if dataType=="Wc":
-    top.Add("MC/V00-01-04-07/Wc_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/Wc_Mu.root")
 if dataType=="Vqq":
-    top.Add("MC/V00-01-04-07/Vqq_Mu.root")
+    top.Add(data_repo+"MC/V00-01-04-07/Vqq_Mu.root")
 
 #tfile = TFile(data_repo+datafilename)
 print "use "+JetType+" collections"
@@ -704,7 +704,7 @@ for jentry in xrange( entries ):
         #myCombi.SetSigmas(0);
         myCombi.SetLeptonicW(p4LepW)
         if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
-        myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # pass the b-tag dicriminators
+        myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # 
         bestCombo = Combo()
 
         bestCombo = myCombi.GetCombination(0)
@@ -756,6 +756,7 @@ for jentry in xrange( entries ):
         del(myCombi)
         myCombi = JetCombinatorics()
         #top mass constraint
+        myCombi.Verbose()
         myCombi.UseMtopConstraint(True)
         myCombi.UsebTagging()
         myCombi.SetLeptonicW(p4LepW)
