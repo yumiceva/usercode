@@ -22,13 +22,18 @@ class Hist:
     def Create(self, name):
 
         name = '_'+name
-        self.CreateMuon(name)
-        self.CreateElectron(name)
-        self.CreateMass(name)
-        self.CreateMET(name)
-        self.CreateMt(name)
-        self.CreateJet(name)
-        self.CreateVarious(name)
+        if name.find("Low")!=-1:
+            self.CreateMttbar(name)
+        elif name.find("High")!=-1:
+            self.CreateMttbar(name)
+        else:
+            self.CreateMuon(name)
+            self.CreateElectron(name)
+            self.CreateMass(name)
+            self.CreateMET(name)
+            self.CreateMt(name)
+            self.CreateJet(name)
+            self.CreateVarious(name)
         
     def Write(self):
         self.WriteMap(self.muons,"muons")
@@ -132,7 +137,11 @@ class Hist:
         self.M3['M3chi2_normchi2_3th'] = TH1F("M3chi2_normchi2_3th"+name,"#chi^{2}/ndof",30,0,30)
         self.M3['M3chi2_normchi2_4th'] = TH1F("M3chi2_normchi2_4th"+name,"#chi^{2}/ndof",30,0,30)
         self.M3['Mttbar_chi2'] = TH1F('Mttbar_chi2'+name,"m_{t#bar{t}} [GeV/c^{2}]",28,200,1600)
+        self.M3['Mttbar_chi2_1btag'] = TH1F('Mttbar_chi2_1btag'+name,"m_{t#bar{t}} [GeV/c^{2}]",28,200,1600)
         self.M3['pt_ttbar'] = TH1F("pt_ttbar"+name,"p_{T}(t#bar{t}) [GeV]",50,0,1000)
+        self.M3['lepTop_vs_Mttbar'] = TH2F("lepTop_vs_Mttbar"+name,"leptonic top mass vs m_{t#bar{t}} [GeV/c^{2}]",40,0,800,28,200,1600)
+        self.M3['pt_vs_Mttbar'] = TH2F("pt_vs_Mttbar"+name,"p_{T}(t#bar{t}) vs m_{t#bar{t}}",50,0,1000,28,200,1600)
+        self.M3['pt_vs_Mttbar_1btag'] = TH2F("pt_vs_Mttbar_1btag"+name,"p_{T}(t#bar{t}) vs m_{t#bar{t}}",50,0,1000,28,200,1600)
         self.SetupXTitle(self.M3)
                         
     def CreateMET(self, name):
@@ -154,6 +163,10 @@ class Hist:
         self.MET['Htlep_2jet'] = TH1F("Htlep_2jet"+name,"H_{T,lep} [GeV]", 50, 0, 1000)
         self.MET['Htlep_3jet'] = TH1F("Htlep_3jet"+name,"H_{T,lep} [GeV]", 50, 0, 1000)
         self.MET['Htlep_4jet'] = TH1F("Htlep_4jet"+name,"H_{T,lep} [GeV]", 50, 0, 1000)
+        self.MET['deltaPhi_1jet'] = TH1F("deltaPhi_1jet"+name,"#Delta#phi(l,MET)", 50, 0, 3.15)
+        self.MET['deltaPhi_2jet'] = TH1F("deltaPhi_2jet"+name,"#Delta#phi(l,MET)", 50, 0, 3.15)
+        self.MET['deltaPhi_3jet'] = TH1F("deltaPhi_3jet"+name,"#Delta#phi(l,MET)", 50, 0, 3.15)
+        self.MET['deltaPhi_4jet'] = TH1F("deltaPhi_4jet"+name,"#Delta#phi(l,MET)", 50, 0, 3.15)
         self.MET['LepWmass'] = TH1F("LepWmass"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
         self.MET['LepWmass_1jet'] = TH1F("LepWmass_1jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
         self.MET['LepWmass_2jet'] = TH1F("LepWmass_2jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
@@ -195,7 +208,17 @@ class Hist:
         self.jets['Nbjets_SSVHEM_N4j'] = TH1F("Nbjets_SSVHEM_N4j"+name,"Tagged b-jets",3,0,3)
         
         self.SetupXTitle(self.jets)
+
+    def CreateMttbar(self, name):
         
+        self.muons['pt_4jet'] = TH1F("muon_pt_4jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.jets['Njets'] = TH1F("Njets"+name,"jet multiplicity",6,4,10)
+        self.MET['MET_4jet'] = TH1F("MET_4jet"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
+        self.electrons['pt_4jet'] = TH1F("electron_pt_4jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.MET['Ht_4jet'] = TH1F("Ht_4jet"+name,"H_{T} [GeV]", 50, 0, 1000)
+        self.MET['Htlep_4jet'] = TH1F("Htlep_4jet"+name,"H_{T,lep} [GeV]", 50, 0, 1000)
+        self.jets['jetdeltaR'] = TH1F("jetdeltaR"+name,"#DeltaR(jet1,jet2)",80, 0, 7)                                        
+                                                
     def SetupXTitle(self, map):
         for key in map.keys():
             map[key].SetXTitle(map[key].GetTitle())

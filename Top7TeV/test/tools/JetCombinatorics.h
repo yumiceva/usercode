@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.2 2010/09/10 22:33:13 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.3 2010/10/05 19:01:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -29,8 +29,9 @@ class Combo {
 	Combo() {
 		
 	  MW = 84.2;//79.8;
-	  Mtop_h = 180.7;//175.;
-	  Mtop_l = 174.9;
+	  Mtop_h = 172.;//175.;
+	  Mtop_l = 172.;
+
 	  sigmaHadW = 10.5;//2.*7.6;
 	  sigmaHadt = 19.2;//2.*12.5;
 	  sigmaLept = 24.2;//2.*15.6;
@@ -38,6 +39,8 @@ class Combo {
 	  SumEt_ = 0.;
 	  usebtag_ = false;
 	  useMtop_ = true;
+	  IsGoodbTagEvent_ = false;
+	  Wp_istag_ = Wq_istag_ = Hadb_istag_ = Lepb_istag_ = false;
 
 	  useFlv_ = false;
 	  Wp_flv_ = Wq_flv_ = Hadb_flv_ = Lepb_flv_ = 1.;
@@ -57,6 +60,11 @@ class Combo {
 	void SetFlvCorrHadb( double corr ) { Hadb_flv_ = corr; }
 	void SetFlvCorrLepb( double corr ) { Lepb_flv_ = corr; }
 	// b tagging
+	void SetWp_tag(bool tag) { Wp_istag_ = tag;}
+	void SetWq_tag(bool tag) { Wq_istag_ = tag;}
+	void SetHadb_tag(bool tag) { Hadb_istag_ = tag;}
+	void SetLepb_tag(bool tag) { Lepb_istag_ = tag;}
+
 	void SetWp_disc(double disc) { Wp_disc_ = disc;}
 	void SetWq_disc(double disc) { Wq_disc_= disc;}
 	void SetHadb_disc(double disc) { Hadb_disc_= disc;}
@@ -138,6 +146,12 @@ class Combo {
 
 		if ( usebtag_ ) {
 
+		  if ( Wp_istag_ || Wq_istag_ || Hadb_istag_ || Lepb_istag_  ) {
+		    
+		    IsGoodbTagEvent_ = true;
+
+		  }
+		  /*
 			double gauss_norm = (2.)*TMath::Log(sigmaHadW*TMath::Sqrt(2*TMath::Pi())) +
 				(2.)*TMath::Log(sigmaHadt*TMath::Sqrt(2*TMath::Pi())) + (2.)*TMath::Log(sigmaLept*TMath::Sqrt(2*TMath::Pi()));
 
@@ -167,6 +181,7 @@ class Combo {
 			chi2_ += btag_N2LL + gauss_norm;
 			Ndof_ += 3;
 			pdffile_->Close();
+		  */
 		}
 	}
 
@@ -223,6 +238,12 @@ class Combo {
 	
 	bool usebtag_;
 	bool useMtop_;
+	bool Wp_istag_;
+	bool Wq_istag_;
+	bool Hadb_istag_;
+	bool Lepb_istag_;
+	bool IsGoodbTagEvent_;
+
 	double Wp_disc_;
 	double Wq_disc_;
 	double Hadb_disc_;
@@ -290,7 +311,8 @@ class JetCombinatorics {
 	std::map< int, std::string > Combinatorics(int k, int max = 6);
 	std::map< int, std::string > NestedCombinatorics();
 
-	void FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<double> bdiscriminators);
+	//void FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<double> bdiscriminators);
+	void FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<int> btags);
 	void SetFlavorCorrections(std::vector<double > vector ) { flavorCorrections_ = vector; }
 	void SetMaxNJets(int n) { maxNJets_ = n; }
 	Combo GetCombination(int n=0);

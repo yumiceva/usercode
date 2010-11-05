@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.cc,v 1.1.4.6 2009/07/13 15:13:37 yumiceva Exp $
+ version $Id: JetCombinatorics.cc,v 1.2 2010/09/10 22:33:13 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -209,7 +209,7 @@ std::map< int, std::string > JetCombinatorics::NestedCombinatorics() {
 }
 
 //______________________________________________________________
-void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<double> bdiscriminators ) {
+void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, std::vector<int> btags ) {
 
 
 	int n = 0; // total number of combos
@@ -241,7 +241,7 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, st
 		// make a list of 4 jets
 		std::vector< TLorentzVector > the4jets;
 		std::vector< int > the4Ids;
-		std::vector< double > thebdisc;
+		std::vector< int > thebdisc;
 		std::vector< double > theFlvCorr;
 		//the4jets[0] = jets[0];
 		
@@ -253,7 +253,7 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, st
 			//std::cout << "tmpi= " << tmpi << std::endl;
 			the4jets.push_back(jets[tmpi]);
 			the4Ids.push_back(tmpi);
-			if ( UsebTagging_ ) thebdisc.push_back( bdiscriminators[tmpi] );
+			if ( UsebTagging_ ) thebdisc.push_back( btags[tmpi] );
 			if ( UseFlv_ ) theFlvCorr.push_back( flavorCorrections_[tmpi] );
 		}
 
@@ -305,12 +305,18 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, st
 				if ( UsebTagging_ ) {
 
 					acombo.Usebtagging();
+					acombo.SetWp_tag( bool(thebdisc[atoi((a4template.substr(0,1)).c_str())]) );
+					acombo.SetWq_tag( bool(thebdisc[atoi((a4template.substr(1,1)).c_str())]) );
+					acombo.SetHadb_tag( bool(thebdisc[atoi((a4template.substr(2,1)).c_str())]) );
+					acombo.SetLepb_tag( bool(thebdisc[atoi((a4template.substr(3,1)).c_str())]) );
+
+					/*
 					acombo.SetbDiscPdf(bTagPdffilename_);
 					acombo.SetWp_disc( thebdisc[atoi((a4template.substr(0,1)).c_str())] );
 					acombo.SetWq_disc( thebdisc[atoi((a4template.substr(1,1)).c_str())] );
 					acombo.SetHadb_disc( thebdisc[atoi((a4template.substr(2,1)).c_str())] );
 					acombo.SetLepb_disc( thebdisc[atoi((a4template.substr(3,1)).c_str())] );
-				
+					*/
 				}
 
 				acombo.UseMtopConstraint(UseMtop_);
@@ -354,11 +360,30 @@ Combo JetCombinatorics::GetCombination(int n) {
 
 	int j = 0;
 	Combo a;
-	for ( std::map<Combo,int,minChi2>::const_iterator ite=allCombos_.begin();
-		  ite!=allCombos_.end(); ++ite) {
-		
+	
+	if ( ! UsebTagging_ ) {
+
+	  for ( std::map<Combo,int,minChi2>::const_iterator ite=allCombos_.begin();
+		ite!=allCombos_.end(); ++ite) {
+
 		if (j == n) a = ite->first;
 		j++;
+
+	  }
+
+	  
+	} else {
+
+
+	for ( std::map<Combo,int,minChi2>::const_iterator ite=allCombos_.begin();
+		  ite!=allCombos_.end(); ++ite) {
+
+	  if ( (ite->first).IsGoodbTagEvent() ) {
+	    
+	    if (j == n) a = ite->first;
+	    j++;
+	  }
+	  
 	}
 
 	return a;
