@@ -312,7 +312,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    if ientry > 1000: break
+    #if ientry > 1000: break
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
