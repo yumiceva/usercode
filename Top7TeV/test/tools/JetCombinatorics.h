@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.4 2010/11/05 19:26:31 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.5 2010/11/05 19:59:48 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -36,6 +36,7 @@ class Combo {
 	  sigmaHadt = 19.2;//2.*12.5;
 	  sigmaLept = 24.2;//2.*15.6;
 
+	  chi2_ = 0.;
 	  SumEt_ = 0.;
 	  usebtag_ = false;
 	  useMtop_ = true;
@@ -206,10 +207,10 @@ class Combo {
 	void SetIdWq(int id) { IdWq_ = id; }
 	void SetIdLepb(int id) { IdLepb_ = id;}
 	void Print() {
-	  std::cout << " jet Wp  : px = " << Wp_.Px() << " py = " <<  Wp_.Py() << " pz = " << Wp_.Pz() << " e = " << Wp_.E() << std::endl;
-	  std::cout << " jet Wq  : px = " << Wq_.Px() << " py = " <<  Wq_.Py() << " pz = " << Wq_.Pz() << " e = "<< Wq_.E() << std::endl;
-	  std::cout << " jet Hadb: px = " << Hadb_.Px() << " py = " <<  Hadb_.Py() <<" pz = " << Hadb_.Pz() <<" e = "<< Hadb_.E() << std::endl;
-	  std::cout << " jet Lepb: px = " << Lepb_.Px() << " py = " <<  Lepb_.Py() <<" pz = " << Lepb_.Pz() <<" e = "<< Lepb_.E() << std::endl;
+	  std::cout << " jet Wp  : px = " << Wp_.Px() << " py = " <<  Wp_.Py() << " pz = " << Wp_.Pz() << " e = " << Wp_.E() << " tag = " << Wp_istag_ << std::endl;
+	  std::cout << " jet Wq  : px = " << Wq_.Px() << " py = " <<  Wq_.Py() << " pz = " << Wq_.Pz() << " e = "<< Wq_.E() << " tag = " << Wq_istag_ << std::endl;
+	  std::cout << " jet Hadb: px = " << Hadb_.Px() << " py = " <<  Hadb_.Py() <<" pz = " << Hadb_.Pz() <<" e = "<< Hadb_.E() << " tag = " << Hadb_istag_ << std::endl;
+	  std::cout << " jet Lepb: px = " << Lepb_.Px() << " py = " <<  Lepb_.Py() <<" pz = " << Lepb_.Pz() <<" e = "<< Lepb_.E() << " tag = " << Lepb_istag_ << std::endl;
 	  std::cout << " chi-squared = " << chi2_ << " sumEt = " << SumEt_ << std::endl;
 	}
 	double getPdfValue(std::string flavor, double disc) {

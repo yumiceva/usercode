@@ -312,7 +312,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    #if ientry > 1000: break
+    #if ientry < 300000: continue
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
@@ -756,7 +756,7 @@ for jentry in xrange( entries ):
         del(myCombi)
         myCombi = JetCombinatorics()
         #top mass constraint
-        myCombi.Verbose()
+        #myCombi.Verbose()
         myCombi.UseMtopConstraint(True)
         myCombi.UsebTagging()
         myCombi.SetLeptonicW(p4LepW)
@@ -795,7 +795,10 @@ for jentry in xrange( entries ):
             histLow.MET['Ht_4jet'].Fill( Ht )
             histLow.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
             histLow.jets['jetdeltaR'].Fill( minDeltaRjets )
-            
+        myCombi.Clear()
+        del(myCombi)
+        del(vectorjets)
+        del(vectorbjets)
                                                                         
 
 print "done."
