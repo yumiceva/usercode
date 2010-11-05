@@ -213,9 +213,12 @@ cutmap['4Jet'] = 0
 N500gev3j = 0
 N500gev4j = 0
 
+# Setup TChain
+top = TChain('/PATNtupleMaker/top')
+
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
-datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
+#datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
 #datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Nov3/TrigC/TrigC.root"
 #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/15.08pb-1/ttmuj_15.08pb-1_Oct22_new.root" #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
@@ -225,52 +228,65 @@ datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 #datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/Sep17ReReco/Sep17ReReco.root"
 
+if dataType=="data":
+    top.Add(data_repo+"Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root")
+    
 if dataType=="dataReverse":
     doReverseIso = True
     print "Apply reverse isolation"
 if dataType=="TTbar":
-    datafilename = "MC/V00-01-04-07/TTbar_Mu.root"
+    top.Add(data_repo+"MC/V00-01-04-07/TTbar_Mu.root")
 if dataType=="sync":
-    datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root"
-    data_repo = ""
+    top.Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root")
 if dataType=="Wjets":
-    datafilename = "MC/V00-01-04-07/WJets_Mu.root"
+    top.Add("MC/V00-01-04-07/WJets_Mu.root")
 if dataType=="Zjets":
-    datafilename = "MC/V00-01-04-07/ZJets_Mu.root"
+    top.Add("MC/V00-01-04-07/ZJets_Mu.root")
 if dataType=="QCD":
-    datafilename = "MC/V00-01-04-07/QCD_Mu.root"
+    top.Add("MC/V00-01-04-07/QCD_Mu.root")
 if dataType=="STtch":
-    datafilename = "MC/V00-01-04-07/STtch_Mu.root"
+    top.Add("MC/V00-01-04-07/STtch_Mu.root")
 if dataType=="STtWch":
-    datafilename = "MC/V00-01-04-07/STtWch_Mu.root"
+    top.Add("MC/V00-01-04-07/STtWch_Mu.root")
 if dataType=="Wc":
-    datafilename = "MC/V00-01-04-07/Wc_Mu.root"
+    top.Add("MC/V00-01-04-07/Wc_Mu.root")
 if dataType=="Vqq":
-    datafilename = "MC/V00-01-04-07/Vqq_Mu.root"
+    top.Add("MC/V00-01-04-07/Vqq_Mu.root")
 
-tfile = TFile(data_repo+datafilename)
-print "read file "+datafilename
+#tfile = TFile(data_repo+datafilename)
 print "use "+JetType+" collections"
-tfile.cd()
+#tfile.cd()
 
-# read number of events passing trigger
-TrigHist = ROOT.gDirectory.Get('/triggerFilter/eventCount')
-if TrigHist:
-    cutmap['CleanFilters'] = TrigHist.GetBinContent( 1 )
-    cutmap['HLT'] = TrigHist.GetBinContent( 2 )
-tfile.cd()
-PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
-if PVHist:
-    cutmap['GoodPV'] = PVHist.GetBinContent( 3 )
-tfile.cd()
+
+print "files opened:"
+tmplistfiles = top.GetListOfFiles()
+for iifile in tmplistfiles:
+    tmptfilename = iifile.GetTitle()
+    print tmptfilename
+    # read number of events passing trigger
+    tmptfile = TFile(tmptfilename)
+    tmptfile.cd()
+    TrigHist = ROOT.gDirectory.Get('/triggerFilter/eventCount')
+    if TrigHist:
+        cutmap['CleanFilters'] = TrigHist.GetBinContent( 1 )
+        cutmap['HLT'] = TrigHist.GetBinContent( 2 )
+    tmptfile.cd()
+    PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
+    if PVHist:
+        cutmap['GoodPV'] = PVHist.GetBinContent( 3 )
+    tmptfile.Close()
+    del(tmptfile)
+#del(tmplistfiles)
+
 
 # get tree
-top = ROOT.gDirectory.Get( '/PATNtupleMaker/top' )
-entries = top.GetEntriesFast()
-# loop over entries
+#top = ROOT.gDirectory.Get( '/PATNtupleMaker/top' )
 
+entries = top.GetEntriesFast()
+
+# setup ntuple object
 evt = TopEventNtuple()
-top.SetBranchAddress('top.', evt)
+top.SetBranchAddress('top.', AddressOf(evt))
 
 #cut = {}
 #cut['processed'] = cut['OneIsoMuon'] = cut['VetoElectron'] = 0
@@ -288,6 +304,7 @@ histLow.Create(dataType+JetType+"Low")
 histHigh = histograms.Hist()
 histHigh.Create(dataType+JetType+"High")
 
+# loop over events
 for jentry in xrange( entries ):
 
     # get the next tree in the chain
@@ -295,7 +312,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    #if ientry > 1000: break
+    if ientry > 1000: break
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
