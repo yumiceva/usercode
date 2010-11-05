@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.3 2010/10/05 19:01:14 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.4 2010/11/05 19:26:31 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -111,7 +111,7 @@ class Combo {
 	void SetMinMassLepTop( double mass ) { minMassLepTop_ = mass; }
 	void SetMaxMassLepTop( double mass ) { maxMassLepTop_ = mass; }
 	void UseMtopConstraint(bool option=true) { useMtop_ = option; }
-		
+	bool IsGoodbTagEvent() { return IsGoodbTagEvent_; }
 	void analyze() {
 
 		if ( useFlv_ ) {

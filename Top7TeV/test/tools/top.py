@@ -85,7 +85,7 @@ def parse(docstring, arglist=None):
 JetType = "PF"
 dataType = "data"
 ApplyDeltaR = True
-METCut = -1.
+METCut = 20.
 verbose = False
 MinJetPt = 25.
 IsoCut = 0.1
@@ -214,9 +214,9 @@ N500gev3j = 0
 N500gev4j = 0
 
 # input files
-data_repo = "" #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
+data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
-datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Nov3/TrigC/TrigC.root"
+#datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Nov3/TrigC/TrigC.root"
 #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/15.08pb-1/ttmuj_15.08pb-1_Oct22_new.root" #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
 #"Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
@@ -295,7 +295,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    #if ientry > 100000: break
+    #if ientry > 1000: break
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
@@ -638,17 +638,11 @@ for jentry in xrange( entries ):
         ntagjetsTCHPL = 0
         for itag in isTagb['TCHPL']:
             if itag: ntagjetsTCHPL += 1
-        hist.jets['Nbjets_TCHPL_N4j'].Fill(ntagjetsTCHPL)
-        if ntagjetsTCHPL > 0:
-            hist.M3['4jet_TCHPL_1b'].Fill(M3_hadTopP4.M())
-            
+                    
         ntagjetsSSVHEM = 0
         for itag in isTagb['SSVHEM']:
             if itag: ntagjetsSSVHEM += 1
-        hist.jets['Nbjets_SSVHEM_N4j'].Fill(ntagjetsSSVHEM)
-        if ntagjetsSSVHEM > 0:
-            hist.M3['4jet_SSVHEM_1b'].Fill(M3_hadTopP4.M())
-                                                                        
+                                                                                
         # jet combination
         myCombi = JetCombinatorics()
         myCombi.SetLeptonicW(p4LepW)
@@ -661,7 +655,7 @@ for jentry in xrange( entries ):
         for ij in xrange(0,maxNjets):
             vectorjets[ij] = p4jets[ij]
             vectorbjets[ij] = int(isTagb['TCHPL'][ij])
-            if ij < maxNjets:
+            if ij < maxNjets - 1:
                 tmpdeltaRjets = p4jets[ij].DeltaR( p4jets[ij+1] )
                 if tmpdeltaRjets < minDeltaRjets: minDeltaRjets = tmpdeltaRjets
                 
@@ -673,7 +667,15 @@ for jentry in xrange( entries ):
         hist.M3['4jet'].Fill(M3_hadTopP4.M())
         if M3_hadTopP4.M() > 500.:
             N500gev4j += 1
-        
+
+        hist.jets['Nbjets_TCHPL_N4j'].Fill(ntagjetsTCHPL)
+        if ntagjetsTCHPL > 0:
+            hist.M3['4jet_TCHPL_1b'].Fill(M3_hadTopP4.M())
+
+        hist.jets['Nbjets_SSVHEM_N4j'].Fill(ntagjetsSSVHEM)
+        if ntagjetsSSVHEM > 0:
+            hist.M3['4jet_SSVHEM_1b'].Fill(M3_hadTopP4.M())
+                        
                                 
         # M3Prime
         myCombi.Clear()
@@ -738,7 +740,7 @@ for jentry in xrange( entries ):
         myCombi = JetCombinatorics()
         #top mass constraint
         myCombi.UseMtopConstraint(True)
-        myCombi.Usebtagging()
+        myCombi.UsebTagging()
         myCombi.SetLeptonicW(p4LepW)
         if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
         myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # pass the b-tag dicriminators
@@ -757,15 +759,27 @@ for jentry in xrange( entries ):
         # Cut on Mttbar
         if MttbarP4.M() > MttbarCut:
             histHigh.muons['pt_4jet'].Fill( p4muon.Pt() )
+            histHigh.muons['eta_4jet'].Fill( p4muon.Eta() )
+            histHigh.muons['phi_4jet'].Fill( p4muon.Phi() )
             histHigh.jets['Njets'].Fill( njets )
             histHigh.MET['MET_4jet'].Fill( p4MET.Pt() )
             #histHigh.electrons['pt_4jet'].Fill( p4electron.Pt() )
             histHigh.MET['Ht_4jet'].Fill( Ht )
             histHigh.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
             histHigh.jets['jetdeltaR'].Fill( minDeltaRjets )
-        
+        else:
+            histLow.muons['pt_4jet'].Fill( p4muon.Pt() )
+            histLow.muons['eta_4jet'].Fill( p4muon.Eta() )
+            histLow.muons['phi_4jet'].Fill( p4muon.Phi() )                        
+            histLow.jets['Njets'].Fill( njets )
+            histLow.MET['MET_4jet'].Fill( p4MET.Pt() )
+            #histLow.electrons['pt_4jet'].Fill( p4electron.Pt() )
+            histLow.MET['Ht_4jet'].Fill( Ht )
+            histLow.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
+            histLow.jets['jetdeltaR'].Fill( minDeltaRjets )
+            
                                                                         
-      
+
 print "done."
 print "M3 3jets events with > 500 GeV: "+str(N500gev3j)
 print "M3 4jets events with > 500 GeV: "+str(N500gev4j)
@@ -801,6 +815,18 @@ if not ApplyDeltaR:
 outroot = TFile(OutputDir+"/"+outname,"RECREATE")
 hist.SetTFile(outroot)
 hist.Write()
+outroot.Close()
+
+outrootHigh = TFile(OutputDir+"/High_"+outname,"RECREATE")
+histHigh.SetTFile(outrootHigh)
+histHigh.Write()
+outrootHigh.Close()
+
+outrootLow = TFile(OutputDir+"/Low_"+outname,"RECREATE")
+histLow.SetTFile(outrootLow)
+histLow.Write()
+outrootLow.Close()
+
 
 print "File "+outname+" has been written."
 

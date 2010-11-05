@@ -212,13 +212,19 @@ class Hist:
     def CreateMttbar(self, name):
         
         self.muons['pt_4jet'] = TH1F("muon_pt_4jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
+        self.muons['eta_4jet'] = TH1F("muon_eta_4jet"+name,"#eta^{#mu}", 20, -2.1, 2.1)
+        self.muons['phi_4jet'] = TH1F("muon_phi_4jet"+name,"#phi^{#mu}", 20, 0, 3.15)                                                
         self.jets['Njets'] = TH1F("Njets"+name,"jet multiplicity",6,4,10)
         self.MET['MET_4jet'] = TH1F("MET_4jet"+name,"Missing Transverse Energy [GeV]", 20, 0, 110)
         self.electrons['pt_4jet'] = TH1F("electron_pt_4jet"+name,"p_{T}^{#mu} [GeV/c]", 25, 20, 100)
         self.MET['Ht_4jet'] = TH1F("Ht_4jet"+name,"H_{T} [GeV]", 50, 0, 1000)
         self.MET['Htlep_4jet'] = TH1F("Htlep_4jet"+name,"H_{T,lep} [GeV]", 50, 0, 1000)
-        self.jets['jetdeltaR'] = TH1F("jetdeltaR"+name,"#DeltaR(jet1,jet2)",80, 0, 7)                                        
-                                                
+        self.jets['jetdeltaR'] = TH1F("jetdeltaR"+name,"#DeltaR(jet1,jet2)",80, 0, 4)                                        
+        self.SetupXTitle(self.muons)
+        self.SetupXTitle(self.electrons)
+        self.SetupXTitle(self.MET)
+        self.SetupXTitle(self.jets)
+        
     def SetupXTitle(self, map):
         for key in map.keys():
             map[key].SetXTitle(map[key].GetTitle())

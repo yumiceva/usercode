@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.cc,v 1.2 2010/09/10 22:33:13 yumiceva Exp $
+ version $Id: JetCombinatorics.cc,v 1.3 2010/11/05 19:26:31 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -375,15 +375,17 @@ Combo JetCombinatorics::GetCombination(int n) {
 	} else {
 
 
-	for ( std::map<Combo,int,minChi2>::const_iterator ite=allCombos_.begin();
-		  ite!=allCombos_.end(); ++ite) {
+	  for ( std::map<Combo,int,minChi2>::const_iterator ite=allCombos_.begin();
+		ite!=allCombos_.end(); ++ite) {
 
-	  if ( (ite->first).IsGoodbTagEvent() ) {
+	    Combo tmp = ite->first;
+	    if ( tmp.IsGoodbTagEvent() ) {
 	    
-	    if (j == n) a = ite->first;
-	    j++;
-	  }
+	      if (j == n) a = tmp;
+	      j++;
+	    }
 	  
+	  }
 	}
 
 	return a;
