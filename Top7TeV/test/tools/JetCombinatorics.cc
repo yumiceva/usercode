@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.cc,v 1.3 2010/11/05 19:26:31 yumiceva Exp $
+ version $Id: JetCombinatorics.cc,v 1.4 2010/11/05 19:59:48 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -61,11 +61,11 @@ void JetCombinatorics::Clear() {
 
 	allCombos_.clear();
 	allCombosSumEt_.clear();
-	Template4jCombos_.clear();
-	Template5jCombos_.clear();
-	Template6jCombos_.clear();
-	Template7jCombos_.clear();
-	cand1_.clear();
+	//Template4jCombos_.clear();
+	//Template5jCombos_.clear();
+	//Template6jCombos_.clear();
+	//Template7jCombos_.clear();
+	//cand1_.clear();
 	
 }
 	
@@ -353,7 +353,9 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> jets, st
 
 	allCombos_ = allCombos;
 	allCombosSumEt_ = allCombosSumEt;
-       
+	allCombos.clear();
+	allCombosSumEt.clear();
+	aTemplateCombos.clear();
 }
 
 Combo JetCombinatorics::GetCombination(int n) {

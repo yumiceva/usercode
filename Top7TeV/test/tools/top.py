@@ -304,6 +304,9 @@ histLow.Create(dataType+JetType+"Low")
 histHigh = histograms.Hist()
 histHigh.Create(dataType+JetType+"High")
 
+# jet combination
+myCombi = JetCombinatorics()
+        
 # loop over events
 for jentry in xrange( entries ):
 
@@ -312,7 +315,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    #if ientry < 300000: continue
+    if ientry == 300000: break
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
@@ -521,7 +524,7 @@ for jentry in xrange( entries ):
     if METzCalculator.IsComplex(): hist.MET['LepWmassComplex'].Fill(p4LepW.M())
 
     hist.jets['Njets'].Fill(0)
-
+        
         
     #count again jets
     njets = 0
@@ -661,7 +664,8 @@ for jentry in xrange( entries ):
             if itag: ntagjetsSSVHEM += 1
                                                                                 
         # jet combination
-        myCombi = JetCombinatorics()
+        #myCombi = JetCombinatorics()
+        myCombi.Clear()
         myCombi.SetLeptonicW(p4LepW)
         if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
         
@@ -696,9 +700,10 @@ for jentry in xrange( entries ):
                                 
         # M3Prime
         myCombi.Clear()
-        del(myCombi)
-        myCombi = JetCombinatorics()
+        #del(myCombi)
+        #myCombi = JetCombinatorics()
         #top mass constraint
+        myCombi.UsebTagging(False)
         myCombi.UseMtopConstraint(True)
         # choose sigmas
         #myCombi.SetSigmas(0);
@@ -753,8 +758,8 @@ for jentry in xrange( entries ):
         # apply b-tagging
         # M3Prime
         myCombi.Clear()
-        del(myCombi)
-        myCombi = JetCombinatorics()
+        #del(myCombi)
+        #myCombi = JetCombinatorics()
         #top mass constraint
         #myCombi.Verbose()
         myCombi.UseMtopConstraint(True)
@@ -796,7 +801,7 @@ for jentry in xrange( entries ):
             histLow.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
             histLow.jets['jetdeltaR'].Fill( minDeltaRjets )
         myCombi.Clear()
-        del(myCombi)
+        #del(myCombi)
         del(vectorjets)
         del(vectorbjets)
                                                                         

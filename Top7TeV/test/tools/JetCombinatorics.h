@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.5 2010/11/05 19:59:48 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.6 2010/11/05 22:52:47 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -384,9 +384,9 @@ class JetCombinatorics {
 	int ndf_;
 	bool removeDuplicates_;
 	
-	std::vector< TLorentzVector > cand1_;
-	std::vector< TLorentzVector > cand2_;
-	std::vector< TLorentzVector > cand3_;
+	//std::vector< TLorentzVector > cand1_;
+	//std::vector< TLorentzVector > cand2_;
+	//std::vector< TLorentzVector > cand3_;
 
 	//int nLists_;
 	
