@@ -70,23 +70,24 @@ else:
     #label['MB'] = 'Jun 14th MinimumBias'
     #label['Jul16'] = 'Jul 16th'
     #label['Prompt'] = 'PromptReco'
-    if os.path.isfile(path+'/cutflow_JPT_data.txt'):
-        file['dataJPT'] = path+'/cutflow_JPT_data.txt'
-        label['dataJPT'] = 'JPT Ref. Sel.'
-    if os.path.isfile(path+'/cutflow_calo_data.txt'):
-        file['datacalo'] = path+'/cutflow_calo_data.txt'
-        label['datacalo'] = 'Calo Ref. Sel.'
-    if os.path.isfile(path+'/cutflow_PF_data.txt'):
-        file['dataPF'] = path+'/cutflow_PF_data.txt'
-        label['dataPF'] = 'PF Ref. Sel.'
-    if os.path.isfile(path+'_MET/cutflow_JPT_data.txt'):
-        file['dataJPTMET'] = path+'_MET/cutflow_JPT_data.txt'
+
+    #if os.path.isfile(path+'/JPT/cutflow_JPT_data.txt'):
+    #    file['dataJPT'] = path+'/cutflow_JPT_data.txt'
+    #    label['dataJPT'] = 'JPT Ref. Sel.'
+    #if os.path.isfile(path+'/calo/cutflow_calo_data.txt'):
+    #    file['datacalo'] = path+'/cutflow_calo_data.txt'
+    #    label['datacalo'] = 'Calo Ref. Sel.'
+    #if os.path.isfile(path+'/PF/cutflow_PF_data.txt'):
+    #    file['dataPF'] = path+'/cutflow_PF_data.txt'
+    #    label['dataPF'] = 'PF Ref. Sel.'
+    if os.path.isfile(path+'/JPT/cutflow_JPT_data.txt'):
+        file['dataJPTMET'] = path+'/JPT/cutflow_JPT_data.txt'
         label['dataJPTMET'] = 'JPT MET$>$20, Iso$<$0.1'
-    if os.path.isfile(path+'_MET/cutflow_calo_data.txt'):    
-        file['datacaloMET'] = path+'_MET/cutflow_calo_data.txt'
+    if os.path.isfile(path+'/calo/cutflow_calo_data.txt'):    
+        file['datacaloMET'] = path+'/calo/cutflow_calo_data.txt'
         label['datacaloMET'] = 'Calo MET$>$20, Iso$<$0.1'
-    if os.path.isfile(path+'_MET/cutflow_PF_data.txt'):
-        file['dataPFMET'] = path+'_MET/cutflow_PF_data.txt'
+    if os.path.isfile(path+'/PF/cutflow_PF_data.txt'):
+        file['dataPFMET'] = path+'/PF/cutflow_PF_data.txt'
         label['dataPFMET'] = 'PF MET$>$20, Iso$<$0.1, p^{jet}_{T}>25'
 
                     
@@ -164,7 +165,7 @@ if Lumi<=0:
     
 if not IsMC:
     #tablelist = ['MB','Jun14','Jul16','Prompt','Total']
-    tablelist = ['dataJPT','datacalo','dataJPTMET','datacaloMET']
+    #tablelist = ['dataJPT','datacalo','dataJPTMET','datacaloMET']
     tablelist = ['datacaloMET','dataJPTMET','dataPFMET']
     
 texname = "cutflow_"+JetType+"_data.tex"

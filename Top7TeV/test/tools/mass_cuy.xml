@@ -1,6 +1,6 @@
 <cuy>
 
-  <validation type="data" file="res_35pb-1/top_plots_data_PF.root" weight="1">
+  <validation type="data" file="res_35pb-1/PF/top_plots_data_PF.root" weight="1">
     <TH1 name="M3_3j_dataPF" source="/M3/M3_3jet_dataPF"/>
     <TH1 name="M3_4j_dataPF" source="/M3/M3_4jet_dataPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_dataPF" source="/M3/M3_4jet_SSVHEM_1b_dataPF"/>
@@ -16,7 +16,7 @@
     <TH1 name="Mttbar_chi2_1btag_dataPF" source="/M3/Mttbar_chi2_1btag_dataPF"/>
   </validation>
 
-  <validation type="dataReverse" file="res_35pb-1/top_plots_dataReverse_PF.root" weight="1">
+  <validation type="dataReverse" file="res_35pb-1/PF/top_plots_dataReverse_PF.root" weight="1">
     <TH1 name="M3_3j_dataReversePF" source="/M3/M3_3jet_dataReversePF"/>
     <TH1 name="M3_4j_dataReversePF" source="/M3/M3_4jet_dataReversePF"/>
     <TH1 name="M3_4j_SSVHEM_1b_dataReversePF" source="/M3/M3_4jet_SSVHEM_1b_dataReversePF"/>
@@ -31,7 +31,7 @@
     <TH1 name="Mttbar_chi2_dataReversePF" source="/M3/Mttbar_chi2_dataReversePF"/>
   </validation>
 
-  <validation type="TTbar" file="res_35pb-1/top_plots_TTbar_PF.root" weight="0.0001061747170696587">
+  <validation type="TTbar" file="res_35pb-1/PF/top_plots_TTbar_PF.root" weight="0.0001061747170696587">
     <TH1 name="M3_3j_TTbarPF" source="/M3/M3_3jet_TTbarPF"/>
     <TH1 name="M3_4j_TTbarPF" source="/M3/M3_4jet_TTbarPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_TTbarPF" source="/M3/M3_4jet_SSVHEM_1b_TTbarPF"/>
@@ -47,7 +47,7 @@
     <TH1 name="Mttbar_chi2_1btag_TTbarPF" source="/M3/Mttbar_chi2_1btag_TTbarPF"/>
   </validation>
 
-  <validation type="Wjets" file="res_35pb-1/top_plots_Wjets_PF.root" weight="0.0031099738352619627">
+  <validation type="Wjets" file="res_35pb-1/PF/top_plots_Wjets_PF.root" weight="0.0031099738352619627">
     <TH1 name="M3_3j_WjetsPF" source="/M3/M3_3jet_WjetsPF"/>
     <TH1 name="M3_4j_WjetsPF" source="/M3/M3_4jet_WjetsPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_WjetsPF" source="/M3/M3_4jet_SSVHEM_1b_WjetsPF"/>
@@ -63,7 +63,7 @@
     <TH1 name="Mttbar_chi2_1btag_WjetsPF" source="/M3/Mttbar_chi2_1btag_WjetsPF"/>
   </validation>
 
-  <validation type="Zjets" file="res_35pb-1/top_plots_Zjets_PF.root" weight="0.0028094211467931765">
+  <validation type="Zjets" file="res_35pb-1/PF/top_plots_Zjets_PF.root" weight="0.0028094211467931765">
     <TH1 name="M3_3j_ZjetsPF" source="/M3/M3_3jet_ZjetsPF"/>
     <TH1 name="M3_4j_ZjetsPF" source="/M3/M3_4jet_ZjetsPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_ZjetsPF" source="/M3/M3_4jet_SSVHEM_1b_ZjetsPF"/>
@@ -79,7 +79,7 @@
     <TH1 name="Mttbar_chi2_1btag_ZjetsPF" source="/M3/Mttbar_chi2_1btag_ZjetsPF"/>
   </validation>
 
-  <validation type="QCD" file="res_35pb-1/top_plots_QCD_PF.root" weight="0.018205299430890203">
+  <validation type="QCD" file="res_35pb-1/PF/top_plots_QCD_PF.root" weight="0.018205299430890203">
     <TH1 name="M3_3j_QCDPF" source="/M3/M3_3jet_QCDPF"/>
     <TH1 name="M3_4j_QCDPF" source="/M3/M3_4jet_QCDPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_QCDPF" source="/M3/M3_4jet_SSVHEM_1b_QCDPF"/>
@@ -95,7 +95,7 @@
     <TH1 name="Mttbar_chi2_1btag_QCDPF" source="/M3/Mttbar_chi2_1btag_QCDPF"/>
   </validation>
 
-  <validation type="STtch" file="res_35pb-1/top_plots_STtch_PF.root" weight="3.9595681365436169e-05">
+  <validation type="STtch" file="res_35pb-1/PF/top_plots_STtch_PF.root" weight="3.9595681365436169e-05">
     <TH1 name="M3_3j_STtchPF" source="/M3/M3_3jet_STtchPF"/>
     <TH1 name="M3_4j_STtchPF" source="/M3/M3_4jet_STtchPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_STtchPF" source="/M3/M3_4jet_SSVHEM_1b_STtchPF"/>
@@ -111,7 +111,7 @@
     <TH1 name="Mttbar_chi2_1btag_STtchPF" source="/M3/Mttbar_chi2_1btag_STtchPF"/>
   </validation>
 
-  <validation type="STtWch" file="res_35pb-1/top_plots_STtWch_PF.root" weight="2.2725469891968262e-05">
+  <validation type="STtWch" file="res_35pb-1/PF/top_plots_STtWch_PF.root" weight="2.2725469891968262e-05">
     <TH1 name="M3_3j_STtWchPF" source="/M3/M3_3jet_STtWchPF"/>
     <TH1 name="M3_4j_STtWchPF" source="/M3/M3_4jet_STtWchPF"/>
     <TH1 name="M3_4j_SSVHEM_1b_STtWchPF" source="/M3/M3_4jet_SSVHEM_1b_STtWchPF"/>
@@ -196,7 +196,7 @@
     <superimposeItem name="Mt_1jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
     <superimposeItem name="Mt_1jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
 <!--    <superimposeItem name="Mt_1jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>-->
-    <superimposeItem name="Mt_1jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="358." Error="0.5"/>
+    <superimposeItem name="Mt_1jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="1534." Error="0.5"/>
     <superimposeItem name="Mt_1jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_1jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -206,7 +206,7 @@
     <superimposeItem name="Mt_2jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:2jetMM"/>
     <superimposeItem name="Mt_2jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:2jetMM"/>
 <!--    <superimposeItem name="Mt_2jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:2jetMM" Error="0.5"/> -->
-    <superimposeItem name="Mt_2jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="79." Error="0.5"/>
+    <superimposeItem name="Mt_2jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="426." Error="0.5"/>
     <superimposeItem name="Mt_2jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_2jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -216,7 +216,7 @@
     <superimposeItem name="Mt_3jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:3jetMM"/>
     <superimposeItem name="Mt_3jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:3jetMM"/>
 <!--    <superimposeItem name="Mt_3jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:3jetMM" Error="0.5"/>-->
-    <superimposeItem name="Mt_3jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="26." Error="0.5"/>
+    <superimposeItem name="Mt_3jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="124." Error="0.5"/>
     <superimposeItem name="Mt_3jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_3jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -226,7 +226,7 @@
     <superimposeItem name="Mt_4jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:4jetMM"/>
     <superimposeItem name="Mt_4jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:4jetMM"/>
 <!-- <superimposeItem name="Mt_4jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:4jetMM" Error="0.5"/>-->
-    <superimposeItem name="Mt_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="11." Error="0.5"/>
+    <superimposeItem name="Mt_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
     <superimposeItem name="Mt_4jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -235,7 +235,8 @@
     <superimposeItem name="M3_3j_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_3j_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_3j_ZjetsPF" color="top" legend="Zjets"/>
-    <superimposeItem name="M3_3j_QCDPF" color="top" legend="QCD"/>
+<!--    <superimposeItem name="M3_3j_QCDPF" color="top" legend="QCD"/>-->
+    <superimposeItem name="M3_3j_dataReversePF" color="top" legend="QCD" Normalize="true" SF="124." Error="0.5"/>
     <superimposeItem name="M3_3j_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3_3j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -244,7 +245,8 @@
     <superimposeItem name="M3_4j_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3_4j_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3_4j_ZjetsPF" color="top" legend="Zjets"/>
-    <superimposeItem name="M3_4j_QCDPF" color="top" legend="QCD"/>
+<!--   <superimposeItem name="M3_4j_QCDPF" color="top" legend="QCD"/>-->
+    <superimposeItem name="M3_4j_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
     <superimposeItem name="M3_4j_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3_4j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -271,7 +273,8 @@
     <superimposeItem name="M3chi2_hadW_4jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3chi2_hadW_4jet_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadW_4jet_ZjetsPF" color="top" legend="Zjets"/>
-    <superimposeItem name="M3chi2_hadW_4jet_QCDPF" color="top" legend="QCD"/>
+<!--    <superimposeItem name="M3chi2_hadW_4jet_QCDPF" color="top" legend="QCD"/>-->
+    <superimposeItem name="M3chi2_hadW_4jet_dataReversePF" color="top" legend="QCD"/ Normalize="true" SF="39." Error="0.5">
     <superimposeItem name="M3chi2_hadW_4jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3chi2_hadW_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -280,7 +283,8 @@
     <superimposeItem name="M3chi2_hadTop_4jet_dataPF" color="top" legend="Data"/>
     <superimposeItem name="M3chi2_hadTop_4jet_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadTop_4jet_ZjetsPF" color="top" legend="Zjets"/>
-    <superimposeItem name="M3chi2_hadTop_4jet_QCDPF" color="top" legend="QCD"/>
+<!--    <superimposeItem name="M3chi2_hadTop_4jet_QCDPF" color="top" legend="QCD"/>-->
+    <superimposeItem name="M3chi2_hadTop_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
     <superimposeItem name="M3chi2_hadTop_4jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3chi2_hadTop_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -289,7 +293,8 @@
     <superimposeItem name="Mttbar_chi2_dataPF" color="top" legend="Data"/>
     <superimposeItem name="Mttbar_chi2_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="Mttbar_chi2_ZjetsPF" color="top" legend="Zjets"/>
-    <superimposeItem name="Mttbar_chi2_QCDPF" color="top" legend="QCD"/>
+<!--    <superimposeItem name="Mttbar_chi2_QCDPF" color="top" legend="QCD"/>-->
+    <superimposeItem name="Mttbar_chi2_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
     <superimposeItem name="Mttbar_chi2_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mttbar_chi2_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -324,6 +329,8 @@
     <additionItem name="M3_3j_QCDPF"   weight="0.018205299430890203"/>
     <additionItem name="M3_4j_QCDPF"   weight="0.018205299430890203"/>
   </addition>
+<!--dataReverse -->
+
   <addition name="M3_3jincl_STPF" title="M3_3jincl_STPF" YTitle="Events" Lumi="35.0"> 
     <additionItem name="M3_3j_STtchPF"   weight="3.9595681365436169e-05"/>
     <additionItem name="M3_4j_STtchPF"   weight="3.9595681365436169e-05"/>

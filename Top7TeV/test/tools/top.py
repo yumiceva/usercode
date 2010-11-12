@@ -11,6 +11,7 @@
    -f, --flavor = FLAVOR: flavor for Vqq samples. 1 = bb, 2 = c(c), 3 = light
    -i, --isolation = ISO: lepton isolation cut.
    -j, --jet = JET: Jet and MET type: calo, JPT, PF
+   -J, --JES = JES: JES scale factor.
    -l, --listofruns : write text file with run,lumi,event of those passing the selection.
    -M, --MET = MET: MET threshold.
    -m, --mttbar = MTTBAR: Mttbar cut.
@@ -97,6 +98,7 @@ FlavorStr = ""
 doReverseIso = False
 MttbarCut = 900.
 printnewlistofruns = False
+JES = 1.
 
 # check options
 option,args = parse(__doc__)
@@ -140,6 +142,10 @@ if option.jetpt:
     MinJetPt = float(option.jetpt)
 print "jet pT > "+str(MinJetPt)
 
+if option.JES:
+    JES = float(option.JES)
+    print "Use JES factor of "+str(JES)
+    
 if option.sample:
     dataType = option.sample
 print "sample: "+dataType
@@ -228,7 +234,7 @@ data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 #"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
 #datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/Sep17ReReco/Sep17ReReco.root"
 
-if dataType=="data":
+if dataType=="data" or dataType=="dataReverse":
     top.Add(data_repo+"Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root")
     top.Add(data_repo+"Data/34.72pb-1/ttmuj_12.83pb-1_Nov5.root") #total 34.72pb-1
 if dataType=="dataReverse":
@@ -315,7 +321,7 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    if ientry == 300000: break
+    #if ientry <= 300000: continue
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
@@ -399,7 +405,7 @@ for jentry in xrange( entries ):
             aDeltaR = 999
             for jet in jets:
                 
-                if jet.pt>MinJetPt:
+                if JES*jet.pt>MinJetPt:
                     tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                     tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                     tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
@@ -411,8 +417,8 @@ for jentry in xrange( entries ):
                mu.muonhits>0 and mu.normchi2<10 and \
                mu.trackerhits>=11 and mu.muonstations> 1 and \
                mu.pixelhits >= 1 and \
-               math.fabs(mu.vz - PVz) >= 1. and aDeltaR>0.3 and \
-               ( math.fabs(mu.d0)>0.02 or mu.reliso03>0.1 ):
+               math.fabs(mu.vz - PVz) < 1. and aDeltaR>0.3 and \
+               ( math.fabs(mu.d0)>0.025 or (mu.reliso03<0.7 and mu.reliso03>0.15) ):
 
                 ntightmuons += 1
                 p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
@@ -452,7 +458,7 @@ for jentry in xrange( entries ):
                     aDeltaR = 999
                     for jet in jets:
                         
-                        if jet.pt>MinJetPt:
+                        if JES*jet.pt>MinJetPt:
                             tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                             tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
@@ -529,7 +535,7 @@ for jentry in xrange( entries ):
     #count again jets
     njets = 0
     for jet in jets:
-        if jet.pt>MinJetPt:
+        if JES*jet.pt>MinJetPt:
             tmpp4Jet = TLorentzVector()
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
             tmpdeltaR = p4muon.DeltaR(tmpp4Jet)
@@ -538,6 +544,9 @@ for jentry in xrange( entries ):
 
             p4jets.append( TLorentzVector() )
             p4jets[njets-1].SetPtEtaPhiE(jet.pt,jet.eta,jet.phi,jet.e)
+            # apply JES
+            p4jets[njets-1] = JES * p4jets[njets-1]
+            
             bdisc['TCHP'].append( jet.btag_TCHP)
             bdisc['SSVHE'].append( jet.btag_SSVHE)
             if jet.btag_TCHP > 1.19:
@@ -666,6 +675,7 @@ for jentry in xrange( entries ):
         # jet combination
         #myCombi = JetCombinatorics()
         myCombi.Clear()
+        myCombi.UsebTagging(False)
         myCombi.SetLeptonicW(p4LepW)
         if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
         
@@ -741,7 +751,7 @@ for jentry in xrange( entries ):
         hist.M3['pt_vs_Mttbar'].Fill( MttbarP4.Pt(), MttbarP4.M() )
         
         # printout txt file with run,lumi,event
-        if printnewlistofruns:
+        if printnewlistofruns and MttbarP4.M()>MttbarCut:
             line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
             newrunfile.write(line)
 
