@@ -85,6 +85,7 @@ def parse(docstring, arglist=None):
 # Options
 JetType = "PF"
 dataType = "data"
+dataTypeSuffix = ""
 ApplyDeltaR = True
 METCut = 20.
 verbose = False
@@ -98,7 +99,7 @@ FlavorStr = ""
 doReverseIso = False
 MttbarCut = 900.
 printnewlistofruns = False
-JES = 1.
+JES = 1
 
 # check options
 option,args = parse(__doc__)
@@ -145,7 +146,8 @@ print "jet pT > "+str(MinJetPt)
 if option.JES:
     JES = float(option.JES)
     print "Use JES factor of "+str(JES)
-    
+    if JES>1: dataTypeSuffix = "JESup"
+    if JES<1: dataTypeSuffix = "JESdown"
 if option.sample:
     dataType = option.sample
 print "sample: "+dataType
@@ -226,13 +228,6 @@ top = TChain('/PATNtupleMaker/top')
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 #datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
 #datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Nov3/TrigC/TrigC.root"
-#"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
-#"Data/15.08pb-1/ttmuj_15.08pb-1_Oct22_new.root" #"Data/10.93pb-1/ttmuj_Oct15_10.93pb-1_new.root"
-#"Data/6.95pb-1/ttmuj_Oct8_6.95pb-1.root"
-#"Data/4.42pb-1_CMSSW384/ttmuj_Oct5_4.42pb-1_CMSSW384.root"
-#"Data/4.54pb-1/ttmuj_Oct1_4.54pb-1.root"
-#"/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/1.34pb-1/ttmuj_data_Aug25.root"
-#datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/Sep17ReReco/Sep17ReReco.root"
 
 if dataType=="data" or dataType=="dataReverse":
     top.Add(data_repo+"Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root")
@@ -258,6 +253,55 @@ if dataType=="Wc":
     top.Add(data_repo+"MC/V00-01-04-07/Wc_Mu.root")
 if dataType=="Vqq":
     top.Add(data_repo+"MC/V00-01-04-07/Vqq_Mu.root")
+if dataType=="TTbar_matchingup":
+    dataType="TTbar"
+    dataTypeSuffix = "matchingup"
+    top.Add(data_repo+"MC/V00-01-04-07/TTbar_matchingup_Mu.root")
+if dataType=="TTbar_matchingdown":
+    dataType="TTbar"
+    dataTypeSuffix = "matchingdown"
+    top.Add(data_repo+"MC/V00-01-04-07/TTbar_matchingdown_Mu.root")
+if dataType=="TTbar_scaleup":
+    dataType="TTbar"
+    dataTypeSuffix = "scaleup"
+    top.Add(data_repo+"MC/V00-01-04-07/TTbar_scaleup_Mu.root")
+if dataType=="TTbar_scaledown":
+    dataType="TTbar"
+    dataTypeSuffix = "scaledown"
+    top.Add(data_repo+"MC/V00-01-04-07/TTbar_scaledown_Mu.root")
+if dataType=="Wjets_matchingup":
+    dataType="Wjets"
+    dataTypeSuffix = "matchingup"
+    top.Add(data_repo+"MC/V00-01-04-07/WJets_matchingup_Mu.root")
+if dataType=="WJets_matchingdown":
+    dataType="Wjets"
+    dataTypeSuffix = "matchingdown"
+    top.Add(data_repo+"MC/V00-01-04-07/WJets_matchingdown_Mu.root")
+if dataType=="WJets_scaleup":
+    dataType="Wjets"
+    dataTypeSuffix = "scaleup"
+    top.Add(data_repo+"MC/V00-01-04-07/WJets_scaleup_Mu.root")
+if dataType=="WJets_scaledown":
+    dataType="Wjets"
+    dataTypeSuffix = "scaledown"
+    top.Add(data_repo+"MC/V00-01-04-07/WJets_scaledown_Mu.root")
+if dataType=="ZJets_matchingup":
+    dataType="Zjets"
+    dataTypeSuffix = "matchingup"
+    top.Add(data_repo+"MC/V00-01-04-07/ZJets_matchingup_Mu.root")
+if dataType=="ZJets_matchingdown":
+    dataType="Zjets"
+    dataTypeSuffix = "matchingdown"
+    top.Add(data_repo+"MC/V00-01-04-07/ZJets_matchingdown_Mu.root")
+if dataType=="ZJets_scaleup":
+    dataType="Zjets"
+    dataTypeSuffix = "scaleup"
+    top.Add(data_repo+"MC/V00-01-04-07/ZJets_scaleup_Mu.root")
+if dataType=="ZJets_scaledown":
+    dataType="Zjets"
+    dataTypeSuffix = "scaledown"
+    top.Add(data_repo+"MC/V00-01-04-07/ZJets_scaledown_Mu.root")
+
 
 #tfile = TFile(data_repo+datafilename)
 print "use "+JetType+" collections"
@@ -391,6 +435,7 @@ for jentry in xrange( entries ):
     isTagb['SSVHEM'] = []
     muVz = 0.
     PVz = 0.
+    
     for pv in vertices:
         if nPVs == 0: PVz = pv.vz
         nPVs += 1
@@ -412,7 +457,8 @@ for jentry in xrange( entries ):
                     if tmpdeltaR < 0.1 and JetType=="JPT": continue
                     #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
                     if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
-                                                                                                                                                                            
+            del(tmpp4Mu)
+            del(tmpp4Jet)
             if mu.pt>20. and math.fabs(mu.eta)<2.1 and mu.IsTrackerMuon==1 and \
                mu.muonhits>0 and mu.normchi2<10 and \
                mu.trackerhits>=11 and mu.muonstations> 1 and \
@@ -466,6 +512,8 @@ for jentry in xrange( entries ):
                             #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
                             if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
 
+                    del(tmp4Mu)
+                    del(tmpp4Jet)
                     if aDeltaR < 999: hist.muons['deltaR'].Fill(aDeltaR)
                     
                     if not ApplyDeltaR:
@@ -487,6 +535,17 @@ for jentry in xrange( entries ):
         nelec += 1
     if nelec > 0 : continue
     cutmap['ElectronVeto'] += 1
+
+    # correct MET for effect of JES
+    if JES != 1:
+        deltaJES = TLorentzVector()
+        tmpp4Jet= TLorentzVector()
+        for jet in jets:
+            tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
+            deltaJES += (JES - 1.) * tmpp4Jet
+        p4MET = p4MET - deltaJES
+        del(deltaJES)
+        del(tmpp4Jet)
 
     hist.MET['phi_cut0'].Fill( p4MET.Phi() )
     
@@ -594,6 +653,7 @@ for jentry in xrange( entries ):
                 hist.jets['4th_pt_N4j'].Fill(p4jets[3].Pt())
                 hist.MET['LepWmass_4jet'].Fill(p4LepW.M())
                 if METzCalculator.IsComplex(): hist.MET['LepWmassComplex_4jet'].Fill(p4LepW.M())
+            del(tmpp4Jet)
 
     if njets==1:
         cutmap['1Jet'] += 1
@@ -814,7 +874,8 @@ for jentry in xrange( entries ):
         #del(myCombi)
         del(vectorjets)
         del(vectorbjets)
-                                                                        
+    
+    del(p4jets)                                                                
 
 print "done."
 print "M3 3jets events with > 500 GeV: "+str(N500gev3j)
@@ -829,8 +890,13 @@ for key in cutmapkeys:
     print key + " " + str(cutmap[key])
 
 txtname = "cutflow_"+JetType+"_"+dataType+".txt"
+if JES != 1:
+    txtname = "cutflow_"+JetType+"_"+dataType+"_"+dataTypeSuffix+".txt"
 if Flavor != 0:
     txtname = "cutflow_"+JetType+"_"+dataType+"_"+FlavorStr+".txt"
+    if JES != 1:
+        txtname = "cutflow_"+JetType+"_"+dataType+"_"+dataTypeSuffix+"_"+FlavorStr+".txt"
+
 filecut = open(OutputDir+txtname,"w")
 for key in cutmapkeys:
     filecut.write(key + " " + str(cutmap[key])+"\n")
@@ -843,9 +909,13 @@ print "cut flow save in file "+txtname
 #hist.muons['eta'].Draw()
 
 outname = "top_plots_"+dataType+"_"+JetType+".root"
+if JES != 1:
+    outname = "top_plots_"+dataType+"_"+dataTypeSuffix+"_"+JetType+".root"
 if Flavor != 0:
     outname = "top_plots_"+dataType+"_"+JetType+"_"+FlavorStr+".root"
-    
+    if JES != 1:
+        outname = "top_plots_"+dataType+"_"+dataTypeSuffix+"_"+FlavorStr+"_"+JetType+".root"
+
 if not ApplyDeltaR:
     outname = "top_plots_"+dataType+"_"+JetType+"_NoDeltaR.root"
 outroot = TFile(OutputDir+"/"+outname,"RECREATE")
