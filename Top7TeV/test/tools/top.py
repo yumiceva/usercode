@@ -9,12 +9,14 @@
    -b, --batch : run in batch mode without graphics.
    -d, --deltaR : enable/dissable deltaR(muon,jet) cut. Default is enable.
    -f, --flavor = FLAVOR: flavor for Vqq samples. 1 = bb, 2 = c(c), 3 = light
+   -I, --Initial = INITIAL: initial entry.
    -i, --isolation = ISO: lepton isolation cut.
    -j, --jet = JET: Jet and MET type: calo, JPT, PF
    -J, --JES = JES: JES scale factor.
    -l, --listofruns : write text file with run,lumi,event of those passing the selection.
    -M, --MET = MET: MET threshold.
    -m, --mttbar = MTTBAR: Mttbar cut.
+   -N, --Nevents = Nevents: Maximum entry to run.
    -n, --new : write text file with run,lumi,event for Mttbar>900.
    -O, --OutputDir = OUTPUTDIR: name of output directory
    -p, --jetpt = JETPT: jet pT threhold.
@@ -100,6 +102,8 @@ doReverseIso = False
 MttbarCut = 900.
 printnewlistofruns = False
 JES = 1
+InitialEntry = 0
+FinalEntry = 0
 
 # check options
 option,args = parse(__doc__)
@@ -170,6 +174,13 @@ if option.flavor:
     if Flavor == 2: FlavorStr = "cc"
     if Flavor == 3: FlavorStr = "light"
     print "Selecting MC sample with flavor "+FlavorStr
+
+if option.Initial:
+    InitialEntry = int(option.Initial)
+    print "Initial entry = "+str(InitailEntry)
+if option.Nevents:
+    FinalEntry = int(option.Nevents)
+    print "Final entry = "+str(FinalEntry)
 
 
 gROOT.Reset()
@@ -273,31 +284,31 @@ if dataType=="Wjets_matchingup":
     dataType="Wjets"
     dataTypeSuffix = "matchingup"
     top.Add(data_repo+"MC/V00-01-04-07/WJets_matchingup_Mu.root")
-if dataType=="WJets_matchingdown":
+if dataType=="Wjets_matchingdown":
     dataType="Wjets"
     dataTypeSuffix = "matchingdown"
     top.Add(data_repo+"MC/V00-01-04-07/WJets_matchingdown_Mu.root")
-if dataType=="WJets_scaleup":
+if dataType=="Wjets_scaleup":
     dataType="Wjets"
     dataTypeSuffix = "scaleup"
     top.Add(data_repo+"MC/V00-01-04-07/WJets_scaleup_Mu.root")
-if dataType=="WJets_scaledown":
+if dataType=="Wjets_scaledown":
     dataType="Wjets"
     dataTypeSuffix = "scaledown"
     top.Add(data_repo+"MC/V00-01-04-07/WJets_scaledown_Mu.root")
-if dataType=="ZJets_matchingup":
+if dataType=="Zjets_matchingup":
     dataType="Zjets"
     dataTypeSuffix = "matchingup"
     top.Add(data_repo+"MC/V00-01-04-07/ZJets_matchingup_Mu.root")
-if dataType=="ZJets_matchingdown":
+if dataType=="Zjets_matchingdown":
     dataType="Zjets"
     dataTypeSuffix = "matchingdown"
     top.Add(data_repo+"MC/V00-01-04-07/ZJets_matchingdown_Mu.root")
-if dataType=="ZJets_scaleup":
+if dataType=="Zjets_scaleup":
     dataType="Zjets"
     dataTypeSuffix = "scaleup"
     top.Add(data_repo+"MC/V00-01-04-07/ZJets_scaleup_Mu.root")
-if dataType=="ZJets_scaledown":
+if dataType=="Zjets_scaledown":
     dataType="Zjets"
     dataTypeSuffix = "scaledown"
     top.Add(data_repo+"MC/V00-01-04-07/ZJets_scaledown_Mu.root")
@@ -365,7 +376,11 @@ for jentry in xrange( entries ):
     if ientry < 0:
         break
 
-    #if ientry <= 300000: continue
+    #if ientry <= 100: break
+    if option.Initial:
+        if ientry < InitialEntry : continue
+    if option.Nevents:
+        if ientry > FinalEntry : break
     
     # verify file/tree/chain integrity
     nb = top.GetEntry( jentry )
@@ -512,7 +527,7 @@ for jentry in xrange( entries ):
                             #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
                             if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
 
-                    del(tmp4Mu)
+                    del(tmpp4Mu)
                     del(tmpp4Jet)
                     if aDeltaR < 999: hist.muons['deltaR'].Fill(aDeltaR)
                     
@@ -523,7 +538,8 @@ for jentry in xrange( entries ):
                         ntightmuons += 1
                         p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
                             
-                    
+    #print "loop over muons done"
+    
     if ntightmuons != 1:
         continue
     cutmap['OneIsoMu'] +=1
@@ -542,7 +558,8 @@ for jentry in xrange( entries ):
         tmpp4Jet= TLorentzVector()
         for jet in jets:
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
-            deltaJES += (JES - 1.) * tmpp4Jet
+            deltaJES += (float(JES) - 1.) * tmpp4Jet
+            
         p4MET = p4MET - deltaJES
         del(deltaJES)
         del(tmpp4Jet)
@@ -602,10 +619,8 @@ for jentry in xrange( entries ):
             njets += 1
 
             p4jets.append( TLorentzVector() )
-            p4jets[njets-1].SetPtEtaPhiE(jet.pt,jet.eta,jet.phi,jet.e)
-            # apply JES
-            p4jets[njets-1] = JES * p4jets[njets-1]
-            
+            p4jets[njets-1].SetPtEtaPhiE(JES*jet.pt,jet.eta,jet.phi,JES*jet.e)
+                        
             bdisc['TCHP'].append( jet.btag_TCHP)
             bdisc['SSVHE'].append( jet.btag_SSVHE)
             if jet.btag_TCHP > 1.19:
@@ -890,11 +905,11 @@ for key in cutmapkeys:
     print key + " " + str(cutmap[key])
 
 txtname = "cutflow_"+JetType+"_"+dataType+".txt"
-if JES != 1:
+if dataTypeSuffix != "":
     txtname = "cutflow_"+JetType+"_"+dataType+"_"+dataTypeSuffix+".txt"
 if Flavor != 0:
     txtname = "cutflow_"+JetType+"_"+dataType+"_"+FlavorStr+".txt"
-    if JES != 1:
+    if dataTypeSuffix !="":
         txtname = "cutflow_"+JetType+"_"+dataType+"_"+dataTypeSuffix+"_"+FlavorStr+".txt"
 
 filecut = open(OutputDir+txtname,"w")
@@ -909,11 +924,11 @@ print "cut flow save in file "+txtname
 #hist.muons['eta'].Draw()
 
 outname = "top_plots_"+dataType+"_"+JetType+".root"
-if JES != 1:
+if dataTypeSuffix !="":
     outname = "top_plots_"+dataType+"_"+dataTypeSuffix+"_"+JetType+".root"
 if Flavor != 0:
     outname = "top_plots_"+dataType+"_"+JetType+"_"+FlavorStr+".root"
-    if JES != 1:
+    if dataTypeSuffix !="":
         outname = "top_plots_"+dataType+"_"+dataTypeSuffix+"_"+FlavorStr+"_"+JetType+".root"
 
 if not ApplyDeltaR:
