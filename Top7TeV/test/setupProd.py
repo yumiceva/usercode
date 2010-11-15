@@ -36,11 +36,12 @@ jsonFilesEl = {}
 directoriesMuData['Sep17ReReco'] = '/Mu/Run2010A-Sep17ReReco_v2/RECO'# 135821   144114
 directoriesMuData['TrigA'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946...
 directoriesMuData['TrigB'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946... 
+directoriesMuData['TrigC'] = '/Mu/Run2010B-PromptReco-v2/RECO'
 
 jsonFilesMu['Sep17ReReco'] = 'Cert_132440-147195_Oct25_JSON.txt' #'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
 jsonFilesMu['TrigA'] = 'Cert_132440-147195_Oct25_JSON.txt'
 jsonFilesMu['TrigB'] = 'Cert_147196-148864_Oct29_JSON.txt'
-
+jsonFilesMu['TrigC'] = 'Cert_148865-149442_Nov5_JSON.txt' #'dcs_148865.txt'
 
 directoriesMuMC['TTbar_Mu'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 directoriesMuMC['WJets_Mu'] = '/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
@@ -81,7 +82,7 @@ jsonFilesEl['TrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
 jsonFilesEl['PromptRecoTrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
 jsonFilesEl['TrigD'] = 'Cert_146428-147116_El_Oct15_JSON.txt'
 jsonFilesEl['TrigE'] = 'Cert_147117-148818_El_Oct29_JSON.txt'
-jsonFilesEl['TrigF'] = 'Cert_148819-148864_El_Oct29_JSON.txt'
+jsonFilesEl['TrigF'] = 'Cert_148819-149442_El_Nov5_JSON.txt'#'Cert_148819-148864_El_Oct29_JSON.txt'
 
 
 directoriesElMC['TTbar_El'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'

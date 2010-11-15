@@ -73,7 +73,7 @@ process.load("PhysicsTools.PatAlgos.patSequences_cff")
 # Since these are re-RECO samples, the ak5GenJets collection is missing
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePATFAQs#Running_PAT_in_3_3_X_on_a_sa_AN1
 from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
-if inputType=="MC":
+if inputType=="MC" and eventtype.find("_scale")!=-1 and eventtype.find("_matching")!=-1:
     from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
     run36xOn35xInput(process, "ak5GenJets" )
     
@@ -240,13 +240,13 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 triggerprocess = "HLT"
 if inputType == "MC" and eventtype!="Wc":
     triggerprocess = "REDIGI" # for 36x M
-if inputType.find("_scale")!=-1 or inputType.find("_matching")!=-1:
+if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1:
     triggerprocess = "HLT"
 
 
 if channel=="muon":
     mufilter = "hltSingleMu9L3Filtered9"
-    if eventtype == "TrigB":
+    if eventtype == "TrigB" or eventtype == "TrigC":
         mufilter = "hltSingleMu15L3Filtered15"
         
     process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
@@ -301,14 +301,13 @@ if inputType=="MC": brunOnMC = True
 
 usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postfix)
 
-if channel=="electron":
-    postfixLoose = "PFlowLoose"
-    usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postfixLoose)
-    getattr(process, "patElectrons"+postfixLoose).embedGenMatch = brunOnMC
-    getattr(process, "patMuons"+postfixLoose).embedGenMatch = brunOnMC
-    process.patElectronsPFlowLoose.pfElectronSource = 'pfAllElectronsPFlowLoose'
-    process.patElectronsPFlowLoose.isoDeposits = cms.PSet()
-    process.patElectronsPFlowLoose.isolationValues = cms.PSet()
+postfixLoose = "PFlowLoose"
+usePF2PAT(process,runPF2PAT=True, jetAlgo='AK5', runOnMC=brunOnMC, postfix=postfixLoose)
+getattr(process, "patElectrons"+postfixLoose).embedGenMatch = brunOnMC
+getattr(process, "patMuons"+postfixLoose).embedGenMatch = brunOnMC
+process.patElectronsPFlowLoose.pfElectronSource = 'pfAllElectronsPFlowLoose'
+process.patElectronsPFlowLoose.isoDeposits = cms.PSet()
+process.patElectronsPFlowLoose.isolationValues = cms.PSet()
     
 # turn to false when running on data
 getattr(process, "patElectrons"+postfix).embedGenMatch = brunOnMC
@@ -403,6 +402,9 @@ if inputType=="MC":
         process.p.remove( process.makeGenEvt )
     if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
         process.p.remove( process.flavorHistorySeq )
+    if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1:
+        process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
+        
 else:
     process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
     process.p.remove( process.makeGenEvt )

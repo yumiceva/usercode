@@ -80,15 +80,18 @@ for adir in dirs:
 
             totaljobs = 0
             donejobs = 0
+            retrievedjobs = 0
             for line in lines:
                 if line.find("Total Jobs")!=-1:
                     totaljobs = line.split()[1]
                 if line.find("Jobs Done")!=-1:
                     donejobs = line.split()[1]
+                if line.find("Jobs with Wrapper Exit Code : 0")!=-1:
+                    retrievedjobs = line.split()[1]
             if sys.argv[2]=="status":
                 print " Total Jobs "+str(totaljobs)
                 print " Jobs Done  "+str(donejobs)
-                                                                                            
+                print " Retrieved Jobs "+str(retrievedjobs)
         
         if len(sys.argv)>2 and (sys.argv[2]=="getoutput" or sys.argv[2]=="hadd"):
 
