@@ -513,6 +513,8 @@ for jentry in xrange( entries ):
                     
                     if math.fabs(muonVz - PVz) >= 1.:
                         continue
+
+                    hist.muons['pt_cut3'].Fill(mu.pt)
                     
                     tmpp4Mu = TLorentzVector()
                     tmpp4Jet= TLorentzVector()
