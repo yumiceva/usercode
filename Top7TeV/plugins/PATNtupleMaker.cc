@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.18 2010/09/29 20:32:04 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.19 2010/10/18 20:00:05 yumiceva Exp $
 //
 //
 
@@ -49,7 +49,7 @@
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
-
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
 #include "TFile.h"
@@ -171,7 +171,22 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     const METCollection *pfmetCol = pfmetHandle.product();
     pfmet = &(pfmetCol->front());
 
-    
+    // PDF stuff
+    edm::Handle<GenEventInfoProduct> pdfstuff;
+
+    if ((!iEvent.isRealData()) && iEvent.getByLabel("generator", pdfstuff)) {
+      if (pdfstuff->hasPDF()) {
+	TopGenPdfInfo tmpPDF;
+	tmpPDF.scalePDF = pdfstuff->pdf()->scalePDF;
+	tmpPDF.id1 = pdfstuff->pdf()->id.first;
+	tmpPDF.id2 = pdfstuff->pdf()->id.second;
+	tmpPDF.x1 = pdfstuff->pdf()->x.first;
+	tmpPDF.x2 = pdfstuff->pdf()->x.second;
+	tmpPDF.xPdf1 = pdfstuff->pdf()->xPDF.first;
+	tmpPDF.xPdf2 = pdfstuff->pdf()->xPDF.second;
+	_ntuple->genPdf = tmpPDF;
+      }
+    }
     // MC stuff
     //__________________
     //Event Flavor History Flag

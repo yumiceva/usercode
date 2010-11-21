@@ -32,9 +32,9 @@ LD_LIBRARY_PATH:= $(ROOTSYS)/lib/:$(LD_LIBRARY_PATH)
 
 INCLUDEDIR    = -I$(shell root-config --incdir) -I../interface 
 
-HEADERS       = TopCandidateEvent.h TopGenCandidateEvent.h TopGenMuonEvent.h TopMyGenEvent.h TopElectronEvent.h TopGenElectronEvent.h TopJetEvent.h TopVertexEvent.h TopEventNtuple.h TopGenJetEvent.h TopMuonEvent.h
+HEADERS       = TopCandidateEvent.h TopGenCandidateEvent.h TopGenMuonEvent.h TopMyGenEvent.h TopElectronEvent.h TopGenElectronEvent.h TopJetEvent.h TopVertexEvent.h TopEventNtuple.h TopGenJetEvent.h TopMuonEvent.h TopGenPdfInfo.h
 
-OBJS          = TopCandidateEvent.o TopGenCandidateEvent.o TopGenMuonEvent.o TopMyGenEvent.o TopElectronEvent.o TopGenElectronEvent.o TopJetEvent.o TopVertexEvent.o TopEventNtuple.o TopGenJetEvent.o TopMuonEvent.o TopEventNtupleDict.o
+OBJS          = TopCandidateEvent.o TopGenCandidateEvent.o TopGenMuonEvent.o TopMyGenEvent.o TopElectronEvent.o TopGenElectronEvent.o TopJetEvent.o TopVertexEvent.o TopEventNtuple.o TopGenJetEvent.o TopMuonEvent.o TopEventNtupleDict.o TopGenPdfInfo.o
 
 
 all:	$(OBJS) 

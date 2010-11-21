@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.7 2010/09/25 14:30:16 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.8 2010/11/03 17:36:15 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -23,12 +23,14 @@ ________________________________________________________________**/
 #include "TopJetEvent.h"
 #include "TopVertexEvent.h"
 #include "TopMyGenEvent.h"
+#include "TopGenPdfInfo.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopMuonEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopElectronEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopJetEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopMyGenEvent.h"
+#include "Yumiceva/Top7TeV/interface/TopGenPdfInfo.h"
 #endif
 
 
@@ -84,6 +86,7 @@ public:
 
     Int_t flavorHistory; // MC flag
     TopMyGenEvent gen; // MC generator info for ttbar
+    TopGenPdfInfo genPdf; // MC PDF info
 
     //_____ jet combinations _______________________
     //Float_t M3;

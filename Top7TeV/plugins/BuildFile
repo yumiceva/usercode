@@ -23,6 +23,7 @@
 <use name=TrackingTools/IPTools>
 <use name=TrackingTools/TransientTrack>
 <use name=TrackingTools/Records>
+<use name=SimDataFormats/GeneratorProducts>
 <use name=RecoEgamma/EgammaTools>
 <use name=MagneticField/Records>
 <use name=MagneticField/Engine>
