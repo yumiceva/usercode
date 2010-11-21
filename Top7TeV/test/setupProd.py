@@ -53,6 +53,9 @@ directoriesMuMC['Wc_Mu'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SI
 directoriesMuMC['Vqq_Mu'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
 
 # run these samples with condor_g in unl
+## Attention:
+## if a dataset name has ":g" it means that for that sample the jobs will be sent to Nebraska
+## using condor_g
 directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
 directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
 directoriesMuMC['TTbar_matchingup_Mu'] = '/TTJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
@@ -67,6 +70,11 @@ directoriesMuMC['ZJets_matchingup_Mu'] = '/ZJets_matchingup_7TeV-madgraph/Summer
 directoriesMuMC['ZJets_matchingdown_Mu'] = '/ZJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
 #directoriesMuMC['Vqq_scaleup_Mu'] = '/VQQJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO' #in Lyon
 #directoriesMuMC['Vqq_scaledown_Mu'] = '/VQQJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['TTbar_largerISRFSR_Mu'] = '/TTJets_largerISRFSR_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['TTbar_smallerISRFSR_Mu'] = '/TTJets_smallerISRFSR_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
+directoriesMuMC['TTbar_PU_Mu'] = 'TTJets_7TeV-madgraph/Summer10-START36_V10_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO'
+directoriesMuMC['WJets_PU_Mu'] = '/WJets_7TeV-madgraph/Summer10-START36_V10_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO'
+directoriesMuMC['ZJets_PU_Mu'] = '/ZJets_7TeV-madgraph/Summer10-START36_V10_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO'
 
 directoriesElData['TrigA'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
 directoriesElData['TrigB'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json

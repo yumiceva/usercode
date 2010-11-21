@@ -73,7 +73,8 @@ process.load("PhysicsTools.PatAlgos.patSequences_cff")
 # Since these are re-RECO samples, the ak5GenJets collection is missing
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePATFAQs#Running_PAT_in_3_3_X_on_a_sa_AN1
 from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
-if inputType=="MC" and eventtype.find("_scale")!=-1 and eventtype.find("_matching")!=-1:
+if inputType=="MC" and eventtype.find("_scale")==-1 and eventtype.find("_matching")==-1\
+       and inputType=="ISRFSR"==-1 and inputType=="_PU"==-1:
     from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
     run36xOn35xInput(process, "ak5GenJets" )
     
@@ -240,7 +241,8 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 triggerprocess = "HLT"
 if inputType == "MC" and eventtype!="Wc":
     triggerprocess = "REDIGI" # for 36x M
-if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1:
+if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
+       or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
     triggerprocess = "HLT"
 
 
@@ -402,7 +404,8 @@ if inputType=="MC":
         process.p.remove( process.makeGenEvt )
     if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
         process.p.remove( process.flavorHistorySeq )
-    if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1:
+    if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
+           or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
         process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
         
 else:
