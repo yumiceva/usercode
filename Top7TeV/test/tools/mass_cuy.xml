@@ -184,8 +184,8 @@
 
   <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="35.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="Mt_dataPF" color="top" legend="Data"/>
-    <superimposeItem name="Mt_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
-    <superimposeItem name="Mt_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
+    <superimposeItem name="Mt_WjetsPF" color="top" legend="Wjets"/>
+    <superimposeItem name="Mt_ZjetsPF" color="top" legend="Zjets"/>
     <superimposeItem name="Mt_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM"/>
     <superimposeItem name="Mt_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_TTbarPF" color="top" legend="TTbar"/>
@@ -196,7 +196,7 @@
     <superimposeItem name="Mt_1jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:1jetMM"/>
     <superimposeItem name="Mt_1jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:1jetMM"/>
 <!--    <superimposeItem name="Mt_1jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:1jetMM" Error="0.5"/>-->
-    <superimposeItem name="Mt_1jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="1534." Error="0.5"/>
+    <superimposeItem name="Mt_1jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:1jetMM" Error="0.5"/>
     <superimposeItem name="Mt_1jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_1jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -206,7 +206,7 @@
     <superimposeItem name="Mt_2jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:2jetMM"/>
     <superimposeItem name="Mt_2jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:2jetMM"/>
 <!--    <superimposeItem name="Mt_2jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:2jetMM" Error="0.5"/> -->
-    <superimposeItem name="Mt_2jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="426." Error="0.5"/>
+    <superimposeItem name="Mt_2jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:2jetMM" Error="0.5"/>
     <superimposeItem name="Mt_2jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_2jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -216,7 +216,7 @@
     <superimposeItem name="Mt_3jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:3jetMM"/>
     <superimposeItem name="Mt_3jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:3jetMM"/>
 <!--    <superimposeItem name="Mt_3jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:3jetMM" Error="0.5"/>-->
-    <superimposeItem name="Mt_3jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="124." Error="0.5"/>
+    <superimposeItem name="Mt_3jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:3jetMM" Error="0.5"/>
     <superimposeItem name="Mt_3jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_3jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -226,27 +226,27 @@
     <superimposeItem name="Mt_4jet_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:4jetMM"/>
     <superimposeItem name="Mt_4jet_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:4jetMM"/>
 <!-- <superimposeItem name="Mt_4jet_QCDPF" color="top" legend="QCD" SF="SF_PF_MET.txt:4jetMM" Error="0.5"/>-->
-    <superimposeItem name="Mt_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
+    <superimposeItem name="Mt_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:4jetMM" Error="0.5"/>
     <superimposeItem name="Mt_4jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mt_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="M3_3j" title="M3_3j" YTitle="Events" Fill="true" Weight="true" Lumi="35.0" Stack="true" SubBanner="#mu+jets N_{jets}=3" Ndivisions="505">
     <superimposeItem name="M3_3j_dataPF" color="top" legend="Data"/>
-    <superimposeItem name="M3_3j_WjetsPF" color="top" legend="Wjets"/>
-    <superimposeItem name="M3_3j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="M3_3j_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:3jetMM"/>
+    <superimposeItem name="M3_3j_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:3jetMM"/>
 <!--    <superimposeItem name="M3_3j_QCDPF" color="top" legend="QCD"/>-->
-    <superimposeItem name="M3_3j_dataReversePF" color="top" legend="QCD" Normalize="true" SF="124." Error="0.5"/>
+    <superimposeItem name="M3_3j_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:3jetMM" Error="0.5"/>
     <superimposeItem name="M3_3j_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3_3j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
 
   <superimpose name="M3_4j" title="M3_4j" YTitle="Events" Fill="true" Weight="true" Lumi="35.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq4" Ndivisions="505">
     <superimposeItem name="M3_4j_dataPF" color="top" legend="Data"/>
-    <superimposeItem name="M3_4j_WjetsPF" color="top" legend="Wjets"/>
-    <superimposeItem name="M3_4j_ZjetsPF" color="top" legend="Zjets"/>
+    <superimposeItem name="M3_4j_WjetsPF" color="top" legend="Wjets" SF="SF_PF_MET.txt:4jetMM"/>
+    <superimposeItem name="M3_4j_ZjetsPF" color="top" legend="Zjets" SF="SF_PF_MET.txt:4jetMM"/>
 <!--   <superimposeItem name="M3_4j_QCDPF" color="top" legend="QCD"/>-->
-    <superimposeItem name="M3_4j_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
+    <superimposeItem name="M3_4j_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:4jetMM" Error="0.5"/>
     <superimposeItem name="M3_4j_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3_4j_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -274,7 +274,7 @@
     <superimposeItem name="M3chi2_hadW_4jet_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadW_4jet_ZjetsPF" color="top" legend="Zjets"/>
 <!--    <superimposeItem name="M3chi2_hadW_4jet_QCDPF" color="top" legend="QCD"/>-->
-    <superimposeItem name="M3chi2_hadW_4jet_dataReversePF" color="top" legend="QCD"/ Normalize="true" SF="39." Error="0.5">
+    <superimposeItem name="M3chi2_hadW_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:4jetMM" Error="0.5"/>
     <superimposeItem name="M3chi2_hadW_4jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3chi2_hadW_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -284,7 +284,7 @@
     <superimposeItem name="M3chi2_hadTop_4jet_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="M3chi2_hadTop_4jet_ZjetsPF" color="top" legend="Zjets"/>
 <!--    <superimposeItem name="M3chi2_hadTop_4jet_QCDPF" color="top" legend="QCD"/>-->
-    <superimposeItem name="M3chi2_hadTop_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
+    <superimposeItem name="M3chi2_hadTop_4jet_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:4jetMM" Error="0.5"/>
     <superimposeItem name="M3chi2_hadTop_4jet_STPF" color="top" legend="ST"/>
     <superimposeItem name="M3chi2_hadTop_4jet_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>
@@ -294,7 +294,7 @@
     <superimposeItem name="Mttbar_chi2_WjetsPF" color="top" legend="Wjets"/>
     <superimposeItem name="Mttbar_chi2_ZjetsPF" color="top" legend="Zjets"/>
 <!--    <superimposeItem name="Mttbar_chi2_QCDPF" color="top" legend="QCD"/>-->
-    <superimposeItem name="Mttbar_chi2_dataReversePF" color="top" legend="QCD" Normalize="true" SF="39." Error="0.5"/>
+    <superimposeItem name="Mttbar_chi2_dataReversePF" color="top" legend="QCD" Normalize="true" SF="Yields_PF_MET.txt:4jetMM" Error="0.5"/>
     <superimposeItem name="Mttbar_chi2_STPF" color="top" legend="ST"/>
     <superimposeItem name="Mttbar_chi2_TTbarPF" color="top" legend="TTbar"/>
   </superimpose>

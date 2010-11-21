@@ -269,7 +269,7 @@ if IsSyst:
         rfvN[ilabel] = RooFormulaVar("rfv_"+ilabel ,"rfv_"+ilabel ,"@0+@1",RooArgList(N["M3_3jet_"+ilabel],N["M3_4jet_"+ilabel]) )
 
     alpha["TTbar"] = RooRealVar("alpha_TTbar","alpha_TTbar",0,1.)
-    alpha["TTbar"].setBins(10,"cache")
+    alpha["TTbar"].setBins(5,"cache")
     N["M3_3jet_TTbar_"+TypeSyst] = RooRealVar("rrv_M3_3jet_TTbar_"+TypeSyst,"number of "+ilabel+" events", tmp3j, -100., 1000.)
     #histPdf["M3_3jet_TTbar_scale"] = RooMomentMorph("TTbar_morph","TTbar_morph",
     histPdf["M3_3jet_TTbar_"+TypeSyst] = RooIntegralMorph("TTbar_morph","TTbar_morph",histPdf["M3_3jet_TTbar_"+TypeSyst+"down"],histPdf["M3_3jet_TTbar_"+TypeSyst+"up"],mass,alpha["TTbar"])
