@@ -74,7 +74,7 @@ process.load("PhysicsTools.PatAlgos.patSequences_cff")
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePATFAQs#Running_PAT_in_3_3_X_on_a_sa_AN1
 from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
 if inputType=="MC" and eventtype.find("_scale")==-1 and eventtype.find("_matching")==-1\
-       and inputType=="ISRFSR"==-1 and inputType=="_PU"==-1:
+       and eventtype.find("ISRFSR")==-1 and eventtype.find("_PU")==-1:
     from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
     run36xOn35xInput(process, "ak5GenJets" )
     
