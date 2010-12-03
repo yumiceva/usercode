@@ -87,6 +87,7 @@ class Hist:
         self.muons['d0_cut1'] = TH1F("d0_cut1"+name,"#mu Impact Parameter [cm]",20,-0.1,0.1)
         self.muons['pt_cut1'] = TH1F("muon_pt_cut1"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
         self.muons['pt_cut2'] = TH1F("muon_pt_cut2"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
+        self.muons['pt_cut3'] = TH1F("muon_pt_cut3"+name,"p_{T}^{#mu} [GeV/c]", 25, 0, 100)
         self.muons['dz'] = TH1F('dz'+name,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.)
         self.SetupXTitle(self.muons)
 
