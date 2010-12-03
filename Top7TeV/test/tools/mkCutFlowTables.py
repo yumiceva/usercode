@@ -94,6 +94,7 @@ else:
     
 keys = file.keys()
 cutflow = {}
+cutflowerr = {}
 cutlabel = {}
 cutlabel['Processed'] = 'Processed'
 cutlabel['CleanFilters'] = 'CleanFilters'
@@ -109,12 +110,14 @@ cutlabel['3Jet'] = '3 jets'
 cutlabel['4Jet'] = '$\geq$4 jets'
 
 allmap = {}
+allmaperr = {}
 
 for sample in keys:
 
     print " processing " + sample
 
     cutmap = {}
+    cutmaperr = {}
     txtfile = open(file[sample])
     for line in txtfile:
         tmplist = line.split()
@@ -127,6 +130,8 @@ for sample in keys:
             cutmap[ cutname ] = int(float(acut))
         else:
             cutmap[ cutname ] = float(acut)
+            cutmaperr[ cutname ] = math.sqrt( cutmap[cutname] )
+            
     txtfile.close()
     
     scale = 1.
@@ -137,14 +142,20 @@ for sample in keys:
     for key in cutmap.keys():
 
         cutmap[ key ] = scale * cutmap[ key]
+        cutmaperr[key]= scale * cutmaperr[key]
+        
         print " cut "+str(key) + " ("+cutlabel[key]+") "+" = "+str( round(cutmap[key],1) )
+
         if allmap.has_key(key):
             allmap[ key ] += cutmap[ key ]
+            allmaperr[ key ] += cutmaperr[key]*cutmaperr[key]
         else:
             allmap[ key ] = cutmap[ key ]
+            allmaperr[ key ] = cutmap[key]*cutmap[key]
         ilabel += 1
     cutflow[ sample ] = cutmap
-
+    cutflowerr[ sample ] = cutmaperr
+    
 print " TOTAL"
 ilabel=0
 for key in allmap.keys():
@@ -152,6 +163,7 @@ for key in allmap.keys():
     ilabel += 1
     
 cutflow["Total"] = allmap
+cutflowerr["Total"] = allmaperr
 
 # write latex
 sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
@@ -182,9 +194,9 @@ outtex.write('''
 \\begin{centering}
 ''')
 if IsMC:
-    aline = '\\begin{tabular}{|l|r|r|r|r|r|r|r|} \hline \n'
+    aline = '\\begin{tabular}{|l|c|c|c|c|c|c|c|} \hline \n'
     if Lumi<=0:
-        aline = '\\begin{tabular}{|l|r|r|r|r|r|r|} \hline \n'
+        aline = '\\begin{tabular}{|l|c|c|c|c|c|c|} \hline \n'
     outtex.write(aline)
     #outtex.write('Cut & ttbar & Wjets & Zjets & QCD & STtch \hline')
     line = "Cut"
@@ -208,13 +220,22 @@ for key in sortedcutlist:
     
     for sample in tablelist:
         cutmap = cutflow[sample]
+        cutmaperr = cutflowerr[sample]
         acut = cutmap[key]
+        #acuterr = cutmaperr[key]
         stracut = str(int(acut))
         #stracut = stracut.strip('.0')
         if IsMC:
             acut = round(cutmap[key],1)
             stracut = str(acut)
-        line += sss + stracut
+            if key != "Total":
+                acuterr = round(cutmaperr[key],1)
+                stracuterr = str(acuterr)
+                line += sss + stracut + " $\\pm$ " + stracuterr
+            else:
+                line += sss + stracut + " $\\pm$ " + str(round(math.sqrt(cutmaperr[key]),1))
+        else:
+            line += sss + stracut
     outtex.write(line+" \\\ \n")
     ilabel += 1
     

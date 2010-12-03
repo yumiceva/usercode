@@ -8,12 +8,14 @@
    usage: %prog 
    -b, --batch : run in batch mode without graphics.
    -d, --deltaR : enable/dissable deltaR(muon,jet) cut. Default is enable.
+   -D, --DissableMttbar : enable/dissable Mttbar calculation using jet combinations.
    -f, --flavor = FLAVOR: flavor for Vqq samples. 1 = bb, 2 = c(c), 3 = light
    -I, --Initial = INITIAL: initial entry.
    -i, --isolation = ISO: lepton isolation cut.
    -j, --jet = JET: Jet and MET type: calo, JPT, PF
    -J, --JES = JES: JES scale factor.
    -l, --listofruns : write text file with run,lumi,event of those passing the selection.
+   -L, --LeadingPt = LEADINGPT : leading jet pT.
    -M, --MET = MET: MET threshold.
    -m, --mttbar = MTTBAR: Mttbar cut.
    -N, --Nevents = Nevents: Maximum entry to run.
@@ -92,6 +94,7 @@ ApplyDeltaR = True
 METCut = 20.
 verbose = False
 MinJetPt = 25.
+LeadingJetPt = MinJetPt
 IsoCut = 0.1
 printlistofruns = False
 printtxtfile = False
@@ -100,6 +103,7 @@ Flavor = 0
 FlavorStr = ""
 doReverseIso = False
 MttbarCut = 900.
+DissableMttbar = False
 printnewlistofruns = False
 JES = 1
 InitialEntry = 0
@@ -147,6 +151,10 @@ if option.jetpt:
     MinJetPt = float(option.jetpt)
 print "jet pT > "+str(MinJetPt)
 
+if option.LeadingPt:
+    LeadingJetPt = float(option.LeadingPt)
+print "Leading jet pT > "+str(LeadingJetPt)
+        
 if option.JES:
     JES = float(option.JES)
     print "Use JES factor of "+str(JES)
@@ -164,6 +172,10 @@ if option.mttbar:
     MttbarCut = float(option.mttbar)
 print "Mttbar cut > "+str(MttbarCut)
 
+if option.DissableMttbar:
+    DissableMttbar = True
+    print "Mttbar reconstruction switch off"
+    
 if option.new:
     printnewlistofruns = True
     print "Write txt file with events mttbar>900"
@@ -450,6 +462,7 @@ for jentry in xrange( entries ):
     isTagb['SSVHEM'] = []
     muVz = 0.
     PVz = 0.
+    theLeadingPt = 0.
     
     for pv in vertices:
         if nPVs == 0: PVz = pv.vz
@@ -463,9 +476,10 @@ for jentry in xrange( entries ):
             tmpp4Mu = TLorentzVector()
             tmpp4Jet= TLorentzVector()
             aDeltaR = 999
+            if len(jets)>0: theLeadingPt = jets[0].pt
             for jet in jets:
                 
-                if JES*jet.pt>MinJetPt:
+                if JES*jet.pt>MinJetPt and JES*theLeadingPt>LeadingJetPt:
                     tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                     tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                     tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
@@ -519,9 +533,10 @@ for jentry in xrange( entries ):
                     tmpp4Mu = TLorentzVector()
                     tmpp4Jet= TLorentzVector()
                     aDeltaR = 999
+                    if len(jets)>0: theLeadingPt = jets[0].pt
                     for jet in jets:
                         
-                        if JES*jet.pt>MinJetPt:
+                        if JES*jet.pt>MinJetPt and JES*theLeadingPt>LeadingJetPt:
                             tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
                             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
                             tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
@@ -612,8 +627,10 @@ for jentry in xrange( entries ):
         
     #count again jets
     njets = 0
+    if len(jets)>0: theLeadingPt = jets[0].pt
+    
     for jet in jets:
-        if JES*jet.pt>MinJetPt:
+        if JES*jet.pt>MinJetPt and JES*theLeadingPt>LeadingJetPt:
             tmpp4Jet = TLorentzVector()
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
             tmpdeltaR = p4muon.DeltaR(tmpp4Jet)
@@ -751,6 +768,7 @@ for jentry in xrange( entries ):
                                                                                 
         # jet combination
         #myCombi = JetCombinatorics()
+        
         myCombi.Clear()
         myCombi.UsebTagging(False)
         myCombi.SetLeptonicW(p4LepW)
@@ -786,46 +804,48 @@ for jentry in xrange( entries ):
                         
                                 
         # M3Prime
-        myCombi.Clear()
-        #del(myCombi)
-        #myCombi = JetCombinatorics()
-        #top mass constraint
-        myCombi.UsebTagging(False)
-        myCombi.UseMtopConstraint(True)
-        # choose sigmas
-        #myCombi.SetSigmas(0);
-        myCombi.SetLeptonicW(p4LepW)
-        if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
-        myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # 
-        bestCombo = Combo()
+        if not DissableMttbar:
+            
+            myCombi.Clear()
+            #del(myCombi)
+            #myCombi = JetCombinatorics()
+            #top mass constraint
+            myCombi.UsebTagging(False)
+            myCombi.UseMtopConstraint(True)
+            # choose sigmas
+            #myCombi.SetSigmas(0);
+            myCombi.SetLeptonicW(p4LepW)
+            if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
+            myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # 
+            bestCombo = Combo()
 
-        bestCombo = myCombi.GetCombination(0)
-        M3p_hadWP4 = bestCombo.GetHadW()
-        M3p_hadTopP4 = bestCombo.GetHadTop()
-        M3p_lepTopP4 = bestCombo.GetLepTop()
-        hist.M3['M3chi2_hadW_4jet'].Fill( M3p_hadWP4.M() )
-        hist.M3['M3chi2_hadTop_4jet'].Fill( M3p_hadTopP4.M() )
-        hist.M3['M3chi2_hadTop_lepTop_4jet'].Fill( M3p_hadTopP4.M(), M3p_lepTopP4.M() )
-        hist.M3['M3chi2_normchi2_1st'].Fill( bestCombo.GetChi2()/3. )
-        if M3p_hadTopP4.M() < 50.:
-            print "top mass too low"
-            print "len vect:"+str(len(vectorjets))
-            print "Combo:"
-            bestCombo.Print()
-        for icc in range(1,4):
-            nextCombo = myCombi.GetCombination(icc)
-            if icc==1:
-                hist.M3['M3chi2_normchi2_2nd'].Fill( nextCombo.GetChi2()/3. )
-            if icc==2:
-                hist.M3['M3chi2_normchi2_3th'].Fill( nextCombo.GetChi2()/3. )
-            if icc==3:
-                hist.M3['M3chi2_normchi2_4th'].Fill( nextCombo.GetChi2()/3. )
+            bestCombo = myCombi.GetCombination(0)
+            M3p_hadWP4 = bestCombo.GetHadW()
+            M3p_hadTopP4 = bestCombo.GetHadTop()
+            M3p_lepTopP4 = bestCombo.GetLepTop()
+            hist.M3['M3chi2_hadW_4jet'].Fill( M3p_hadWP4.M() )
+            hist.M3['M3chi2_hadTop_4jet'].Fill( M3p_hadTopP4.M() )
+            hist.M3['M3chi2_hadTop_lepTop_4jet'].Fill( M3p_hadTopP4.M(), M3p_lepTopP4.M() )
+            hist.M3['M3chi2_normchi2_1st'].Fill( bestCombo.GetChi2()/3. )
+            if M3p_hadTopP4.M() < 50.:
+                print "top mass too low"
+                print "len vect:"+str(len(vectorjets))
+                print "Combo:"
+                bestCombo.Print()
+            for icc in range(1,4):
+                nextCombo = myCombi.GetCombination(icc)
+                if icc==1:
+                    hist.M3['M3chi2_normchi2_2nd'].Fill( nextCombo.GetChi2()/3. )
+                if icc==2:
+                    hist.M3['M3chi2_normchi2_3th'].Fill( nextCombo.GetChi2()/3. )
+                if icc==3:
+                    hist.M3['M3chi2_normchi2_4th'].Fill( nextCombo.GetChi2()/3. )
         
-        MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
-        hist.M3['Mttbar_chi2'].Fill(MttbarP4.M())
-        hist.M3['pt_ttbar'].Fill(MttbarP4.Pt())
-        hist.M3['lepTop_vs_Mttbar'].Fill( M3p_lepTopP4.M(), MttbarP4.M() )
-        hist.M3['pt_vs_Mttbar'].Fill( MttbarP4.Pt(), MttbarP4.M() )
+            MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
+            hist.M3['Mttbar_chi2'].Fill(MttbarP4.M())
+            hist.M3['pt_ttbar'].Fill(MttbarP4.Pt())
+            hist.M3['lepTop_vs_Mttbar'].Fill( M3p_lepTopP4.M(), MttbarP4.M() )
+            hist.M3['pt_vs_Mttbar'].Fill( MttbarP4.Pt(), MttbarP4.M() )
         
         # printout txt file with run,lumi,event
         if printnewlistofruns and MttbarP4.M()>MttbarCut:
@@ -844,53 +864,54 @@ for jentry in xrange( entries ):
                                                                         
         # apply b-tagging
         # M3Prime
-        myCombi.Clear()
-        #del(myCombi)
-        #myCombi = JetCombinatorics()
-        #top mass constraint
-        #myCombi.Verbose()
-        myCombi.UseMtopConstraint(True)
-        myCombi.UsebTagging()
-        myCombi.SetLeptonicW(p4LepW)
-        if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
-        myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # pass the b-tag dicriminators
-        bestCombo = Combo()
+        if not DissableMttbar:
+            myCombi.Clear()
+            #del(myCombi)
+            #myCombi = JetCombinatorics()
+            #top mass constraint
+            #myCombi.Verbose()
+            myCombi.UseMtopConstraint(True)
+            myCombi.UsebTagging()
+            myCombi.SetLeptonicW(p4LepW)
+            if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
+            myCombi.FourJetsCombinations(vectorjets, vectorbjets ) # pass the b-tag dicriminators
+            bestCombo = Combo()
         
-        bestCombo = myCombi.GetCombination(0)
-        M3p_hadWP4 = bestCombo.GetHadW()
-        M3p_hadTopP4 = bestCombo.GetHadTop()
-        M3p_lepTopP4 = bestCombo.GetLepTop()
-        MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
-        hist.M3['Mttbar_chi2_1btag'].Fill(MttbarP4.M())
-        #hist.M3['pt_ttbar'].Fill(MttbarP4.Pt())
-        #hist.M3['lepTop_vs_Mttbar'].Fill( M3p_lepTopP4.M(), MttbarP4.M() )
-        hist.M3['pt_vs_Mttbar_1btag'].Fill( MttbarP4.Pt(), MttbarP4.M() )
+            bestCombo = myCombi.GetCombination(0)
+            M3p_hadWP4 = bestCombo.GetHadW()
+            M3p_hadTopP4 = bestCombo.GetHadTop()
+            M3p_lepTopP4 = bestCombo.GetLepTop()
+            MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
+            hist.M3['Mttbar_chi2_1btag'].Fill(MttbarP4.M())
+            #hist.M3['pt_ttbar'].Fill(MttbarP4.Pt())
+            #hist.M3['lepTop_vs_Mttbar'].Fill( M3p_lepTopP4.M(), MttbarP4.M() )
+            hist.M3['pt_vs_Mttbar_1btag'].Fill( MttbarP4.Pt(), MttbarP4.M() )
 
-        # Cut on Mttbar
-        if MttbarP4.M() > MttbarCut:
-            histHigh.muons['pt_4jet'].Fill( p4muon.Pt() )
-            histHigh.muons['eta_4jet'].Fill( p4muon.Eta() )
-            histHigh.muons['phi_4jet'].Fill( p4muon.Phi() )
-            histHigh.jets['Njets'].Fill( njets )
-            histHigh.MET['MET_4jet'].Fill( p4MET.Pt() )
-            #histHigh.electrons['pt_4jet'].Fill( p4electron.Pt() )
-            histHigh.MET['Ht_4jet'].Fill( Ht )
-            histHigh.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
-            histHigh.jets['jetdeltaR'].Fill( minDeltaRjets )
-        else:
-            histLow.muons['pt_4jet'].Fill( p4muon.Pt() )
-            histLow.muons['eta_4jet'].Fill( p4muon.Eta() )
-            histLow.muons['phi_4jet'].Fill( p4muon.Phi() )                        
-            histLow.jets['Njets'].Fill( njets )
-            histLow.MET['MET_4jet'].Fill( p4MET.Pt() )
-            #histLow.electrons['pt_4jet'].Fill( p4electron.Pt() )
-            histLow.MET['Ht_4jet'].Fill( Ht )
-            histLow.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
-            histLow.jets['jetdeltaR'].Fill( minDeltaRjets )
-        myCombi.Clear()
-        #del(myCombi)
-        del(vectorjets)
-        del(vectorbjets)
+            # Cut on Mttbar
+            if MttbarP4.M() > MttbarCut:
+                histHigh.muons['pt_4jet'].Fill( p4muon.Pt() )
+                histHigh.muons['eta_4jet'].Fill( p4muon.Eta() )
+                histHigh.muons['phi_4jet'].Fill( p4muon.Phi() )
+                histHigh.jets['Njets'].Fill( njets )
+                histHigh.MET['MET_4jet'].Fill( p4MET.Pt() )
+                #histHigh.electrons['pt_4jet'].Fill( p4electron.Pt() )
+                histHigh.MET['Ht_4jet'].Fill( Ht )
+                histHigh.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
+                histHigh.jets['jetdeltaR'].Fill( minDeltaRjets )
+            else:
+                histLow.muons['pt_4jet'].Fill( p4muon.Pt() )
+                histLow.muons['eta_4jet'].Fill( p4muon.Eta() )
+                histLow.muons['phi_4jet'].Fill( p4muon.Phi() )                        
+                histLow.jets['Njets'].Fill( njets )
+                histLow.MET['MET_4jet'].Fill( p4MET.Pt() )
+                #histLow.electrons['pt_4jet'].Fill( p4electron.Pt() )
+                histLow.MET['Ht_4jet'].Fill( Ht )
+                histLow.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
+                histLow.jets['jetdeltaR'].Fill( minDeltaRjets )
+            myCombi.Clear()
+            #del(myCombi)
+            del(vectorjets)
+            del(vectorbjets)
     
     del(p4jets)                                                                
 
