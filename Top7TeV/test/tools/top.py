@@ -846,7 +846,8 @@ for jentry in xrange( entries ):
             hist.M3['pt_ttbar'].Fill(MttbarP4.Pt())
             hist.M3['lepTop_vs_Mttbar'].Fill( M3p_lepTopP4.M(), MttbarP4.M() )
             hist.M3['pt_vs_Mttbar'].Fill( MttbarP4.Pt(), MttbarP4.M() )
-        
+            hist.M3['MET_vs_Mttbar'].Fill(p4MET.Pt(), MttbarP4.M() )
+            
         # printout txt file with run,lumi,event
         if printnewlistofruns and MttbarP4.M()>MttbarCut:
             line = str(evt.run)+":"+str(evt.lumi)+":"+str(evt.event)+"\n"
