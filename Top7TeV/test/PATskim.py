@@ -3,17 +3,17 @@
 import string
 
 events= 1000
-#inputType = "DATA" # choose MC/DATA
-inputType = "MC"
+inputType = "DATA" # choose MC/DATA
+#inputType = "MC"
 
 channel = "muon" # muon/electron
 
-#eventtype="Jun14"
+eventtype="Run2010A_Mu9"
 #eventtype="TTJets"
 #eventtype="Top-s"
 #eventtype="Top-t"
 #eventtype="Top-tW"
-eventtype="WJets"
+#eventtype="WJets"
 #eventtype="ZJets"
 #eventtype="Vqq"
 #eventtype="Wc"
@@ -51,6 +51,12 @@ process.source.fileNames = cms.untracked.vstring(
 
     # data files
     #'/store/data/Run2010B/Mu/RECO/Nov4ReReco_v1/0008/80ED4E8B-D2EA-DF11-90CF-90E6BA0D09EC.root'
+    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0006/067DC752-D2EA-DF11-90D6-001EC9D87221.root',
+    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00A75A80-93EA-DF11-A874-E0CB4E55365F.root',
+    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00A0D70F-11EA-DF11-A94C-485B39800BD5.root',
+    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/009C2D2D-42EA-DF11-9E21-E0CB4E553648.root',
+    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/0037C237-F4E9-DF11-A5FC-0030487C6A32.root',
+    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00309820-0FEA-DF11-AE59-E0CB4E1A118E.root'
     
     # or MC files
     #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/06B4F65D-9EE4-DF11-8B5F-003048D4767A.root',
@@ -58,10 +64,22 @@ process.source.fileNames = cms.untracked.vstring(
     #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/04C46047-23E5-DF11-85EC-00221952AA1F.root',
     #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/029459F3-B0E4-DF11-B45A-003048CDCC2A.root',
     #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/00BD2378-D6E4-DF11-825B-003048C99F9C.root'
-
-    '/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/F22AD025-46FC-DF11-8FE0-0002C90A3426.root',
-    '/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/E66C2612-3CFC-DF11-8134-0002C90A3414.root',
-    '/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/E2E2716E-C2FC-DF11-A60F-0002C90B7428.root'
+    # Wjets
+    #'/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/F22AD025-46FC-DF11-8FE0-0002C90A3426.root',
+    #'/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/E66C2612-3CFC-DF11-8134-0002C90A3414.root',
+    #'/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/E2E2716E-C2FC-DF11-A60F-0002C90B7428.root'
+    # ttbar AODSIM
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/BAF995DB-85E1-DF11-B1DF-00A0D1EEE660.root',
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/A44094D0-89E1-DF11-AFD8-00A0D1EEA838.root',
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/32374770-8AE1-DF11-A270-00A0D1EEE5CC.root',
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/2CC6A3A8-8AE1-DF11-A9DF-001D0967C649.root',
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/04C894E5-32E1-DF11-939F-001EC9ED4A0A.root'
+    # QCD
+    #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/22E2557D-33C8-DF11-980B-001A92971AEC.root',
+    #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/1AA9BF44-39C8-DF11-8C91-00261894391D.root',
+    #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/1A84CD4D-38C8-DF11-8A67-0026189438F7.root',
+    #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/14A46E6C-54C8-DF11-A3C7-002618943958.root',
+    #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/14137D23-48C8-DF11-9CBA-002618943867.root'
 )
 process.maxEvents.input = events
 
@@ -169,7 +187,8 @@ process.patTaus.isoDeposits = cms.PSet()
 # -[ Add Custom Collections ]-
 #
 # = Jets
-process.load('RecoJets.Configuration.RecoJPTJets_cff')
+#process.load('RecoJets.Configuration.RecoJPTJets_cff')
+# JPT corrections
 jptcorrections = ""
 
 if inputType == "MC":
@@ -242,8 +261,8 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # muon trigger
 triggerprocess = "HLT"
-#if inputType == "MC" and eventtype!="Wc":
-#    triggerprocess = "REDIGI" # for 36x M
+if inputType == "MC" and eventtype=="QCD":
+    triggerprocess = "REDIGI38X" #
 #if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
 #       or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
 #    triggerprocess = "HLT"
@@ -252,7 +271,7 @@ patTriggerName = "HLT_Mu9"
 
 if channel=="muon":
     mufilter = "hltSingleMu9L3Filtered9"
-    if eventtype == "TrigB" or eventtype == "TrigC":
+    if eventtype == "Run2010B_Mu15":
         mufilter = "hltSingleMu15L3Filtered15"
         patTriggerName = "HLT_Mu15"
         
@@ -347,7 +366,10 @@ process.muonTriggerMatchHLTMuons = cms.EDProducer(
 from PhysicsTools.PatAlgos.tools.trigTools import *
 switchOnTrigger( process ) # This is optional and can be omitted.
 switchOnTriggerMatching( process, triggerMatchers = [ 'muonTriggerMatchHLTMuons' ] )
-
+if inputType=="MC" and eventtype=="QCD":
+    process.patTrigger.processName = "REDIGI38X"
+    process.patTriggerEvent.processName = "REDIGI38X"
+    
 if inputType=="DATA":
     removeMCMatching(process, ['All'])
 #process.patseq.remove( process.flavorHistorySeq )
@@ -407,7 +429,7 @@ process.p = cms.Path(
 
     #process.gsfElectrons *    
 #    process.simpleSecondaryVertexHighPurBJetTags *
-    process.recoJPTJets *
+#    process.recoJPTJets *
 #    process.ak5JPTJetsL2L3 *
 
     getattr(process,"patPF2PATSequence"+postfix)*
@@ -444,6 +466,7 @@ else:
     process.p.remove( process.makeGenEvt )
     process.p.remove( process.flavorHistorySeq )
     process.p.remove( process.prunedGenParticles )
+
 
 ### Output ###
 # For a PAT Skim

@@ -32,50 +32,53 @@ directoriesElMC = {}
 jsonFilesMu = {}
 jsonFilesEl = {}
 
+######## Muons
+directoriesMuData['Run2010A_Mu9'] = '/Mu/Run2010A-Nov4ReReco_v1/AOD'  # 135821   144114
+directoriesMuData['Run2010B_Mu9'] = '/Mu/Run2010B-Nov4ReReco_v1/AOD'  # 146240   147195 
+directoriesMuData['Run2010B_Mu15'] = '/Mu/Run2010B-Nov4ReReco_v1/AOD' # 147196   149711
 
-directoriesMuData['Sep17ReReco'] = '/Mu/Run2010A-Sep17ReReco_v2/RECO'# 135821   144114
-directoriesMuData['TrigA'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946...
-directoriesMuData['TrigB'] = '/Mu/Run2010B-PromptReco-v2/RECO' # 146240-146946... 
-directoriesMuData['TrigC'] = '/Mu/Run2010B-PromptReco-v2/RECO'
+jsonFilesMu['Run2010A_Mu9']  = 'Cert_136033-149442_7TeV_Nov4ReReco_Collisions10_JSON.txt'
+jsonFilesMu['Run2010B_Mu9']  = 'Cert_146240-147195_7TeV_Nov4ReReco.txt'
+jsonFilesMu['Run2010B_Mu15'] = 'Cert_147196-149442_7TeV_Nov4ReReco.txt'
 
-jsonFilesMu['Sep17ReReco'] = 'Cert_132440-147195_Oct25_JSON.txt' #'Cert_132440-147116_7TeV_StreamExpress_Collisions10_JSON.txt'
-jsonFilesMu['TrigA'] = 'Cert_132440-147195_Oct25_JSON.txt'
-jsonFilesMu['TrigB'] = 'Cert_147196-148864_Oct29_JSON.txt'
-jsonFilesMu['TrigC'] = 'Cert_148865-149442_Nov5_JSON.txt' #'dcs_148865.txt'
-
-directoriesMuMC['TTbar_Mu'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesMuMC['WJets_Mu'] = '/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesMuMC['ZJets_Mu'] = '/ZJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesMuMC['STtch_Mu'] = '/SingleTop_tChannel-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesMuMC['STtWch_Mu'] = '/SingleTop_tWChannel-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesMuMC['QCD_Mu'] = '/InclusiveMu15/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesMuMC['Wc_Mu'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SIM-RECO'
-directoriesMuMC['Vqq_Mu'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-
-# run these samples with condor_g in unl
 ## Attention:
 ## if a dataset name has ":g" it means that for that sample the jobs will be sent to Nebraska
 ## using condor_g
-directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['TTbar_matchingup_Mu'] = '/TTJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
-directoriesMuMC['TTbar_matchingdown_Mu'] = '/TTJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
-directoriesMuMC['WJets_scaleup_Mu'] = '/WJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
-directoriesMuMC['WJets_scaledown_Mu'] = '/WJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
-directoriesMuMC['ZJets_scaleup_Mu'] = '/ZJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
-directoriesMuMC['ZJets_scaledown_Mu'] = '/ZJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO'
-directoriesMuMC['WJets_matchingup_Mu'] = '/WJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v3/GEN-SIM-RECO'
-directoriesMuMC['WJets_matchingdown_Mu'] = '/WJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['ZJets_matchingup_Mu'] = '/ZJets_matchingup_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['ZJets_matchingdown_Mu'] = '/ZJets_matchingdown_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO:g'
-#directoriesMuMC['Vqq_scaleup_Mu'] = '/VQQJets_scaleup_7TeV-madgraph/Summer10-START36_V10-v2/GEN-SIM-RECO' #in Lyon
-#directoriesMuMC['Vqq_scaledown_Mu'] = '/VQQJets_scaledown_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['TTbar_largerISRFSR_Mu'] = '/TTJets_largerISRFSR_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['TTbar_smallerISRFSR_Mu'] = '/TTJets_smallerISRFSR_7TeV-madgraph/Summer10-START36_V10-v1/GEN-SIM-RECO:g'
-directoriesMuMC['TTbar_PU_Mu'] = 'TTJets_7TeV-madgraph/Summer10-START36_V10_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO'
-directoriesMuMC['WJets_PU_Mu'] = '/WJets_7TeV-madgraph/Summer10-START36_V10_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO'
-directoriesMuMC['ZJets_PU_Mu'] = '/ZJets_7TeV-madgraph/Summer10-START36_V10_E7TeV_AVE_1_BX156-v1/GEN-SIM-RECO'
 
+directoriesMuMC['TTbar_D6T_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['WJets_D6T_Mu'] = '/WJetsToLNu_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['ZJets_D6T_Mu'] ='/DYJetsToLL_TuneD6T_M-50_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['Wc_D6T_Mu'] = '/WCJetsToLNu_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['Vqq_D6T_Mu'] = '/VQQJetsToLL_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM:g'
+
+directoriesMuMC['TTbar_Z2_Mu'] = '/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall10-START38_V12-v3/AODSIM:g'
+directoriesMuMC['WJets_Z2_Mu'] = '/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['ZJets_Z2_Mu'] = '/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM:g'
+directoriesMuMC['STsch_Z2_Mu'] = '/TToBLNu_TuneZ2_s-channel_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['STtch_Z2_Mu'] = '/TToBLNu_TuneZ2_t-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['STtWch_Z2_Mu'] = '/TToBLNu_TuneZ2_tW-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['QCD_Z2_Mu'] = '/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['WW_Z2_Mu'] = '/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM' # missing at fnal/unl
+
+directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['TTbar_matchingup_Mu'] = '/TTJets_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['TTbar_matchingdown_Mu'] = '/TTJets_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['TTbar_smallerISRFSR_Mu'] = '/TTJets_TuneD6T_smallerISRFSR_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['TTbar_largerISRFSR_Mu'] = '/TTJets_TuneD6T_largerISRFSR_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['TTbar_0Jetalpgen_Mu'] = '/TT0Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['TTbar_1Jetalpgen_Mu'] = '/TT1Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['TTbar_2Jetalpgen_Mu'] = '/TT2Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['TTbar_3Jetalpgen_Mu'] = '/TT3Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['TTbar_4Jetalpgen_Mu'] = '/TT4Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['TTbar_PU_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/AODSIM' # missing
+
+directoriesMuMC['ZJets_scaleup_Mu'] = '/DYJetsToLL_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['ZJets_scaledown_Mu'] = '/DYJetsToLL_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesMuMC['ZJets_matchingup_Mu'] = '/DYJetsToLL_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['ZJets_matchingdown_Mu'] = '/DYJetsToLL_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+
+########## Electrons
 directoriesElData['TrigA'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
 directoriesElData['TrigB'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
 directoriesElData['TrigC'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
