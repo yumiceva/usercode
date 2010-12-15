@@ -3,13 +3,13 @@
 import string
 
 events= 1000
-inputType = "DATA" # choose MC/DATA
-#inputType = "MC"
+#inputType = "DATA" # choose MC/DATA
+inputType = "MC"
 
 channel = "muon" # muon/electron
 
-eventtype="Run2010A_Mu9"
-#eventtype="TTJets"
+#eventtype="Run2010A_Mu9"
+eventtype="TTJets"
 #eventtype="Top-s"
 #eventtype="Top-t"
 #eventtype="Top-tW"
