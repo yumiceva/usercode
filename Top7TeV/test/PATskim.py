@@ -6,14 +6,14 @@ events= 1000
 #inputType = "DATA" # choose MC/DATA
 inputType = "MC"
 
-channel = "electron" # muon/electron
+channel = "muon" # muon/electron
 
 #eventtype="Jun14"
-eventtype="TTJets"
+#eventtype="TTJets"
 #eventtype="Top-s"
 #eventtype="Top-t"
 #eventtype="Top-tW"
-#eventtype="WJets"
+eventtype="WJets"
 #eventtype="ZJets"
 #eventtype="Vqq"
 #eventtype="Wc"
@@ -38,9 +38,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 process.options.wantSummary = True
 # https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideFrontierConditions
-process.GlobalTag.globaltag = 'GR_R_38X_V13::All' # for all
+process.GlobalTag.globaltag = 'GR_R_38X_V15::All' # for all
 if inputType=="MC":
-    process.GlobalTag.globaltag = 'START38_V12::All'
+    process.GlobalTag.globaltag = 'START38_V14::All' # MC_38Y_V14, START38_V14, DESIGN_38_V14
 
 ### Input ###
 # My typical PoolSource
@@ -48,17 +48,20 @@ if inputType=="MC":
 #process.maxEvents.input = events
 #process.source.skipEvents = 0
 process.source.fileNames = cms.untracked.vstring(
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/6A86E9F7-EF7A-DF11-A7AF-0017A4770C34.root',
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/584B5E90-F37A-DF11-A8D5-0017A4770024.root',
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/48CE97B5-F47A-DF11-9BF4-001E0B4A0EFC.root',
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/40ACF3E7-EF7A-DF11-A840-0017A4770430.root',
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/3E6B78EA-F17A-DF11-AEF9-0017A4771030.root',
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/30212CEB-EF7A-DF11-9EAE-0017A4770828.root',
-#    '/store/data/Run2010A/Mu/RECO/Jun14thReReco_v1/0005/2EC3A00D-F07A-DF11-9B09-00237DA41368.root'
 
+    # data files
+    #'/store/data/Run2010B/Mu/RECO/Nov4ReReco_v1/0008/80ED4E8B-D2EA-DF11-90CF-90E6BA0D09EC.root'
+    
     # or MC files
-    '/store/mc/Spring10/TTbarJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0016/6E7C4631-9D47-DF11-96CE-003048C69288.root'
-#    '/store/mc/Spring10/WJets-madgraph/GEN-SIM-RECO/START3X_V26_S09-v1/0014/84872812-1F4B-DF11-8A07-00151796C158.root'   
+    #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/06B4F65D-9EE4-DF11-8B5F-003048D4767A.root',
+    #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/0690C90B-8DE4-DF11-8FF4-0015172C0934.root',
+    #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/04C46047-23E5-DF11-85EC-00221952AA1F.root',
+    #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/029459F3-B0E4-DF11-B45A-003048CDCC2A.root',
+    #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/00BD2378-D6E4-DF11-825B-003048C99F9C.root'
+
+    '/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/F22AD025-46FC-DF11-8FE0-0002C90A3426.root',
+    '/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/E66C2612-3CFC-DF11-8134-0002C90A3414.root',
+    '/store/mc/Fall10/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v1/0043/E2E2716E-C2FC-DF11-A60F-0002C90B7428.root'
 )
 process.maxEvents.input = events
 
@@ -70,21 +73,7 @@ process.TFileService = cms.Service(
 
 ### PAT setup ###
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
-# Since these are re-RECO samples, the ak5GenJets collection is missing
-# https://twiki.cern.ch/twiki/bin/view/CMS/SWGuidePATFAQs#Running_PAT_in_3_3_X_on_a_sa_AN1
 from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
-if inputType=="MC" and eventtype.find("_scale")==-1 and eventtype.find("_matching")==-1\
-       and eventtype.find("ISRFSR")==-1 and eventtype.find("_PU")==-1:
-    from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
-    run36xOn35xInput(process, "ak5GenJets" )
-    
-# switch to 8e29 trigger menu and add PAT trigger to patDefaultSequence
-#from PhysicsTools.PatAlgos.tools.trigTools import *
-#switchOnTrigger( process )
-#from PhysicsTools.PatAlgos.patEventContent_cff import patTriggerEventContent
-# 35X MC re-reco labeled newest trigger REDIGI
-#process.patTriggerEvent.processName = 'HLT'
-#process.patTrigger.processName = 'HLT'
 # shrink the jet content
 # Keep the b-tag discriminators, just not the info used to calculate them,
 # such as tracks and vertices.
@@ -156,7 +145,7 @@ process.electronMatch.checkCharge = False
 #process.patJetCorrFactors.corrSample = 'Summer09_7TeV_ReReco332'
 # get the 7 TeV jet corrections
 from PhysicsTools.PatAlgos.tools.jetTools import *
-switchJECSet( process, "Spring10")
+#switchJECSet( process, "Spring10")
 
 process.selectedPatJets.cut = 'pt > 20. & abs(eta) < 2.4'# & emEnergyFraction>0.01 & jetID.n90Hits>1 & jetID.fHPD<0.98'
 #process.countPatJets.minNumber = 1
@@ -165,10 +154,10 @@ process.patJets.embedGenJetMatch = False
 ### New SSVHP b-tag ###
 # https://hypernews.cern.ch/HyperNews/CMS/get/btag/525/2.html
 # for 36x MC
-if inputType=="MC":
-    process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertex3TrkES_cfi")
-    process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertexHighPurBJetTags_cfi")
-    process.patJets.discriminatorSources += [cms.InputTag("simpleSecondaryVertexHighPurBJetTags")]
+#if inputType=="MC":
+#    process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertex3TrkES_cfi")
+#    process.load("RecoBTag.SecondaryVertex.simpleSecondaryVertexHighPurBJetTags_cfi")
+#    process.patJets.discriminatorSources += [cms.InputTag("simpleSecondaryVertexHighPurBJetTags")]
 
 ### Photons ###
 process.patPhotons.isoDeposits = cms.PSet()
@@ -181,6 +170,20 @@ process.patTaus.isoDeposits = cms.PSet()
 #
 # = Jets
 process.load('RecoJets.Configuration.RecoJPTJets_cff')
+jptcorrections = ""
+
+if inputType == "MC":
+
+    switchJetCollection( process,
+                         jetCollection=cms.InputTag('ak5CaloJets'),
+                         jetCorrLabel=('AK5Calo', ['L2Relative', 'L3Absolute']))
+    jptcorrections = ['L1JPTOffset','L2Relative', 'L3Absolute']
+    
+else:
+    switchJetCollection( process,
+                         jetCollection=cms.InputTag('ak5CaloJets'),
+                         jetCorrLabel=('AK5Calo', ['L2Relative', 'L3Absolute', 'L2L3Residual']))
+    jptcorrections = ['L1JPTOffset','L2Relative', 'L3Absolute','L2L3Residual']
 
 
 #addJetCollection(process,cms.InputTag('ak5PFJets'),
@@ -239,17 +242,19 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # muon trigger
 triggerprocess = "HLT"
-if inputType == "MC" and eventtype!="Wc":
-    triggerprocess = "REDIGI" # for 36x M
-if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
-       or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
-    triggerprocess = "HLT"
+#if inputType == "MC" and eventtype!="Wc":
+#    triggerprocess = "REDIGI" # for 36x M
+#if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
+#       or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
+#    triggerprocess = "HLT"
 
+patTriggerName = "HLT_Mu9"
 
 if channel=="muon":
     mufilter = "hltSingleMu9L3Filtered9"
     if eventtype == "TrigB" or eventtype == "TrigC":
         mufilter = "hltSingleMu15L3Filtered15"
+        patTriggerName = "HLT_Mu15"
         
     process.triggerFilter = cms.EDFilter("MyHLTSummaryFilter",
                                          summary = cms.InputTag("hltTriggerSummaryAOD","",triggerprocess),
@@ -315,6 +320,34 @@ process.patElectronsPFlowLoose.isolationValues = cms.PSet()
 getattr(process, "patElectrons"+postfix).embedGenMatch = brunOnMC
 getattr(process, "patMuons"+postfix).embedGenMatch = brunOnMC
 
+## ---
+## PAT trigger matching
+## --
+process.muonTriggerMatchHLTMuons = cms.EDProducer(
+        "PATTriggerMatcherDRLessByR"
+            , src     = cms.InputTag( 'cleanPatMuons' )
+            , matched = cms.InputTag( 'patTrigger' )
+            , andOr          = cms.bool( False )
+            , filterIdsEnum  = cms.vstring( 'TriggerMuon' )
+            , filterIds      = cms.vint32( 0 )
+            , filterLabels   = cms.vstring( '*' )
+            , pathNames      = cms.vstring( patTriggerName )
+            , collectionTags = cms.vstring( '*' )
+            , maxDPtRel   = cms.double( 0.5 ) # no effect here
+            , maxDeltaR   = cms.double( 0.5 )
+            , maxDeltaEta = cms.double( 0.2 ) # no effect here
+            , resolveAmbiguities    = cms.bool( True )
+            , resolveByMatchQuality = cms.bool( True )
+        )
+
+
+## --
+## Switch on PAT trigger
+## --
+from PhysicsTools.PatAlgos.tools.trigTools import *
+switchOnTrigger( process ) # This is optional and can be omitted.
+switchOnTriggerMatching( process, triggerMatchers = [ 'muonTriggerMatchHLTMuons' ] )
+
 if inputType=="DATA":
     removeMCMatching(process, ['All'])
 #process.patseq.remove( process.flavorHistorySeq )
@@ -324,12 +357,13 @@ addJetCollection(process,cms.InputTag('JetPlusTrackZSPCorJetAntiKt5'),
                  'AK5', 'JPT',
                  doJTA = True,
                  doBTagging = True,
-                 jetCorrLabel = ('AK5','JPT'),
+                 jetCorrLabel = ('AK5JPT', jptcorrections),                                 
                  doType1MET = False,
                  doL1Cleaning = False,
                  doL1Counters = False,
                  genJetCollection=cms.InputTag("ak5GenJets"),
-                 doJetID = True
+                 doJetID = True,
+                 jetIdLabel = "ak5"
                  )
 
 # = MET
@@ -372,7 +406,7 @@ process.p = cms.Path(
     process.triggerFilter *
 
     #process.gsfElectrons *    
-    process.simpleSecondaryVertexHighPurBJetTags *
+#    process.simpleSecondaryVertexHighPurBJetTags *
     process.recoJPTJets *
 #    process.ak5JPTJetsL2L3 *
 
@@ -404,12 +438,9 @@ if inputType=="MC":
         process.p.remove( process.makeGenEvt )
     if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
         process.p.remove( process.flavorHistorySeq )
-    if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
-           or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
-        process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
         
 else:
-    process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
+    #process.p.remove( process.simpleSecondaryVertexHighPurBJetTags )
     process.p.remove( process.makeGenEvt )
     process.p.remove( process.flavorHistorySeq )
     process.p.remove( process.prunedGenParticles )

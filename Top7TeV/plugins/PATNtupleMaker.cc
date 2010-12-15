@@ -11,10 +11,10 @@
      [Notes on implementation]
 */
 //
-// Original Author:  "Jian Wang"
+// Original Author:  Jian Wang,
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.19 2010/10/18 20:00:05 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.20 2010/11/21 19:37:53 jengbou Exp $
 //
 //
 
@@ -198,46 +198,75 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // for ttbar MC events
     Handle<TtGenEvent > genEventHandle;
     TtGenEvent genevent;
-    if ( !_isDataInput && iEvent.getByLabel("genEvt", genEventHandle) ) {
-      genevent = *genEventHandle;
-      TopMyGenEvent mygen;
-      mygen.isSemiLeptonic = int(genevent.isSemiLeptonic());
-      mygen.isDilepton = int(genevent.isFullLeptonic());
-      mygen.LeptonicChannel = genevent.semiLeptonicChannel();
-      mygen.t_pt =  (genevent.top())->pt();
-      mygen.t_eta = (genevent.top())->eta();
-      mygen.t_phi = (genevent.top())->phi();
-      mygen.t_e =   (genevent.top())->energy();
-      mygen.tbar_pt =  (genevent.topBar())->pt();
-      mygen.tbar_eta = (genevent.topBar())->eta();
-      mygen.tbar_phi = (genevent.topBar())->phi();
-      mygen.tbar_e =   (genevent.topBar())->energy();
-      if ( genevent.isSemiLeptonic() ) {
-	mygen.nu_pt =  (genevent.singleNeutrino())->pt();
-	mygen.nu_eta = (genevent.singleNeutrino())->eta();
-	mygen.nu_phi = (genevent.singleNeutrino())->phi();
-	mygen.nu_e =   (genevent.singleNeutrino())->energy();
-	mygen.mu_pt =  (genevent.singleLepton())->pt();
-	mygen.mu_eta = (genevent.singleLepton())->eta();
-	mygen.mu_phi = (genevent.singleLepton())->phi();
-	mygen.mu_e =   (genevent.singleLepton())->energy();
-	mygen.Wp_pt =  (genevent.hadronicDecayQuark())->pt();
-	mygen.Wp_eta = (genevent.hadronicDecayQuark())->eta();
-	mygen.Wp_phi = (genevent.hadronicDecayQuark())->phi();
-	mygen.Wp_e =   (genevent.hadronicDecayQuark())->energy();
-	mygen.Wq_pt =  (genevent.hadronicDecayQuarkBar())->pt();
-        mygen.Wq_eta = (genevent.hadronicDecayQuarkBar())->eta();
-        mygen.Wq_phi = (genevent.hadronicDecayQuarkBar())->phi();
-        mygen.Wq_e =   (genevent.hadronicDecayQuarkBar())->energy();
-	mygen.bHad_pt =  (genevent.hadronicDecayB())->pt();
-        mygen.bHad_eta = (genevent.hadronicDecayB())->eta();
-        mygen.bHad_phi = (genevent.hadronicDecayB())->phi();
-        mygen.bHad_e =   (genevent.hadronicDecayB())->energy();
-	mygen.bLep_pt =  (genevent.leptonicDecayB())->pt();
-        mygen.bLep_eta = (genevent.leptonicDecayB())->eta();
-        mygen.bLep_phi = (genevent.leptonicDecayB())->phi();
-        mygen.bLep_e =   (genevent.leptonicDecayB())->energy();
+    Handle<reco::GenParticleCollection> genParticles;
+    
+    if ( !_isDataInput ) {
+      // MC
+      TopMyGenEvent mygen; // mostly for ttbar MC 
+      // for ttbar MC
+      if ( iEvent.getByLabel("genEvt", genEventHandle) ) {
+	genevent = *genEventHandle;
+	
+	mygen.isSemiLeptonic = int(genevent.isSemiLeptonic());
+	mygen.isDilepton = int(genevent.isFullLeptonic());
+	mygen.LeptonicChannel = genevent.semiLeptonicChannel();
+	mygen.t_pt =  (genevent.top())->pt();
+	mygen.t_eta = (genevent.top())->eta();
+	mygen.t_phi = (genevent.top())->phi();
+	mygen.t_e =   (genevent.top())->energy();
+	mygen.tbar_pt =  (genevent.topBar())->pt();
+	mygen.tbar_eta = (genevent.topBar())->eta();
+	mygen.tbar_phi = (genevent.topBar())->phi();
+	mygen.tbar_e =   (genevent.topBar())->energy();
+	if ( genevent.isSemiLeptonic() ) {
+	  mygen.nu_pt =  (genevent.singleNeutrino())->pt();
+	  mygen.nu_eta = (genevent.singleNeutrino())->eta();
+	  mygen.nu_phi = (genevent.singleNeutrino())->phi();
+	  mygen.nu_e =   (genevent.singleNeutrino())->energy();
+	  mygen.mu_pt =  (genevent.singleLepton())->pt();
+	  mygen.mu_eta = (genevent.singleLepton())->eta();
+	  mygen.mu_phi = (genevent.singleLepton())->phi();
+	  mygen.mu_e =   (genevent.singleLepton())->energy();
+	  mygen.Wp_pt =  (genevent.hadronicDecayQuark())->pt();
+	  mygen.Wp_eta = (genevent.hadronicDecayQuark())->eta();
+	  mygen.Wp_phi = (genevent.hadronicDecayQuark())->phi();
+	  mygen.Wp_e =   (genevent.hadronicDecayQuark())->energy();
+	  mygen.Wq_pt =  (genevent.hadronicDecayQuarkBar())->pt();
+	  mygen.Wq_eta = (genevent.hadronicDecayQuarkBar())->eta();
+	  mygen.Wq_phi = (genevent.hadronicDecayQuarkBar())->phi();
+	  mygen.Wq_e =   (genevent.hadronicDecayQuarkBar())->energy();
+	  mygen.bHad_pt =  (genevent.hadronicDecayB())->pt();
+	  mygen.bHad_eta = (genevent.hadronicDecayB())->eta();
+	  mygen.bHad_phi = (genevent.hadronicDecayB())->phi();
+	  mygen.bHad_e =   (genevent.hadronicDecayB())->energy();
+	  mygen.bLep_pt =  (genevent.leptonicDecayB())->pt();
+	  mygen.bLep_eta = (genevent.leptonicDecayB())->eta();
+	  mygen.bLep_phi = (genevent.leptonicDecayB())->phi();
+	  mygen.bLep_e =   (genevent.leptonicDecayB())->energy();
+	}
+      } else if ( iEvent.getByLabel("genParticles", genParticles) ) { // for W MC
+	reco::GenParticleCollection::const_iterator mcIter ;
+	for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
+	  // find a W
+	  if ( fabs(mcIter->pdgId()) == 24 && mcIter->energy() > 10.0) {
+	    
+	    mygen.Wp_pt = mcIter->pt();
+	    mygen.isWevent = 1;
+	  }
+	  // find a neutrino
+	  if ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 || fabs(mcIter->pdgId()) == 16  ) {
+
+	    if (fabs( (mcIter->mother())->pdgId() ) == 24) {
+	      mygen.nu_pt = mcIter->pt();
+	      mygen.nu_e = mcIter->energy();
+	      mygen.nu_eta = mcIter->eta();
+	      mygen.nu_phi = mcIter->phi();
+	    }
+	  }
+	}
+
       }
+	
       _ntuple->gen = mygen;
     }
     //_cutflow->Fill(0);
@@ -613,14 +642,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.e  = jet->energy();
             ++npfjets;
 
-	    topjet.id_neutralEmE = (jet->correctedJet("RAW")).neutralEmEnergy();
-	    topjet.id_chargedEmE = (jet->correctedJet("RAW")).chargedEmEnergy();
-	    topjet.id_muonMultiplicity = (jet->correctedJet("RAW")).muonMultiplicity();
+	    topjet.id_neutralEmE = (jet->correctedJet("Uncorrected")).neutralEmEnergy();
+	    topjet.id_chargedEmE = (jet->correctedJet("Uncorrected")).chargedEmEnergy();
+	    topjet.id_muonMultiplicity = (jet->correctedJet("Uncorrected")).muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
 	    const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
 	    topjet.nSVs = svTagInfo.nVertices();
-            topjet.ndaughters = (jet->correctedJet("RAW")).numberOfDaughters();
+            topjet.ndaughters = (jet->correctedJet("Uncorrected")).numberOfDaughters();
             topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
             topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );

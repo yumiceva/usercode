@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.6 2010/10/18 20:00:05 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.7 2010/11/03 17:36:17 yumiceva Exp $
 //
 //
 
@@ -735,7 +735,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     int npfjets = 0;
     for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
       {
-        int nconstituents = (jet->correctedJet("RAW")).numberOfDaughters();
+        int nconstituents = (jet->correctedJet("Uncorrected")).numberOfDaughters();
 
 	bool passJetID = false;
         passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
@@ -753,9 +753,9 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
             topjet.e  = jet->energy();
             ++npfjets;
 
-	    topjet.id_neutralEmE = (jet->correctedJet("RAW")).neutralEmEnergy();
-	    topjet.id_chargedEmE = (jet->correctedJet("RAW")).chargedEmEnergy();
-	    topjet.id_muonMultiplicity = (jet->correctedJet("RAW")).muonMultiplicity();
+	    topjet.id_neutralEmE = (jet->correctedJet("Uncorrected")).neutralEmEnergy();
+	    topjet.id_chargedEmE = (jet->correctedJet("Uncorrected")).chargedEmEnergy();
+	    topjet.id_muonMultiplicity = (jet->correctedJet("Uncorrected")).muonMultiplicity();
 
 	    topjet.ntracks = jet->associatedTracks().size();
             const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());

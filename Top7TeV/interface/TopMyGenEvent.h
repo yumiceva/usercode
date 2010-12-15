@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMyGenEvent.h,v 1.1 2010/08/23 01:48:56 yumiceva Exp $
+ version $Id: TopMyGenEvent.h,v 1.1 2010/08/26 17:58:18 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -31,6 +31,7 @@ public:
   Int_t isSemiLeptonic;
   Int_t isDilepton;
   Int_t LeptonicChannel;
+  Int_t isWevent; //only used for W+jets and Vqq sample for the moment
 
   Float_t t_pt;
   Float_t t_eta;
