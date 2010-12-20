@@ -4,6 +4,22 @@ import sys
 import os
 import commands
 
+# List of colors.  Replace digit [0; with [1; to get light color version.
+black  = "\033[0;30m"
+yellow   = "\033[1;33m"
+blue  = "\033[0;34m"
+green  = "\033[0;32m"
+cyan  = "\033[0;36m"
+red  = "\033[0;31m"
+purple  = "\033[0;35m"
+brown  = "\033[0;33m"
+blue  = "\033[0;34m"
+green  = "\033[1;32m"
+cyan  = "\033[0;36m"
+red  = "\033[1;31m"
+purple  = "\033[0;35m"
+reset    = "\033[0m"
+
 
 #________________________________________________________________
 def get_list_files(directory):
@@ -33,12 +49,16 @@ path = sys.argv[1]
 current = os.getcwd()
 cmdcrab = "-status -c "
 doLumi = False
-if len(sys.argv)==3:
+if len(sys.argv)>=3:
     cmdcrab = "-"+sys.argv[2]+" all -c "
     if sys.argv[2]=="lumi":
         doLumi = True
 
 dirs = os.listdir(path)
+
+# only look at input directory
+if len(sys.argv)==4:
+    dirs = [sys.argv[3]]
 
 if doLumi:
 
@@ -92,9 +112,16 @@ for adir in dirs:
                 print " Total Jobs "+str(totaljobs)
                 print " Jobs Done  "+str(donejobs)
                 print " Retrieved Jobs "+str(retrievedjobs)
-        
-        if len(sys.argv)>2 and (sys.argv[2]=="getoutput" or sys.argv[2]=="hadd"):
-
+                if totaljobs == retrievedjobs:
+                    print green+"===> DONE"+reset
+                if donejobs>0:
+                    print yellow+"===> need to getoutput"+reset
+                if totaljobs > donejobs and totaljobs > retrievedjobs:
+                    print purple+"===> incomplete"+reset
+                if totaljobs == 0:
+                    print red+"===> Zero jobs! need to submit them?"+reset
+        #if len(sys.argv)>2 and (sys.argv[2]=="getoutput" or sys.argv[2]=="hadd"):
+        if len(sys.argv)>2 and sys.argv[2]=="hadd":
             if not os.path.isdir(adir+"/res/"):
                 print " no output files skip this dataset."
                 os.chdir(current)

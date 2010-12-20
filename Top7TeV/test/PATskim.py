@@ -261,7 +261,7 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # muon trigger
 triggerprocess = "HLT"
-if inputType == "MC" and eventtype=="QCD":
+if inputType == "MC" and (eventtype=="QCD" or eventtype=="WW_Z2" or eventtype=="TTbar_PU"):
     triggerprocess = "REDIGI38X" #
 #if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
 #       or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
