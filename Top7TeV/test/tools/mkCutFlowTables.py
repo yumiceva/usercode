@@ -31,19 +31,25 @@ file = {}
 label = {}
 # MC files
 if IsMC:
-    file['ttbar'] = path+'/cutflow_'+JetType+'_TTbar.txt'
+    file['ttbar'] = path+'/cutflow_'+JetType+'_TTbar_Z2.txt'
     file['QCD']   = path+'/cutflow_'+JetType+'_QCD.txt'
-    file['Wjets'] = path+'/cutflow_'+JetType+'_Wjets.txt'
-    file['Zjets'] = path+'/cutflow_'+JetType+'_Zjets.txt'
+    file['Wjets'] = path+'/cutflow_'+JetType+'_Wjets_Z2.txt'
+    file['Zjets'] = path+'/cutflow_'+JetType+'_Zjets_Z2.txt'
     file['tch'] = path+'/cutflow_'+JetType+'_STtch.txt'
     file['tWch'] = path+'/cutflow_'+JetType+'_STtWch.txt'
+
+    file['sch'] = path+'/cutflow_'+JetType+'_STsch.txt'
+    file['WW'] = path+'/cutflow_'+JetType+'_WW_Z2.txt'
     
     xsec['ttbar'] =   157.5
-    xsec['QCD']   = 79688.
+    xsec['QCD']   = 84679.3 #79688.
     xsec['Wjets'] = 31314.
     xsec['Zjets'] =  3048.
     xsec['tch'] = 20.93
     xsec['tWch'] = 10.6
+
+    xsec['sch'] = 1.5
+    xsec['WW'] = 43.
     
     Nevents['ttbar'] = 1483404.
     Nevents['QCD']   = 4377187.
@@ -51,13 +57,20 @@ if IsMC:
     Nevents['Zjets'] = 1084921.
     Nevents['tch'] = 528593.
     Nevents['tWch'] = 466437.
+
+    Nevents['sch'] = 0
+    Nevents['WW'] = 0
     
     label['ttbar'] = '$t\\overline{t}$'
     label['QCD'] = 'QCD'
     label['Wjets'] = '$W\\rightarrow l\\nu$'
-    label['Zjets'] = '$Z\\rightarrow l\\nu$'
+    label['Zjets'] = '$Z\\rightarrow l^{+}l^{-}$'
     label['tch'] = 't channel'
     label['tWch'] = 'tW channel'
+
+    label['sch'] = 's channel'
+    label['WW'] = 'WW'
+    
     label['Total'] = 'Total'
 else:
 # data files
@@ -103,7 +116,7 @@ cutlabel['GoodPV'] = 'Good PV'
 cutlabel['OneIsoMu'] = 'One Iso mu'
 cutlabel['LooseMuVeto'] = 'Loose mu veto'
 cutlabel['ElectronVeto'] = 'Electron veto'
-cutlabel['MET'] = 'MET'
+cutlabel['MET'] = '\met$>20$~GeV'
 cutlabel['1Jet'] = '1 jet'
 cutlabel['2Jet'] = '2 jets'
 cutlabel['3Jet'] = '3 jets'
@@ -128,6 +141,7 @@ for sample in keys:
         #if sample=="data":
         if sample.find("data")!=-1:
             cutmap[ cutname ] = int(float(acut))
+            cutmaperr[ cutname ] = math.sqrt( cutmap[cutname] )
         else:
             cutmap[ cutname ] = float(acut)
             cutmaperr[ cutname ] = math.sqrt( cutmap[cutname] )
@@ -137,21 +151,21 @@ for sample in keys:
     scale = 1.
     if IsMC and Lumi>0:
         scale = ( Lumi * xsec[ sample ] / cutmap['CleanFilters'] )
-
+        print "sample weight = "+ str( xsec[ sample ] / cutmap['CleanFilters'] )
     ilabel = 0
     for key in cutmap.keys():
 
         cutmap[ key ] = scale * cutmap[ key]
-        cutmaperr[key]= scale * cutmaperr[key]
+        cutmaperr[key]= scale * cutmaperr[key] * scale * cutmaperr[key]
         
         print " cut "+str(key) + " ("+cutlabel[key]+") "+" = "+str( round(cutmap[key],1) )
 
         if allmap.has_key(key):
             allmap[ key ] += cutmap[ key ]
-            allmaperr[ key ] += cutmaperr[key]*cutmaperr[key]
+            allmaperr[ key ] += cutmaperr[key]
         else:
             allmap[ key ] = cutmap[ key ]
-            allmaperr[ key ] = cutmap[key]*cutmap[key]
+            allmaperr[ key ] = cutmap[key]
         ilabel += 1
     cutflow[ sample ] = cutmap
     cutflowerr[ sample ] = cutmaperr
@@ -171,7 +185,7 @@ if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
          
-tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','Total']
+tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','Total']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch']
     
@@ -179,6 +193,7 @@ if not IsMC:
     #tablelist = ['MB','Jun14','Jul16','Prompt','Total']
     #tablelist = ['dataJPT','datacalo','dataJPTMET','datacaloMET']
     tablelist = ['datacaloMET','dataJPTMET','dataPFMET']
+    #tablelist = ['dataPFMET']
     
 texname = "cutflow_"+JetType+"_data.tex"
 
@@ -194,7 +209,7 @@ outtex.write('''
 \\begin{centering}
 ''')
 if IsMC:
-    aline = '\\begin{tabular}{|l|c|c|c|c|c|c|c|} \hline \n'
+    aline = '\\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|} \hline \n'
     if Lumi<=0:
         aline = '\\begin{tabular}{|l|c|c|c|c|c|c|} \hline \n'
     outtex.write(aline)
@@ -222,18 +237,15 @@ for key in sortedcutlist:
         cutmap = cutflow[sample]
         cutmaperr = cutflowerr[sample]
         acut = cutmap[key]
-        #acuterr = cutmaperr[key]
+        acuterr = cutmaperr[key]
         stracut = str(int(acut))
+        stracuterr = str(round(math.sqrt(acuterr),1))
         #stracut = stracut.strip('.0')
         if IsMC:
             acut = round(cutmap[key],1)
             stracut = str(acut)
-            if key != "Total":
-                acuterr = round(cutmaperr[key],1)
-                stracuterr = str(acuterr)
-                line += sss + stracut + " $\\pm$ " + stracuterr
-            else:
-                line += sss + stracut + " $\\pm$ " + str(round(math.sqrt(cutmaperr[key]),1))
+            line += sss + stracut + " $\\pm$ " + stracuterr
+            
         else:
             line += sss + stracut
     outtex.write(line+" \\\ \n")

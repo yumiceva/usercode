@@ -19,24 +19,28 @@ QCD 4jetIKS 4.61
 #####################
 # MM
 # 1
-TTbar 1jetMM 1.01
-Wjets 1jetMM 1.01
-Zjets 1jetMM 1.01
-QCD 1jetMM 3.55
+TTbar 1jetMM 0.92
+Wjets 1jetMM 0.92
+Zjets 1jetMM 0.92
+Dibosons 1jetMM 0.92
+QCD 1jetMM 2.54
 # 2
-TTbar 2jetMM 1.22
-Wjets 2jetMM 1.22
-Zjets 2jetMM 1.22
-QCD 2jetMM 3.15
+TTbar 2jetMM 0.97
+Wjets 2jetMM 0.97
+Zjets 2jetMM 0.97
+Dibosons 2jetMM 0.97
+QCD 2jetMM 2.10
 # 3
-TTbar 3jetMM 1.28
-Wjets 3jetMM 1.28
-Zjets 3jetMM 1.28
-QCD 3jetMM 4.77
+TTbar 3jetMM 1.08
+Wjets 3jetMM 1.08
+Zjets 3jetMM 1.08
+Dibosons 3jetMM 1.08
+QCD 3jetMM 2.57
 # 4
-TTbar 4jetMM 1.15
-Wjets 4jetMM 1.15
-Zjets 4jetMM 1.15
-QCD 4jetMM 8.82
+TTbar 4jetMM 0.96
+Wjets 4jetMM 0.96
+Zjets 4jetMM 0.96
+Dibosons 4jetMM 0.96
+QCD 4jetMM 3.98
 #####################
 

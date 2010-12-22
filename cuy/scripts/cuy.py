@@ -578,7 +578,10 @@ if __name__ == '__main__':
             if listcolor[icolor] == "top" and listlegend[icolor]=="STtch":
                 tmplistcolor.append( style.ST_t_sColor)
                 tmplistlegend.append(style.ST_t_sText)
-                                                
+            if listcolor[icolor] == "top" and listlegend[icolor]=="Dibosons":
+                tmplistcolor.append( style.DibosonsColor)
+                tmplistlegend.append(style.DibosonsText)
+                print "dibosons color ="+str(style.DibosonsColor)
 
         if len(tmplistcolor)>0:
             listcolor = tmplistcolor
