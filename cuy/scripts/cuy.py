@@ -579,9 +579,9 @@ if __name__ == '__main__':
                 tmplistcolor.append( style.ST_t_sColor)
                 tmplistlegend.append(style.ST_t_sText)
             if listcolor[icolor] == "top" and listlegend[icolor]=="Dibosons":
-                tmplistcolor.append( style.DibosonsColor)
+                tmplistcolor.append( 10 ) #style.DibosonsColor)
                 tmplistlegend.append(style.DibosonsText)
-                print "dibosons color ="+str(style.DibosonsColor)
+                #print "dibosons color ="+str(style.DibosonsColor)
 
         if len(tmplistcolor)>0:
             listcolor = tmplistcolor
@@ -609,7 +609,7 @@ if __name__ == '__main__':
 	#create canvas
 	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
 	#legend
-	aleg = TLegend(0.73,0.68,1.0,0.93)
+	aleg = TLegend(0.66,0.68,0.93,0.93)
 	SetOwnership( aleg, 0 ) 
 	aleg.SetMargin(0.12)
         aleg.SetTextSize(0.035)
@@ -703,10 +703,10 @@ if __name__ == '__main__':
                                                     # get SF for all jet bins
                                                     tmpallkey = keySF.strip("all")
                                                     
-                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("1jet"+tmpallkey)!=-1: SFforallbins[1]=sfline.split()[2]
-                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("2jet"+tmpallkey)!=-1: SFforallbins[2]=sfline.split()[2]
-                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("3jet"+tmpallkey)!=-1: SFforallbins[3]=sfline.split()[2]
-                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("4jet"+tmpallkey)!=-1: SFforallbins[4]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("1jet"+tmpallkey)!=-1: SFforallbins[2]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("2jet"+tmpallkey)!=-1: SFforallbins[3]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("3jet"+tmpallkey)!=-1: SFforallbins[4]=sfline.split()[2]
+                                                    if sfline.find(orglistlegend[ii])!=-1 and sfline.find("4jet"+tmpallkey)!=-1: SFforallbins[5]=sfline.split()[2]
                                                 
                                                 elif sfline.find(orglistlegend[ii])!=-1 and sfline.find(keySF)!=-1:
                                                
@@ -769,8 +769,11 @@ if __name__ == '__main__':
 			    for ilabel in thelabels:
 				newth.GetXaxis().SetBinLabel(ib,ilabel)
                                 # scale if binned SF
-                                if SFforallbins.has_key(ib-1):
-                                    tmpcontent = newth.GetBinContent(ib) * float(SFforallbins[ib-1])
+                                if SFforallbins.has_key(ib):
+                                    if listofnorm[ii] == "true":
+                                        tmpcontent = float(SFforallbins[ib])
+                                    else: 
+                                        tmpcontent = newth.GetBinContent(ib) * float(SFforallbins[ib])
                                     newth.SetBinContent(ib, tmpcontent)
 				#if ib==1:
 				    #newth.GetXaxis().SetBinLabel(ib,"")
@@ -785,7 +788,7 @@ if __name__ == '__main__':
                             lerrX = []
                             lerrY = []
                             for iibin in range(1,newth.GetNbinsX()+1):
-                                content = newth.GetBinContent(iibin) + newth.GetBinContent(iibin)*float(listError[ii])
+                                content = newth.GetBinContent(iibin)*float(listError[ii])
                                 lxx.append( newth.GetBinCenter( iibin ) )
                                 lyy.append( newth.GetBinContent(iibin) )
                                 lerrX.append( 0.5*newth.GetBinWidth(iibin) )
@@ -963,7 +966,8 @@ if __name__ == '__main__':
 	#cv[thesuper[ikey].name].Print("test.png")
 	#cv[thesuper[ikey].name].UseCurrentStyle()
         #gPad.SetRightMargin(4)
-	cv[thesuper[ikey].name].Print(OutputDir+thesuper[ikey].name + "." + printFormat)
+        if printCanvas:
+            cv[thesuper[ikey].name].Print(OutputDir+thesuper[ikey].name + "." + printFormat)
         # pause
 	if option.wait:
 	    raw_input( 'Press ENTER to continue\n ' )
