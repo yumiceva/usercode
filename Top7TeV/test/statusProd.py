@@ -58,7 +58,10 @@ dirs = os.listdir(path)
 
 # only look at input directory
 if len(sys.argv)==4:
-    dirs = [sys.argv[3]]
+    if sys.argv[3].find(",")!=-1:
+        dirs = sys.argv[3].split(',')
+    else:
+        dirs = [sys.argv[3]]
 
 if doLumi:
 

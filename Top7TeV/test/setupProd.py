@@ -59,6 +59,7 @@ directoriesMuMC['STtch_Z2_Mu'] = '/TToBLNu_TuneZ2_t-channel_7TeV-madgraph/Fall10
 directoriesMuMC['STtWch_Z2_Mu'] = '/TToBLNu_TuneZ2_tW-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
 directoriesMuMC['QCD_Z2_Mu'] = '/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
 directoriesMuMC['WW_Z2_Mu'] = '/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM' # missing at fnal/unl
+directoriesMuMC['WZ_Z2_Mu'] = '/WZtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM'
 
 directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
 directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
@@ -72,6 +73,11 @@ directoriesMuMC['TTbar_2Jetalpgen_Mu'] = '/TT2Jets_40GeVTh_TuneZ2_7TeV-alpgen-ta
 directoriesMuMC['TTbar_3Jetalpgen_Mu'] = '/TT3Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
 directoriesMuMC['TTbar_4Jetalpgen_Mu'] = '/TT4Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
 directoriesMuMC['TTbar_PU_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/AODSIM' # missing
+
+directoriesMuMC['WJets_scaleup_Mu'] = '/WJets_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesMuMC['WJets_scaledown_Mu'] = '/WJets_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['WJets_matchingdown_Mu'] = '/WJets_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['WJets_matchingup_Mu'] = '/WJets_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
 
 directoriesMuMC['ZJets_scaleup_Mu'] = '/DYJetsToLL_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
 directoriesMuMC['ZJets_scaledown_Mu'] = '/DYJetsToLL_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'

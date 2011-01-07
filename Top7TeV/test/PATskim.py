@@ -51,12 +51,12 @@ process.source.fileNames = cms.untracked.vstring(
 
     # data files
     #'/store/data/Run2010B/Mu/RECO/Nov4ReReco_v1/0008/80ED4E8B-D2EA-DF11-90CF-90E6BA0D09EC.root'
-    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0006/067DC752-D2EA-DF11-90D6-001EC9D87221.root',
-    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00A75A80-93EA-DF11-A874-E0CB4E55365F.root',
-    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00A0D70F-11EA-DF11-A94C-485B39800BD5.root',
-    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/009C2D2D-42EA-DF11-9E21-E0CB4E553648.root',
-    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/0037C237-F4E9-DF11-A5FC-0030487C6A32.root',
-    '/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00309820-0FEA-DF11-AE59-E0CB4E1A118E.root'
+    #'/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0006/067DC752-D2EA-DF11-90D6-001EC9D87221.root',
+    #'/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00A75A80-93EA-DF11-A874-E0CB4E55365F.root',
+    #'/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00A0D70F-11EA-DF11-A94C-485B39800BD5.root',
+    #'/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/009C2D2D-42EA-DF11-9E21-E0CB4E553648.root',
+    #'/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/0037C237-F4E9-DF11-A5FC-0030487C6A32.root',
+    #'/store/data/Run2010B/Mu/AOD/Nov4ReReco_v1/0000/00309820-0FEA-DF11-AE59-E0CB4E1A118E.root'
     
     # or MC files
     #'/store/mc/Fall10/TTJets_TuneZ2_7TeV-madgraph-tauola/GEN-SIM-RECO/START38_V12-v2/0006/06B4F65D-9EE4-DF11-8B5F-003048D4767A.root',
@@ -72,8 +72,8 @@ process.source.fileNames = cms.untracked.vstring(
     #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/BAF995DB-85E1-DF11-B1DF-00A0D1EEE660.root',
     #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/A44094D0-89E1-DF11-AFD8-00A0D1EEA838.root',
     #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/32374770-8AE1-DF11-A270-00A0D1EEE5CC.root',
-    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/2CC6A3A8-8AE1-DF11-A9DF-001D0967C649.root',
-    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/04C894E5-32E1-DF11-939F-001EC9ED4A0A.root'
+    '/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/2CC6A3A8-8AE1-DF11-A9DF-001D0967C649.root',
+    '/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/04C894E5-32E1-DF11-939F-001EC9ED4A0A.root'
     # QCD
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/22E2557D-33C8-DF11-980B-001A92971AEC.root',
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/1AA9BF44-39C8-DF11-8C91-00261894391D.root',
@@ -220,7 +220,8 @@ else:
 
 # Embed user data into the PAT objects
 process.load('JetMETCorrections.Configuration.DefaultJEC_cff')
-process.load('RecoJets.Configuration.RecoJPTJets_cff')
+#process.load('RecoJets.Configuration.RecoJPTJets_cff')
+
 #process.patJPTJetUserData = cms.EDProducer(
 #    "PATJPTJetUserData",
 #    src = cms.InputTag("patJetsAK5JPT")
@@ -261,7 +262,7 @@ process.load('CommonTools/RecoAlgos/HBHENoiseFilter_cfi')
 
 # muon trigger
 triggerprocess = "HLT"
-if inputType == "MC" and (eventtype=="QCD" or eventtype=="WW_Z2" or eventtype=="TTbar_PU"):
+if inputType == "MC" and (eventtype=="QCD_Z2" or eventtype=="WW_Z2" or eventtype=="TTbar_PU"):
     triggerprocess = "REDIGI38X" #
 #if eventtype.find("_scale")!=-1 or eventtype.find("_matching")!=-1\
 #       or eventtype.find("ISRFSR")!=-1 or eventtype.find("_PU")!=-1:
@@ -366,9 +367,9 @@ process.muonTriggerMatchHLTMuons = cms.EDProducer(
 from PhysicsTools.PatAlgos.tools.trigTools import *
 switchOnTrigger( process ) # This is optional and can be omitted.
 switchOnTriggerMatching( process, triggerMatchers = [ 'muonTriggerMatchHLTMuons' ] )
-if inputType=="MC" and eventtype=="QCD":
-    process.patTrigger.processName = "REDIGI38X"
-    process.patTriggerEvent.processName = "REDIGI38X"
+#if inputType=="MC" and eventtype=="QCD":
+process.patTrigger.processName = triggerprocess
+process.patTriggerEvent.processName = triggerprocess
     
 if inputType=="DATA":
     removeMCMatching(process, ['All'])
@@ -456,9 +457,9 @@ if inputType=="MC":
     process.p.remove( process.HBHENoiseFilter )
     if channel == "electron":
         process.p.remove( process.triggerFilter )
-    if eventtype != "TTJets":
+    if eventtype.find("TTJets")==-1:
         process.p.remove( process.makeGenEvt )
-    if eventtype != "WJets" and eventtype!="ZJets" and eventtype!="Vqq" and eventtype!="Wc":
+    if eventtype.find("WJets")==-1 and eventtype.find("ZJets")==-1 and eventtype.find("Vqq")==-1 and eventtype.find("Wc")==-1:
         process.p.remove( process.flavorHistorySeq )
         
 else:
