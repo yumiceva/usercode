@@ -14,7 +14,7 @@
 // Original Author:  Jian Wang,
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.20 2010/11/21 19:37:53 jengbou Exp $
+// $Id: PATNtupleMaker.cc,v 1.21 2010/12/15 19:50:45 yumiceva Exp $
 //
 //
 
@@ -576,6 +576,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	  if (! _isDataInput ) {
 	    topjet.mc.flavor = jet->partonFlavour();
+	    if (jet->genJet()) {
+	      topjet.mc.eta = jet->genJet()->eta();
+	      topjet.mc.phi = jet->genJet()->phi();
+	      topjet.mc.pt = jet->genJet()->pt();
+	      topjet.mc.e  = jet->genJet()->energy();
+	    }
 	  }
 	  // store jets
 	  _ntuple->Calojets.push_back( topjet );
@@ -615,6 +621,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	    if (! _isDataInput ) {
 	      topjet.mc.flavor = jet->partonFlavour();
+	      if (jet->genJet()) {
+		topjet.mc.eta = jet->genJet()->eta();
+		topjet.mc.phi = jet->genJet()->phi();
+		topjet.mc.pt = jet->genJet()->pt();
+		topjet.mc.e  = jet->genJet()->energy();
+	      }
 	    }
 	    // store jets
 	    _ntuple->JPTjets.push_back( topjet );
@@ -657,6 +669,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
             if (! _isDataInput ) {
               topjet.mc.flavor = jet->partonFlavour();
+	      if (jet->genJet()) {
+		topjet.mc.eta = jet->genJet()->eta();
+		topjet.mc.phi = jet->genJet()->phi();
+		topjet.mc.pt = jet->genJet()->pt();
+		topjet.mc.e  = jet->genJet()->energy();
+	      }
             }
             // store jets
 	    _ntuple->PFjets.push_back( topjet );
