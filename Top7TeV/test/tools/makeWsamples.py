@@ -157,32 +157,42 @@ top = TChain('/PATNtupleMaker/top')
 # input files
 data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
 
+sigma_Wjets = 24170. # LO
+
 if dataType=="Wjets":
     #top.Add(data_repo+"MC/V00-01-05/WJets_Z2_Mu.root")
-    top.Add(data_repo+"MC/V00-01-05/WJets_D6T_Mu.root")
-    top.Add(data_repo+"MC/V00-01-05/Vqq_D6T_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/WJets_D6T_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Vqq_D6T_Mu.root")
 if dataType=="Zjets":
 #    top.Add(data_repo+"MC/V00-01-05/ZJets_Z2_Mu.root")
-    top.Add(data_repo+"MC/V00-01-05/ZJets_D6T_Mu.root")
-    top.Add(data_repo+"MC/V00-01-05/Vqq_D6T_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/ZJets_D6T_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Vqq_D6T_Mu.root")
 if dataType=="Wc":
-    top.Add(data_repo+"MC/V00-01-05/Wc_D6T_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Wc_D6T_Mu.root")
 if dataType=="Wjets_matchingup":
+    sigma_Wjets = 25950
     dataType="Wjets"
     dataTypeSuffix = "matchingup"
     top.Add(data_repo+"MC/V00-01-05/WJets_matchingup_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Vqq_D6T_Mu.root")
 if dataType=="Wjets_matchingdown":
+    sigma_Wjets = 24990
     dataType="Wjets"
     dataTypeSuffix = "matchingdown"
     top.Add(data_repo+"MC/V00-01-05/WJets_matchingdown_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Vqq_D6T_Mu.root")
 if dataType=="Wjets_scaleup":
+    sigma_Wjets = 27230
     dataType="Wjets"
     dataTypeSuffix = "scaleup"
-    top.Add(data_repo+"MC/V00-01-05/WJets_scaleup_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/WJets_scaleup_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Vqq_scaleup_Mu.root")
 if dataType=="Wjets_scaledown":
+    sigma_Wjets = 26530 # LO
     dataType="Wjets"
     dataTypeSuffix = "scaledown"
-    top.Add(data_repo+"MC/V00-01-05/WJets_scaledown_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/WJets_scaledown_Mu.root")
+    top.Add(data_repo+"MC/V00-01-06/Vqq_scaledown_Mu.root")
 if dataType=="Zjets_matchingup":
     dataType="Zjets"
     dataTypeSuffix = "matchingup"
@@ -260,7 +270,7 @@ wtree.Branch('weight', AddressOf( wntuple, 'weight'),'weight/F')
 wtree.Branch('isVqq', AddressOf( wntuple, 'isVqq'),'isVqq/I')
 wtree.Branch('isTrashPath', AddressOf( wntuple, 'isTrashPath'),'isTrashPath/I')
 
-sigma_Wjets = 24170. # LO
+#sigma_Wjets = 24170. # LO
 #sigma_Zjets = 
 sigma_Vqq = 35.8 # LO
 kfactor = 1.3
@@ -286,7 +296,7 @@ for jentry in xrange( entries ):
         continue
 
     tmpfile = top.GetFile()
-    tmpfilename = tmpfile.GetTitle()
+    tmpfilename = tmpfile.GetName()
     del(tmpfile)
     
     isVqq = 0
@@ -297,7 +307,8 @@ for jentry in xrange( entries ):
         weight = kfactor * sigma_Vqq / N_Vqq
     else:
         weight = kfactor * sigma_Wjets / N_Wjets
-        
+
+    #print "w = "+str(weight)
     #cut['processed'] += 1
 
     if jentry%50000 == 0:
@@ -308,15 +319,16 @@ for jentry in xrange( entries ):
         passFlavor = False
         
         # check if we have a W event in Vqq sample
-        if dataType=="Wjets" and isVqq==1 and evt.gen.isWevent!=1:
+        if dataType.find("Wjets")!=-1 and isVqq==1 and evt.gen.isWevent!=1:
             continue
         
         path = evt.flavorHistory
-        print "Vqq="+str(isVqq)+" path="+str(path)
+        #print "Vqq="+str(isVqq)+" path="+str(path)
         #if dataType=="Wc" and Flavor==2 and path==4: passFlavor = True
 
         # check b(b) selection
-        if isVqq==1 and Flavor==1 and (path==1 or path==2): passFlavor = True
+        if isVqq==1 and Flavor==1 and path==1: passFlavor = True
+        if isVqq==0 and Flavor==1 and path==2: passFlavor = True
         if isVqq==0 and Flavor==1 and path==5: passFlavor = True
         # check c(c) selection
         if isVqq==1 and Flavor==2 and path==3: passFlavor = True
@@ -333,7 +345,7 @@ for jentry in xrange( entries ):
         cutmap['Flavor'] += 1
 
     # fill new tree
-    print "weight = "+str(weight)
+    #print "weight = "+str(weight)
     wntuple.weight = weight
     wntuple.isVqq = isVqq
     wntuple.isTrashPath = isTrashPath
@@ -341,6 +353,7 @@ for jentry in xrange( entries ):
     newtop.Fill()
 
 print "loop done."
+print "Selected events in skim: " + str(cutmap['Flavor'])
 
 newfile.cd()
 newfile.mkdir("PATNtupleMaker")
