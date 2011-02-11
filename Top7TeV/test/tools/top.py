@@ -9,6 +9,7 @@
    -b, --batch : run in batch mode without graphics.
    -d, --deltaR : enable/dissable deltaR(muon,jet) cut. Default is enable.
    -D, --DissableMttbar : enable/dissable Mttbar calculation using jet combinations.
+   -e, --electron : select e+jets events. Default is muon+jets.
    -f, --flavor = FLAVOR: flavor for Vqq samples. 1 = bb, 2 = c(c), 3 = light
    -I, --Initial = INITIAL: initial entry.
    -i, --isolation = ISO: lepton isolation cut.
@@ -40,6 +41,8 @@ import os
 import math
 import re
 import histograms
+from topSelectors import *
+import topSamples
 
 #________CONFIG_______OPTIONS________________
 import optparse
@@ -108,6 +111,7 @@ printnewlistofruns = False
 JES = 1
 InitialEntry = 0
 FinalEntry = 0
+Lepton = "muon"
 
 # check options
 option,args = parse(__doc__)
@@ -122,7 +126,11 @@ if option.batch:
     print "running ROOT in batch mode."
 if option.verbose:
     verbose = True
-
+if option.electron:
+    Lepton = "electron"
+    print "Selection: ELECTRON+JETS"
+else:
+    print "Selection: MUON+JETS"
 if option.listofruns:
     printlistofruns = True
     print "We will write a file with run,event,lumi information"
@@ -189,7 +197,7 @@ if option.flavor:
 
 if option.Initial:
     InitialEntry = int(option.Initial)
-    print "Initial entry = "+str(InitailEntry)
+    print "Initial entry = "+str(InitialEntry)
 if option.Nevents:
     FinalEntry = int(option.Nevents)
     print "Final entry = "+str(FinalEntry)
@@ -206,8 +214,9 @@ style.setupICHEPv1()
 gSystem.Load('libYumicevaTop7TeV.so')
 gROOT.ProcessLine('.L METzCalculator.cc+')
 METzCalculator = METzCalculator()
-gROOT.ProcessLine('.L JetCombinatorics.cc+')
-gROOT.ProcessLine('.L LoadTLV.C+')
+#gROOT.ProcessLine('.L JetCombinatorics.cc+')
+#gROOT.ProcessLine('.L LoadTLV.C+')
+from JetCombinatorics import *
 
 # output txt file
 txtfilename = "2jetevents_"+JetType+"_"+dataType+".txt"
@@ -236,6 +245,10 @@ cutmap['MET'] = 0
 cutmap['OneIsoMu'] = 0
 cutmap['LooseMuVeto'] = 0
 cutmap['ElectronVeto'] = 0
+if Lepton=="electron":
+    cutmap['ZVeto'] = 0
+    cutmap['ConversionVeto'] = 0
+    
 cutmap['1Jet'] = 0
 cutmap['2Jet'] = 0
 cutmap['3Jet'] = 0
@@ -247,95 +260,11 @@ N500gev4j = 0
 # Setup TChain
 top = TChain('/PATNtupleMaker/top')
 
-# input files
-data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
-#datafilename = "Data/21.89pb-1/ttmuj_21.89pb-1_Oct29.root"
-#datafilename = "/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Nov3/TrigC/TrigC.root"
-
-if dataType=="data" or dataType=="dataReverse":
-    top.Add(data_repo+"Data/36pb-1_Nov4ReReco/Run2010A_Mu9.root")
-    top.Add(data_repo+"Data/36pb-1_Nov4ReReco/Run2010B_Mu9.root")
-    top.Add(data_repo+"Data/36pb-1_Nov4ReReco/Run2010B_Mu15.root")    
 if dataType=="dataReverse":
     doReverseIso = True
     print "Apply reverse isolation"
-if dataType=="TTbar_Z2":
-    top.Add(data_repo+"MC/V00-01-05/TTbar_Z2_Mu.root")
-if dataType=="TTbar_D6T":
-    top.Add(data_repo+"MC/V00-01-05/TTbar_D6T_Mu.root")        
-if dataType=="sync":
-    top.Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Oct5/TTJets_syncv4.root")
-if dataType=="Wjets_Z2":
-    top.Add(data_repo+"MC/V00-01-05/WJets_Z2_Mu.root")
-if dataType=="Wjets_D6T":
-    top.Add(data_repo+"MC/V00-01-05/WJets_D6T_Mu.root")        
-if dataType=="WW_Z2":
-    top.Add(data_repo+"MC/V00-01-05/WW_Z2_Mu.root")
-if dataType=="Zjets_Z2":
-    top.Add(data_repo+"MC/V00-01-05/ZJets_Z2_Mu.root")
-if dataType=="Zjets_D6T":
-    top.Add(data_repo+"MC/V00-01-05/ZJets_D6T_Mu.root")
-if dataType=="QCD":
-    top.Add(data_repo+"MC/V00-01-05/QCD_Z2_Mu.root")
-if dataType=="STtch":
-    top.Add(data_repo+"MC/V00-01-05/STtch_Z2_Mu.root")
-if dataType=="STtWch":
-    top.Add(data_repo+"MC/V00-01-05/STtWch_Z2_Mu.root")
-if dataType=="STsch":
-    top.Add(data_repo+"MC/V00-01-05/STsch_Z2_Mu.root")
-if dataType=="Wc":
-    top.Add(data_repo+"MC/V00-01-05/Wc_D6T_Mu.root")
-if dataType=="Vqq":
-    top.Add(data_repo+"MC/V00-01-05/Vqq_D6T_Mu.root")
-if dataType=="TTbar_matchingup":
-    dataType="TTbar"
-    dataTypeSuffix = "matchingup"
-    top.Add(data_repo+"MC/V00-01-05/TTbar_matchingup_Mu.root")
-if dataType=="TTbar_matchingdown":
-    dataType="TTbar"
-    dataTypeSuffix = "matchingdown"
-    top.Add(data_repo+"MC/V00-01-05/TTbar_matchingdown_Mu.root")
-if dataType=="TTbar_scaleup":
-    dataType="TTbar"
-    dataTypeSuffix = "scaleup"
-    top.Add(data_repo+"MC/V00-01-05/TTbar_scaleup_Mu.root")
-if dataType=="TTbar_scaledown":
-    dataType="TTbar"
-    dataTypeSuffix = "scaledown"
-    top.Add(data_repo+"MC/V00-01-05/TTbar_scaledown_Mu.root")
-if dataType=="Wjets_matchingup":
-    dataType="Wjets"
-    dataTypeSuffix = "matchingup"
-    top.Add(data_repo+"MC/V00-01-05/WJets_matchingup_Mu.root")
-if dataType=="Wjets_matchingdown":
-    dataType="Wjets"
-    dataTypeSuffix = "matchingdown"
-    top.Add(data_repo+"MC/V00-01-05/WJets_matchingdown_Mu.root")
-if dataType=="Wjets_scaleup":
-    dataType="Wjets"
-    dataTypeSuffix = "scaleup"
-    top.Add(data_repo+"MC/V00-01-05/WJets_scaleup_Mu.root")
-if dataType=="Wjets_scaledown":
-    dataType="Wjets"
-    dataTypeSuffix = "scaledown"
-    top.Add(data_repo+"MC/V00-01-05/WJets_scaledown_Mu.root")
-if dataType=="Zjets_matchingup":
-    dataType="Zjets"
-    dataTypeSuffix = "matchingup"
-    top.Add(data_repo+"MC/V00-01-05/ZJets_matchingup_Mu.root")
-if dataType=="Zjets_matchingdown":
-    dataType="Zjets"
-    dataTypeSuffix = "matchingdown"
-    top.Add(data_repo+"MC/V00-01-05/ZJets_matchingdown_Mu.root")
-if dataType=="Zjets_scaleup":
-    dataType="Zjets"
-    dataTypeSuffix = "scaleup"
-    top.Add(data_repo+"MC/V00-01-05/ZJets_scaleup_Mu.root")
-if dataType=="Zjets_scaledown":
-    dataType="Zjets"
-    dataTypeSuffix = "scaledown"
-    top.Add(data_repo+"MC/V00-01-05/ZJets_scaledown_Mu.root")
-
+                    
+(dataType, dataTypeSuffix) = topSamples.Samples(top, dataType, dataTypeSuffix)
 
 #tfile = TFile(data_repo+datafilename)
 print "use "+JetType+" collections"
@@ -390,7 +319,10 @@ histHigh.Create(dataType+JetType+"High")
 
 # jet combination
 myCombi = JetCombinatorics()
-        
+
+# setup a selector
+selector = Selector()
+
 # loop over events
 for jentry in xrange( entries ):
 
@@ -412,9 +344,9 @@ for jentry in xrange( entries ):
         continue
 
     #cut['processed'] += 1
-
-    if jentry%50000 == 0:
-        print "Processing entry = "+str(jentry)
+    
+    #if jentry%50000 == 0:
+    print "Processing entry = "+str(jentry)
 
     # flavor history for MC V+jets
     if dataType=="Wjets" or dataType=="Zjets" or dataType=="Wc" or dataType=="Vqq":
@@ -461,9 +393,17 @@ for jentry in xrange( entries ):
     nPVs = 0
     nloosemuons = 0
     ntightmuons = 0
+    nlooseelectrons = 0
+    ntightelectrons = 0
+    nlooseleptons = 0
+    ntightleptons = 0
+    IsConversion = 0
+    
     nelec = 0
     njets = 0
     p4muon = TLorentzVector()
+    p4ele = TLorentzVector()
+    p4lepton = None
     p4jets = []
     bdisc = {}
     bdisc['TCHP'] = []
@@ -475,111 +415,87 @@ for jentry in xrange( entries ):
     PVz = 0.
     theLeadingPt = 0.
     
+    # PRIMARY VERTICES
     for pv in vertices:
         if nPVs == 0: PVz = pv.vz
         nPVs += 1
+
+    selector.jets = jets
+    selector.electrons = electrons
+    selector.hist = hist
+    selector.PVz = PVz
+    selector.MinJetPt = MinJetPt
+    selector.LeadingJetPtCut = LeadingJetPt
+    selector.p4MET = p4MET
     
+    # MUONS
     for mu in muons:
 
         # check if reverse isolation requested
         if doReverseIso:
 
-            tmpp4Mu = TLorentzVector()
-            tmpp4Jet= TLorentzVector()
-            aDeltaR = 999
-            if len(jets)>0: theLeadingPt = jets[0].pt
-            for jet in jets:
-                
-                if JES*jet.pt>MinJetPt and JES*theLeadingPt>LeadingJetPt:
-                    tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
-                    tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
-                    tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
-                    if tmpdeltaR < 0.1 and JetType=="JPT": continue
-                    #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
-                    if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
-            del(tmpp4Mu)
-            del(tmpp4Jet)
-            if mu.pt>20. and math.fabs(mu.eta)<2.1 and mu.IsTrackerMuon==1 and \
-               mu.muonhits>0 and mu.normchi2<10 and \
-               mu.trackerhits>=11 and mu.muonstations> 1 and \
-               mu.pixelhits >= 1 and \
-               math.fabs(mu.vz - PVz) < 1. and aDeltaR>0.3 and \
-               ( math.fabs(mu.d0)>0.025 or (mu.reliso03<0.7 and mu.reliso03>0.15) ):
-
-                ntightmuons += 1
+            if selector.MuonReverse(mu):
+                ntightmuons +=1
                 p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
-                hist.muons['reliso'].Fill(mu.reliso03)
                 continue                        
 
         if doReverseIso: continue
-        
-        # check loose iso muons
-        if mu.reliso03<0.2:
+
+        if selector.MuonLoose(mu):
             nloosemuons +=1
-        if mu.pt>20. and math.fabs(mu.eta)<2.1 and mu.IsTrackerMuon==1:
+            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
+        if selector.MuonTight(mu):
+            ntightmuons +=1
+            p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
 
-            hist.muons['pt_cut1'].Fill(mu.pt)
-            hist.muons['d0_cut1'].Fill(mu.d0)
-
-            if math.fabs(mu.d0)<0.02 and \
-                   mu.muonhits>0 and \
-                   mu.normchi2<10 and \
-                   mu.trackerhits>=11 and \
-                   mu.muonstations> 1 and \
-                   mu.pixelhits >= 1:
-
-                hist.muons['pt_cut2'].Fill(mu.pt)
-                hist.muons['reliso'].Fill(mu.reliso03)
-                
-                if mu.reliso03 < IsoCut:
-
-                    muonVz = mu.vz
-                    hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
-                    
-                    if math.fabs(muonVz - PVz) >= 1.:
-                        continue
-
-                    hist.muons['pt_cut3'].Fill(mu.pt)
-                    
-                    tmpp4Mu = TLorentzVector()
-                    tmpp4Jet= TLorentzVector()
-                    aDeltaR = 999
-                    if len(jets)>0: theLeadingPt = jets[0].pt
-                    for jet in jets:
-                        
-                        if JES*jet.pt>MinJetPt and JES*theLeadingPt>LeadingJetPt:
-                            tmpp4Mu.SetPtEtaPhiE(mu.pt, mu.eta, mu.phi, mu.e )
-                            tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
-                            tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet)
-                            if tmpdeltaR < 0.1 and JetType=="JPT": continue
-                            #if tmpdeltaR < aDeltaR and tmpdeltaR>0.01: aDeltaR = tmpdeltaR
-                            if tmpdeltaR < aDeltaR: aDeltaR = tmpdeltaR
-
-                    del(tmpp4Mu)
-                    del(tmpp4Jet)
-                    if aDeltaR < 999: hist.muons['deltaR'].Fill(aDeltaR)
-                    
-                    if not ApplyDeltaR:
-                        ntightmuons += 1
-                        p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
-                    elif aDeltaR>0.3:
-                        ntightmuons += 1
-                        p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
-                            
-    #print "loop over muons done"
-    
-    if ntightmuons != 1:
-        continue
-    cutmap['OneIsoMu'] +=1
-    
-    if nloosemuons > 1:
-        continue
-    cutmap['LooseMuVeto'] += 1
+    # ELECTRONS
     for ele in electrons:
-        nelec += 1
-    if nelec > 0 : continue
-    cutmap['ElectronVeto'] += 1
 
+        if selector.ElectronLoose(ele):
+            nlooseelectrons += 1
+        if selector.ElectronTight(ele):
+            if ntightelectrons == 0: IsConversion = ele.IsConversion
+            ntightelectrons += 1
+            p4ele.SetPtEtaPhiE( ele.pt, ele.eta, ele.phi, ele.e )
+
+    # LEPTON VETOS
+    
+    if Lepton=="muon":
+        
+        if ntightmuons != 1:
+            continue
+        cutmap['OneIsoMu'] +=1
+    
+        if nloosemuons > 1:
+            continue
+        cutmap['LooseMuVeto'] += 1
+        for ele in electrons:
+            nelec += 1
+        if nelec > 0 : continue
+        cutmap['ElectronVeto'] += 1
+
+        p4lepton = p4muon
+
+    else:
+
+        if ntightelectrons != 1:
+            continue
+        cutmap['OneIsoMu'] +=1 #CHANGE name later
+
+        if nloosemuons > 0:
+            continue
+        cutmap['LooseMuVeto'] += 1
+
+        if selector.ElectronZveto():
+            continue
+        cutmap['ZVeto'] += 1
+
+        if IsConversion:
+            continue
+        cutmap['ConversionVeto'] += 1
+                        
+        p4lepton = p4ele
+        
     # correct MET for effect of JES
     if JES != 1:
         deltaJES = TLorentzVector()
@@ -599,24 +515,36 @@ for jentry in xrange( entries ):
         continue
     cutmap['MET'] +=1
                 
-    # inclusive
-    hist.muons['pt'].Fill( p4muon.Pt() )
-    hist.muons['eta'].Fill( p4muon.Eta() )
-    hist.muons['phi'].Fill( p4muon.Phi() )
-    #hist.muons['dz'].Fill( math.fabs(muonVz - PVz))
-    Wpt = p4muon.Pt() + p4MET.Pt()
-    Wpx = p4muon.Px() + p4MET.Px()
-    Wpy = p4muon.Py() + p4MET.Py()
+    Wpt = p4lepton.Pt() + p4MET.Pt()
+    Wpx = p4lepton.Px() + p4MET.Px()
+    Wpy = p4lepton.Py() + p4MET.Py()
     WMt = math.sqrt(Wpt*Wpt-Wpx*Wpx-Wpy*Wpy)
+    ### TEMPORAL
+    #if WMt <=40:
+    #    continue
+
+    # inclusive
+    if Lepton=="muon":
+        hist.muons['pt'].Fill( p4lepton.Pt() )
+        hist.muons['eta'].Fill( p4lepton.Eta() )
+        hist.muons['phi'].Fill( p4lepton.Phi() )
+    else:
+        hist.electrons['pt'].Fill( p4lepton.Pt() )
+        hist.electrons['eta'].Fill( p4lepton.Eta() )
+        hist.electrons['phi'].Fill( p4lepton.Phi() )
+    
+    #hist.muons['dz'].Fill( math.fabs(muonVz - PVz))         
     hist.Mt['Mt'].Fill( WMt )
     hist.MET['MET'].Fill( p4MET.Pt() )
     hist.MET['phi'].Fill( p4MET.Phi() )
     hist.MET['Ht'].Fill( Ht )
-    hist.MET['Htlep'].Fill( Ht + p4muon.Pt())
+    hist.MET['Htlep'].Fill( Ht + p4lepton.Pt())
     
     # estimate Pz of neutrino
     METzCalculator.SetMET(p4MET)
-    METzCalculator.SetMuon(p4muon)
+    METzCalculator.SetLepton(p4lepton)
+    if Lepton=="electron":
+        METzCalculator.SetLeptonType("electron")
     pzNu = METzCalculator.Calculate()
     p4Nu = TLorentzVector()
     p4OtherNu = TLorentzVector()
@@ -627,8 +555,8 @@ for jentry in xrange( entries ):
     p4OtherNu.SetPxPyPzE( p4MET.Px(), p4MET.Py(),pzOtherNu,math.sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzOtherNu*pzOtherNu))
     
     hist.MET['PzNu'].Fill(pzNu) #change this to 2d with two sol and as a function of jets
-    p4LepW = p4muon + p4Nu
-    p4OtherLepW = p4muon + p4OtherNu
+    p4LepW = p4lepton + p4Nu
+    p4OtherLepW = p4lepton + p4OtherNu
     
     hist.MET['LepWmass'].Fill(p4LepW.M())
     if METzCalculator.IsComplex(): hist.MET['LepWmassComplex'].Fill(p4LepW.M())
@@ -644,7 +572,7 @@ for jentry in xrange( entries ):
         if JES*jet.pt>MinJetPt and JES*theLeadingPt>LeadingJetPt:
             tmpp4Jet = TLorentzVector()
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
-            tmpdeltaR = p4muon.DeltaR(tmpp4Jet)
+            tmpdeltaR = p4lepton.DeltaR(tmpp4Jet)
             if tmpdeltaR < 0.1 and JetType=="JPT": continue
             njets += 1
 
@@ -703,30 +631,30 @@ for jentry in xrange( entries ):
     if njets==1:
         cutmap['1Jet'] += 1
         hist.jets['Njets'].Fill(1)
-        hist.muons['pt_1jet'].Fill( p4muon.Pt() )
+        hist.muons['pt_1jet'].Fill( p4lepton.Pt() )
         hist.Mt['Mt_1jet'].Fill( WMt )
         hist.MET['Ht_1jet'].Fill( Ht )
-        hist.MET['Htlep_1jet'].Fill( Ht + p4muon.Pt())            
+        hist.MET['Htlep_1jet'].Fill( Ht + p4lepton.Pt())            
         hist.MET['MET_1jet'].Fill( p4MET.Pt() )
-        hist.MET['deltaPhi_1jet'].Fill( p4MET.DeltaPhi( p4muon ) ) 
+        hist.MET['deltaPhi_1jet'].Fill( p4MET.DeltaPhi( p4lepton ) ) 
     if njets == 2:
         cutmap['2Jet'] += 1
         hist.jets['Njets'].Fill(2)
-        hist.muons['pt_2jet'].Fill( p4muon.Pt() )
+        hist.muons['pt_2jet'].Fill( p4lepton.Pt() )
         hist.Mt['Mt_2jet'].Fill( WMt )
         hist.MET['Ht_2jet'].Fill( Ht )
-        hist.MET['Htlep_2jet'].Fill( Ht + p4muon.Pt())        
+        hist.MET['Htlep_2jet'].Fill( Ht + p4lepton.Pt())        
         hist.MET['MET_2jet'].Fill( p4MET.Pt() )
-        hist.MET['deltaPhi_2jet'].Fill(p4MET.DeltaPhi(p4muon ) )
+        hist.MET['deltaPhi_2jet'].Fill(p4MET.DeltaPhi(p4lepton ) )
     if njets == 3:
         cutmap['3Jet'] += 1
         hist.jets['Njets'].Fill(3)
-        hist.muons['pt_3jet'].Fill( p4muon.Pt() )
+        hist.muons['pt_3jet'].Fill( p4lepton.Pt() )
         hist.Mt['Mt_3jet'].Fill( WMt )
         hist.MET['Ht_3jet'].Fill( Ht )
-        hist.MET['Htlep_3jet'].Fill( Ht + p4muon.Pt())        
+        hist.MET['Htlep_3jet'].Fill( Ht + p4lepton.Pt())        
         hist.MET['MET_3jet'].Fill( p4MET.Pt() )
-        hist.MET['deltaPhi_3jet'].Fill(p4MET.DeltaPhi(p4muon ) )
+        hist.MET['deltaPhi_3jet'].Fill(p4MET.DeltaPhi(p4lepton ) )
         p4HadTop = TLorentzVector()
         p4HadTop = p4jets[0] + p4jets[1] + p4jets[2]
         hist.M3['3jet'].Fill( p4HadTop.M() )
@@ -751,7 +679,7 @@ for jentry in xrange( entries ):
     if njets > 1:
         #
         if printtxtfile:
-            line = "-15 "+str(p4muon.Pt())+" "+str(p4muon.Eta())+' '+str(p4muon.Phi())+' 0\n'
+            line = "-15 "+str(p4lepton.Pt())+" "+str(p4lepton.Eta())+' '+str(p4lepton.Phi())+' 0\n'
             txtfile.write(line)
             line = "-5 "+str(p4MET.Pt())+' 0 '+str(p4MET.Phi())+' 0\n'
             txtfile.write(line)
@@ -786,12 +714,14 @@ for jentry in xrange( entries ):
         if p4OtherNu.E() != 0: myCombi.SetOtherLeptonicW(p4OtherLepW)
         
         if njets <= maxNjets: maxNjets = njets
-        vectorjets = std.vector('TLorentzVector')(maxNjets)
-        vectorbjets = std.vector('int')(maxNjets)
+        vectorjets = []#std.vector('TLorentzVector')(maxNjets)
+        vectorbjets = []#std.vector('int')(maxNjets)
         minDeltaRjets = 9999.
         for ij in xrange(0,maxNjets):
-            vectorjets[ij] = p4jets[ij]
-            vectorbjets[ij] = int(isTagb['TCHPL'][ij])
+            #vectorjets[ij] = p4jets[ij]
+            #vectorbjets[ij] = int(isTagb['TCHPL'][ij])
+            vectorjets.append( p4jets[ij] )
+            vectorbjets.append( int(isTagb['TCHPL'][ij]) )
             if ij < maxNjets - 1:
                 tmpdeltaRjets = p4jets[ij].DeltaR( p4jets[ij+1] )
                 if tmpdeltaRjets < minDeltaRjets: minDeltaRjets = tmpdeltaRjets
@@ -869,10 +799,10 @@ for jentry in xrange( entries ):
         hist.jets['Njets'].Fill(4)
         hist.Mt['Mt_4jet'].Fill( WMt )
         hist.MET['Ht_4jet'].Fill( Ht )
-        hist.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt())
+        hist.MET['Htlep_4jet'].Fill( Ht + p4lepton.Pt())
         hist.MET['MET_4jet'].Fill( p4MET.Pt() )
-        hist.MET['deltaPhi_4jet'].Fill(p4MET.DeltaPhi(p4muon ) )
-        hist.muons['pt_4jet'].Fill( p4muon.Pt() )
+        hist.MET['deltaPhi_4jet'].Fill(p4MET.DeltaPhi(p4lepton ) )
+        hist.muons['pt_4jet'].Fill( p4lepton.Pt() )
                                                                         
         # apply b-tagging
         # M3Prime
@@ -890,6 +820,8 @@ for jentry in xrange( entries ):
             bestCombo = Combo()
         
             bestCombo = myCombi.GetCombination(0)
+            if bestCombo == None:
+                continue
             M3p_hadWP4 = bestCombo.GetHadW()
             M3p_hadTopP4 = bestCombo.GetHadTop()
             M3p_lepTopP4 = bestCombo.GetLepTop()
@@ -901,24 +833,24 @@ for jentry in xrange( entries ):
 
             # Cut on Mttbar
             if MttbarP4.M() > MttbarCut:
-                histHigh.muons['pt_4jet'].Fill( p4muon.Pt() )
-                histHigh.muons['eta_4jet'].Fill( p4muon.Eta() )
-                histHigh.muons['phi_4jet'].Fill( p4muon.Phi() )
+                histHigh.muons['pt_4jet'].Fill( p4lepton.Pt() )
+                histHigh.muons['eta_4jet'].Fill( p4lepton.Eta() )
+                histHigh.muons['phi_4jet'].Fill( p4lepton.Phi() )
                 histHigh.jets['Njets'].Fill( njets )
                 histHigh.MET['MET_4jet'].Fill( p4MET.Pt() )
                 #histHigh.electrons['pt_4jet'].Fill( p4electron.Pt() )
                 histHigh.MET['Ht_4jet'].Fill( Ht )
-                histHigh.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
+                histHigh.MET['Htlep_4jet'].Fill( Ht + p4lepton.Pt() )
                 histHigh.jets['jetdeltaR'].Fill( minDeltaRjets )
             else:
-                histLow.muons['pt_4jet'].Fill( p4muon.Pt() )
-                histLow.muons['eta_4jet'].Fill( p4muon.Eta() )
-                histLow.muons['phi_4jet'].Fill( p4muon.Phi() )                        
+                histLow.muons['pt_4jet'].Fill( p4lepton.Pt() )
+                histLow.muons['eta_4jet'].Fill( p4lepton.Eta() )
+                histLow.muons['phi_4jet'].Fill( p4lepton.Phi() )                        
                 histLow.jets['Njets'].Fill( njets )
                 histLow.MET['MET_4jet'].Fill( p4MET.Pt() )
                 #histLow.electrons['pt_4jet'].Fill( p4electron.Pt() )
                 histLow.MET['Ht_4jet'].Fill( Ht )
-                histLow.MET['Htlep_4jet'].Fill( Ht + p4muon.Pt() )
+                histLow.MET['Htlep_4jet'].Fill( Ht + p4lepton.Pt() )
                 histLow.jets['jetdeltaR'].Fill( minDeltaRjets )
             myCombi.Clear()
             #del(myCombi)

@@ -6,6 +6,7 @@
 METzCalculator::METzCalculator() {
 	isComplex_ = false;
 	otherSol_ = 0.;
+	leptonMass_ = 0.105658367;
 }
 
 /// destructor
@@ -17,7 +18,7 @@ double
 METzCalculator::Calculate(int type) {
 
 	double M_W  = 80.4;
-        double M_mu =  0.10566;
+        double M_mu =  leptonMass_;
         double emu = lepton_.E();
         double pxmu = lepton_.Px();
         double pymu = lepton_.Py();

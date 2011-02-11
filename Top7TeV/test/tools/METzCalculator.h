@@ -6,7 +6,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: METzCalculator.h,v 1.1 2010/09/03 16:19:12 yumiceva Exp $
+ version $Id: METzCalculator.h,v 1.2 2010/09/10 22:33:13 yumiceva Exp $
 
 ________________________________________________________________**/
 #include<iostream>
@@ -24,10 +24,19 @@ class METzCalculator {
 	void SetMET(TLorentzVector MET) {
 	  MET_ = MET;
 	}
-    /// Set Muon
-	void SetMuon(TLorentzVector lepton) {
+	/// Set Muon
+	void SetLepton(TLorentzVector lepton) {
 	  lepton_ = lepton;
 	}
+	/// Set lepton type. The default (set in the constructor) is "muon"
+	/// to be compatible with earlier code.
+	/// The values are from the 2010 PDG tables.
+	void SetLeptonType(std::string leptonName) {
+	  if(leptonName == "muon")      leptonMass_ = 0.105658367;
+          if(leptonName == "electron")  leptonMass_ = 0.00051099891;
+          if(leptonName == "tau")       leptonMass_ = 1.77682;
+	}
+
     /// Calculate MEz
 	/// options to choose roots from quadratic equation:
 	/// type = 0 (defalut): if real roots, pick the one nearest to
@@ -49,12 +58,12 @@ class METzCalculator {
 	}
 	
   private:
-
+	
 	bool isComplex_;
 	TLorentzVector lepton_;
 	TLorentzVector MET_;
 	double otherSol_;
-	
+	double leptonMass_;
 };
 
 #endif
