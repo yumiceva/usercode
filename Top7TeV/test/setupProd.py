@@ -73,6 +73,8 @@ directoriesMuMC['TTbar_2Jetalpgen_Mu'] = '/TT2Jets_40GeVTh_TuneZ2_7TeV-alpgen-ta
 directoriesMuMC['TTbar_3Jetalpgen_Mu'] = '/TT3Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
 directoriesMuMC['TTbar_4Jetalpgen_Mu'] = '/TT4Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
 directoriesMuMC['TTbar_PU_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/AODSIM' # missing
+directoriesMuMC['Vqq_scaleup_Mu'] = '/VQQJetsToLL_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
+directoriesMuMC['Vqq_scaledown_Mu'] = '/VQQJetsToLL_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
 
 directoriesMuMC['WJets_scaleup_Mu'] = '/WJets_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
 directoriesMuMC['WJets_scaledown_Mu'] = '/WJets_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
@@ -85,21 +87,21 @@ directoriesMuMC['ZJets_matchingup_Mu'] = '/DYJetsToLL_TuneD6T_matchingup_7TeV-ma
 directoriesMuMC['ZJets_matchingdown_Mu'] = '/DYJetsToLL_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
 
 ########## Electrons
-directoriesElData['TrigA'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
-directoriesElData['TrigB'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, July16 json
-directoriesElData['TrigC'] = '/EG/Run2010A-Sep17ReReco_v2/RECO'       #trig:Ele15_LW, Oct 1st json
-directoriesElData['PromptRecoTrigC'] = '/Electron/Run2010B-PromptReco-v2/RECO'
-directoriesElData['TrigD'] = '/Electron/Run2010B-PromptReco-v2/RECO'
-directoriesElData['TrigE'] = '/Electron/Run2010B-PromptReco-v2/RECO'  #trig:Ele17_SW_CaloID, Oct 1st json
-directoriesElData['TrigF'] = '/Electron/Run2010B-PromptReco-v2/RECO'
+directoriesElData['TrigA'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, Oct 1st json
+directoriesElData['TrigB'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, July16 json
+directoriesElData['TrigC'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, Oct 1st json
+directoriesElData['PromptRecoTrigC'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'
+directoriesElData['TrigD'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'
+directoriesElData['TrigE'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'  #trig:Ele17_SW_CaloID, Oct 1st json
+directoriesElData['TrigF'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'
 
-jsonFilesEl['TrigA'] = 'Cert_132440-140040_El_Oct15_JSON.txt'
-jsonFilesEl['TrigB'] = 'Cert_140041-143962_El_Oct15_JSON.txt'
-jsonFilesEl['TrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
-jsonFilesEl['PromptRecoTrigC'] = 'Cert_143963-146427_El_Oct15_JSON.txt'
-jsonFilesEl['TrigD'] = 'Cert_146428-147116_El_Oct15_JSON.txt'
-jsonFilesEl['TrigE'] = 'Cert_147117-148818_El_Oct29_JSON.txt'
-jsonFilesEl['TrigF'] = 'Cert_148819-149442_El_Nov5_JSON.txt'#'Cert_148819-148864_El_Oct29_JSON.txt'
+jsonFilesEl['TrigA'] = 'Cert_136033_140040_EL.txt'
+jsonFilesEl['TrigB'] = 'Cert_140041_143962_EL.txt'
+jsonFilesEl['TrigC'] = 'Cert_143963_146427_EL.txt'
+jsonFilesEl['PromptRecoTrigC'] = 'Cert_146428_147116_EL.txt'
+jsonFilesEl['TrigD'] = 'Cert_147117_148818_EL.txt'
+jsonFilesEl['TrigE'] = 'Cert_148819_149180_EL.txt'
+jsonFilesEl['TrigF'] = 'Cert_149181_EL.txt'
 
 
 directoriesElMC['TTbar_El'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
