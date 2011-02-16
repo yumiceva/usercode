@@ -345,8 +345,8 @@ for jentry in xrange( entries ):
 
     #cut['processed'] += 1
     
-    #if jentry%50000 == 0:
-    print "Processing entry = "+str(jentry)
+    if jentry%50000 == 0:
+        print "Processing entry = "+str(jentry)
 
     # flavor history for MC V+jets
     if dataType=="Wjets" or dataType=="Zjets" or dataType=="Wc" or dataType=="Vqq":

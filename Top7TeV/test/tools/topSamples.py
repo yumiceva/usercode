@@ -98,3 +98,19 @@ def Samples( top, dataType, dataTypeSuffix ):
         
         
     return (dataType, dataTypeSuffix)
+
+def eleSamples( top, dataType, dataTypeSuffix ):
+
+    # prefix location
+    data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
+    
+    if dataType=="data":
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigA.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigB.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigC.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/PromptRecoTrigC.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigD.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigE.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigF.root")
+
+    return (dataType, dataTypeSuffix)

@@ -53,7 +53,7 @@ class Selector:
 
         return accepted
 
-    def ElectronZveto(self):
+    def ElectronZveto(self, p4ele):
         isZevent = False
         nloose95electrons = 0
         for ele in self.electrons:
