@@ -281,12 +281,12 @@ for iifile in tmplistfiles:
     tmptfile.cd()
     TrigHist = ROOT.gDirectory.Get('/triggerFilter/eventCount')
     if TrigHist:
-        cutmap['CleanFilters'] = TrigHist.GetBinContent( 1 )
-        cutmap['HLT'] = TrigHist.GetBinContent( 2 )
+        cutmap['CleanFilters'] += TrigHist.GetBinContent( 1 )
+        cutmap['HLT'] += TrigHist.GetBinContent( 2 )
     tmptfile.cd()
     PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
     if PVHist:
-        cutmap['GoodPV'] = PVHist.GetBinContent( 3 )
+        cutmap['GoodPV'] += PVHist.GetBinContent( 3 )
     tmptfile.Close()
     del(tmptfile)
 #del(tmplistfiles)
