@@ -93,8 +93,8 @@ def Samples( top, dataType, dataTypeSuffix ):
     if dataType=="Wprime_1p2TeV":
         dataType="Wprime_1p2TeV"
         top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_1200.root")
-    if dataType=="Tprime_400M":
-        top.Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/V00-01-06/TPrime_400M-Ntuple-PATskim.root")
+    if dataType=="TPrime_400M":
+        top.Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/V00-01-07/TPrime_400M_Mu-Ntuple-PATskim.root")
         
         
     return (dataType, dataTypeSuffix)
@@ -105,12 +105,15 @@ def eleSamples( top, dataType, dataTypeSuffix ):
     data_repo = "/uscms_data/d3/ttmuj/Documents/NtupleMaker/"
     
     if dataType=="data":
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigA.root")
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigB.root")
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigC.root")
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/PromptRecoTrigC.root")
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigD.root")
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigE.root")
-        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electrons/TrigF.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/TrigA.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/TrigB.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/TrigC.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/PromptRecoTrigC.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/TrigD.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/TrigE.root")
+        top.Add(data_repo+"Data/36pb-1_Nov4ReReco/electronsV2/TrigF.root")
+
+    else:
+        return Samples( top, dataType, dataTypeSuffix)
 
     return (dataType, dataTypeSuffix)

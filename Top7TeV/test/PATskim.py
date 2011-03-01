@@ -2,11 +2,11 @@
 
 import string
 
-events= 1000
+events= 7000
 #inputType = "DATA" # choose MC/DATA
 inputType = "MC"
 
-channel = "muon" # muon/electron
+channel = "electron" # muon/electron
 
 #eventtype="Run2010A_Mu9"
 eventtype="TTJets"
@@ -17,7 +17,7 @@ eventtype="TTJets"
 #eventtype="ZJets"
 #eventtype="Vqq"
 #eventtype="Wc"
-#eventtype="QCD"
+#eventtype="TPrime_400M_Mu"
 
 out = "%s-*-PATskim.root"%eventtype
 outfile = string.replace(out,"*","PAT")
@@ -72,14 +72,57 @@ process.source.fileNames = cms.untracked.vstring(
     #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/BAF995DB-85E1-DF11-B1DF-00A0D1EEE660.root',
     #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/A44094D0-89E1-DF11-AFD8-00A0D1EEA838.root',
     #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/32374770-8AE1-DF11-A270-00A0D1EEE5CC.root',
-    '/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/2CC6A3A8-8AE1-DF11-A9DF-001D0967C649.root',
-    '/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/04C894E5-32E1-DF11-939F-001EC9ED4A0A.root'
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/2CC6A3A8-8AE1-DF11-A9DF-001D0967C649.root',
+    #'/store/mc/Fall10/TTJets_TuneD6T_7TeV-madgraph-tauola/AODSIM/START38_V12-v2/0014/04C894E5-32E1-DF11-939F-001EC9ED4A0A.root'
     # QCD
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/22E2557D-33C8-DF11-980B-001A92971AEC.root',
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/1AA9BF44-39C8-DF11-8C91-00261894391D.root',
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/1A84CD4D-38C8-DF11-8A67-0026189438F7.root',
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/14A46E6C-54C8-DF11-A3C7-002618943958.root',
     #'/store/mc/Fall10/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/AODSIM/START38_V12-v1/0000/14137D23-48C8-DF11-9CBA-002618943867.root'
+    #'file:/uscms_data/d2/marafino/Wprime_tbbar_7TeV_FAMOS387_p2.root'
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_0.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_1.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_10.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_11.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_12.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_13.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_14.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_15.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_16.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_17.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_18.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_19.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_2.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_3.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_4.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_5.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_6.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_7.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_8.root',
+    'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass400/tprime_Wb_9.root'
+
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_0.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_1.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_10.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_11.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_12.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_13.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_14.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_15.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_16.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_17.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_18.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_19.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_2.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_3.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_4.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_5.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_6.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_7.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_8.root',
+    #'file:/uscms_data/d2/andrew/MCgen/CMSSW_3_8_7/src/FastSimulation/Configuration/test/mass350/tprime_Wb_9.root'
+    
 )
 process.maxEvents.input = events
 
@@ -190,33 +233,18 @@ process.patTaus.isoDeposits = cms.PSet()
 #process.load('RecoJets.Configuration.RecoJPTJets_cff')
 # JPT corrections
 jptcorrections = ""
-
+jetcorrections = ""
 if inputType == "MC":
-
-    switchJetCollection( process,
-                         jetCollection=cms.InputTag('ak5CaloJets'),
-                         jetCorrLabel=('AK5Calo', ['L2Relative', 'L3Absolute']))
+    jetcorrections = ['L2Relative', 'L3Absolute']
     jptcorrections = ['L1JPTOffset','L2Relative', 'L3Absolute']
     
 else:
-    switchJetCollection( process,
-                         jetCollection=cms.InputTag('ak5CaloJets'),
-                         jetCorrLabel=('AK5Calo', ['L2Relative', 'L3Absolute', 'L2L3Residual']))
+    jetcorrections = ['L2Relative', 'L3Absolute', 'L2L3Residual']
     jptcorrections = ['L1JPTOffset','L2Relative', 'L3Absolute','L2L3Residual']
 
-
-#addJetCollection(process,cms.InputTag('ak5PFJets'),
-#                 'AK5', 'PF',
-#                 doJTA = False,
-#                 doBTagging = True,
-#                 jetCorrLabel = ('AK5','PF'),
-#                 doType1MET = False,
-#                 doL1Cleaning = False,
-#                 doL1Counters = False,
-#                 genJetCollection=cms.InputTag("ak5GenJets"),
-#                 doJetID = False
-#                 )
-
+switchJetCollection( process,
+                     jetCollection=cms.InputTag('ak5CaloJets'),
+                     jetCorrLabel=('AK5Calo', jetcorrections))
 
 # Embed user data into the PAT objects
 process.load('JetMETCorrections.Configuration.DefaultJEC_cff')
@@ -389,9 +417,23 @@ addJetCollection(process,cms.InputTag('JetPlusTrackZSPCorJetAntiKt5'),
                  jetIdLabel = "ak5"
                  )
 
+addJetCollection(process,cms.InputTag('ak5PFJets'),
+                 'AK5', 'PF',
+                 doJTA = True,
+                 doBTagging = True,
+                 jetCorrLabel = ('AK5PF',jetcorrections),
+                 doType1MET = False,
+                 doL1Cleaning = False,
+                 doL1Counters = False,
+                 genJetCollection=cms.InputTag("ak5GenJets"),
+                 doJetID = False,
+                 jetIdLabel = "ak5"
+                 )
+
 # = MET
 from PhysicsTools.PatAlgos.tools.metTools import *
 addTcMET(process)
+addPfMET(process,'PF')
 
 # muon+jets ntuple
 process.load("Yumiceva.Top7TeV.PATNtupleMaker_cfi")

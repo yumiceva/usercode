@@ -95,7 +95,7 @@ class Combo:
 
         if self.usebtag:
 
-            if self.Wp_istag or self.Wq_istag or self.Hadb_istag or self.Lepb_istag:
+            if self.Hadb_istag or self.Lepb_istag:
 
                 self.IsGoodbTagEvent = True
 
@@ -184,7 +184,7 @@ class JetCombinatorics:
                 aCombo.SetHadb( aset[2] )
                 aCombo.SetLepW( aLepW )
                 aCombo.SetLepb( aset[3] )
-                aCombo.useMtop = self.UseMtop
+                aCombo.useMTop = self.UseMtop
                 if self.UsebTags:
                     aCombo.UsebTagging(True)
                     aCombo.SetWp_tag( asettag[0] )
