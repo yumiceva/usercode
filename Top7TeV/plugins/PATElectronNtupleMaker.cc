@@ -11,10 +11,10 @@
      [Notes on implementation]
 */
 //
-// Original Author:  "Jian Wang"
+// Original Author:  Jian Wang,
 //        Modified:  Samvel Khalatian, Francisco Yumiceva
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.cc,v 1.7 2010/11/03 17:36:17 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.cc,v 1.8 2010/12/15 19:50:45 yumiceva Exp $
 //
 //
 
@@ -80,12 +80,14 @@ PATElectronNtupleMaker::PATElectronNtupleMaker(const edm::ParameterSet& iConfig)
   calojetTag_ = iConfig.getParameter< InputTag >("caloJetTag");
   JPTjetTag_ = iConfig.getParameter< InputTag >("JPTJetTag");
   PFjetTag_ = iConfig.getParameter< InputTag >("PFJetTag");
+  PFlowjetTag_ = iConfig.getParameter< InputTag >("PFlowJetTag");
   ntuplefile_ = iConfig.getParameter<std::string> ("ntupleFile");
   muonTag_ = iConfig.getParameter< InputTag >("MuonTag");
   pfjetIdLoose_ = iConfig.getParameter<edm::ParameterSet>("pfjetIdLoose");
   caloMETTag_ = iConfig.getParameter< InputTag >("caloMETTag");
   tcMETTag_ = iConfig.getParameter< InputTag >("tcMETTag");
   PFMETTag_ = iConfig.getParameter< InputTag >("PFMETTag");
+  PFlowMETTag_ = iConfig.getParameter< InputTag >("PFlowMETTag");
 
   //jetID = new helper::JetIDHelper(iConfig.getParameter<ParameterSet>("JetIDParams"));
   _isDataInput = "DATA" == iConfig.getParameter<std::string>("inputType");
@@ -147,9 +149,12 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     Handle<JetCollection> jptjets;
     iEvent.getByLabel(JPTjetTag_,jptjets); //patJetsAK5JPT
 
+    Handle<JetCollection> pflowjets;
+    iEvent.getByLabel(PFlowjetTag_,pflowjets);
+    
     Handle<JetCollection> pfjets;
     iEvent.getByLabel(PFjetTag_,pfjets);
-    
+
     // -[ Primary Vertices ]-
     Handle<VertexCollection> pvtx;
     iEvent.getByLabel("offlinePrimaryVertices",pvtx);
@@ -184,13 +189,20 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     const METCollection *tcmetCol = tcmetHandle.product();
     tcmet = &(tcmetCol->front());
 
-    // PFMET
+    // MET from PF2PAT
+    const pat::MET *pflowmet;
+    Handle<METCollection> pflowmetHandle;
+    iEvent.getByLabel(PFlowMETTag_, pflowmetHandle);
+    const METCollection *pflowmetCol = pflowmetHandle.product();
+    pflowmet = &(pflowmetCol->front());
+    // MET from PF
     const pat::MET *pfmet;
     Handle<METCollection> pfmetHandle;
     iEvent.getByLabel(PFMETTag_, pfmetHandle);
     const METCollection *pfmetCol = pfmetHandle.product();
     pfmet = &(pfmetCol->front());
 
+    
     // collection needed for conversions
     double bField = 3.801;
     //Get gTracks and  magneticField to get conversion info
@@ -200,7 +212,7 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
       edm::LogError ("reading gTracks not found");
       return false;
     }
-    edm::Handle<DcsStatusCollection> dcsStatus;
+        edm::Handle<DcsStatusCollection> dcsStatus;
     iEvent.getByLabel("scalersRawToDigi", dcsStatus);
     if (!dcsStatus.isValid()) {
       edm::LogError ("reading dcsStatus not found");
@@ -217,10 +229,10 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
       if( (*dcsStatus).size() != 0 ) {
 	current = (*dcsStatus)[0].magnetCurrent();
 	bField = current*currentToBFieldScaleFactor;
-      }
+	} 
       else bField  = 3.801;
-    }
-
+    } 
+    //bField = 3.801;
 
     // MC stuff
     //__________________
@@ -731,9 +743,9 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
       }
     //cout << " got JPT jets" << endl;
     
-    // PF Jets
+    // PFlow Jets
     int npfjets = 0;
-    for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
+    for(JetCollection::const_iterator jet = pflowjets->begin(); jet != pflowjets->end(); ++jet)
       {
         int nconstituents = (jet->correctedJet("Uncorrected")).numberOfDaughters();
 
@@ -770,12 +782,53 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
               topjet.mc.flavor = jet->partonFlavour();
             }
             // store jets
-	    _ntuple->PFjets.push_back( topjet );
+	    _ntuple->PFlowjets.push_back( topjet );
 	    
           }
       }
+    
+    for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
+      {
+        int nconstituents = (jet->correctedJet("Uncorrected")).numberOfDaughters();
 
-    //cout << " got PF jets" << endl;
+	bool passJetID = false;
+        passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
+
+        if (jet->pt()>20.
+            &&fabs(jet->eta())<2.4
+            && passJetID)
+          {
+
+            TopJetEvent topjet;
+
+            topjet.eta = jet->eta();
+            topjet.phi = jet->phi();
+            topjet.pt = jet->pt();
+            topjet.e  = jet->energy();
+            ++npfjets;
+
+            topjet.id_neutralEmE = (jet->correctedJet("Uncorrected")).neutralEmEnergy();
+            topjet.id_chargedEmE = (jet->correctedJet("Uncorrected")).chargedEmEnergy();
+            topjet.id_muonMultiplicity = (jet->correctedJet("Uncorrected")).muonMultiplicity();
+
+            topjet.ntracks = jet->associatedTracks().size();
+            const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
+            topjet.nSVs = svTagInfo.nVertices();
+            topjet.ndaughters = nconstituents;
+            topjet.btag_TCHE  = jet->bDiscriminator( "trackCountingHighEffBJetTags" );
+            topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
+            topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
+            topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
+
+            if (! _isDataInput ) {
+              topjet.mc.flavor = jet->partonFlavour();
+            }
+            // store jets                                                                                                                                                                       
+            _ntuple->PFjets.push_back( topjet );
+
+          }
+      }
+
 
     if ( (!isZevent) && nmu_loose == 0 && 1== nel_tight && !isConversion ) {
 
@@ -809,6 +862,10 @@ PATElectronNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup
     _ntuple->PFMET = pfmet->et();
     _ntuple->PFMETphi = pfmet->phi();
     _ntuple->PFHt = pfmet->sumEt();
+
+    _ntuple->PFlowMET = pflowmet->et();
+    _ntuple->PFlowMETphi = pflowmet->phi();
+    _ntuple->PFlowHt = pflowmet->sumEt();
 
     ftree->Fill();
 

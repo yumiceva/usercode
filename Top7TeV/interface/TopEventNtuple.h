@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.8 2010/11/03 17:36:15 yumiceva Exp $
+ version $Id: TopEventNtuple.h,v 1.9 2010/11/21 19:37:53 jengbou Exp $
 
 ________________________________________________________________**/
 
@@ -63,6 +63,7 @@ public:
     std::vector< TopJetEvent > Calojets;
     std::vector< TopJetEvent > JPTjets;
     std::vector< TopJetEvent > PFjets;
+    std::vector< TopJetEvent > PFlowjets;
 
     //_____ electrons _____________________________
     std::vector< TopElectronEvent > electrons;
@@ -81,6 +82,9 @@ public:
     Float_t PFMET;
     Float_t PFMETphi;
     Float_t PFHt;
+    Float_t PFlowMET;
+    Float_t PFlowMETphi;
+    Float_t PFlowHt;
 
     Int_t IsZevent; // for e+jets
 

@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.cc,v 1.5 2010/09/25 14:30:16 yumiceva Exp $
+ version $Id: TopEventNtuple.cc,v 1.6 2010/11/03 17:36:21 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -52,6 +52,7 @@ void TopEventNtuple::Reset()
     Calojets.clear();
     JPTjets.clear();
     PFjets.clear();
+    PFlowjets.clear();
     electrons.clear();
     PFelectrons.clear();
     vertices.clear();
@@ -66,6 +67,10 @@ void TopEventNtuple::Reset()
     PFMET = -999;
     PFMETphi = -999;
     PFHt = -999;
+    PFlowMET = -999;
+    PFlowMETphi = -999;
+    PFlowHt = -999;
+
     IsZevent = -1;
 
     flavorHistory = -999;

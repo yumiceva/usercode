@@ -14,7 +14,7 @@
 // Original Author:  "Jian Wang"
 //        Modified:  Samvel Khalatian
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATElectronNtupleMaker.h,v 1.2 2010/09/25 14:30:16 yumiceva Exp $
+// $Id: PATElectronNtupleMaker.h,v 1.3 2010/11/03 17:36:15 yumiceva Exp $
 //
 //
 
@@ -72,10 +72,11 @@ private:
   edm::InputTag calojetTag_;
   edm::InputTag JPTjetTag_;
   edm::InputTag PFjetTag_;
+  edm::InputTag PFlowjetTag_;
   edm::InputTag caloMETTag_;
   edm::InputTag tcMETTag_;
   edm::InputTag PFMETTag_;
-
+  edm::InputTag PFlowMETTag_;
 
   TH1 *_cutflow;
   bool _isDataInput;

@@ -86,6 +86,8 @@ directoriesMuMC['ZJets_scaledown_Mu'] = '/DYJetsToLL_TuneD6T_scaledown_7TeV-madg
 directoriesMuMC['ZJets_matchingup_Mu'] = '/DYJetsToLL_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
 directoriesMuMC['ZJets_matchingdown_Mu'] = '/DYJetsToLL_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
 
+directoriesMuMC['HToWW_M300_Mu'] = '/WH_ZH_TTH_HToWW_M-300_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO:lite'
+
 ########## Electrons
 directoriesElData['TrigA'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, Oct 1st json
 directoriesElData['TrigB'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, July16 json
@@ -104,22 +106,22 @@ jsonFilesEl['TrigE'] = 'Cert_148819_149180_EL.txt'
 jsonFilesEl['TrigF'] = 'Cert_149181_EL.txt'
 
 
-directoriesElMC['TTbar_El'] = '/TTbarJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['Wjets_El'] = '/WJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['Zjets_El'] = '/ZJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['STtch_El'] = '/SingleTop_tChannel-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['STtWch_El']= '/SingleTop_tWChannel-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['QCDEMEn2030_El'] = '/QCD_EMEnriched_Pt20to30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['QCDEMEn3080_El'] = '/QCD_EMEnriched_Pt30to80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['QCDEMEn80170_El'] = '/QCD_EMEnriched_Pt80to170/Spring10-START3X_V26_S09-v3/GEN-SIM-RECO'
-directoriesElMC['QCDBCtoE2030_El'] = '/QCD_BCtoE_Pt20to30/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['QCDBCtoE3080_El'] = '/QCD_BCtoE_Pt30to80/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['QCDBCtoE80170_El'] = '/QCD_BCtoE_Pt80to170/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['PhoJet40100_El'] = '/PhotonJets_Pt40to100-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['PhoJet100200_El'] = '/PhotonJets_Pt100to200-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['PhoJet200Inf_El'] = '/PhotonJets_Pt200toInf-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
-directoriesElMC['Wc_El'] = '/WCJets_7TeV-madgraph/Spring10-START3X_V26-v1/GEN-SIM-RECO'
-directoriesElMC['Vqq_El'] = '/VqqJets-madgraph/Spring10-START3X_V26_S09-v1/GEN-SIM-RECO'
+directoriesElMC['TTbar_D6T_El'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesElMC['WJets_D6T_El'] = '/WJetsToLNu_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['ZJets_D6T_El'] ='/DYJetsToLL_TuneD6T_M-50_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+directoriesElMC['STsch_Z2_El'] = '/TToBLNu_TuneZ2_s-channel_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['STtch_Z2_El'] = '/TToBLNu_TuneZ2_t-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
+directoriesElMC['STtWch_Z2_El'] = '/TToBLNu_TuneZ2_tW-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
+directoriesElMC['QCDEMEn2030_El']=   '/QCD_Pt-20to30_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['QCDEMEn3080_El'] =  '/QCD_Pt-30to80_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['QCDEMEn80170_El'] = '/QCD_Pt-80to170_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['QCDBCtoE2030_El'] = '/QCD_Pt-20to30_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['QCDBCtoE3080_El'] = '/QCD_Pt-30to80_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['QCDBCtoE80170_El'] = '/QCD_Pt-80to170_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO'
+directoriesElMC['PhoJet40100_El'] = '/GJets_TuneD6T_HT-40To100_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['PhoJet100200_El'] = '/GJets_TuneD6T_HT-100To200_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['PhoJet200Inf_El'] = '/GJets_TuneD6T_HT-200_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
+directoriesElMC['WW_Z2_El'] = '/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM'
 
 
 print "==> make directories"
@@ -291,6 +293,40 @@ se_white_list = unl
 
 '''
 
+crabMCglite = '''
+[CMSSW]
+datasetpath = %(DATASET)s
+pset = PATskim.py
+total_number_of_events = -1
+events_per_job = 25000
+
+[USER]
+return_data = 1
+copy_data = 0
+ui_working_dir = %(DIR)s
+storage_element = cmssrm.fnal.gov
+storage_path = /srm/managerv2?SFN=/11/
+user_remote_dir = /store/user/ttmuj/
+publish_data = 0
+publish_data_name = Summer10_363_v2
+dbs_url_for_publication = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+check_user_remote_dir = 0
+
+[CRAB]
+jobtype = cmssw
+scheduler = glite
+
+[EDG]
+rb                      = CERN
+proxy_server            = myproxy.cern.ch
+virtual_organization    = cms
+retry_count             = 4
+lcg_catalog_type        = lfc
+lfc_host                = lfc-cms-test.cern.ch
+lfc_home                = /grid/cms
+se_black_list           = 
+
+'''
 
 fcrab_data = open("launch_crab_data.csh","w")
 fcrab_mc = open("launch_crab_mc.csh","w")
@@ -328,16 +364,22 @@ if DoMuons:
 
         adict = {}
         docondorg = False
+        docondorglite = False
         adict['DATASET'] = directoriesMuMC[dir]
         if directoriesMuMC[dir].find(":g")!=-1:
             docondorg = True
             adict['DATASET'] = directoriesMuMC[dir].strip(":g")
-        
+        if directoriesMuMC[dir].find(":lite")!=-1:
+            docondorglite = True
+            adict['DATASET'] = directoriesMuMC[dir].strip(":lite")
+                                    
         adict['DIR'] = dir
     
         acrab = crabMC%adict
         if docondorg:
             acrab = crabMCg%adict
+        if docondorglite:
+            acrab = crabMCglite%adict
             
         fileout = open(path+"/"+dir+"/crab.cfg","w")
         fileout.writelines(acrab)
