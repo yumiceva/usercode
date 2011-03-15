@@ -90,7 +90,7 @@ class TopElectronSelector : public Selector<pat::Electron>  {
             set("hoe_EB",      1.5e-01); 
             set("sihih_EE",    3.0e-02);
             set("dphi_EE",     7.0e-01);
-            set("deta_EE",     1.0e-01); 
+            set("deta_EE",     1.0e-02); 
             set("hoe_EE",      7.0e-02);
             set("relIso",      1.0e-00);
             set("d0",          false  );
