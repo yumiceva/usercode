@@ -138,7 +138,12 @@ class Hist:
         self.M3['M3chi2_lepTop_4jet'] = TH1F("M3chi2_lepTop_4jet"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 800)
         self.M3['M3chi2_lepTop_0btag'] = TH1F("M3chi2_lepTop_0btag"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 800)
         self.M3['M3chi2_lepTop_1btag'] = TH1F("M3chi2_lepTop_1btag"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 800)
-        self.M3['M3chi2_lepTop_2btag'] = TH1F("M3chi2_lepTop_2btag"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 800)                        
+        self.M3['M3chi2_lepTop_2btag'] = TH1F("M3chi2_lepTop_2btag"+name,"M3-chi2 [GeV/c^{2}]", 40, 0, 800)
+        self.M3['KF_chi2'] = TH1F("KF_chi2"+name,"KF #chi^{2}",200,0,200)
+        self.M3['KF_hadW'] = TH1F("KF_hadW"+name,"hadronic W mass M3-chi2", 20, 0,150)
+        self.M3['KF_hadTop'] = TH1F("KF_hadTop"+name,"mass(jjj) [GeV/c^{2}]", 40, 0, 800)
+        self.M3['KF_lepW'] = TH1F("KF_lepW"+name,"leptonic W mass", 20,0,150)
+        self.M3['KF_lepTop'] = TH1F("KF_lepTop"+name,"mass(lepton+MET+jet) [GeV/c^{2}]", 40, 0, 800)
         self.M3['M3chi2_hadTop_lepTop_4jet'] = TH2F("M3chi2_hadTop_lepTop_4jet"+name,"hadronic vs leptonic top M3chi2 [GeV/c^{2}]", 40, 0, 1000,40,1,1000)
         self.M3['M3chi2_normchi2_1st'] = TH1F("M3chi2_normchi2_1st"+name,"#chi^{2}/ndof",30,0,30)
         self.M3['M3chi2_normchi2_2nd'] = TH1F("M3chi2_normchi2_2nd"+name,"#chi^{2}/ndof",30,0,30)
@@ -196,7 +201,8 @@ class Hist:
         self.MET['LepWmassComplex_2jet']=TH1F("LepWmassComplex_2jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
         self.MET['LepWmassComplex_3jet']=TH1F("LepWmassComplex_3jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
         self.MET['LepWmassComplex_4jet']=TH1F("LepWmassComplex_4jet"+name,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150)
-        self.MET['PzNu'] = TH1F("PzNu"+name,"p_{z} #nu [GeV]", 40, -300,300) 
+        self.MET['PzNu'] = TH1F("PzNu"+name,"p_{z} #nu [GeV]", 40, -300,300)
+        self.MET['EtaNu'] = TH1F("EtaNu"+name,"#eta",50,-2.2,2.2)
         self.SetupXTitle(self.MET)
                         
     def CreateMt(self, name):

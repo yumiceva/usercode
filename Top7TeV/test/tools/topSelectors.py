@@ -60,15 +60,18 @@ class Selector:
 
             eta_sc = ele.etasc
             pass95 = ele.pass95
-                                
-            if ele.pt>20. and ( math.fabs(eta_sc)< 1.4442 or (math.fabs(eta_sc)>1.566 and math.fabs(eta_sc)<2.5 )) or ele.reliso03<1.0:
+
+            tmpp4ele = TLorentzVector()
+            tmpp4ele.SetPtEtaPhiE( ele.pt, ele.eta, ele.phi, ele.e)
+            if tmpp4ele.Et()>20. and ( math.fabs(eta_sc)< 1.4442 or math.fabs(eta_sc)>1.566 ) and math.fabs(ele.eta)<2.5 and ele.reliso03<1.0 and math.fabs(eta_sc)<2.5:
                 
                 if pass95:
                     p4secondElec = TLorentzVector()
                     p4secondElec.SetPtEtaPhiE( ele.pt, ele.eta, ele.phi, ele.e)
                     nloose95electrons += 1
-                    Zmass = (p4ele + p4secondElec).M()
-                    if Zmass > 76. and Zmass < 106.:
+                    Zp4 = (p4ele + p4secondElec)
+                    Zmass = Zp4.M()
+                    if Zmass >= 76. and Zmass <= 106.:
                         isZevent = true
         return isZevent
                                                                                                         

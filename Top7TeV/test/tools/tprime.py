@@ -113,13 +113,13 @@ InitialEntry = 0
 FinalEntry = 0
 Lepton = "muon"
 
-gSystem.Load("libFWCoreFWLite")
-AutoLibraryLoader.enable()
-gSystem.Load("libDataFormatsFWLite.so")
-                       
-# define defaults for electrons
-if Lepton=="electron":
-    MinJetPt = 30.
+# Kinematic fit lib
+from DataFormats.FWLite import Events, Handle
+gSystem.Load("libPhysicsToolsKinFitter.so")
+gROOT.ProcessLine('.L JetResolution.h+')
+gROOT.ProcessLine('.L METResolution.h+')
+from KinFitter import *
+
     
 # check options
 option,args = parse(__doc__)
@@ -298,7 +298,11 @@ for iifile in tmplistfiles:
         cutmap['CleanFilters'] += TrigHist.GetBinContent( 1 )
         cutmap['HLT'] += TrigHist.GetBinContent( 2 )
     tmptfile.cd()
-    PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
+    PVHist = None
+    if Lepton=="muon":
+        PVHist = gDirectory.Get('/PATNtupleMaker/cutflow')
+    else:
+        PVHist = gDirectory.Get('/PATElectronNtupleMaker/cutflow')
     if PVHist:
         cutmap['GoodPV'] += PVHist.GetBinContent( 3 )
     tmptfile.Close()
@@ -359,8 +363,8 @@ for jentry in xrange( entries ):
 
     #cut['processed'] += 1
     
-    #if jentry%50000 == 0:
-    print "Processing entry = "+str(jentry)
+    if jentry%50000 == 0:
+        print "Processing entry = "+str(jentry)
 
     # flavor history for MC V+jets
     if dataType=="Wjets" or dataType=="Zjets" or dataType=="Wc" or dataType=="Vqq":
@@ -391,8 +395,9 @@ for jentry in xrange( entries ):
     jets  = evt.Calojets
     if JetType == "JPT": jets = evt.JPTjets
     if JetType == "PF":
-        if Lepton=="muons":
-            jets = evt.PFlowjets
+        if Lepton=="muon":
+            #jets = evt.PFlowjets # for new verstion
+            jets = evt.PFjets
         else:
             jets = evt.PFjets
             
@@ -596,6 +601,9 @@ for jentry in xrange( entries ):
             tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e )
             tmpdeltaR = p4lepton.DeltaR(tmpp4Jet)
             if tmpdeltaR < 0.1 and JetType=="JPT": continue
+
+            if Lepton=="electron" and tmpdeltaR < 0.3: continue
+            
             njets += 1
 
             p4jets.append( TLorentzVector() )
@@ -743,7 +751,7 @@ for jentry in xrange( entries ):
             #vectorjets[ij] = p4jets[ij]
             #vectorbjets[ij] = int(isTagb['TCHPL'][ij])
             vectorjets.append( p4jets[ij] )
-            vectorbjets.append( int(isTagb['TCHPL'][ij]) )
+            vectorbjets.append( int(isTagb['SSVHEM'][ij]) )
             if ij < maxNjets - 1:
                 tmpdeltaRjets = p4jets[ij].DeltaR( p4jets[ij+1] )
                 if tmpdeltaRjets < minDeltaRjets: minDeltaRjets = tmpdeltaRjets
@@ -754,6 +762,8 @@ for jentry in xrange( entries ):
         M3_hadTopP4 = M3Combo.GetHadTop();
         M3_lepTopP4 = M3Combo.GetLepTop();
         hist.M3['4jet'].Fill(M3_hadTopP4.M())
+        hist.MET['EtaNu'].Fill(p4Nu.Eta())
+        
         if M3_hadTopP4.M() > 500.:
             N500gev4j += 1
 
@@ -786,6 +796,115 @@ for jentry in xrange( entries ):
             M3p_hadWP4 = bestCombo.GetHadW()
             M3p_hadTopP4 = bestCombo.GetHadTop()
             M3p_lepTopP4 = bestCombo.GetLepTop()
+
+            # run kinfitter
+            m1 = TMatrixD(3,3)
+            m2 = TMatrixD(3,3)
+            m3 = TMatrixD(3,3)
+            m4 = TMatrixD(3,3)
+            m5 = TMatrixD(3,3)
+            m6 = TMatrixD(3,3)
+            
+            m1.Zero()
+            m2.Zero()
+            m3.Zero()
+            m4.Zero()
+            m5.Zero()
+            m6.Zero()
+            
+            jetRes = res.HelperJet()
+            metRes = res.HelperMET()
+            tmppt = bestCombo.GetWp().Pt()
+            tmpeta = bestCombo.GetWp().Eta()
+            m1[0][0] = pow(jetRes.et(tmppt,tmpeta, jetRes.kUds), 2)
+            m1[1][1] = pow(jetRes.eta(tmppt,tmpeta,jetRes.kUds), 2)
+            m1[2][2] = pow(jetRes.phi(tmppt,tmpeta,jetRes.kUds), 2)
+            tmppt = bestCombo.GetWq().Pt()
+            tmpeta = bestCombo.GetWq().Eta()
+            m2[0][0] = pow(jetRes.et(tmppt,tmpeta, jetRes.kUds), 2)
+            m2[1][1] = pow(jetRes.eta(tmppt,tmpeta,jetRes.kUds), 2)
+            m2[2][2] = pow(jetRes.phi(tmppt,tmpeta,jetRes.kUds), 2)
+            tmppt = bestCombo.GetHadb().Pt()
+            tmpeta = bestCombo.GetHadb().Eta()
+            m3[0][0] = pow(jetRes.et(tmppt,tmpeta, jetRes.kB), 2)
+            m3[1][1] = pow(jetRes.eta(tmppt,tmpeta,jetRes.kB), 2)
+            m3[2][2] = pow(jetRes.phi(tmppt,tmpeta,jetRes.kB), 2)
+            tmppt = bestCombo.GetLepb().Pt()
+            tmpeta = bestCombo.GetLepb().Eta()
+            m4[0][0] = pow(jetRes.et(tmppt,tmpeta, jetRes.kB), 2)
+            m4[1][1] = pow(jetRes.eta(tmppt,tmpeta,jetRes.kB), 2)
+            m4[2][2] = pow(jetRes.phi(tmppt,tmpeta,jetRes.kB), 2)
+            tmppt = bestCombo.GetLepW().Pt()
+            #tmppt = p4MET.Pt()
+            m5[0][0] = pow(metRes.et(tmppt), 2)
+            m5[1][1] = pow(metRes.eta(tmppt), 2)
+            m5[2][2] = pow(metRes.phi(tmppt), 2)
+
+            #m5[2][2] = ErrPhi(bestCombo.GetLepW().Et(), bestCombo.GetLepW().Eta()) # phi
+            
+            kfjet1 = TFitParticleEtEtaPhi( "Jet1", "Jet1", bestCombo.GetWp(), m1 )
+            kfjet2 = TFitParticleEtEtaPhi( "Jet2", "Jet2", bestCombo.GetWq(), m2 )
+            kfjet3 = TFitParticleEtEtaPhi( "Jet3", "Jet3", bestCombo.GetHadb(), m3 )
+            kfjet4 = TFitParticleEtEtaPhi( "Jet4", "Jet4", bestCombo.GetLepb(), m4 )
+            kfjet5 = TFitParticleEtEtaPhi( "Jet5", "Jet5", bestCombo.GetLepW(), m5 )
+            #kfjet5 = TFitParticleEtEtaPhi( "Jet5", "Jet5", p4MET, m5 )
+            #kflep = TFitParticleEtEtaPhi( "Lep", "Lep", p4Lepton, m6 )
+            
+            mCons1 = TFitConstraintM( "WMassConstraint", "WMass-Constraint", 0, 0 , 80.4)
+            mCons1.addParticles1( kfjet1, kfjet2 )
+            
+            mCons2 = TFitConstraintM( "TprimeMassConstraint", "TprimeMass-Constraint", 0, 0 , 0.)
+            mCons2.addParticles1( kfjet1, kfjet2, kfjet3 )
+            mCons2.addParticles2( kfjet4, kfjet5)
+
+            #mCons3 = TFitConstraintM( "WlepMassConstraint", "WlepMass-Constraint",0, 0, 80.4)
+            #mCons3.addParticles1( kfjet4, kfjet5)
+            
+            pxCons = TFitConstraintEp( "pX", "pX", TFitConstraintEp.pX, 0. )
+            pxCons.addParticles( kfjet1, kfjet2, kfjet3, kfjet4, kfjet5 )
+
+            pyCons = TFitConstraintEp( "pY", "pY", TFitConstraintEp.pY, 0. )
+            pyCons.addParticles( kfjet1, kfjet2, kfjet3, kfjet4, kfjet5 )
+            
+            kinfitter = TKinFitter("fitter", "fitter")
+            kinfitter.addMeasParticle( kfjet1 )
+            kinfitter.addMeasParticle( kfjet2 )
+            kinfitter.addMeasParticle( kfjet3 )
+            kinfitter.addMeasParticle( kfjet4 )
+            kinfitter.addMeasParticle( kfjet5 )
+            kinfitter.addConstraint( mCons1 )
+            kinfitter.addConstraint( mCons2 )
+            #kinfitter.addConstraint( mCons3 )
+            kinfitter.addConstraint( pxCons )
+            kinfitter.addConstraint( pyCons )
+            #Set convergence criteria
+            kinfitter.setMaxNbIter( 30 )
+            kinfitter.setMaxDeltaS( 1e-2 )
+            kinfitter.setMaxF( 1e-1 )
+            kinfitter.setVerbosity(1)
+
+            kinfitter.fit()
+
+            if kinfitter.getStatus() == 0:
+                fittedjet1 = kinfitter.Get4vec(0)
+                fittedjet2 = kinfitter.Get4vec(1)
+                fittedjet3 = kinfitter.Get4vec(2)
+                fittedjet4 = kinfitter.Get4vec(3)
+                fittedjet5 = kinfitter.Get4vec(4)
+                fittedhadW = fittedjet1 + fittedjet2
+                fittedhadTop = fittedhadW + fittedjet3
+                fittedlepW = fittedjet5
+                fittedlepTop = fittedlepW + fittedjet4
+                
+                hist.M3['KF_chi2'].Fill(kinfitter.getS())
+                if kinfitter.getS() < 5:
+                    hist.M3['KF_hadW'].Fill(fittedhadW.M())
+                    hist.M3['KF_hadTop'].Fill(fittedhadTop.M())
+                    hist.M3['KF_lepW'].Fill(fittedlepW.M())
+                    hist.M3['KF_lepTop'].Fill(fittedlepTop.M())
+            #print "jet 1 = "+str(bestCombo.GetWp().Pt())
+            #print "kin fitter: jet1 = "+str(fittedjet1.Pt())
+            
             hist.M3['M3chi2_hadW_4jet'].Fill( M3p_hadWP4.M() )
             hist.M3['M3chi2_hadTop_4jet'].Fill( M3p_hadTopP4.M() )
             hist.M3['M3chi2_hadTop_lepTop_4jet'].Fill( M3p_hadTopP4.M(), M3p_lepTopP4.M() )
@@ -811,8 +930,10 @@ for jentry in xrange( entries ):
             hist.M3['pt_vs_Mttbar'].Fill( MttbarP4.Pt(), MttbarP4.M() )
             hist.M3['MET_vs_Mttbar'].Fill(p4MET.Pt(), MttbarP4.M() )
 
-            if ntagjetsTCHPL == 0:
+            if ntagjetsSSVHEM == 0:
                 hist.M3['Mttbar_chi2_0btag'].Fill(MttbarP4.M())
+                hist.M3['M3chi2_hadTop_0btag'].Fill( M3p_hadTopP4.M() )
+                hist.M3['M3chi2_lepTop_0btag'].Fill( M3p_lepTopP4.M() )
                 
         # printout txt file with run,lumi,event
         if printnewlistofruns and MttbarP4.M()>MttbarCut:
@@ -854,12 +975,16 @@ for jentry in xrange( entries ):
             M3p_hadTopP4 = bestCombo.GetHadTop()
             M3p_lepTopP4 = bestCombo.GetLepTop()
             MttbarP4 = M3p_hadTopP4 + M3p_lepTopP4
-            if ntagjetsTCHPL == 1:
+            if ntagjetsSSVHEM == 1:
                 hist.M3['Mttbar_chi2_1btag'].Fill(MttbarP4.M())
+                hist.M3['M3chi2_hadTop_1btag'].Fill( M3p_hadTopP4.M() )
+                hist.M3['M3chi2_lepTop_1btag'].Fill( M3p_lepTopP4.M() )                
                 hist.M3['pt_vs_Mttbar_1btag'].Fill( MttbarP4.Pt(), MttbarP4.M() )
-            if ntagjetsTCHPL >= 2:
+            if ntagjetsSSVHEM >= 2:
                 hist.M3['Mttbar_chi2_2btag'].Fill(MttbarP4.M())
                 hist.M3['pt_vs_Mttbar_2btag'].Fill( MttbarP4.Pt(), MttbarP4.M() )
+                hist.M3['M3chi2_hadTop_2btag'].Fill( M3p_hadTopP4.M() )
+                hist.M3['M3chi2_lepTop_2btag'].Fill( M3p_lepTopP4.M() )
                                 
             # Cut on Mttbar
             if MttbarP4.M() > MttbarCut:
