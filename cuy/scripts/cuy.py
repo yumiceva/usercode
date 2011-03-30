@@ -371,6 +371,9 @@ if __name__ == '__main__':
 	for ihname in histonamekeys:
 	    if verbose : print "=== Histogram name: \""+ ihname + "\" source: \""+thehistos[ihname]+"\""
 	    thedata[ikey].TH1s[ihname] = ROOT.gDirectory.Get(thehistos[ihname])
+            if not thedata[ikey].TH1s[ihname]:
+                print "ERROR: histogram name: "+thehistos[ihname]+" does not exist."
+                
 	    #SetOwnership(thedata[ikey].TH1s[ihname], 0)
 	    # check if file exists
 	    #print thedata[ikey].TH1s[ihname].GetEntries()
@@ -582,7 +585,10 @@ if __name__ == '__main__':
                 tmplistcolor.append( 10 ) #style.DibosonsColor)
                 tmplistlegend.append(style.DibosonsText)
                 #print "dibosons color ="+str(style.DibosonsColor)
-
+            if listcolor[icolor] != "top":
+                tmplistcolor.append( int(listcolor[icolor]) ) 
+                tmplistlegend.append( listlegend[icolor])
+                                
         if len(tmplistcolor)>0:
             listcolor = tmplistcolor
             listlegend = tmplistlegend
@@ -633,6 +639,7 @@ if __name__ == '__main__':
 
 	stacklist[thesuper[ikey].name] = THStack("astack"+thesuper[ikey].name,thesuper[ikey].title)
 	astack = stacklist[thesuper[ikey].name]
+        astack2 = None # subset of histograms to superimpose
         datahist[thesuper[ikey].name] = None
         ratiohist[thesuper[ikey].name] = None # for plot diff
         errorgraph[thesuper[ikey].name] = None # error band
