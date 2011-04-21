@@ -54,7 +54,7 @@ class Hist:
                 if map[key].GetEntries>0:
                     map[key].Write()
                 else:
-                    print "Empty histogram: "+map[key].GetName()+" it will not be written to file."
+                    print "Warning[histograms.py]: Empty histogram "+map[key].GetName()+" it will not be written to file."
 
     def CreateVarious(self, name):
         self.Various['flavor'] = TH1F("flavor"+name,"Flavor History",12,0,12)
@@ -166,6 +166,14 @@ class Hist:
         self.M3['MET_vs_Mttbar_0btag'] = TH2F("MET_vs_Mttbar_0btag"+name,"MET vs m_{t#bar{t}}",20,0,110,28,200,1600)
         self.M3['MET_vs_Mttbar_1btag'] = TH2F("MET_vs_Mttbar_1btag"+name,"MET vs m_{t#bar{t}}",20,0,110,28,200,1600)
         self.M3['MET_vs_Mttbar_2btag'] = TH2F("MET_vs_Mttbar_2btag"+name,"MET vs m_{t#bar{t}}",20,0,110,28,200,1600)
+        self.M3['Dijet1'] = TH1F("Dijet1"+name,"Dijet invariant mass [GeV/c^{2}]",28,20,300)
+        self.M3['Dijet2'] = TH1F("Dijet2"+name,"Dijet invariant mass [GeV/c^{2}]",28,20,300)
+        self.M3['Dijet3'] = TH1F("Dijet3"+name,"Dijet invariant mass [GeV/c^{2}]",28,20,300)
+        self.M3['Dijet4'] = TH1F("Dijet4"+name,"Dijet invariant mass [GeV/c^{2}]",28,20,300)
+        self.M3['Wprime'] = TH1F("Wprime"+name,"W' invariant mass [GeV/c^{2}]",40,20,1600)
+        self.M3['Wprime_0btag'] = TH1F("Wprime_0btag"+name,"W' invariant mass [GeV/c^{2}]",40,20,1600)
+        self.M3['Wprime_1btag'] = TH1F("Wprime_1btag"+name,"W' invariant mass [GeV/c^{2}]",40,20,1600)
+        self.M3['Wprime_2btag'] = TH1F("Wprime_2btag"+name,"W' invariant mass [GeV/c^{2}]",40,20,1600)
         self.SetupXTitle(self.M3)
                         
     def CreateMET(self, name):

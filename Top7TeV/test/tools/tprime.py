@@ -118,7 +118,7 @@ from DataFormats.FWLite import Events, Handle
 gSystem.Load("libPhysicsToolsKinFitter.so")
 gROOT.ProcessLine('.L JetResolution.h+')
 gROOT.ProcessLine('.L METResolution.h+')
-from KinFitter import *
+#from KinFitter import *
 
     
 # check options
@@ -676,6 +676,17 @@ for jentry in xrange( entries ):
         hist.MET['Htlep_2jet'].Fill( Ht + p4lepton.Pt())        
         hist.MET['MET_2jet'].Fill( p4MET.Pt() )
         hist.MET['deltaPhi_2jet'].Fill(p4MET.DeltaPhi(p4lepton ) )
+
+        p4Dijet = p4jets[0] + p4jets[1]
+        if WMt>30.:
+            hist.M3['Dijet1'].Fill( p4Dijet.M() )
+            if math.fabs(p4jets[0].Eta() - p4jets[1].Eta())<2.5:
+                hist.M3['Dijet2'].Fill( p4Dijet.M() )
+                if p4jets[0].DeltaPhi(p4MET)>0.4:
+                    hist.M3['Dijet3'].Fill( p4Dijet.M() )
+                    if p4Dijet.Pt()>40.:
+                        hist.M3['Dijet4'].Fill( p4Dijet.M() )
+                                
     if njets == 3:
         cutmap['3Jet'] += 1
         hist.jets['Njets'].Fill(3)

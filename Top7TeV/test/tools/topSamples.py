@@ -87,16 +87,34 @@ def Samples( top, dataType, dataTypeSuffix ):
         dataType="Zjets"
         dataTypeSuffix = "scaledown"
         top.Add(data_repo+"MC/V00-01-05/ZJets_scaledown_Mu.root")
+#    if dataType=="Wprime_1TeV":
+#        dataType="Wprime_1TeV"
+#        top.Add("/uscms_data/d2/marafino/Wprime_tbbar-Ntuple-PATskim.root")
+    if dataType=="Wprime_0p8TeV":
+        dataType="Wprime_0p8TeV"
+        top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_800.root")
     if dataType=="Wprime_1TeV":
         dataType="Wprime_1TeV"
-        top.Add("/uscms_data/d2/marafino/Wprime_tbbar-Ntuple-PATskim.root")
+        top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_1000.root")                        
     if dataType=="Wprime_1p2TeV":
         dataType="Wprime_1p2TeV"
         top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_1200.root")
+    if dataType=="Wprime_1p4TeV":
+        dataType="Wprime_1p4TeV"
+        top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_1400.root")
+    if dataType=="Wprime_1p5TeV":
+        dataType="Wprime_1p5TeV"
+        top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_1500.root")
+    if dataType=="Wprime_2TeV":
+        dataType="Wprime_2TeV"
+        top.Add("/uscms_data/d2/perera//WprimeNT/WprimetB-Ntuple-PATskim_2000.root")
+                        
     if dataType=="TPrime_400M":
         top.Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/V00-01-07/TPrime_400M_Mu-Ntuple-PATskim.root")
-    if dataType=="HToWW_M300":
-        top.Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Mar3/HToWW_M300_Mu/HToWW_M300_Mu.root")
+    #if dataType=="HToWW_M300":
+    #    top.Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/top_prod_Mar3/HToWW_M300_Mu/HToWW_M300_Mu.root")
+    if dataType=="HToWW":
+        top.Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/V00-01-08/HToWW-Ntuple-PATskim.root")
         
     return (dataType, dataTypeSuffix)
 
