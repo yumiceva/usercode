@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopEventNtuple.h,v 1.9 2010/11/21 19:37:53 jengbou Exp $
+ version $Id: TopEventNtuple.h,v 1.10 2011/03/01 22:18:39 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -24,6 +24,7 @@ ________________________________________________________________**/
 #include "TopVertexEvent.h"
 #include "TopMyGenEvent.h"
 #include "TopGenPdfInfo.h"
+#include "TopTrigger.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopMuonEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopElectronEvent.h"
@@ -31,6 +32,7 @@ ________________________________________________________________**/
 #include "Yumiceva/Top7TeV/interface/TopVertexEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopMyGenEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopGenPdfInfo.h"
+#include "Yumiceva/Top7TeV/interface/TopTrigger.h"
 #endif
 
 
@@ -49,7 +51,9 @@ public:
     Int_t run;         // run number
     Int_t lumi;        // luminosity section
     Int_t dataType;    // type of data: MC, colisions,
-	
+    
+    std::vector< TopTrigger > triggers;
+
     //_______ event counters_________________________
     //Int_t njets;       // number of jets
     //Int_t nmuons;      // number of muons
@@ -60,10 +64,10 @@ public:
     std::vector< TopMuonEvent > muons;
     
     //_____ jets __________________________________
-    std::vector< TopJetEvent > Calojets;
-    std::vector< TopJetEvent > JPTjets;
+    //std::vector< TopJetEvent > Calojets;
+    //std::vector< TopJetEvent > JPTjets;
     std::vector< TopJetEvent > PFjets;
-    std::vector< TopJetEvent > PFlowjets;
+    //std::vector< TopJetEvent > PFlowjets;
 
     //_____ electrons _____________________________
     std::vector< TopElectronEvent > electrons;
@@ -73,20 +77,22 @@ public:
     std::vector< TopVertexEvent > vertices;
     
     //_____ Event variables ______________________
-    Float_t CaloMET;
-    Float_t CaloMETphi;
-    Float_t CaloHt;
-    Float_t tcMET;
-    Float_t tcMETphi;
-    Float_t tcHt;
+    //Float_t CaloMET;
+    //Float_t CaloMETphi;
+    //Float_t CaloHt;
+    //Float_t tcMET;
+    //Float_t tcMETphi;
+    //Float_t tcHt;
     Float_t PFMET;
     Float_t PFMETphi;
     Float_t PFHt;
-    Float_t PFlowMET;
-    Float_t PFlowMETphi;
-    Float_t PFlowHt;
+    //Float_t PFlowMET;
+    //Float_t PFlowMETphi;
+    //Float_t PFlowHt;
 
     Int_t IsZevent; // for e+jets
+
+    Double_t rho;
 
     Int_t flavorHistory; // MC flag
     TopMyGenEvent gen; // MC generator info for ttbar

@@ -11,10 +11,9 @@
      [Notes on implementation]
 */
 //
-// Original Author:  "Jian Wang"
-//        Modified:  Samvel Khalatian
+// Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.h,v 1.2 2010/08/19 19:27:19 yumiceva Exp $
+// $Id: PATNtupleMaker.h,v 1.3 2010/09/23 16:13:37 yumiceva Exp $
 //
 //
 
@@ -64,17 +63,18 @@ private:
   std::string ntuplefile_;
 
   edm::InputTag hltTag_;
+  std::vector< std::string > hltList_;
   edm::InputTag muonTag_;
+  edm::InputTag PVTag_;
   edm::InputTag electronTag_;
-  edm::InputTag calojetTag_;
-  edm::InputTag JPTjetTag_;
+  edm::InputTag PFelectronTag_;
   edm::InputTag PFjetTag_;
-  edm::InputTag caloMETTag_;
-  edm::InputTag tcMETTag_;
+  edm::InputTag RhojetTag_;
   edm::InputTag PFMETTag_;
 
   TH1 *_cutflow;
   bool _isDataInput;
+  bool _verbose;
   TopEventNtuple *_ntuple;
 
 };

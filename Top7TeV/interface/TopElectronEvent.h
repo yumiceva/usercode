@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopElectronEvent.h,v 1.4 2010/09/25 14:30:16 yumiceva Exp $
+ version $Id: TopElectronEvent.h,v 1.5 2010/10/01 23:06:37 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -46,6 +46,9 @@ class TopElectronEvent : public TopCandidateEvent
     Int_t IsTight;
     Int_t pass70;
     Int_t pass95;
+    Int_t missingHits;
+    Int_t convDist;
+    Int_t convDcot;
     Int_t IsConversion;
     Float_t etasc;
     Float_t deltaetasc;

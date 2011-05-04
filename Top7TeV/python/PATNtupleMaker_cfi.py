@@ -6,20 +6,20 @@ from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 PATNtupleMaker = cms.EDFilter(
         'PATNtupleMaker',
 
-        hltTag = cms.InputTag("TriggerResults::REDIGI"),
+        hltTag = cms.InputTag("patTriggerEventPFlow"),
+        hltList = cms.vstring(""),
         MuonTag = cms.InputTag("selectedPatMuons"),
         ElectronTag = cms.InputTag("selectedPatElectrons"),
-        caloJetTag= cms.InputTag("selectedPatJets"),
-        JPTJetTag= cms.InputTag("selectedPatJetsAK5JPT"),
-        PFJetTag= cms.InputTag("selectedPatJetsPFlow"),
-        caloMETTag= cms.InputTag("patMETs"),
-        tcMETTag= cms.InputTag("patMETsTC"),
+        PFElectronTag = cms.InputTag("selectedPatElectronsPFlow"),
+        PFJetTag= cms.InputTag("goodPatJetsPFlow"),
+        RhoJetTag = cms.InputTag("pfJetsPFlow"),
         PFMETTag= cms.InputTag("patMETsPFlow"),
+        PVTag = cms.InputTag("offlinePrimaryVertices"),
         
         jetIdLoose = jetIDSelector.clone(),
         pfjetIdLoose = pfJetIDSelector.clone(),
         
         ntupleFile = cms.string("NtupleMaker.root"),
-        inputType = cms.string("DATA")
-
+        inputType = cms.string("DATA"),
+        Verbose = cms.bool(False)
 )

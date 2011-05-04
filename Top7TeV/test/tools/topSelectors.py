@@ -4,8 +4,6 @@ from ROOT import *
 
 class Selector:
 
-    #tmpp4Mu = TLorentzVector()
-    
     def __init__(self):
 
         self.muons = []
@@ -18,6 +16,14 @@ class Selector:
         self.MinJetPt = 25.
         self.LeadingJetPtCut = 25.
         self.p4MET = None
+    def Jets(self, jets): self.jets = jets
+    def Muons(self,muons): self.muons = muons
+    def Electrons(self,electrons): self.electrons = electrons
+    def SetPVz(self,value): self.PVz = value
+    def SetIso(self,value): self.IsoCut = value
+    def SetMinJetPt(self,value): self.MinJetPt = value
+    def SetLeadingJetPt(self,value): self.LeadingJetPtCut = value
+    def Setp4MET(self,value): self.p4MET = value
         
     def ElectronLoose(self, ele):
         accepted = False
@@ -35,18 +41,20 @@ class Selector:
             
             if ele.pt>30. and ( (eta_sc > -2.5 and eta_sc < -1.566) or (math.fabs(eta_sc)<1.4442) or (eta_sc > 1.566 and eta_sc< 2.5) ):
 
-                self.hist.electrons['pt_cut1'].Fill(ele.pt)
-                self.hist.electrons['d0_cut1'].Fill(ele.d0)
+                if not self.hist:
+                    self.hist.electrons['pt_cut1'].Fill(ele.pt)
+                    self.hist.electrons['d0_cut1'].Fill(ele.d0)
             
                 if math.fabs(ele.d0)<0.02 and ele.pass70==1:
 
-                    self.hist.electrons['pt_cut2'].Fill(ele.pt)
-                    self.hist.electrons['reliso'].Fill(ele.reliso03)
+                    if not self.hist:
+                        self.hist.electrons['pt_cut2'].Fill(ele.pt)
+                        self.hist.electrons['reliso'].Fill(ele.reliso03)
                 
                     if ele.reliso03 < self.IsoCut:
 
                         eleVz = ele.vz
-                        self.hist.electrons['dz'].Fill( math.fabs(eleVz - self.PVz))
+                        if not self.hist: self.hist.electrons['dz'].Fill( math.fabs(eleVz - self.PVz))
                     
                         if math.fabs(eleVz - self.PVz) < 1.:
                             accepted = True
@@ -106,7 +114,7 @@ class Selector:
                     
             #ntightmuons += 1
             #p4muon.SetPtEtaPhiE( mu.pt, mu.eta, mu.phi, mu.e )
-            self.hist.muons['reliso'].Fill(mu.reliso03)
+            if not self.hist: self.hist.muons['reliso'].Fill(mu.reliso03)
             accepted = True
             
 
@@ -125,8 +133,9 @@ class Selector:
                         
         if mu.pt>20. and math.fabs(mu.eta)<2.1 and mu.IsTrackerMuon==1:
 
-            self.hist.muons['pt_cut1'].Fill(mu.pt)
-            self.hist.muons['d0_cut1'].Fill(mu.d0)
+            if not self.hist:
+                self.hist.muons['pt_cut1'].Fill(mu.pt)
+                self.hist.muons['d0_cut1'].Fill(mu.d0)
             
             if math.fabs(mu.d0)<0.02 and \
                    mu.muonhits>0 and \
@@ -134,19 +143,20 @@ class Selector:
                    mu.trackerhits>=11 and \
                    mu.muonstations> 1 and \
                    mu.pixelhits >= 1:
-                
-                self.hist.muons['pt_cut2'].Fill(mu.pt)
-                self.hist.muons['reliso'].Fill(mu.reliso03)
+
+                if not self.hist:
+                    self.hist.muons['pt_cut2'].Fill(mu.pt)
+                    self.hist.muons['reliso'].Fill(mu.reliso03)
                 
                 if mu.reliso03 < self.IsoCut:
                     
                     muonVz = mu.vz
-                    self.hist.muons['dz'].Fill( math.fabs(muonVz - self.PVz))
+                    if not self.hist: self.hist.muons['dz'].Fill( math.fabs(muonVz - self.PVz))
                     
                     if math.fabs(muonVz - self.PVz) >= 1.:
                         return accepted
                     
-                    self.hist.muons['pt_cut3'].Fill(mu.pt)
+                    if not self.hist: self.hist.muons['pt_cut3'].Fill(mu.pt)
 
                     aDeltaR = 999
                     if len(self.jets)>0: theLeadingPt = self.jets[0].pt

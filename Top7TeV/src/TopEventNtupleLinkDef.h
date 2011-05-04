@@ -1,5 +1,6 @@
 #ifdef NOSCRAMV
 #include "TopEventNtuple.h"
+#include "TopTrigger.h"
 #include "TopCandidateEvent.h"
 #include "TopMuonEvent.h"
 #include "TopJetEvent.h"
@@ -13,6 +14,7 @@
 #include "TopGenPdfInfo.h"
 #else
 #include "Yumiceva/Top7TeV/interface/TopEventNtuple.h"
+#include "Yumiceva/Top7TeV/interface/TopTrigger.h"
 #include "Yumiceva/Top7TeV/interface/TopCandidateEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopMuonEvent.h"
 #include "Yumiceva/Top7TeV/interface/TopElectronEvent.h"
@@ -35,6 +37,7 @@
 #pragma link off all functions;
  
 #pragma link C++ class TopCandidateEvent+;
+#pragma link C++ class TopTrigger+;
 #pragma link C++ class TopGenCandidateEvent+;
 #pragma link C++ class TopMuonEvent+;
 #pragma link C++ class TopJetEvent+;
@@ -47,6 +50,8 @@
 #pragma link C++ class TopEventNtuple+;
 #pragma link C++ class TopGenPdfInfo+;
 
+#pragma link C++ class std::vector< TopTrigger >;
+#pragma link C++ class std::vector< TopTrigger >::iterator;
 #pragma link C++ class std::vector< TopMuonEvent >;
 #pragma link C++ class std::vector< TopMuonEvent >::iterator;
 #pragma link C++ class std::vector< TopElectronEvent >;
