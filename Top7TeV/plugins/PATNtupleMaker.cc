@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.22 2011/01/18 14:36:33 jengbou Exp $
+// $Id: PATNtupleMaker.cc,v 1.23 2011/05/04 22:37:19 yumiceva Exp $
 //
 //
 
@@ -32,6 +32,7 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
+#include "DataFormats/PatCandidates/interface/TriggerPath.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
@@ -165,6 +166,17 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   // T R I G G E R 
   /////////////////////
   bool passORTriggers = false;
+  
+
+  /// debug triggers, print the whole erreggrssf list of triggers
+  //cout << "wasRun = "<< triggerEvent->wasRun() << endl;
+  //const pat::TriggerPathCollection& trigPaths = *(triggerEvent->paths());
+  //unsigned int nTrig = trigPaths.size();
+  //for (unsigned int i=0; i < nTrig; i++) {
+  //  if (trigPaths[i].wasRun()) {
+  //    cout << "trigger ran with name = "<< trigPaths[i].name() << endl;
+  //  }
+  //}
 
   for (unsigned int itrig=0; itrig < hltList_.size(); itrig++) {
 
@@ -172,19 +184,22 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (aTrigger == "") { passORTriggers = true; continue; }
     unsigned int prescale = 1.;
     bool tpass = true;
-    if (_verbose) { 
-      cout << "checking trigger name = " << aTrigger << endl;
-      cout << "trigger prescale = " << prescale << endl;
-    }
-    if (!(triggerEvent->path(aTrigger)->wasRun() && triggerEvent->path(aTrigger)->wasAccept()) ) {
-      if (_verbose) cout << "event fail trigger" << endl;
+    if (_verbose) cout << "checking trigger name = " << aTrigger << endl;
+    if ( !( triggerEvent->path(aTrigger) ) ) {
+      tpass = false;
+      if (_verbose) cout << " trigger does not exist" << endl;
+    } else if (!(triggerEvent->path(aTrigger)->wasRun() && triggerEvent->path(aTrigger)->wasAccept()) ) {
+      if (_verbose) cout << "event fail trigger: wasRun="<<triggerEvent->path(aTrigger)->wasRun() << " accept=" << triggerEvent->path(aTrigger)->wasAccept() << endl;
       tpass = false;
     }
     
+    if (tpass) prescale = triggerEvent->path(aTrigger)->prescale();
     passORTriggers = passORTriggers || tpass;
 
-    if (_verbose) cout << "trigger pass = " << passORTriggers << endl;
-    
+    if (_verbose) {
+      cout << "trigger pass = " << passORTriggers << endl;
+      cout << "trigger prescale = " << prescale << endl;
+    }
     //store trigger
     TopTrigger ttrig;
     ttrig.name = aTrigger;
@@ -193,6 +208,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     _ntuple->triggers.push_back(ttrig);
   }
   if (_verbose) cout << "triggers analyzed" << endl;
+  if (! passORTriggers ) return false;
 
   // PDF stuff
   edm::Handle<GenEventInfoProduct> pdfstuff;
