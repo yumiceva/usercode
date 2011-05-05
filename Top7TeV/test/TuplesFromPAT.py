@@ -44,7 +44,7 @@ process.PATNtupleMaker.MuonTag = 'selectedPatMuonsPFlow'
 process.PATNtupleMaker.ElectronTag = 'selectedPatElectrons'
 process.PATNtupleMaker.PFJetTag = 'goodPatJetsPFlow'
 process.PATNtupleMaker.PFMETTag = 'patMETsPFlow'
-process.PATNtupleMaker.Verbose = True
+#process.PATNtupleMaker.Verbose = True
 
 ## Input PAT files
 process.source = cms.Source("PoolSource",
