@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopTrigger.cc,v 1.3 2010/09/03 16:16:21 yumiceva Exp $
+ version $Id: TopTrigger.cc,v 1.1 2011/05/04 22:37:20 yumiceva Exp $
 
  ________________________________________________________________**/
 
@@ -23,6 +23,6 @@ ClassImp(TopTrigger)
 
   name = "";
   prescale = 1;
-  pass = false;
+  accept = false;
 
 }

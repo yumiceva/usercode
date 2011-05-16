@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.23 2011/05/04 22:37:19 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.24 2011/05/05 17:44:43 yumiceva Exp $
 //
 //
 
@@ -68,6 +68,7 @@ PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig)
 
   hltTag_ = iConfig.getParameter< InputTag > ("hltTag");
   hltList_ = iConfig.getParameter< vector< string > > ("hltList");
+  applyTrigger_ = iConfig.getParameter< bool >("ApplyTrigger");
   electronTag_ = iConfig.getParameter< InputTag >("ElectronTag");
   PFelectronTag_ = iConfig.getParameter< InputTag >("PFElectronTag");
   muonTag_ = iConfig.getParameter< InputTag >("MuonTag");
@@ -78,10 +79,10 @@ PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig)
   pfjetIdLoose_ = iConfig.getParameter<edm::ParameterSet>("pfjetIdLoose");
   PFMETTag_ = iConfig.getParameter< InputTag >("PFMETTag");
   PVTag_ = iConfig.getParameter< InputTag >("PVTag");
-  _verbose = iConfig.getParameter< bool >("Verbose");
-  _isDataInput = "DATA" == iConfig.getParameter<std::string>("inputType");
+  verbose_ = iConfig.getParameter< bool >("Verbose");
+  isDataInput_ = "DATA" == iConfig.getParameter<std::string>("inputType");
 
-  cout << "[PATNtupleMaker] Using " << (_isDataInput ? "DATA" : "MC")
+  cout << "[PATNtupleMaker] Using " << (isDataInput_ ? "DATA" : "MC")
        << " input" << endl;
 
   _ntuple = new TopEventNtuple();
@@ -114,12 +115,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   // reset ntuple containers
   _ntuple->Reset();
 
-  if (_verbose) cout << "analyzing event" << endl;
+  if (verbose_) cout << "analyzing event" << endl;
 
-  // get handle for IP tools
-  //edm::ESHandle<TransientTrackBuilder> trackBuilder;
-  //iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-  
   // -[ Trigger ]-
   Handle< pat::TriggerEvent > triggerEvent;
   iEvent.getByLabel( hltTag_, triggerEvent );
@@ -131,9 +128,11 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   // -[ Jets ]-
   Handle<JetCollection> pfjets;
   iEvent.getByLabel( PFjetTag_, pfjets); //selectedPatJetsPFlow
+  // -[ rho ]-
   Handle<double> h_rho;
-  iEvent.getByLabel(InputTag(RhojetTag_.label(), "rho"), h_rho);
- 
+  // -[ sigma ]-
+  Handle<double> h_sigma;
+
   // -[ Primary Vertices ]-
   reco::Vertex primaryVertex;
   Handle<VertexCollection> pvtx;
@@ -160,55 +159,74 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   const METCollection *pfmetCol = pfmetHandle.product();
   pfmet = &(pfmetCol->front());
 
-  if (_verbose) cout << "got all collections" << endl;
+  if (verbose_) cout << "got all collections" << endl;
+
+  // count number of processed events by analyzer                                                                                                                                                                           
+  _cutflow->Fill(1);
+
 
   //////////////////////
   // T R I G G E R 
   /////////////////////
   bool passORTriggers = false;
   
-
+  bool hasAtriggerPath = false;
   /// debug triggers, print the whole erreggrssf list of triggers
   //cout << "wasRun = "<< triggerEvent->wasRun() << endl;
-  //const pat::TriggerPathCollection& trigPaths = *(triggerEvent->paths());
-  //unsigned int nTrig = trigPaths.size();
-  //for (unsigned int i=0; i < nTrig; i++) {
-  //  if (trigPaths[i].wasRun()) {
-  //    cout << "trigger ran with name = "<< trigPaths[i].name() << endl;
-  //  }
-  //}
+  const pat::TriggerPathCollection& trigPaths = *(triggerEvent->paths());
+  unsigned int nTrig = trigPaths.size();
+  for (unsigned int i=0; i < nTrig; i++) {
+    if (trigPaths[i].wasRun()) {
+      //cout << "trigger ran with name = "<< trigPaths[i].name() << endl; // DUMP name of all TRIGGERS
+      
+      for (unsigned int itrig=0; itrig < hltList_.size(); itrig++) {
 
-  for (unsigned int itrig=0; itrig < hltList_.size(); itrig++) {
+	string aTrigger = hltList_[itrig];
+	if (aTrigger == "") { passORTriggers = true; continue; }
+	
+	if (verbose_ && i==0) cout << "checking trigger name = " << aTrigger << endl;
+	if ( trigPaths[i].name().find(aTrigger) == 0 ) {
+	  
+	  hasAtriggerPath = true;
+	  aTrigger = trigPaths[i].name();
+	  if (verbose_) cout <<" found trigger with path name = " << aTrigger << endl;
+	  
+	  unsigned int prescale = 1.;
+	  bool tpass = true;
 
-    string aTrigger = hltList_[itrig];
-    if (aTrigger == "") { passORTriggers = true; continue; }
-    unsigned int prescale = 1.;
-    bool tpass = true;
-    if (_verbose) cout << "checking trigger name = " << aTrigger << endl;
-    if ( !( triggerEvent->path(aTrigger) ) ) {
-      tpass = false;
-      if (_verbose) cout << " trigger does not exist" << endl;
-    } else if (!(triggerEvent->path(aTrigger)->wasRun() && triggerEvent->path(aTrigger)->wasAccept()) ) {
-      if (_verbose) cout << "event fail trigger: wasRun="<<triggerEvent->path(aTrigger)->wasRun() << " accept=" << triggerEvent->path(aTrigger)->wasAccept() << endl;
-      tpass = false;
+	  if ( !( triggerEvent->path(aTrigger) ) ) {
+	    tpass = false;
+	    if (verbose_) cout << " trigger does not exist" << endl;
+	  } else if (!(triggerEvent->path(aTrigger)->wasRun() && triggerEvent->path(aTrigger)->wasAccept()) ) {
+	    if (verbose_) cout << "event fail trigger: wasRun="<<triggerEvent->path(aTrigger)->wasRun() << " accept=" << triggerEvent->path(aTrigger)->wasAccept() << endl;
+	    tpass = false;
+	  }
+
+	  if (tpass) prescale = triggerEvent->path(aTrigger)->prescale();
+	  passORTriggers = passORTriggers || tpass;
+
+	  if (verbose_) {
+	    cout << "trigger pass = " << tpass << endl;
+	    cout << "trigger prescale = " << prescale << endl;
+	  }
+	  //store trigger                                                                                                                                                                                                    
+	  TopTrigger ttrig;
+	  ttrig.name = aTrigger;
+	  ttrig.accept = tpass;
+	  ttrig.prescale = prescale;
+	  _ntuple->triggers.push_back(ttrig);
+	
+	}
+      }
     }
-    
-    if (tpass) prescale = triggerEvent->path(aTrigger)->prescale();
-    passORTriggers = passORTriggers || tpass;
-
-    if (_verbose) {
-      cout << "trigger pass = " << passORTriggers << endl;
-      cout << "trigger prescale = " << prescale << endl;
-    }
-    //store trigger
-    TopTrigger ttrig;
-    ttrig.name = aTrigger;
-    ttrig.pass = tpass;
-    ttrig.prescale = prescale;
-    _ntuple->triggers.push_back(ttrig);
   }
-  if (_verbose) cout << "triggers analyzed" << endl;
-  if (! passORTriggers ) return false;
+  if ( (!hasAtriggerPath) && applyTrigger_ ) cout << "WARNING[PATNtupleMaker]: none of the triggers have been found in the event." << endl;
+
+  if (verbose_) cout << "triggers analyzed" << endl;
+  if ( (!passORTriggers) && applyTrigger_ ) return false;
+
+  // count HLT cut
+  _cutflow->Fill(2);
 
   // PDF stuff
   edm::Handle<GenEventInfoProduct> pdfstuff;
@@ -225,7 +243,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       tmpPDF.xPdf2 = pdfstuff->pdf()->xPDF.second;
       _ntuple->genPdf = tmpPDF;
     }
-    if (_verbose) cout << "got generator pdf information" << endl;
+    if (verbose_) cout << "got generator pdf information" << endl;
   }
   
 
@@ -233,7 +251,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   //__________________
   //Event Flavor History Flag
   Handle< unsigned int > flavorhistoryHandle;
-  if ( !_isDataInput && iEvent.getByLabel("flavorHistoryFilter",flavorhistoryHandle) ) {
+  if ( !isDataInput_ && iEvent.getByLabel("flavorHistoryFilter",flavorhistoryHandle) ) {
     _ntuple->flavorHistory = *flavorhistoryHandle;
     //cout << "FlavorHistory variable = " << *flavorhistoryHandle << "  eventFlavor =  " << eventFlavor << endl;
   }
@@ -244,7 +262,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     TtGenEvent genevent;
     Handle<reco::GenParticleCollection> genParticles;
     
-    if ( !_isDataInput ) {
+    if ( !isDataInput_ ) {
       // MC
       TopMyGenEvent mygen; // mostly for ttbar MC 
       // for ttbar MC
@@ -315,20 +333,16 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     */
 
-//_cutflow->Fill(0); // count events processed
-
     // setup jet ID selectors
     pat::strbitset bitset_for_caloJPTjets = jetIdLoose_.getBitTemplate();
     pat::strbitset bitset_for_PFjets = pfjetIdLoose_.getBitTemplate();
 
-    // count number of processed events by analyzer
-    _cutflow->Fill(1);
 
     // PRIMARY VERTEX
     //__________________
     if (pvtx->size()<1) {
       
-      if (_verbose) cout << "no PVs found. skip event" << endl;
+      if (verbose_) cout << "no PVs found. skip event" << endl;
       return false;
         
     }
@@ -337,7 +351,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int npvs = 0;
     bool IsFirstPVGood = false;
     float cutPVz = 24.;
-    if (_isDataInput) cutPVz = 24.;
+    if (isDataInput_) cutPVz = 24.;
     float refPVz = 0;
 
     for(VertexCollection::const_iterator pv = pvtx->begin(); pv != pvtx->end(); ++pv ) {
@@ -367,12 +381,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       _ntuple->vertices.push_back(topvtx);
       npvs++;
     }
-    if (_verbose) cout << "got PVs" << endl;
+    if (verbose_) cout << "got PVs" << endl;
 
     if ( ! IsFirstPVGood ) return false;
 
     // count PV cut
-    _cutflow->Fill(2);
+    _cutflow->Fill(3);
 
     // keep Event ID
     _ntuple->event = iEvent.id().event();
@@ -386,10 +400,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     int nmu_loose = 0;
     int nele_loose = 0;
     int nPFele_loose = 0;
-    if (_verbose) cout << "loop over muons" << endl;
+    if (verbose_) cout << "loop over muons" << endl;
 
     for(MuonCollection::const_iterator mu = muons->begin(); mu != muons->end();  ++mu) {
         
+      if ( (!mu->isTrackerMuon()) || (!mu->isGlobalMuon()) ) continue;
+
       // relative isolation
       double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
 
@@ -398,8 +414,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
       for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet){
 
-	bool passJetID = false;
-        passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
+	bool passJetID = true; // jets already have ID applied
+        //passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
 
         if (jet->pt()>20.
             && fabs(jet->eta())<2.4
@@ -415,7 +431,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  
       TopMuonEvent topmuon;
 
-      if (_verbose) cout << "filling ntuple with muon kinematics" << endl;
+      if (verbose_) cout << "filling ntuple with muon kinematics" << endl;
       topmuon.pt = mu->pt();
       topmuon.eta = mu->eta();
       topmuon.phi = mu->phi();
@@ -425,7 +441,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       topmuon.vz = mu->vz();
       topmuon.charge = mu->charge();
 
-      if (_verbose) cout << "filling ntuple with muon IP data" << endl;
+      if (verbose_) cout << "filling ntuple with muon IP data" << endl;
       topmuon.d0 = mu->dB();
       topmuon.d0err = mu->edB();
 
@@ -438,12 +454,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  //topmuon.d0wrtPV2d = IPresult.second.value();
 	  //topmuon.d0wrtPV2derr = IPresult.second.error();
 
-      if (_verbose) cout << "filling muon track data" << endl;
-      topmuon.muonhits = mu->numberOfValidHits();
-      topmuon.trackerhits = mu->track()->numberOfValidHits();
-      topmuon.muonstations = mu->numberOfMatches();
-      topmuon.normchi2 = mu->normChi2();
-      topmuon.pixelhits = mu->track()->hitPattern().pixelLayersWithMeasurement();
+      if (verbose_) cout << "check if muon track exists" << endl;
+      if ( mu->track().isNonnull() && mu->track().isAvailable() ) {
+	topmuon.muonhits = mu->numberOfValidHits();
+	topmuon.muonstations = mu->numberOfMatches();
+	topmuon.normchi2 = mu->normChi2();
+	topmuon.trackerhits = mu->track()->numberOfValidHits();
+	topmuon.pixelhits = mu->track()->hitPattern().pixelLayersWithMeasurement();
+      }
       // storing isolation variables
       topmuon.iso03_track = mu->isolationR03().sumPt;
       topmuon.iso03_ecal = mu->isolationR03().emEt;
@@ -469,7 +487,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       //    w_mt_ = sqrt(w_et*w_et-w_px*w_px-w_py*w_py);
       
       // MC stuff
-      if (!_isDataInput) {
+      if (!isDataInput_) {
 	if (mu->genLepton() != 0 ) {
 	  topmuon.mc.pdgId = (mu->genLepton())->pdgId();
 	  //if (mu->genLepton()->mother() != 0) {
@@ -497,7 +515,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     pat::Electron p4leadingElec;
     pat::Electron p4secondElec;
-    if (_verbose) cout << "loop over electrons" << endl;
+    if (verbose_) cout << "loop over electrons" << endl;
 
     for(ElectronCollection::const_iterator elec=electrons->begin(); elec!=electrons->end(); ++elec )
     {
@@ -518,7 +536,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  p4leadingElec = *elec;
 	  //IsTight = true;
 
-	  double nhits = elec->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+	  double nhits = 1.;
+	  if (elec->gsfTrack().isAvailable() ) nhits = elec->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 
 	  double e1_dist = elec->convDist();
 	  double e1_dcot = elec->convDcot();
@@ -533,7 +552,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	nele_loose++;
 
 	TopElectronEvent topele;
-	if (_verbose) cout << "filling electron kinematics" << endl;
+	if (verbose_) cout << "filling electron kinematics" << endl;
 
 	topele.eta = elec->eta();
 	topele.phi = elec->phi();
@@ -550,7 +569,10 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	topele.IsTight = int(IsTight);
 	topele.pass70 = int(pass70);
 	topele.pass95 = int(pass95);
-	topele.missingHits = elec->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+
+	if (verbose_) cout << "filling electron gsf track information" << endl;
+	if (elec->gsfTrack().isAvailable() ) 
+	  topele.missingHits = elec->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 	topele.convDist = elec->convDist();
 	topele.convDcot = elec->convDcot();
 	topele.IsConversion = int(tmpIsConversion);
@@ -562,7 +584,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	topele.deltaetasc = patEle70.DeltaEta();
 
 	// MC stuff 
-	//if (!_isDataInput) {
+	//if (!isDataInput_) {
 	//if (elec->genLepton() != 0 ) {
 	//  topele.mc.pdgId = (elec->genLepton())->pdgId();
 	    //cout << "gen electron pdgid = "<< topele.mc.pdgId << endl;
@@ -587,7 +609,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     ////////////////////////////////
 
     isConversion = false;
-    if (_verbose) cout << "loop over pf electrons" << endl;
+    if (verbose_) cout << "loop over pf electrons" << endl;
     for(ElectronCollection::const_iterator elec=PFelectrons->begin(); elec!=PFelectrons->end(); ++elec )
       {
 
@@ -622,7 +644,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	nPFele_loose++;
 
 	TopElectronEvent topele;
-	if (_verbose) cout << "filling electron kinematics" << endl;
+	if (verbose_) cout << "filling electron kinematics" << endl;
 
         topele.eta = elec->eta();
         topele.phi = elec->phi();
@@ -651,7 +673,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         topele.deltaetasc = patEle70.DeltaEta();
 
 	// MC stuff
-        if (!_isDataInput) {
+        if (!isDataInput_) {
           if (elec->genLepton() != 0 ) {
             topele.mc.pdgId = (elec->genLepton())->pdgId();
             //if (elec->genLepton()->mother() != 0) {
@@ -674,12 +696,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     // PF Jets
     int npfjets = 0;
-    if (_verbose) cout << "loop over jets" << endl;
+    if (verbose_) cout << "loop over jets" << endl;
 
     for(JetCollection::const_iterator jet = pfjets->begin(); jet != pfjets->end(); ++jet)
       {
-	bool passJetID = false;
-        passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets);
+	bool passJetID = true;
+        //passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets); //jets already have ID applied
 
         if (jet->pt()>20.
             && fabs(jet->eta())<2.4
@@ -692,6 +714,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.phi = jet->phi();
             topjet.pt = jet->pt();
             topjet.e  = jet->energy();
+	    topjet.jetArea = jet->jetArea();
+
             ++npfjets;
 
 	    topjet.id_neutralEmE = (jet->correctedJet("Uncorrected")).neutralEmEnergy();
@@ -707,7 +731,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
             topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
 	    
-            if (! _isDataInput ) {
+            if (! isDataInput_ ) {
               topjet.mc.flavor = jet->partonFlavour();
 	      if (jet->genJet()) {
 		topjet.mc.eta = jet->genJet()->eta();
@@ -723,7 +747,23 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
           }
       }
 
-    //_ntuple->rho = *h_rho;
+    // store PU density
+    if (iEvent.getByLabel(InputTag(RhojetTag_.label(), "rho"), h_rho) ) {
+
+      if (verbose_) cout << " got rho" << endl;
+      _ntuple->rho = *h_rho;
+
+    } else if (verbose_) { cout<< " rho event content has not been found" << endl; }
+    
+    // store RMS of rho
+    if (iEvent.getByLabel(InputTag(RhojetTag_.label(), "sigma"), h_sigma) ) {
+
+      if (verbose_) cout << " got (sigma) rho" << endl;
+      _ntuple->rmsrho = *h_sigma;
+
+    } else if (verbose_) { cout<< " jet area (sigma) event content has not been found" << endl; }
+
+
 
     //////////////////////////
     // M E T

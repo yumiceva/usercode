@@ -8,11 +8,13 @@ PATNtupleMaker = cms.EDFilter(
 
         hltTag = cms.InputTag("patTriggerEventPFlow"),
         hltList = cms.vstring(""),
+        ApplyTrigger = cms.bool(True),
         MuonTag = cms.InputTag("selectedPatMuons"),
         ElectronTag = cms.InputTag("selectedPatElectrons"),
         PFElectronTag = cms.InputTag("selectedPatElectronsPFlow"),
         PFJetTag= cms.InputTag("goodPatJetsPFlow"),
-        RhoJetTag = cms.InputTag("pfJetsPFlow"),
+        RhoJetTag = cms.InputTag("kt6PFJetsPFlow"),
+        AreaJetTag = cms.InputTag("pfJetsPFlow"),
         PFMETTag= cms.InputTag("patMETsPFlow"),
         PVTag = cms.InputTag("offlinePrimaryVertices"),
         

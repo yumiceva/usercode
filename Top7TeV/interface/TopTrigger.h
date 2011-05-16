@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopTrigger.h,v 1.5 2010/10/01 23:06:37 yumiceva Exp $
+ version $Id: TopTrigger.h,v 1.1 2011/05/04 22:37:19 yumiceva Exp $
 
  ________________________________________________________________**/
 
@@ -32,7 +32,7 @@ class TopTrigger : public TObject
   //___
   std::string name;
   UInt_t prescale;
-  Bool_t pass;
+  Bool_t accept;
 
   ClassDef(TopTrigger,1);
 

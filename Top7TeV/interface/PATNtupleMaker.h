@@ -13,7 +13,7 @@
 //
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.h,v 1.3 2010/09/23 16:13:37 yumiceva Exp $
+// $Id: PATNtupleMaker.h,v 1.4 2011/05/04 22:37:19 yumiceva Exp $
 //
 //
 
@@ -71,10 +71,12 @@ private:
   edm::InputTag PFjetTag_;
   edm::InputTag RhojetTag_;
   edm::InputTag PFMETTag_;
-
+  
   TH1 *_cutflow;
-  bool _isDataInput;
-  bool _verbose;
+  bool isDataInput_;
+  bool verbose_;
+  bool applyTrigger_;
+
   TopEventNtuple *_ntuple;
 
 };

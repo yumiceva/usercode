@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.cc,v 1.4 2010/08/25 16:03:42 yumiceva Exp $
+ version $Id: TopJetEvent.cc,v 1.5 2010/09/29 20:32:05 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -32,6 +32,7 @@ void TopJetEvent::Reset()
   ntracks = -999;
   nSVs = -999;
   ndaughters = -999;
+  jetArea = -999;
 
   //___
   btag_TCHE = -999;
