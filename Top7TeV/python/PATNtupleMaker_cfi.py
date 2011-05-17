@@ -9,6 +9,7 @@ PATNtupleMaker = cms.EDFilter(
         hltTag = cms.InputTag("patTriggerEventPFlow"),
         hltList = cms.vstring(""),
         ApplyTrigger = cms.bool(True),
+        StoreTrigger = cms.bool(False),
         MuonTag = cms.InputTag("selectedPatMuons"),
         ElectronTag = cms.InputTag("selectedPatElectrons"),
         PFElectronTag = cms.InputTag("selectedPatElectronsPFlow"),

@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.24 2011/05/05 17:44:43 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.25 2011/05/16 19:44:28 yumiceva Exp $
 //
 //
 
@@ -69,6 +69,7 @@ PATNtupleMaker::PATNtupleMaker(const edm::ParameterSet& iConfig)
   hltTag_ = iConfig.getParameter< InputTag > ("hltTag");
   hltList_ = iConfig.getParameter< vector< string > > ("hltList");
   applyTrigger_ = iConfig.getParameter< bool >("ApplyTrigger");
+  storeTrigger_ = iConfig.getParameter< bool >("StoreTrigger");
   electronTag_ = iConfig.getParameter< InputTag >("ElectronTag");
   PFelectronTag_ = iConfig.getParameter< InputTag >("PFElectronTag");
   muonTag_ = iConfig.getParameter< InputTag >("MuonTag");
@@ -209,12 +210,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    cout << "trigger pass = " << tpass << endl;
 	    cout << "trigger prescale = " << prescale << endl;
 	  }
-	  //store trigger                                                                                                                                                                                                    
-	  TopTrigger ttrig;
-	  ttrig.name = aTrigger;
-	  ttrig.accept = tpass;
-	  ttrig.prescale = prescale;
-	  _ntuple->triggers.push_back(ttrig);
+	  //store trigger
+	  if (storeTrigger_) {
+	    TopTrigger ttrig;
+	    ttrig.name = aTrigger;
+	    ttrig.accept = tpass;
+	    ttrig.prescale = prescale;
+	    _ntuple->triggers.push_back(ttrig);
+	  }
 	
 	}
       }
@@ -405,7 +408,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(MuonCollection::const_iterator mu = muons->begin(); mu != muons->end();  ++mu) {
         
       if ( (!mu->isTrackerMuon()) || (!mu->isGlobalMuon()) ) continue;
-
+      
       // relative isolation
       double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
 
@@ -426,7 +429,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      PFDeltaR=dr;
 	  }
       }
-      
+
+      if ( mu->pt() <= 20. || fabs(mu->eta()) >= 2.1 ) continue;
+ 
       nmu_loose++;
 	  
       TopMuonEvent topmuon;
@@ -549,6 +554,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  }
 	}
 
+	if ( elec->pt() <= 30. || fabs(elec->eta()) >= 2.5 ) continue;
 	nele_loose++;
 
 	TopElectronEvent topele;
@@ -640,6 +646,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             tmpIsConversion = true;
           }
         }
+
+	if ( elec->pt() <= 30. || fabs(elec->eta()) >= 2.5 ) continue;
 
 	nPFele_loose++;
 

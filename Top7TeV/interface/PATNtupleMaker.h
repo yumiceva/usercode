@@ -13,7 +13,7 @@
 //
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.h,v 1.4 2011/05/04 22:37:19 yumiceva Exp $
+// $Id: PATNtupleMaker.h,v 1.5 2011/05/16 19:43:37 yumiceva Exp $
 //
 //
 
@@ -76,6 +76,7 @@ private:
   bool isDataInput_;
   bool verbose_;
   bool applyTrigger_;
+  bool storeTrigger_;
 
   TopEventNtuple *_ntuple;
 
