@@ -130,7 +130,7 @@ Bool_t Analyzer::Process(Long64_t entry)
     if (ipv==0) PVz = primaryVertices[ipv].vz;
 
   }
-
+  cout << "done pv" << endl;
   //////////////////////////////////
   // MUONS
   //////////////////////////////////
@@ -156,7 +156,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
       }
   }
-
+  cout << "done mu" << endl;
   //////////////////////////////////
   // ELECTRONS
   //////////////////////////////////                                                                                                                                                                              
@@ -182,6 +182,8 @@ Bool_t Analyzer::Process(Long64_t entry)
       }
   }
 
+  cout << "done electron" << endl;
+
   if ( ntightmuons != 1 ) return kTRUE;
   cutmap["OneIsoMu"]++;
 
@@ -192,6 +194,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   cutmap["ElectronVeto"]++;
 
   p4lepton = p4muon;
+  cout << "done lepton selection " << endl;
 
   /////////////////////////////////
   // MET
@@ -204,7 +207,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   if ( p4MET.Et() <= 20. ) return kTRUE;
   cutmap["MET"]++;
-  
+  cout << "done MET " << endl;
   /////////////////////////////////
   // JETS
   ////////////////////////////////
@@ -220,21 +223,30 @@ Bool_t Analyzer::Process(Long64_t entry)
 
     if ( jet.pt > 30. ) 
       {
+	cout << " jet pt " << jet.pt << endl;
+
 	TLorentzVector tmpjet;
 	tmpjet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e);
-	p4jets[njets] = tmpjet;
-	
+	p4jets.push_back( tmpjet);
+	cout << "done storing njets " << njets << endl;
+
+	cout << " bdisc " << jet.btag_TCHP << endl;
+	cout << " bdisc " << jet.btag_SSVHE << endl;
+
 	bdisc["TCHP"].push_back( jet.btag_TCHP );
 	bdisc["SSVHE"].push_back( jet.btag_SSVHE );
+	cout << "store bdisc" << endl;
 	if ( jet.btag_TCHP > 1.19 ) isTagb["TCHPL"].push_back(true);
 	else isTagb["TCHPL"].push_back(false);
+	cout << "done tchpl" << endl;
 	if ( jet.btag_SSVHE > 1.74) isTagb["SSVHEM"].push_back(true);
 	else isTagb["SSVHEM"].push_back(false);
+	cout << "done ssvem" << endl;
 
 	njets++;
       }
     }
-  
+  cout << "done jets" << endl;
   if (njets==1)
     {
       cutmap["1Jet"]++;
@@ -255,6 +267,8 @@ Bool_t Analyzer::Process(Long64_t entry)
     {
       cutmap["4Jet"]++;
     }
+  cout << "done analysis" << endl;
+
   return kTRUE;
 }
 
