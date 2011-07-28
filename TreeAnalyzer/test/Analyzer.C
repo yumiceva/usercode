@@ -26,9 +26,34 @@
 #include "Analyzer.h"
 
 #include <TStyle.h>
+#include <TSystem.h>
+
 #include <iostream>
 #include <vector>
 
+void Analyzer::ParseInput()
+{
+
+  if (fMyOpt.Contains("muon")) 
+    {
+      fChannel = 1;      
+    }
+  if (fMyOpt.Contains("electron"))
+    {
+      fChannel = 2;
+    }
+  if (fMyOpt.Contains("verbose"))
+    {
+      fVerbose = true;
+    }
+  if (fMyOpt.Contains("sample"))
+    {
+      TString tmp = fMyOpt;
+      tmp = tmp.Remove(0,fMyOpt.Index("sample")+7);
+      fSample = tmp;
+      Info("Begin","Histogram names will have suffix: %s", fSample.Data());
+    }
+}
 
 void Analyzer::Begin(TTree * /*tree*/)
 {
@@ -37,6 +62,9 @@ void Analyzer::Begin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
+   fMyOpt = option;
+   ParseInput();
+
    Info("Begin", "starting with process option: %s", option.Data());
 
 }
@@ -49,24 +77,94 @@ void Analyzer::SlaveBegin(TTree * tree)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
+   fMyOpt = option;
+   ParseInput();
+
    Info("SlaveBegin",
         "starting with process option: %s (tree: %p)", option.Data(), tree);
 
    //initialize the Tree branch addresses
    Init(tree);
 
+   // We may be creating a dataset or a merge file: check it
+   TNamed *nm = dynamic_cast<TNamed *>(fInput->FindObject("SimpleNtuple.root"));
+   if (nm) {
+     // Just create the object
+     UInt_t opt = TProofOutputFile::kRegister | TProofOutputFile::kOverwrite | TProofOutputFile::kVerify;
+     fProofFile = new TProofOutputFile("SimpleNtuple.root",
+				       TProofOutputFile::kDataset, opt, nm->GetTitle());
+   } else {
+     // For the ntuple, we use the automatic file merging facility
+     // Check if an output URL has been given
+     TNamed *out = (TNamed *) fInput->FindObject("PROOF_OUTPUTFILE_LOCATION");
+     Info("SlaveBegin", "PROOF_OUTPUTFILE_LOCATION: %s", (out ? out->GetTitle() : "undef"));
+     TString tmpfilename = "results";
+     if ( fSample != "" ) tmpfilename += "_"+fSample+".root";
+     else tmpfilename = "results.root";
+     fProofFile = new TProofOutputFile(tmpfilename, (out ? out->GetTitle() : "M"));
+     out = (TNamed *) fInput->FindObject("PROOF_OUTPUTFILE");
+     if (out) fProofFile->SetOutputFileName(out->GetTitle());
+   }
+
+   // Open the file
+   TDirectory *savedir = gDirectory;
+   if (!(fFile = fProofFile->OpenFile("RECREATE"))) {
+     Warning("SlaveBegin", "problems opening file: %s/%s",
+	     fProofFile->GetDir(), fProofFile->GetFileName());
+   }
+
    //create histograms
    h1test = new TH1F("h1test","muon p_{T}",100,10.,400);
-   
+   //fHist = new HistoManager(string(fSample));
+   TString hname = "_"+fSample;
+   hmuons["pt"] = new TH1F("muon_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 300);
+   hmuons["pt_1jet"] = new TH1F("muon_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["pt_2jet"] = new TH1F("muon_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["pt_3jet"] = new TH1F("muon_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["pt_4jet"] = new TH1F("muon_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["eta"] = new TH1F("muon_eta"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   hmuons["eta_1jet"] = new TH1F("muon_eta_1jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   hmuons["eta_2jet"] = new TH1F("muon_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   hmuons["eta_3jet"] = new TH1F("muon_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   hmuons["eta_4jet"] = new TH1F("muon_eta_4jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   hmuons["phi"] = new TH1F("muon_phi"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   hmuons["phi_1jet"] = new TH1F("muon_phi_1jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   hmuons["phi_2jet"] = new TH1F("muon_phi_2jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   hmuons["phi_3jet"] = new TH1F("muon_phi_3jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   hmuons["phi_4jet"] = new TH1F("muon_phi_4jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 30, 0, 1.5);
+   hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   hmuons["reliso_3jet"] = new TH1F("muon_reliso_3jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   hmuons["reliso_4jet"] = new TH1F("muon_reliso_4jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   hmuons["deltaR_cut0"] = new TH1F("deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
+   hmuons["deltaR"] = new TH1F("deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
+   hmuons["d0_cut1"] = new TH1F("d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
+   hmuons["pt_cut1"] = new TH1F("muon_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["pt_cut2"] = new TH1F("muon_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["pt_cut3"] = new TH1F("muon_pt_cut3"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["dz"] = new TH1F("dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
+
+   hPVs["N"] = new TH1F("NPV"+hname,"Number of PVs",25,-0.5,24.5);
+   hPVs["Nreweight"] = new TH1F("NPVreweight"+hname,"Number of PVs",25,-0.5,24.5);
+
    // cut flow
-   cutmap["Processed"]    = 0;
-   cutmap["OneIsoMu"]     = 0;
-   cutmap["LooseMuVeto"]  = 0;
-   cutmap["ElectronVeto"] = 0;
-   cutmap["MET"]          = 0;
-   cutmap["1Jet"]         = 0;
-   cutmap["2Jet"]         = 0;
-   cutmap["3Jet"]         = 0;
+   fCutLabels.push_back("Processed");
+   fCutLabels.push_back("OneIsoMu");
+   fCutLabels.push_back("LooseMuVeto");
+   fCutLabels.push_back("ElectronVeto");
+   fCutLabels.push_back("MET");
+   fCutLabels.push_back("1Jet");
+   fCutLabels.push_back("2Jet");
+   fCutLabels.push_back("3Jet");
+   fCutLabels.push_back("4Jet");
+
+   hcutflow = new TH1F("cutflow","cut flow", fCutLabels.size(), 0.5, fCutLabels.size() +0.5 );
+
+   for ( vector<string>::const_iterator ivec= fCutLabels.begin(); ivec!=fCutLabels.end(); ++ivec)
+     {
+       cutmap[ *ivec ] = 0;
+     }
 
 }
 
@@ -102,6 +200,10 @@ Bool_t Analyzer::Process(Long64_t entry)
   //fChain->GetTree()->GetEntry(entry);
   fChain->GetEntry(entry);
 
+  cutmap["Processed"]++;
+
+  //if (entry>10) return kTRUE;
+
   //cout << "met= " << ntuple->PFMET << endl;
 
    // event info
@@ -130,7 +232,11 @@ Bool_t Analyzer::Process(Long64_t entry)
     if (ipv==0) PVz = primaryVertices[ipv].vz;
 
   }
-  cout << "done pv" << endl;
+
+  hPVs["N"]->Fill( total_pvs );
+  hPVs["Nreweight"]->Fill( total_pvs );
+
+  if (fVerbose) cout << "done pv" << endl;
   //////////////////////////////////
   // MUONS
   //////////////////////////////////
@@ -142,7 +248,8 @@ Bool_t Analyzer::Process(Long64_t entry)
     TopMuonEvent muon = muons[imu];
     
     h1test->Fill( muon.pt );
-    
+    hmuons["pt"]->Fill( muon.pt );
+
     // select only good muons
 
     if ( fMuSelector.MuonLoose( muon ) ) 
@@ -156,7 +263,10 @@ Bool_t Analyzer::Process(Long64_t entry)
 
       }
   }
-  cout << "done mu" << endl;
+
+  hmuons["pt_cut3"]->Fill( p4muon.Pt() );
+
+  if (fVerbose) cout << "done mu" << endl;
   //////////////////////////////////
   // ELECTRONS
   //////////////////////////////////                                                                                                                                                                              
@@ -182,7 +292,7 @@ Bool_t Analyzer::Process(Long64_t entry)
       }
   }
 
-  cout << "done electron" << endl;
+  if (fVerbose) cout << "done electron" << endl;
 
   if ( ntightmuons != 1 ) return kTRUE;
   cutmap["OneIsoMu"]++;
@@ -194,7 +304,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   cutmap["ElectronVeto"]++;
 
   p4lepton = p4muon;
-  cout << "done lepton selection " << endl;
+  
+  if (fVerbose) cout << "done lepton selection " << endl;
 
   /////////////////////////////////
   // MET
@@ -207,7 +318,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   if ( p4MET.Et() <= 20. ) return kTRUE;
   cutmap["MET"]++;
-  cout << "done MET " << endl;
+
+  if (fVerbose) cout << "done MET " << endl;
   /////////////////////////////////
   // JETS
   ////////////////////////////////
@@ -223,30 +335,31 @@ Bool_t Analyzer::Process(Long64_t entry)
 
     if ( jet.pt > 30. ) 
       {
-	cout << " jet pt " << jet.pt << endl;
+	if (fVerbose) cout << " jet pt " << jet.pt << endl;
 
 	TLorentzVector tmpjet;
 	tmpjet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e);
 	p4jets.push_back( tmpjet);
-	cout << "done storing njets " << njets << endl;
+	if (fVerbose) cout << "done storing njets " << njets << endl;
 
-	cout << " bdisc " << jet.btag_TCHP << endl;
-	cout << " bdisc " << jet.btag_SSVHE << endl;
+	if (fVerbose) cout << " bdisc " << jet.btag_TCHP << endl;
+	if (fVerbose) cout << " bdisc " << jet.btag_SSVHE << endl;
 
 	bdisc["TCHP"].push_back( jet.btag_TCHP );
 	bdisc["SSVHE"].push_back( jet.btag_SSVHE );
-	cout << "store bdisc" << endl;
+	if (fVerbose) cout << "store bdisc" << endl;
 	if ( jet.btag_TCHP > 1.19 ) isTagb["TCHPL"].push_back(true);
 	else isTagb["TCHPL"].push_back(false);
-	cout << "done tchpl" << endl;
+	if (fVerbose) cout << "done tchpl" << endl;
 	if ( jet.btag_SSVHE > 1.74) isTagb["SSVHEM"].push_back(true);
 	else isTagb["SSVHEM"].push_back(false);
-	cout << "done ssvem" << endl;
+	if (fVerbose) cout << "done ssvem" << endl;
 
 	njets++;
       }
     }
-  cout << "done jets" << endl;
+
+  if (fVerbose) cout << "done jets" << endl;
   if (njets==1)
     {
       cutmap["1Jet"]++;
@@ -267,7 +380,8 @@ Bool_t Analyzer::Process(Long64_t entry)
     {
       cutmap["4Jet"]++;
     }
-  cout << "done analysis" << endl;
+
+  if (fVerbose) cout << "done analysis" << endl;
 
   return kTRUE;
 }
@@ -278,6 +392,62 @@ void Analyzer::SlaveTerminate()
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
 
+  // fill cutflow histogram
+
+  int ibin = 1;
+  for ( vector<string>::const_iterator ivec= fCutLabels.begin(); ivec != fCutLabels.end(); ++ivec )
+       //  for ( map<string, int >::const_iterator imap=cutmap.begin(); imap!=cutmap.end(); ++imap )
+    {
+      hcutflow->SetBinContent( ibin, cutmap[ *ivec ] );
+      ibin++;
+    }
+  // Write the ntuple to the file
+  if (fFile) {
+    Bool_t cleanup = kFALSE;
+    TDirectory *savedir = gDirectory;
+    if ( h1test->GetEntries() > 0) {
+      fFile->cd();
+      h1test->Write();
+      hcutflow->Write();
+      fFile->mkdir("muons");
+      fFile->cd("muons");
+      for ( map<string,TH1* >::const_iterator imap=hmuons.begin(); imap!=hmuons.end(); ++imap )
+        {
+          TH1 *temp = imap->second;
+          if ( temp->GetEntries() > 0 )
+            temp->Write();
+          //else cout << "Warning: empty histogram " << temp->GetName() << " will not be written to file." << endl;
+        }
+      fFile->cd();
+      fFile->mkdir("PVs");
+      fFile->cd("PVs");
+      for ( map<string,TH1* >::const_iterator imap=hPVs.begin(); imap!=hPVs.end(); ++imap )
+        {
+          TH1 *temp = imap->second;
+          if ( temp->GetEntries() > 0 )
+            temp->Write();
+          //else cout << "Warning: empty histogram " << temp->GetName() << " will not be written to file." << endl;                                                                                                      
+        }
+      fFile->cd();
+
+      fProofFile->Print();
+      fOutput->Add(fProofFile);
+    } else {
+      cleanup = kTRUE;
+    }
+    h1test->SetDirectory(0);
+    hcutflow->SetDirectory(0);
+    gDirectory = savedir;
+    fFile->Close();
+    // Cleanup, if needed
+    if (cleanup) {
+      TUrl uf(*(fFile->GetEndpointUrl()));
+      SafeDelete(fFile);
+      gSystem->Unlink(uf.GetFile());
+      SafeDelete(fProofFile);
+    }
+  }
+
 }
 
 void Analyzer::Terminate()
@@ -286,4 +456,5 @@ void Analyzer::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
+  Info("Terminate","Analyzer done.");
 }

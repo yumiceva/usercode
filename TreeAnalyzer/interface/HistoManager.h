@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: HistoManager.cc,v 1.2 2010/10/08 13:34:27 yumiceva Exp $
+ version $Id: HistoManager.h,v 1.1 2011/05/29 21:02:06 yumiceva Exp $
 
  ________________________________________________________________**/
 
@@ -13,12 +13,16 @@
 #include "TFile.h"
 
 #include<map>
+#include<string>
+
+using namespace std;
 
 class HistoManager {
 
  public:
-  HistoManager(string name) {
+  HistoManager(TString name) {
     fname = name;
+    CreateMuons();
   }
 
   void FillMuons( string name, Double_t val)
@@ -124,7 +128,8 @@ class HistoManager {
   }
 
  private:
-  string fname;
+  void CreateMuons();
+  TString fname;
   map<string, TH1*> hmuons;
   map<string, TH1*> helectrons;
   map<string, TH1*> hjets;

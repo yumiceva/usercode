@@ -1,0 +1,8 @@
+<use   name="root"/>
+<use   name="rootcore"/>
+<use   name="roottmva"/>
+<use   name="Yumiceva/Top7TeV"/>
+
+<export>
+  <lib   name="1"/>
+</export>

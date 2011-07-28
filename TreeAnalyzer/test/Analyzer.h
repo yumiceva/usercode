@@ -13,27 +13,51 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
-   const Int_t kMaxtop = 1;
+#include <TProofOutputFile.h>
+const Int_t kMaxtop = 1;
 
 #include "Yumiceva/Top7TeV/interface/TopEventNtuple.h"
 #include "Yumiceva/TreeAnalyzer/interface/MuonSelector.h"
 #include "Yumiceva/TreeAnalyzer/interface/ElectronSelector.h"
+//#include "Yumiceva/TreeAnalyzer/interface/HistoManager.h"
 
 #include <map>
 #include <string>
+#include <vector>
 
 class Analyzer : public TSelector {
+
+private:
+  void            ParseInput();
+  TString         fMyOpt;
+  int             fChannel;
+  bool            fVerbose;
+  //HistoManager    *fHist;
+  TString         fSample;
+  TH1F            *h1test;
+  TH1F            *hcutflow;
+  map< string, TH1*> hmuons;
+  map< string, TH1*> helectrons;
+  map< string, TH1*> hjets;
+  map< string, TH1*> hPVs;
+  vector< string > fCutLabels;
+
 public :
 
-   TH1F             *h1test;   
    TTree            *fChain;   //!pointer to the analyzed TTree or TChain
    TopEventNtuple   *ntuple;
+   TFile            *fFile;
+   TProofOutputFile *fProofFile; // For optimized merging of the ntuple
    MuonSelector     fMuSelector;
    ElectronSelector fEleSelector;
    map< string, int > cutmap;
 
-   Analyzer(TTree * /*tree*/ =0):h1test(0),fChain(0),ntuple(),fMuSelector(),fEleSelector() { 
-   }
+   Analyzer(TTree * /*tree*/ =0):h1test(0),fChain(0),ntuple(),fFile(0),fProofFile(0),fMuSelector(),fEleSelector() 
+     {
+       fChannel = 1; //default mu+jets
+       fVerbose = false;
+       fSample = "";
+     }
    virtual ~Analyzer() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
@@ -48,7 +72,7 @@ public :
    virtual TList  *GetOutputList() const { return fOutput; }
    virtual void    SlaveTerminate();
    virtual void    Terminate();
-
+   
    ClassDef(Analyzer,0);
 };
 

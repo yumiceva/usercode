@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: ElectronSelector.cc,v 1.2 2010/10/08 13:34:27 yumiceva Exp $
+ version $Id: ElectronSelector.h,v 1.1 2011/05/29 21:02:06 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -12,6 +12,8 @@
 #include "TLorentzVector.h"
 
 #include<vector>
+
+using namespace std;
 
 class ElectronSelector {
 
