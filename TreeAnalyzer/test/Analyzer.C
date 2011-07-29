@@ -52,6 +52,16 @@ void Analyzer::ParseInput()
       tmp = tmp.Remove(0,fMyOpt.Index("sample")+7);
       fSample = tmp;
       Info("Begin","Histogram names will have suffix: %s", fSample.Data());
+
+      if ( fSample.Contains("data") )
+	{
+	  fIsMC = false;
+	  Info("Begin","This sample is treated as DATA");
+	}
+      else Info("Begin","This sample is treated as MC");
+
+
+      
     }
 }
 
@@ -107,7 +117,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    }
 
    // Open the file
-   TDirectory *savedir = gDirectory;
+   //TDirectory *savedir = gDirectory;
    if (!(fFile = fProofFile->OpenFile("RECREATE"))) {
      Warning("SlaveBegin", "problems opening file: %s/%s",
 	     fProofFile->GetDir(), fProofFile->GetFileName());
@@ -117,7 +127,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    h1test = new TH1F("h1test","muon p_{T}",100,10.,400);
    //fHist = new HistoManager(string(fSample));
    TString hname = "_"+fSample;
-   hmuons["pt"] = new TH1F("muon_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 300);
+   
    hmuons["pt_1jet"] = new TH1F("muon_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_2jet"] = new TH1F("muon_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_3jet"] = new TH1F("muon_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
@@ -143,11 +153,40 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["pt_cut1"] = new TH1F("muon_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_cut2"] = new TH1F("muon_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_cut3"] = new TH1F("muon_pt_cut3"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
+   hmuons["pt"] = new TH1F("muon_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 300);
    hmuons["dz"] = new TH1F("dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
 
    hPVs["N"] = new TH1F("NPV"+hname,"Number of PVs",25,-0.5,24.5);
    hPVs["Nreweight"] = new TH1F("NPVreweight"+hname,"Number of PVs",25,-0.5,24.5);
 
+   helectrons["pt"] = new TH1F("electron_pt"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
+   helectrons["pt_1jet"] = new TH1F("electron_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
+   helectrons["pt_2jet"] = new TH1F("electron_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
+   helectrons["pt_3jet"] = new TH1F("electron_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
+   helectrons["pt_4jet"] = new TH1F("electron_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
+   helectrons["eta"] = new TH1F("electron_eta"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   helectrons["eta_1jet"] = new TH1F("electron_eta_1jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   helectrons["eta_2jet"] = new TH1F("electron_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   helectrons["eta_3jet"] = new TH1F("electron_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   helectrons["eta_4jet"] = new TH1F("electron_eta_4jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   helectrons["phi"] = new TH1F("electron_phi"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   helectrons["phi_1jet"] = new TH1F("electron_phi_1jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   helectrons["phi_2jet"] = new TH1F("electron_phi_2jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   helectrons["phi_3jet"] = new TH1F("electron_phi_3jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   helectrons["phi_4jet"] = new TH1F("electron_phi_4jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   helectrons["reliso"] = new TH1F("electron_reliso"+hname,"Relative Isolation", 30, 0, 1.5);
+   helectrons["reliso_1jet"] = new TH1F("electron_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   helectrons["reliso_2jet"] = new TH1F("electron_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   helectrons["reliso_3jet"] = new TH1F("electron_reliso_3jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   helectrons["reliso_4jet"] = new TH1F("electron_reliso_4jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   helectrons["deltaR_cut0"] = new TH1F("electron_deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
+   helectrons["deltaR"] = new TH1F("electron_deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
+   helectrons["d0_cut1"] = new TH1F("electron_d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
+   helectrons["pt_cut1"] = new TH1F("electron_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 25, 0, 100);
+   helectrons["pt_cut2"] = new TH1F("electron_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 25, 0, 100);
+   helectrons["dz"] = new TH1F("electron_dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
+     
+   
    // cut flow
    fCutLabels.push_back("Processed");
    fCutLabels.push_back("OneIsoMu");
@@ -165,6 +204,36 @@ void Analyzer::SlaveBegin(TTree * tree)
      {
        cutmap[ *ivec ] = 0;
      }
+
+   double pu_weights[25] = { 
+     0,
+     0.216263,
+     0.731377,
+     1.1416,
+     1.4592,
+     1.58665,
+     1.53217,
+     1.37603,
+     1.15313,
+     0.950982,
+     0.753041,
+     0.591861,
+     0.453312,
+     0.344267,
+     0.256831,
+     0.187768,
+     0.147568,
+     0.110464,
+     0.0824476,
+     0.0645739,
+     0.0480766,
+     0.0308829,
+     0.0248396,
+     0.0160992,
+     0.0171581,
+   };
+
+   fpu_weights_vec.assign( pu_weights, pu_weights + 25 );
 
 }
 
@@ -227,6 +296,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   ////////////////////////////////////
   // PRIMARY VERTICES
   ///////////////////////////////////
+
   for ( size_t ipv=0; ipv < total_pvs; ++ipv) {
 
     if (ipv==0) PVz = primaryVertices[ipv].vz;
@@ -234,7 +304,19 @@ Bool_t Analyzer::Process(Long64_t entry)
   }
 
   hPVs["N"]->Fill( total_pvs );
-  hPVs["Nreweight"]->Fill( total_pvs );
+  // calculate PU weight
+  double PUweight = 1.;
+
+  if (fIsMC) {
+    int iibin = 0;
+    for ( vector<double>::iterator ivec = fpu_weights_vec.begin(); ivec != fpu_weights_vec.end(); ++ivec )
+      {
+	if ( ( iibin <= (int)total_pvs ) && ( (int)total_pvs < iibin + 1 ) ) PUweight = *ivec;
+	iibin++;
+      }
+  }
+
+  hPVs["Nreweight"]->Fill( total_pvs, PUweight );
 
   if (fVerbose) cout << "done pv" << endl;
   //////////////////////////////////
@@ -248,7 +330,7 @@ Bool_t Analyzer::Process(Long64_t entry)
     TopMuonEvent muon = muons[imu];
     
     h1test->Fill( muon.pt );
-    hmuons["pt"]->Fill( muon.pt );
+    hmuons["pt"]->Fill( muon.pt, PUweight );
 
     // select only good muons
 
@@ -257,14 +339,15 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	nloosemuons++;
 
-	if ( fMuSelector.MuonTight( muon, PVz) ) ntightmuons++;
+	if ( fMuSelector.MuonTight( muon, PVz) )  hmuons["pt_cut2"]->Fill( muon.pt, PUweight );
+	if ( fMuSelector.MuonTightDeltaR( muon, PVz, jets) ) ntightmuons++;
 
 	p4muon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
 
       }
   }
 
-  hmuons["pt_cut3"]->Fill( p4muon.Pt() );
+  hmuons["pt_cut3"]->Fill( p4muon.Pt(), PUweight );
 
   if (fVerbose) cout << "done mu" << endl;
   //////////////////////////////////
@@ -294,16 +377,23 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   if (fVerbose) cout << "done electron" << endl;
 
-  if ( ntightmuons != 1 ) return kTRUE;
-  cutmap["OneIsoMu"]++;
+  if ( fChannel == 1 ) // muon+jets
+    {
+      if ( ntightmuons != 1 ) return kTRUE;
+      cutmap["OneIsoMu"]++;
 
-  if ( nloosemuons > 1 ) return kTRUE;
-  cutmap["LooseMuVeto"]++;
+      if ( nloosemuons > 1 ) return kTRUE;
+      cutmap["LooseMuVeto"]++;
 
-  if ( total_electrons > 0 ) return kTRUE;
-  cutmap["ElectronVeto"]++;
+      if ( nlooseelectrons > 0 ) return kTRUE;
+      cutmap["ElectronVeto"]++;
 
-  p4lepton = p4muon;
+      p4lepton = p4muon;
+    }
+  else // electron+jets
+    {
+
+    }
   
   if (fVerbose) cout << "done lepton selection " << endl;
 
@@ -333,7 +423,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
     TopJetEvent jet = jets[ijet];
 
-    if ( jet.pt > 30. ) 
+    if ( jet.pt > 35. && fabs(jet.eta) < 2.4 ) 
       {
 	if (fVerbose) cout << " jet pt " << jet.pt << endl;
 

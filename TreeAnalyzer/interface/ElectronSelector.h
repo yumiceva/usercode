@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: ElectronSelector.h,v 1.1 2011/05/29 21:02:06 yumiceva Exp $
+ version $Id: ElectronSelector.h,v 1.2 2011/07/28 21:11:31 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -36,7 +36,9 @@ public:
     
     bool pass = false;
 
-    if ( electron.reliso03<0.2 ) pass = true;
+    if ( electron.pt > 15. && 
+	 fabs(electron.eta) < 2.5 &&
+	 electron.reliso03< 0.2 ) pass = true;
 
     return pass;
 
@@ -47,7 +49,7 @@ public:
     
     float eta_sc = electron.etasc;
 
-    if (electron.pt>30. &&
+    if (electron.pt > 30. &&
 	( (eta_sc > -2.5 && eta_sc < -1.566) || (fabs(eta_sc)<1.4442) || (eta_sc > 1.566 && eta_sc< 2.5) ) &&
         fabs(electron.d0)<0.02 &&
         electron.pass70==1 &&

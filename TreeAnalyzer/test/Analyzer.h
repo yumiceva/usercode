@@ -32,6 +32,7 @@ private:
   TString         fMyOpt;
   int             fChannel;
   bool            fVerbose;
+  bool            fIsMC;
   //HistoManager    *fHist;
   TString         fSample;
   TH1F            *h1test;
@@ -41,6 +42,7 @@ private:
   map< string, TH1*> hjets;
   map< string, TH1*> hPVs;
   vector< string > fCutLabels;
+  vector< double > fpu_weights_vec;
 
 public :
 
@@ -56,6 +58,7 @@ public :
      {
        fChannel = 1; //default mu+jets
        fVerbose = false;
+       fIsMC = true;
        fSample = "";
      }
    virtual ~Analyzer() { }
