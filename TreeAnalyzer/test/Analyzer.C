@@ -137,11 +137,11 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["eta_2jet"] = new TH1F("muon_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_3jet"] = new TH1F("muon_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_4jet"] = new TH1F("muon_eta_4jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
-   hmuons["phi"] = new TH1F("muon_phi"+hname,"#phi^{#mu}", 20, 0, 3.15);
-   hmuons["phi_1jet"] = new TH1F("muon_phi_1jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
-   hmuons["phi_2jet"] = new TH1F("muon_phi_2jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
-   hmuons["phi_3jet"] = new TH1F("muon_phi_3jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
-   hmuons["phi_4jet"] = new TH1F("muon_phi_4jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   hmuons["phi"] = new TH1F("muon_phi"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
+   hmuons["phi_1jet"] = new TH1F("muon_phi_1jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
+   hmuons["phi_2jet"] = new TH1F("muon_phi_2jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
+   hmuons["phi_3jet"] = new TH1F("muon_phi_3jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
+   hmuons["phi_4jet"] = new TH1F("muon_phi_4jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 30, 0, 1.5);
    hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.5);
    hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.5);
@@ -153,23 +153,26 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["pt_cut1"] = new TH1F("muon_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_cut2"] = new TH1F("muon_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_cut3"] = new TH1F("muon_pt_cut3"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
-   hmuons["pt"] = new TH1F("muon_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 300);
+   hmuons["pt"] = new TH1F("muon_pt"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["dz"] = new TH1F("dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
 
    hPVs["N"] = new TH1F("NPV"+hname,"Number of PVs",25,-0.5,24.5);
    hPVs["Nreweight"] = new TH1F("NPVreweight"+hname,"Number of PVs",25,-0.5,24.5);
 
-   helectrons["pt"] = new TH1F("electron_pt"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
-   helectrons["pt_1jet"] = new TH1F("electron_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
-   helectrons["pt_2jet"] = new TH1F("electron_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
-   helectrons["pt_3jet"] = new TH1F("electron_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
-   helectrons["pt_4jet"] = new TH1F("electron_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 25, 20, 100);
+   helectrons["pt"] = new TH1F("electron_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
+   helectrons["pt_cut2"] = new TH1F("electron_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
+   helectrons["pt_1jet"] = new TH1F("electron_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
+   helectrons["pt_2jet"] = new TH1F("electron_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
+   helectrons["pt_3jet"] = new TH1F("electron_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
+   helectrons["pt_4jet"] = new TH1F("electron_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["eta"] = new TH1F("electron_eta"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   helectrons["eta_cut2"] = new TH1F("electron_eta_cut2"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_1jet"] = new TH1F("electron_eta_1jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_2jet"] = new TH1F("electron_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_3jet"] = new TH1F("electron_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_4jet"] = new TH1F("electron_eta_4jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["phi"] = new TH1F("electron_phi"+hname,"#phi^{#mu}", 20, 0, 3.15);
+   helectrons["phi_cut2"] = new TH1F("electron_phi_cut2"+hname,"#phi^{#mu}", 20, 0, 3.15);
    helectrons["phi_1jet"] = new TH1F("electron_phi_1jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
    helectrons["phi_2jet"] = new TH1F("electron_phi_2jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
    helectrons["phi_3jet"] = new TH1F("electron_phi_3jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
@@ -182,23 +185,66 @@ void Analyzer::SlaveBegin(TTree * tree)
    helectrons["deltaR_cut0"] = new TH1F("electron_deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    helectrons["deltaR"] = new TH1F("electron_deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    helectrons["d0_cut1"] = new TH1F("electron_d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
-   helectrons["pt_cut1"] = new TH1F("electron_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 25, 0, 100);
-   helectrons["pt_cut2"] = new TH1F("electron_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 25, 0, 100);
+   helectrons["pt_cut1"] = new TH1F("electron_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
+   helectrons["pt_cut2"] = new TH1F("electron_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["dz"] = new TH1F("electron_dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
-     
+      
+   hMET["MET"] = new TH1F("MET"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
+   hMET["phi"] = new TH1F("MET_phi"+hname,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15);
+   hMET["Ht"] = new TH1F("Ht"+hname,"H_{T} [GeV]", 50, 0, 1000);
+   hMET["Htlep"] = new TH1F("Htlep"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
+   hMET["PzNu"] = new TH1F("PzNu"+hname,"p_{z} #nu [GeV]", 40, -300,300);
+   hMET["EtaNu"] = new TH1F("EtaNu"+hname,"#eta",50,-2.2,2.2);
+   hMET["LepWmass"] = new TH1F("LepWmass"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
+   hMET["LepWmassComplex"]=new TH1F("LepWmassComplex"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
+   
+   hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
+   hM["Wprime"] = new TH1F("Wprime"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+   hM["Wprime_0btag"] = new TH1F("Wprime_0btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+   hM["Wprime_1btag"] = new TH1F("Wprime_1btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+   hM["Wprime_2btag"] = new TH1F("Wprime_2btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+   
+   hjets["pt"] = new TH1F("jet_pt"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
+   hjets["1st_pt"] = new TH1F("jet1_pt"+hname,"Leading jet p_{T} [GeV/c]",50, 30, 500);
+   hjets["2nd_pt"] = new TH1F("jet2_pt"+hname,"2nd jet p_{T} [GeV/c]",50, 30, 500);
+   hjets["3rd_pt"] = new TH1F("jet3_pt"+hname,"3rd jet p_{T} [GeV/c]",50, 30, 500);
+   hjets["4th_pt"] = new TH1F("jet4_pt"+hname,"4th jet p_{T} [GeV/c]",50, 30, 500);
+   hjets["eta"] = new TH1F("jet_eta"+hname,"jet #eta",50, -2.4, 2.4);
+   hjets["phi"] = new TH1F("jet_phi"+hname,"jet #phi",50, 0, 3.15);
+   hjets["Njets"] = new TH1F("Njets"+hname,"jet multiplicity",5,0,5);
+   hjets["Nbtags_TCHPL"] = new TH1F("Nbjets_TCHPL_N3j"+hname,"Tagged b-jets",3,0,3);
+   hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_TCHPL_N4j"+hname,"Tagged b-jets",3,0,3);
+   
    
    // cut flow
-   fCutLabels.push_back("Processed");
-   fCutLabels.push_back("OneIsoMu");
-   fCutLabels.push_back("LooseMuVeto");
-   fCutLabels.push_back("ElectronVeto");
-   fCutLabels.push_back("MET");
-   fCutLabels.push_back("1Jet");
-   fCutLabels.push_back("2Jet");
-   fCutLabels.push_back("3Jet");
-   fCutLabels.push_back("4Jet");
+   if (fChannel==1) 
+     { //muon +jets
+       fCutLabels.push_back("Processed");
+       fCutLabels.push_back("OneIsoMu");
+       fCutLabels.push_back("LooseMuVeto");
+       fCutLabels.push_back("ElectronVeto");
+       fCutLabels.push_back("MET");
+       fCutLabels.push_back("1Jet");
+       fCutLabels.push_back("2Jet");
+       fCutLabels.push_back("3Jet");
+       fCutLabels.push_back("4Jet");
 
-   hcutflow = new TH1F("cutflow","cut flow", fCutLabels.size(), 0.5, fCutLabels.size() +0.5 );
+     }
+   else
+     { //electron+jets
+       fCutLabels.push_back("Processed");
+       fCutLabels.push_back("OneIsoElectron");
+       fCutLabels.push_back("LooseMuVeto");
+       fCutLabels.push_back("ZVeto");
+       fCutLabels.push_back("ConversionVeto");
+       fCutLabels.push_back("MET");
+       fCutLabels.push_back("1Jet");
+       fCutLabels.push_back("2Jet");
+       fCutLabels.push_back("3Jet");
+       fCutLabels.push_back("4Jet");
+
+     }
+   hcutflow = new TH1D("cutflow","cut flow", fCutLabels.size(), 0.5, fCutLabels.size() +0.5 );
 
    for ( vector<string>::const_iterator ivec= fCutLabels.begin(); ivec!=fCutLabels.end(); ++ivec)
      {
@@ -269,13 +315,9 @@ Bool_t Analyzer::Process(Long64_t entry)
   //fChain->GetTree()->GetEntry(entry);
   fChain->GetEntry(entry);
 
-  cutmap["Processed"]++;
-
   //if (entry>10) return kTRUE;
 
-  //cout << "met= " << ntuple->PFMET << endl;
-
-   // event info
+  // event info
   //cout << "run: " << ntuple->run << " lumi: " << ntuple->lumi << endl;
 
   // get collections
@@ -291,6 +333,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   float PVz = 0.;
   TLorentzVector p4muon, p4ele, p4lepton, p4MET;
+  TLorentzVector p4Nu, p4OtherNu;
+
   vector< TLorentzVector > p4jets;
 
   ////////////////////////////////////
@@ -318,6 +362,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   hPVs["Nreweight"]->Fill( total_pvs, PUweight );
 
+  cutmap["Processed"] += PUweight;
+
   if (fVerbose) cout << "done pv" << endl;
   //////////////////////////////////
   // MUONS
@@ -330,7 +376,7 @@ Bool_t Analyzer::Process(Long64_t entry)
     TopMuonEvent muon = muons[imu];
     
     h1test->Fill( muon.pt );
-    hmuons["pt"]->Fill( muon.pt, PUweight );
+    hmuons["pt_cut1"]->Fill( muon.pt, PUweight );
 
     // select only good muons
 
@@ -347,9 +393,7 @@ Bool_t Analyzer::Process(Long64_t entry)
       }
   }
 
-  hmuons["pt_cut3"]->Fill( p4muon.Pt(), PUweight );
-
-  if (fVerbose) cout << "done mu" << endl;
+  if (fVerbose) cout << "done muons" << endl;
   //////////////////////////////////
   // ELECTRONS
   //////////////////////////////////                                                                                                                                                                              
@@ -370,6 +414,10 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  {
 	    IsConversion = electron.IsConversion;
 	    p4ele.SetPtEtaPhiE( electron.pt, electron.eta, electron.phi, electron.e );
+	    helectrons["pt_cut2"]->Fill( p4ele.Pt(), PUweight );
+	    helectrons["eta_cut2"]->Fill( p4ele.Eta(), PUweight );
+	    helectrons["phi_cut2"]->Fill( p4ele.Phi(), PUweight );
+
 	  }
 	ntightelectrons++;
       }
@@ -380,19 +428,23 @@ Bool_t Analyzer::Process(Long64_t entry)
   if ( fChannel == 1 ) // muon+jets
     {
       if ( ntightmuons != 1 ) return kTRUE;
-      cutmap["OneIsoMu"]++;
+      cutmap["OneIsoMu"] += PUweight;
+      hmuons["pt"]->Fill( p4muon.Pt(), PUweight );
+      hmuons["eta"]->Fill( p4muon.Eta(), PUweight );
+      hmuons["phi"]->Fill( p4muon.Phi(), PUweight );
 
       if ( nloosemuons > 1 ) return kTRUE;
-      cutmap["LooseMuVeto"]++;
+      cutmap["LooseMuVeto"] += PUweight;
 
       if ( nlooseelectrons > 0 ) return kTRUE;
-      cutmap["ElectronVeto"]++;
+      cutmap["ElectronVeto"] += PUweight;
 
       p4lepton = p4muon;
+      if (fVerbose) cout << "got a good lepton" << endl;
     }
   else // electron+jets
     {
-
+      // pending ...
     }
   
   if (fVerbose) cout << "done lepton selection " << endl;
@@ -407,9 +459,53 @@ Bool_t Analyzer::Process(Long64_t entry)
 		      ntuple->PFMET );
 
   if ( p4MET.Et() <= 20. ) return kTRUE;
-  cutmap["MET"]++;
+  if (fVerbose) cout << "pass MET cut" << endl;
+
+  cutmap["MET"] += PUweight;
+  hMET["MET"]->Fill( p4MET.Pt(), PUweight );
+  hMET["phi"]->Fill( p4MET.Phi(), PUweight );
+  hMET["Ht"]->Fill( ntuple->PFHt, PUweight );
+  hMET["Htlep"]->Fill( ntuple->PFHt + p4lepton.Pt(), PUweight );
+
+  double Wpt = p4lepton.Pt() + p4MET.Pt();
+  double Wpx = p4lepton.Px() + p4MET.Px();
+  double Wpy = p4lepton.Py() + p4MET.Py();
+  double WMt = sqrt(Wpt*Wpt-Wpx*Wpx-Wpy*Wpy);
+
+  hM["WMt"]->Fill( WMt, PUweight );
 
   if (fVerbose) cout << "done MET " << endl;
+
+  /////////////////////////////////
+  // estimate Pz of neutrino
+  ////////////////////////////////
+
+  fzCalculator.SetMET(p4MET);
+  fzCalculator.SetLepton(p4lepton);
+  if (fChannel==2) 
+    {
+      fzCalculator.SetLeptonType("electron");
+    }
+
+  double pzNu = fzCalculator.Calculate();
+  p4Nu = TLorentzVector();
+  p4OtherNu = TLorentzVector();
+
+  p4Nu.SetPxPyPzE(p4MET.Px(), p4MET.Py(), pzNu, sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzNu*pzNu));
+  //print "pzNu = " +str(pzNu)
+  //print "p4Nu =("+str(p4Nu.Px())+","+str(p4Nu.Py())+","+str(p4Nu.Pz())+","+str(p4Nu.E())
+  double pzOtherNu = fzCalculator.getOther();
+  p4OtherNu.SetPxPyPzE( p4MET.Px(), p4MET.Py(),pzOtherNu,sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzOtherNu*pzOtherNu));
+  
+  hMET["PzNu"]->Fill(pzNu, PUweight ); //change this to 2d with two sol and as a function of jets
+                                                                                                                       
+  TLorentzVector p4LepW = p4lepton + p4Nu;
+  TLorentzVector p4OtherLepW = p4lepton + p4OtherNu;
+
+  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight );
+  if ( fzCalculator.IsComplex() ) hMET["LepWmassComplex"]->Fill( p4LepW.M(), PUweight );
+
+
   /////////////////////////////////
   // JETS
   ////////////////////////////////
@@ -430,17 +526,20 @@ Bool_t Analyzer::Process(Long64_t entry)
 	TLorentzVector tmpjet;
 	tmpjet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e);
 	p4jets.push_back( tmpjet);
-	if (fVerbose) cout << "done storing njets " << njets << endl;
-
-	if (fVerbose) cout << " bdisc " << jet.btag_TCHP << endl;
-	if (fVerbose) cout << " bdisc " << jet.btag_SSVHE << endl;
-
+	if (fVerbose) {
+	  cout << "done storing njets " << njets << endl;
+	  cout << " bdisc " << jet.btag_TCHP << endl;
+	  cout << " bdisc " << jet.btag_SSVHE << endl;
+	}
+	// store discriminators
 	bdisc["TCHP"].push_back( jet.btag_TCHP );
 	bdisc["SSVHE"].push_back( jet.btag_SSVHE );
 	if (fVerbose) cout << "store bdisc" << endl;
+	// check TCHPL
 	if ( jet.btag_TCHP > 1.19 ) isTagb["TCHPL"].push_back(true);
 	else isTagb["TCHPL"].push_back(false);
 	if (fVerbose) cout << "done tchpl" << endl;
+	// check SSVHEM
 	if ( jet.btag_SSVHE > 1.74) isTagb["SSVHEM"].push_back(true);
 	else isTagb["SSVHEM"].push_back(false);
 	if (fVerbose) cout << "done ssvem" << endl;
@@ -449,26 +548,42 @@ Bool_t Analyzer::Process(Long64_t entry)
       }
     }
 
-  if (fVerbose) cout << "done jets" << endl;
-  if (njets==1)
-    {
-      cutmap["1Jet"]++;
+  hjets["Njets"]->Fill( njets, PUweight );
 
+  if (fVerbose) cout << "done jets" << endl;
+  if (njets == 1)
+    {
+      cutmap["1Jet"] += PUweight;
+      hjets["1st_pt"]->Fill( p4jets[0].Pt(), PUweight );
+     }
+
+  if (njets > 1 )
+    {
+      hjets["Nbtags_TCHPL"]->Fill( int(isTagb["TCHPL"].size()), PUweight );
+      hjets["Nbtags_SSVHEM"]->Fill( int(isTagb["SSVHEM"].size()), PUweight );
+
+      TLorentzVector p4Dijet = p4jets[0] + p4jets[1];
+      TLorentzVector p4Wprime = p4LepW + p4Dijet;
+      hM["Wprime"]->Fill( p4Wprime.M(), PUweight );
+      if (fVerbose) cout << "done with Wprime" << endl;
     }
 
   if (njets==2)
     {
-      cutmap["2Jet"]++;
+      cutmap["2Jet"] += PUweight;
+      hjets["2nd_pt"]->Fill( p4jets[1].Pt(), PUweight );
     }
 
   if (njets==3)
     {
-      cutmap["3Jet"]++;
+      cutmap["3Jet"] += PUweight;
+      hjets["3rd_pt"]->Fill( p4jets[2].Pt(), PUweight );
     }
 
-  if (njets>=4)
+  if (njets >= 4)
     {
-      cutmap["4Jet"]++;
+      cutmap["4Jet"] += PUweight;
+      hjets["4th_pt"]->Fill( p4jets[3].Pt(), PUweight );
     }
 
   if (fVerbose) cout << "done analysis" << endl;
@@ -518,6 +633,34 @@ void Analyzer::SlaveTerminate()
             temp->Write();
           //else cout << "Warning: empty histogram " << temp->GetName() << " will not be written to file." << endl;                                                                                                      
         }
+      fFile->cd();
+      fFile->mkdir("jets");
+      fFile->cd("jets");
+      for ( map<string,TH1* >::const_iterator imap=hjets.begin(); imap!=hjets.end(); ++imap )
+        {
+          TH1 *temp = imap->second;
+          if ( temp->GetEntries() > 0 )
+            temp->Write();
+        }
+      fFile->cd();
+      fFile->mkdir("mass");
+      fFile->cd("mass");
+      for ( map<string,TH1* >::const_iterator imap=hM.begin(); imap!=hM.end(); ++imap )
+        {
+          TH1 *temp = imap->second;
+          if ( temp->GetEntries() > 0 )
+            temp->Write();
+        }
+      fFile->cd();
+      fFile->mkdir("MET");
+      fFile->cd("MET");
+      for ( map<string,TH1* >::const_iterator imap=hMET.begin(); imap!=hMET.end(); ++imap )
+        {
+          TH1 *temp = imap->second;
+          if ( temp->GetEntries() > 0 )
+            temp->Write();
+        }
+
       fFile->cd();
 
       fProofFile->Print();

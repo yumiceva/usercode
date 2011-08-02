@@ -10,6 +10,7 @@
 
 #include <TROOT.h>
 #include <TH1F.h>
+#include <TH1D.h>
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
@@ -20,6 +21,7 @@ const Int_t kMaxtop = 1;
 #include "Yumiceva/TreeAnalyzer/interface/MuonSelector.h"
 #include "Yumiceva/TreeAnalyzer/interface/ElectronSelector.h"
 //#include "Yumiceva/TreeAnalyzer/interface/HistoManager.h"
+#include "Yumiceva/TreeAnalyzer/interface/METzCalculator.h"
 
 #include <map>
 #include <string>
@@ -36,13 +38,16 @@ private:
   //HistoManager    *fHist;
   TString         fSample;
   TH1F            *h1test;
-  TH1F            *hcutflow;
+  TH1D            *hcutflow;
   map< string, TH1*> hmuons;
   map< string, TH1*> helectrons;
   map< string, TH1*> hjets;
   map< string, TH1*> hPVs;
+  map< string, TH1*> hMET;
+  map< string, TH1*> hM;
   vector< string > fCutLabels;
   vector< double > fpu_weights_vec;
+  METzCalculator fzCalculator;
 
 public :
 
@@ -52,7 +57,7 @@ public :
    TProofOutputFile *fProofFile; // For optimized merging of the ntuple
    MuonSelector     fMuSelector;
    ElectronSelector fEleSelector;
-   map< string, int > cutmap;
+   map< string, double > cutmap;
 
    Analyzer(TTree * /*tree*/ =0):h1test(0),fChain(0),ntuple(),fFile(0),fProofFile(0),fMuSelector(),fEleSelector() 
      {
