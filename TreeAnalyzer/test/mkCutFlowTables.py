@@ -115,15 +115,19 @@ cutlabel['OneIsoMu'] = 'One Iso $\mu$'
 cutlabel['LooseMuVeto'] = 'Loose $\mu$ veto'
 cutlabel['ElectronVeto'] = 'Electron veto'
 cutlabel['MET'] = '$E\!\!\!\!/_T>20$~GeV'
-cutlabel['1Jet'] = '1 jet'
-cutlabel['2Jet'] = '2 jets'
-cutlabel['3Jet'] = '3 jets'
-cutlabel['4Jet'] = '$\geq$4 jets'
+cutlabel['1Jet'] = 'jets > 0'
+cutlabel['2Jet'] = 'jets > 1'
+cutlabel['3Jet'] = 'jets > 2'
+cutlabel['4Jet'] = 'jets > 3'
+cutlabel['2Jet1b'] = 'jets > 1, btags > 0'
 
-cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet']
+cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet','2Jet1b']
+SKIPCUTS = ['3Jet','4Jet']
 
 allmap = {}
 allmaperr = {}
+
+weightmap = {}
 
 for sample in keys:
 
@@ -137,7 +141,13 @@ for sample in keys:
     print "  entries in cutflow histogram: " + str(hcutflow.GetEntries())
 
     for ibin in xrange(1, hcutflow.GetNbinsX() +1 ):
-        
+
+        skipthiscut = False
+        for skipcut in SKIPCUTS:
+            if skipcut == cutlabelvector[ibin-1]: skipthiscut = True
+        if skipthiscut:
+            print "skip counting cut name: "+cutlabelvector[ibin-1]
+            continue
         cutname = cutlabelvector[ibin-1]
         acut = hcutflow.GetBinContent(ibin)
         #print cutname
@@ -156,6 +166,7 @@ for sample in keys:
     if IsMC and Lumi>0:
         scale = ( Lumi * xsec[ sample ] / Nevents[sample] )
         print "sample weight = "+ str( xsec[ sample ] / Nevents[sample] )
+        weightmap[sample] = xsec[ sample ] / Nevents[sample]
     ilabel = 0
     for key in cutmap.keys():
 
@@ -185,7 +196,8 @@ cutflowerr["Total"] = allmaperr
 
 # write latex
 #sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
-sortedcutlist = ['GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
+sortedcutlist = ['GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','2Jet1b']
+
 if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
@@ -266,6 +278,15 @@ outtex.write(''' \hline
 ''')
 
 print "file "+texname+ " has been written."
+
+if IsMC:
+    
+    print "\n MC Weights"
+    
+    for sample in weightmap.keys():
+
+        print sample+" "+str(weightmap[sample])
+
 
     
 

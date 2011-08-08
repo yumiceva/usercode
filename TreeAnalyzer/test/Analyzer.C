@@ -190,6 +190,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    helectrons["dz"] = new TH1F("electron_dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
       
    hMET["MET"] = new TH1F("MET"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
+   hMET["MET_2jet"] = new TH1F("MET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["phi"] = new TH1F("MET_phi"+hname,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15);
    hMET["Ht"] = new TH1F("Ht"+hname,"H_{T} [GeV]", 50, 0, 1000);
    hMET["Htlep"] = new TH1F("Htlep"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
@@ -202,7 +203,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hM["Wprime"] = new TH1F("Wprime"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
    hM["Wprime_0btag"] = new TH1F("Wprime_0btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
    hM["Wprime_1btag"] = new TH1F("Wprime_1btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_2btag"] = new TH1F("Wprime_2btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+   //hM["Wprime_2btag"] = new TH1F("Wprime_2btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
    
    hjets["pt"] = new TH1F("jet_pt"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
    hjets["1st_pt"] = new TH1F("jet1_pt"+hname,"Leading jet p_{T} [GeV/c]",50, 30, 500);
@@ -228,7 +229,7 @@ void Analyzer::SlaveBegin(TTree * tree)
        fCutLabels.push_back("2Jet");
        fCutLabels.push_back("3Jet");
        fCutLabels.push_back("4Jet");
-
+       fCutLabels.push_back("2Jet1b");
      }
    else
      { //electron+jets
@@ -242,7 +243,7 @@ void Analyzer::SlaveBegin(TTree * tree)
        fCutLabels.push_back("2Jet");
        fCutLabels.push_back("3Jet");
        fCutLabels.push_back("4Jet");
-
+       fCutLabels.push_back("2Jet1b");
      }
    hcutflow = new TH1D("cutflow","cut flow", fCutLabels.size(), 0.5, fCutLabels.size() +0.5 );
 
@@ -370,6 +371,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   //////////////////////////////////
   int nloosemuons = 0;
   int ntightmuons = 0;
+  double RelIso = -1.;
+  double deltaR = -1.;
 
   for ( size_t imu=0; imu < total_muons; ++imu) {
      
@@ -386,10 +389,13 @@ Bool_t Analyzer::Process(Long64_t entry)
 	nloosemuons++;
 
 	if ( fMuSelector.MuonTight( muon, PVz) )  hmuons["pt_cut2"]->Fill( muon.pt, PUweight );
-	if ( fMuSelector.MuonTightDeltaR( muon, PVz, jets) ) ntightmuons++;
-
+	if ( fMuSelector.MuonTightDeltaR( muon, PVz, jets) ) {
+	  ntightmuons++;
+	  deltaR = fMuSelector.GetDeltaR();
+	}
 	p4muon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
-
+	RelIso = muon.reliso03;
+	
       }
   }
 
@@ -432,6 +438,8 @@ Bool_t Analyzer::Process(Long64_t entry)
       hmuons["pt"]->Fill( p4muon.Pt(), PUweight );
       hmuons["eta"]->Fill( p4muon.Eta(), PUweight );
       hmuons["phi"]->Fill( p4muon.Phi(), PUweight );
+      hmuons["reliso"]->Fill( RelIso, PUweight );
+      hmuons["deltaR"]->Fill( deltaR, PUweight );
 
       if ( nloosemuons > 1 ) return kTRUE;
       cutmap["LooseMuVeto"] += PUweight;
@@ -551,38 +559,54 @@ Bool_t Analyzer::Process(Long64_t entry)
   hjets["Njets"]->Fill( njets, PUweight );
 
   if (fVerbose) cout << "done jets" << endl;
+
+  if (njets > 0 ) cutmap["1Jet"] += PUweight;
+  if (njets > 1 ) cutmap["2Jet"] += PUweight;
+  if (njets > 2 ) cutmap["3Jet"] += PUweight;
+  if (njets > 3 ) cutmap["4Jet"] += PUweight;
+
   if (njets == 1)
     {
-      cutmap["1Jet"] += PUweight;
       hjets["1st_pt"]->Fill( p4jets[0].Pt(), PUweight );
      }
 
   if (njets > 1 )
     {
+      hmuons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
+      hMET["MET_2jet"]->Fill( p4MET.Pt(), PUweight );
       hjets["Nbtags_TCHPL"]->Fill( int(isTagb["TCHPL"].size()), PUweight );
       hjets["Nbtags_SSVHEM"]->Fill( int(isTagb["SSVHEM"].size()), PUweight );
 
       TLorentzVector p4Dijet = p4jets[0] + p4jets[1];
       TLorentzVector p4Wprime = p4LepW + p4Dijet;
       hM["Wprime"]->Fill( p4Wprime.M(), PUweight );
-      if (fVerbose) cout << "done with Wprime" << endl;
+
+      if (fVerbose) cout << "Wprime mass calculated" << endl;
+
+      if ( int(isTagb["TCHPL"].size()) == 0 )
+        {
+          hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight );
+        }
+
+      if ( int(isTagb["TCHPL"].size()) >= 1 )
+	{
+	  cutmap["2Jet1b"] += PUweight;
+	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight );
+	}
     }
 
   if (njets==2)
     {
-      cutmap["2Jet"] += PUweight;
       hjets["2nd_pt"]->Fill( p4jets[1].Pt(), PUweight );
     }
 
   if (njets==3)
     {
-      cutmap["3Jet"] += PUweight;
       hjets["3rd_pt"]->Fill( p4jets[2].Pt(), PUweight );
     }
 
   if (njets >= 4)
     {
-      cutmap["4Jet"] += PUweight;
       hjets["4th_pt"]->Fill( p4jets[3].Pt(), PUweight );
     }
 
