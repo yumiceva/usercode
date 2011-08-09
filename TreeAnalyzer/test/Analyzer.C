@@ -142,11 +142,11 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["phi_2jet"] = new TH1F("muon_phi_2jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["phi_3jet"] = new TH1F("muon_phi_3jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["phi_4jet"] = new TH1F("muon_phi_4jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
-   hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 30, 0, 1.5);
-   hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.5);
-   hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.5);
-   hmuons["reliso_3jet"] = new TH1F("muon_reliso_3jet"+hname,"Relative Isolation", 30, 0, 1.5);
-   hmuons["reliso_4jet"] = new TH1F("muon_reliso_4jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 30, 0, 1.);
+   hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.);
+   hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.);
+   hmuons["reliso_3jet"] = new TH1F("muon_reliso_3jet"+hname,"Relative Isolation", 30, 0, 1.);
+   hmuons["reliso_4jet"] = new TH1F("muon_reliso_4jet"+hname,"Relative Isolation", 30, 0, 1.);
    hmuons["deltaR_cut0"] = new TH1F("deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    hmuons["deltaR"] = new TH1F("deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    hmuons["d0_cut1"] = new TH1F("d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
@@ -200,6 +200,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hMET["LepWmassComplex"]=new TH1F("LepWmassComplex"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    
    hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
+   hM["WMt_2jet"] = new TH1F("Mt_2jet"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
    hM["Wprime"] = new TH1F("Wprime"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
    hM["Wprime_0btag"] = new TH1F("Wprime_0btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
    hM["Wprime_1btag"] = new TH1F("Wprime_1btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
@@ -211,10 +212,12 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["3rd_pt"] = new TH1F("jet3_pt"+hname,"3rd jet p_{T} [GeV/c]",50, 30, 500);
    hjets["4th_pt"] = new TH1F("jet4_pt"+hname,"4th jet p_{T} [GeV/c]",50, 30, 500);
    hjets["eta"] = new TH1F("jet_eta"+hname,"jet #eta",50, -2.4, 2.4);
+   hjets["1st_eta"] = new TH1F("jet1_eta"+hname,"Leading jet #eta",50, -2.4, 2.4);
+   hjets["2nd_eta"] = new TH1F("jet2_eta"+hname,"2nd jet #eta",50, -2.4, 2.4);
    hjets["phi"] = new TH1F("jet_phi"+hname,"jet #phi",50, 0, 3.15);
    hjets["Njets"] = new TH1F("Njets"+hname,"jet multiplicity",5,0,5);
-   hjets["Nbtags_TCHPL"] = new TH1F("Nbjets_TCHPL_N3j"+hname,"Tagged b-jets",3,0,3);
-   hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_TCHPL_N4j"+hname,"Tagged b-jets",3,0,3);
+   hjets["Nbtags_TCHPM"] = new TH1F("Nbjets_TCHPM_N3j"+hname,"Tagged b-jets",3,0,3);
+   hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N3j"+hname,"Tagged b-jets",3,0,3);
    
    
    // cut flow
@@ -356,7 +359,8 @@ Bool_t Analyzer::Process(Long64_t entry)
     int iibin = 0;
     for ( vector<double>::iterator ivec = fpu_weights_vec.begin(); ivec != fpu_weights_vec.end(); ++ivec )
       {
-	if ( ( iibin <= (int)total_pvs ) && ( (int)total_pvs < iibin + 1 ) ) PUweight = *ivec;
+	if ( (int)total_pvs >= iibin+1 ) PUweight = *ivec; // use the last weight for last bin
+	if ( ( iibin <= (int)total_pvs ) && ( (int)total_pvs < iibin + 1 ) ) PUweight = *ivec; 
 	iibin++;
       }
   }
@@ -527,9 +531,13 @@ Bool_t Analyzer::Process(Long64_t entry)
 
     TopJetEvent jet = jets[ijet];
 
-    if ( jet.pt > 35. && fabs(jet.eta) < 2.4 ) 
+    if ( jet.pt > 35. && fabs(jet.eta) < 2.4 && jets[0].pt > 120. ) 
       {
 	if (fVerbose) cout << " jet pt " << jet.pt << endl;
+	
+	hjets["pt"]->Fill( jet.pt, PUweight );
+	hjets["eta"]->Fill( jet.eta, PUweight );
+	hjets["phi"]->Fill( jet.phi, PUweight );
 
 	TLorentzVector tmpjet;
 	tmpjet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e);
@@ -543,9 +551,10 @@ Bool_t Analyzer::Process(Long64_t entry)
 	bdisc["TCHP"].push_back( jet.btag_TCHP );
 	bdisc["SSVHE"].push_back( jet.btag_SSVHE );
 	if (fVerbose) cout << "store bdisc" << endl;
-	// check TCHPL
-	if ( jet.btag_TCHP > 1.19 ) isTagb["TCHPL"].push_back(true);
-	else isTagb["TCHPL"].push_back(false);
+	// TCHPL cut at 1.19
+	// check TCHPM
+	if ( jet.btag_TCHP > 1.93 ) isTagb["TCHPM"].push_back(true);
+	else isTagb["TCHPM"].push_back(false);
 	if (fVerbose) cout << "done tchpl" << endl;
 	// check SSVHEM
 	if ( jet.btag_SSVHE > 1.74) isTagb["SSVHEM"].push_back(true);
@@ -565,16 +574,23 @@ Bool_t Analyzer::Process(Long64_t entry)
   if (njets > 2 ) cutmap["3Jet"] += PUweight;
   if (njets > 3 ) cutmap["4Jet"] += PUweight;
 
-  if (njets == 1)
-    {
-      hjets["1st_pt"]->Fill( p4jets[0].Pt(), PUweight );
-     }
+  //if (njets == 1)
+  //  {
+  //    hjets["1st_pt"]->Fill( p4jets[0].Pt(), PUweight );
+  //   }
 
   if (njets > 1 )
     {
+      hjets["1st_pt"]->Fill( p4jets[0].Pt(), PUweight );
+      hjets["2nd_pt"]->Fill( p4jets[1].Pt(), PUweight );
+      hjets["1st_eta"]->Fill( p4jets[0].eta, PUweight );
+      hjets["2nd_eta"]->Fill( p4jets[1].eta, PUweight );
+
       hmuons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
       hMET["MET_2jet"]->Fill( p4MET.Pt(), PUweight );
-      hjets["Nbtags_TCHPL"]->Fill( int(isTagb["TCHPL"].size()), PUweight );
+      hM["Mt_2jet"]->Fill( WMt, PUweight );
+
+      hjets["Nbtags_TCHPM"]->Fill( int(isTagb["TCHPM"].size()), PUweight );
       hjets["Nbtags_SSVHEM"]->Fill( int(isTagb["SSVHEM"].size()), PUweight );
 
       TLorentzVector p4Dijet = p4jets[0] + p4jets[1];
@@ -583,18 +599,29 @@ Bool_t Analyzer::Process(Long64_t entry)
 
       if (fVerbose) cout << "Wprime mass calculated" << endl;
 
-      if ( int(isTagb["TCHPL"].size()) == 0 )
+      // count number of b-tags
+      int Nbtags_TCHPM = 0;
+      int Nbtags_SSVHEM = 0;
+      for ( size_t itag=0; itag< isTagb["TCHPM"].size(); ++itag )
+	{
+	  if ( isTagb["TCHPM"][itag] ) Nbtags_TCHPM++;
+	  if ( isTagb["SSVHEM"][itag] ) Nbtags_SSVHEM++;
+	}
+      hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight );
+      hjets["Nbtags_SSVHEM"]->Fill( Nbtags_SSVHEM, PUweight );
+
+      if ( Nbtags_TCHPM == 0 )
         {
           hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight );
         }
 
-      if ( int(isTagb["TCHPL"].size()) >= 1 )
+      if ( Nbtags_TCHPM >= 1 )
 	{
 	  cutmap["2Jet1b"] += PUweight;
 	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight );
 	}
     }
-
+  /*
   if (njets==2)
     {
       hjets["2nd_pt"]->Fill( p4jets[1].Pt(), PUweight );
@@ -609,6 +636,7 @@ Bool_t Analyzer::Process(Long64_t entry)
     {
       hjets["4th_pt"]->Fill( p4jets[3].Pt(), PUweight );
     }
+  */
 
   if (fVerbose) cout << "done analysis" << endl;
 

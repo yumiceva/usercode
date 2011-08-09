@@ -37,6 +37,11 @@ if IsMC:
     file['sch']   = path+'/results_STsch.root'
     file['WW']    = path+'/results_WW.root'
     file['WZ']    = path+'/results_WZ.root'
+#    file['Wprime800'] = path+'/results_Wprime_800.root'
+    file['Wprime1000'] = path+'/results_Wprime_1000.root'
+    file['Wprime1200'] = path+'/results_Wprime_1200.root'
+    file['Wprime1500'] = path+'/results_Wprime_1500.root'
+    file['Wprime2000'] = path+'/results_Wprime_2000.root'
     
     xsec['ttbar'] = 157.5
     xsec['QCD']   = 84679.3 #79688.
@@ -47,7 +52,13 @@ if IsMC:
     xsec['sch']   = 1.49
     xsec['WW']    = 43.0
     xsec['WZ']    = 18.0
-    
+
+    xsec['Wprime800'] = 5.26
+    xsec['Wprime1000'] = 1.93
+    xsec['Wprime1200'] = 0.077
+    xsec['Wprime1500'] = 0.0228
+    xsec['Wprime2000'] = 0.00342
+
     #Nevents["Wprime800"] = 107347. 
     Nevents["Wprime1000"] = 109204.0
     Nevents["Wprime1200"] = 108990.0
@@ -70,10 +81,15 @@ if IsMC:
     label['Zjets'] = '$Z\\rightarrow l^{+}l^{-}$'
     label['tch'] = 't channel'
     label['tWch'] = 'tW channel'
-
     label['sch'] = 's channel'
     label['WW'] = 'WW'
     label['WZ'] = 'WZ'
+
+    label['Wprime800'] = "W' 0.8 TeV"
+    label['Wprime1000'] = "W' 1 TeV"
+    label['Wprime1200'] = "W' 1.2 TeV"
+    label['Wprime1500'] = "W' 1.5 TeV"
+    label['Wprime2000'] = "W' 2 TeV"
     
     label['Total'] = 'Total MC'
 else:
@@ -115,11 +131,11 @@ cutlabel['OneIsoMu'] = 'One Iso $\mu$'
 cutlabel['LooseMuVeto'] = 'Loose $\mu$ veto'
 cutlabel['ElectronVeto'] = 'Electron veto'
 cutlabel['MET'] = '$E\!\!\!\!/_T>20$~GeV'
-cutlabel['1Jet'] = 'jets > 0'
-cutlabel['2Jet'] = 'jets > 1'
-cutlabel['3Jet'] = 'jets > 2'
-cutlabel['4Jet'] = 'jets > 3'
-cutlabel['2Jet1b'] = 'jets > 1, btags > 0'
+cutlabel['1Jet'] = 'jets $> 0$'
+cutlabel['2Jet'] = 'jets $> 1$'
+cutlabel['3Jet'] = 'jets $> 2$'
+cutlabel['4Jet'] = 'jets $> 3$'
+cutlabel['2Jet1b'] = 'jets $> 1$, btags $> 0$'
 
 cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet','2Jet1b']
 SKIPCUTS = ['3Jet','4Jet']
@@ -203,6 +219,7 @@ if IsMC:
 
          
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','WZ','Total']
+#tablelist = ['Wprime1000','Wprime1200','Wprime1500','Wprime2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch']
     

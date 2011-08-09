@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MuonSelector.h,v 1.1 2011/05/29 21:02:06 yumiceva Exp $
+ version $Id: MuonSelector.h,v 1.2 2011/07/29 23:12:37 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -22,6 +22,7 @@ public:
   { 
     _version = 4;
     _Pz = 0.;
+    _deltaR = -1;
   }
 
   void SetPz( double Pz) { _Pz = Pz; }
@@ -31,6 +32,8 @@ public:
   void Version(int version) {
     _version = version;
   }
+
+  double GetDeltaR() { return _deltaR; }
 
   //bool Pass( TopMuonEvent muon, vector< TopJetEvent > jets, float PVz = -9999 ) {
   //  bool pass = false;
@@ -90,7 +93,7 @@ public:
 
 	      } // jet ID
 	  } // jet loop
-
+	_deltaR = deltaR; // store value
 	if ( deltaR > 0.3 ) pass = true;
 
       } // muon ID
@@ -101,6 +104,6 @@ private:
 
   int _version;
   float _Pz;
-
+  double _deltaR;
 };
 
