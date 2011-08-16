@@ -37,7 +37,7 @@ if IsMC:
     file['sch']   = path+'/results_STsch.root'
     file['WW']    = path+'/results_WW.root'
     file['WZ']    = path+'/results_WZ.root'
-#    file['Wprime800'] = path+'/results_Wprime_800.root'
+    file['Wprime800'] = path+'/results_Wprime_800.root'
     file['Wprime1000'] = path+'/results_Wprime_1000.root'
     file['Wprime1200'] = path+'/results_Wprime_1200.root'
     file['Wprime1500'] = path+'/results_Wprime_1500.root'
@@ -59,7 +59,7 @@ if IsMC:
     xsec['Wprime1500'] = 0.0228
     xsec['Wprime2000'] = 0.00342
 
-    #Nevents["Wprime800"] = 107347. 
+    Nevents["Wprime800"] = 107347. 
     Nevents["Wprime1000"] = 109204.0
     Nevents["Wprime1200"] = 108990.0
     Nevents["Wprime1500"] = 108733.0
@@ -218,8 +218,8 @@ if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
          
-tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','WZ','Total']
-#tablelist = ['Wprime1000','Wprime1200','Wprime1500','Wprime2000']
+#tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','WZ','Total']
+tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch']
     

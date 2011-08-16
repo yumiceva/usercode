@@ -12,6 +12,10 @@ void runAnalysis()
 
   //p->AddInput(new TNamed("PROOF_OUTPUTFILE_LOCATION", "LOCAL"));
 
+  TDSet *mc_wp_800 = new TDSet("top","*","/PATNtupleMaker");
+  mc_wp_800->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-800_Z2_Mu.root");
+  mc_wp_800->Process("Analyzer.C+","sample=Wprime_800");
+
   TDSet *mc_wp_1000 = new TDSet("top","*","/PATNtupleMaker");
   mc_wp_1000->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1000_Z2_Mu.root");
   mc_wp_1000->Process("Analyzer.C+","sample=Wprime_1000");
