@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.25 2011/05/16 19:44:28 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.26 2011/05/17 13:18:25 yumiceva Exp $
 //
 //
 
@@ -309,32 +309,49 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  mygen.bLep_phi = (genevent.leptonicDecayB())->phi();
 	  mygen.bLep_e =   (genevent.leptonicDecayB())->energy();
 	}
-      } else if ( iEvent.getByLabel("genParticles", genParticles) ) { // for W MC
-    reco::GenParticleCollection::const_iterator mcIter ;
-    for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
-      // find a W
-      if ( fabs(mcIter->pdgId()) == 24 && mcIter->energy() > 10.0) {
-	    
-	mygen.Wp_pt = mcIter->pt();
-	mygen.isWevent = 1;
-      }
-      // find a neutrino
-      if ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 || fabs(mcIter->pdgId()) == 16  ) {
+      } else 
+    */
+  Handle<reco::GenParticleCollection> genParticles; 
+  if ( (!iEvent.isRealData()) && iEvent.getByLabel("genParticles", genParticles) ) 
+    {
+      TopMyGenEvent mygen; // mostly for ttbar MC
 
-	if (fabs( (mcIter->mother())->pdgId() ) == 24) {
-	  mygen.nu_pt = mcIter->pt();
-	  mygen.nu_e = mcIter->energy();
-	  mygen.nu_eta = mcIter->eta();
-	  mygen.nu_phi = mcIter->phi();
+      reco::GenParticleCollection::const_iterator mcIter ;
+      for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
+	// find a W
+	if ( fabs(mcIter->pdgId()) == 24 && mcIter->energy() > 10.0) {
+	  
+	  mygen.Wp_pt = mcIter->pt();
+	  mygen.isWevent = 1;
+	}
+	// find a neutrino from W
+	if ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 ) {
+
+	  if (fabs( (mcIter->mother())->pdgId() ) == 24) {
+	    mygen.nu_pt = mcIter->pt();
+	    mygen.nu_e = mcIter->energy();
+	    mygen.nu_eta = mcIter->eta();
+	    mygen.nu_phi = mcIter->phi();
+	    mygen.isSemiLeptonic = 1;
+	  }
+	}
+	// find a lepton from W
+	if ( fabs(mcIter->pdgId()) == 11 || fabs(mcIter->pdgId()) == 13 ) {
+
+          if (fabs( (mcIter->mother())->pdgId() ) == 24) {
+	    mygen.mu_pt = mcIter->pt();
+            mygen.mu_e = mcIter->energy();
+            mygen.mu_eta = mcIter->eta();
+            mygen.mu_phi = mcIter->phi();
+	    if ( fabs(mcIter->pdgId()) == 11 ) mygen.LeptonicChannel = 11; // electrons
+	    else mygen.LeptonicChannel = 13; // muons
+	  }
 	}
       }
-    }
-    
-  }
-  
+      
       _ntuple->gen = mygen;
     }
-    */
+    
 
     // setup jet ID selectors
     pat::strbitset bitset_for_caloJPTjets = jetIdLoose_.getBitTemplate();
@@ -571,6 +588,12 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	topele.d0 = elec->dB();
 	topele.d0err = elec->edB();
 
+	// storing isolation variables
+	topele.iso03_track = elec->dr03TkSumPt();
+	topele.iso03_ecal = elec->dr03EcalRecHitSumEt();
+	topele.iso03_hcal = elec->dr03HcalTowerSumEt();
+	//topele.iso03_ecalveto = elec->isolationR03().emVetoEt;
+	//topele.iso03_hcalveto = elec->isolationR03().hadVetoEt;
 	topele.reliso03 = RelIso;
 	topele.IsTight = int(IsTight);
 	topele.pass70 = int(pass70);
@@ -665,6 +688,11 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         topele.d0 = elec->dB();
         topele.d0err = elec->edB();
 
+	topele.iso03_track = elec->dr03TkSumPt();
+        topele.iso03_ecal = elec->dr03EcalRecHitSumEt();
+        topele.iso03_hcal = elec->dr03HcalTowerSumEt();
+        //topele.iso03_ecalveto = elec->isolationR03().emVetoEt;
+        //topele.iso03_hcalveto = elec->isolationR03().hadVetoEt;
         topele.reliso03 = RelIso;
         topele.IsTight = int(IsTight);
         topele.pass70 = int(pass70);
