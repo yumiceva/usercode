@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.26 2011/05/17 13:18:25 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.27 2011/08/24 19:35:38 yumiceva Exp $
 //
 //
 
@@ -312,12 +312,14 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       } else 
     */
   Handle<reco::GenParticleCollection> genParticles; 
-  if ( (!iEvent.isRealData()) && iEvent.getByLabel("genParticles", genParticles) ) 
+  if ( (!iEvent.isRealData()) && iEvent.getByLabel("prunedGenParticles", genParticles) ) 
     {
       TopMyGenEvent mygen; // mostly for ttbar MC
 
       reco::GenParticleCollection::const_iterator mcIter ;
       for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
+	//cout << "pdgId= " << mcIter->pdgId() << endl;
+
 	// find a W
 	if ( fabs(mcIter->pdgId()) == 24 && mcIter->energy() > 10.0) {
 	  
