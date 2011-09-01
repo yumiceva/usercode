@@ -13,23 +13,24 @@ void runAnalysis()
   //p->AddInput(new TNamed("PROOF_OUTPUTFILE_LOCATION", "LOCAL"));
 
   TDSet *mc_wp_800 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_800->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-800_Z2_Mu.root");
+  //mc_wp_800->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-800_Z2_Mu.root");
+  mc_wp_800->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime800_Mu/Wprime800_Mu.root");
   mc_wp_800->Process("Analyzer.C+","sample=Wprime_800");
 
   TDSet *mc_wp_1000 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_1000->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1000_Z2_Mu.root");
+  mc_wp_1000->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime1000_Mu/Wprime1000_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1000_Z2_Mu.root");
   mc_wp_1000->Process("Analyzer.C+","sample=Wprime_1000");
 
   TDSet *mc_wp_1200 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_1200->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1200_Z2_Mu.root");
+  mc_wp_1200->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime1200_Mu/Wprime1200_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1200_Z2_Mu.root");
   mc_wp_1200->Process("Analyzer.C+","sample=Wprime_1200");
 
   TDSet *mc_wp_1500 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_1500->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1500_Z2_Mu.root");
+  mc_wp_1500->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime1500_Mu/Wprime1500_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1500_Z2_Mu.root");
   mc_wp_1500->Process("Analyzer.C+","sample=Wprime_1500");
 
   TDSet *mc_wp_2000 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_2000->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-2000_Z2_Mu.root");
+  mc_wp_2000->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime2000_Mu/Wprime2000_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-2000_Z2_Mu.root");
   mc_wp_2000->Process("Analyzer.C+","sample=Wprime_2000");
 
   TDSet *mc_ttbar = new TDSet("top","*","/PATNtupleMaker");

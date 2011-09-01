@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MuonSelector.h,v 1.2 2011/07/29 23:12:37 yumiceva Exp $
+ version $Id: MuonSelector.h,v 1.3 2011/08/09 19:48:47 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -60,7 +60,7 @@ public:
         muon.muonhits>0 &&
         muon.normchi2<10 &&
         muon.trackerhits>=11 &&
-	muon.reliso03 < 0.125 &&
+	muon.reliso03 < 0.1 && // was 0.125
 	muon.muonstations > 1 &&
 	muon.pixelhits >= 1 &&
 	fabs(muon.vz - PVz) < 1.
@@ -98,6 +98,52 @@ public:
 
       } // muon ID
     return pass;
+  }
+
+  bool MuonRelax02IsoQCD( TopMuonEvent muon, float PVz, vector< TopJetEvent > jets )
+  {
+
+    bool pass = false;
+
+    if ( muon.pt > 35. &&
+	 fabs(muon.eta)<2.1 &&
+	 muon.IsTrackerMuon==1 &&
+	 fabs(muon.d0)<0.02 &&
+	 muon.muonhits>0 &&
+	 muon.normchi2<10 &&
+	 muon.trackerhits>=11 &&
+	 muon.reliso03 < 0.5 && // HERE
+	 muon.reliso03 > 0.2 && // and HERE
+	 muon.muonstations > 1 &&
+	 muon.pixelhits >= 1 &&
+	 fabs(muon.vz - PVz) < 1.
+	 )
+      {
+        double deltaR = 999.;
+        TLorentzVector tmpp4Mu;
+        tmpp4Mu.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e );
+	
+        for ( vector< TopJetEvent>::iterator ijet=jets.begin(); ijet != jets.end(); ++ijet)
+          {
+	    
+            TopJetEvent jet = *ijet;
+
+            if ( jet.pt > 35. && fabs(jet.eta) < 2.4 )
+              {
+
+                TLorentzVector tmpp4Jet;
+                tmpp4Jet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e );
+                double tmpdeltaR = tmpp4Mu.DeltaR(tmpp4Jet);
+                if ( tmpdeltaR < deltaR ) deltaR = tmpdeltaR;
+		
+              } // jet ID                                                                                                                                                                                                             
+          } // jet loop                                                                                                                                                                                                               
+        _deltaR = deltaR; // store value                                                                                                                                                                                              
+        if ( deltaR > 0.3 ) pass = true;
+
+      } // muon ID                                                                                                                                                                                                                    
+    return pass;
+
   }
 
 private:

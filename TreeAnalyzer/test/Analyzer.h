@@ -35,6 +35,8 @@ private:
   int             fChannel;
   bool            fVerbose;
   bool            fIsMC;
+  bool            fdoQCD1SideBand;
+  bool            fdoQCD2SideBand;
   //HistoManager    *fHist;
   TString         fSample;
   TH1F            *h1test;
@@ -65,6 +67,8 @@ public :
        fVerbose = false;
        fIsMC = true;
        fSample = "";
+       fdoQCD1SideBand = false;
+       fdoQCD2SideBand = false;
      }
    virtual ~Analyzer() { }
    virtual Int_t   Version() const { return 2; }

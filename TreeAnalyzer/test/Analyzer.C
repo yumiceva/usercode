@@ -25,6 +25,7 @@
 
 #include "Analyzer.h"
 #include "BTagWeight.h"
+//#include "Yumiceva/TreeAnalyzer/interface/JetCombinatorics.h"
 
 #include <TStyle.h>
 #include <TSystem.h>
@@ -49,6 +50,8 @@ void Analyzer::ParseInput()
     {
       fVerbose = true;
     }
+  if (fMyOpt.Contains("QCD1")) fdoQCD1SideBand = true;
+  if (fMyOpt.Contains("QCD2")) fdoQCD2SideBand = true;
   if (fMyOpt.Contains("sample"))
     {
       TString tmp = fMyOpt;
@@ -60,6 +63,8 @@ void Analyzer::ParseInput()
 	{
 	  fIsMC = false;
 	  Info("Begin","This sample is treated as DATA");
+	  if (fdoQCD1SideBand) fSample = "dataQCD1";
+	  if (fdoQCD2SideBand) fSample = "dataQCD2";
 	}
       else Info("Begin","This sample is treated as MC");
 
@@ -145,13 +150,13 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["phi_2jet"] = new TH1F("muon_phi_2jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["phi_3jet"] = new TH1F("muon_phi_3jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["phi_4jet"] = new TH1F("muon_phi_4jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
-   hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 30, 0, 1.);
-   hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.);
-   hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.);
-   hmuons["reliso_3jet"] = new TH1F("muon_reliso_3jet"+hname,"Relative Isolation", 30, 0, 1.);
-   hmuons["reliso_4jet"] = new TH1F("muon_reliso_4jet"+hname,"Relative Isolation", 30, 0, 1.);
+   hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 40, 0, 0.2);
+   hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   hmuons["reliso_3jet"] = new TH1F("muon_reliso_3jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   hmuons["reliso_4jet"] = new TH1F("muon_reliso_4jet"+hname,"Relative Isolation", 40, 0, 0.2);
    hmuons["deltaR_cut0"] = new TH1F("deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
-   hmuons["deltaR"] = new TH1F("deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
+   hmuons["deltaR"] = new TH1F("deltaR"+hname,"#DeltaR(#mu,jet)", 80, 0, 4);
    hmuons["d0_cut1"] = new TH1F("d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
    hmuons["pt_cut1"] = new TH1F("muon_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
    hmuons["pt_cut2"] = new TH1F("muon_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 60, 20, 500);
@@ -180,16 +185,14 @@ void Analyzer::SlaveBegin(TTree * tree)
    helectrons["phi_2jet"] = new TH1F("electron_phi_2jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
    helectrons["phi_3jet"] = new TH1F("electron_phi_3jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
    helectrons["phi_4jet"] = new TH1F("electron_phi_4jet"+hname,"#phi^{#mu}", 20, 0, 3.15);
-   helectrons["reliso"] = new TH1F("electron_reliso"+hname,"Relative Isolation", 30, 0, 1.5);
-   helectrons["reliso_1jet"] = new TH1F("electron_reliso_1jet"+hname,"Relative Isolation", 30, 0, 1.5);
-   helectrons["reliso_2jet"] = new TH1F("electron_reliso_2jet"+hname,"Relative Isolation", 30, 0, 1.5);
-   helectrons["reliso_3jet"] = new TH1F("electron_reliso_3jet"+hname,"Relative Isolation", 30, 0, 1.5);
-   helectrons["reliso_4jet"] = new TH1F("electron_reliso_4jet"+hname,"Relative Isolation", 30, 0, 1.5);
+   helectrons["reliso"] = new TH1F("electron_reliso"+hname,"Relative Isolation", 40, 0, 0.2);
+   helectrons["reliso_1jet"] = new TH1F("electron_reliso_1jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   helectrons["reliso_2jet"] = new TH1F("electron_reliso_2jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   helectrons["reliso_3jet"] = new TH1F("electron_reliso_3jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   helectrons["reliso_4jet"] = new TH1F("electron_reliso_4jet"+hname,"Relative Isolation", 40, 0, 0.2);
    helectrons["deltaR_cut0"] = new TH1F("electron_deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    helectrons["deltaR"] = new TH1F("electron_deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    helectrons["d0_cut1"] = new TH1F("electron_d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
-   helectrons["pt_cut1"] = new TH1F("electron_pt_cut1"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
-   helectrons["pt_cut2"] = new TH1F("electron_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["dz"] = new TH1F("electron_dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
       
    hMET["MET"] = new TH1F("MET"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
@@ -204,27 +207,35 @@ void Analyzer::SlaveBegin(TTree * tree)
    
    hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
    hM["WMt_2jet"] = new TH1F("Mt_2jet"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
-   hM["WMt_2jet"] = new TH1F("Mt_2jet"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
-   hM["dijet"] = new TH1F("dijet"+hname,"(jj) mass [GeV/c^{2}]", 50, 0, 300);
-   hM["trijet"] = new TH1F("trijet"+hname,"(jjj) mass [GeV/c^{2}]", 50, 0, 300);
-   hM["Wprime"] = new TH1F("Wprime"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_0btag"] = new TH1F("Wprime_0btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_0btag_light"] = new TH1F("Wprime_0btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_0btag_bb"] = new TH1F("Wprime_0btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_0btag_cc"] = new TH1F("Wprime_0btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_1btag"] = new TH1F("Wprime_1btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+   hM["dijet"] = new TH1F("dijet"+hname,"(jj) mass [GeV/c^{2}]", 50, 0, 1000);
+   hM["trijet"] = new TH1F("trijet"+hname,"(jjj) mass [GeV/c^{2}]", 50, 0, 1000);
+   hM["Wprime"] = new TH1F("Wprime"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_0btag"] = new TH1F("Wprime_0btag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_0btag_light"] = new TH1F("Wprime_0btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_0btag_bb"] = new TH1F("Wprime_0btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_0btag_cc"] = new TH1F("Wprime_0btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_1btag"] = new TH1F("Wprime_1btag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
    if (fSample == "WJets")
      {
-       hM["Wprime_0btag_light"] = new TH1F("Wprime_0btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-       hM["Wprime_0btag_bb"] = new TH1F("Wprime_0btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-       hM["Wprime_0btag_cc"] = new TH1F("Wprime_0btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);       
-       hM["Wprime_1btag_light"] = new TH1F("Wprime_1btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-       hM["Wprime_1btag_bb"] = new TH1F("Wprime_1btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-       hM["Wprime_1btag_cc"] = new TH1F("Wprime_1btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
+       hM["Wprime_0btag_light"] = new TH1F("Wprime_0btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_0btag_bb"] = new TH1F("Wprime_0btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_0btag_cc"] = new TH1F("Wprime_0btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);       
+       hM["Wprime_1btag_light"] = new TH1F("Wprime_1btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_1btag_bb"] = new TH1F("Wprime_1btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_1btag_cc"] = new TH1F("Wprime_1btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
      }
-   hM["Wprime_1onlybtag"] = new TH1F("Wprime_1onlybtag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   hM["Wprime_2btag"] = new TH1F("Wprime_2btag"+hname,"W' invariant mass [GeV/c^{2}]", 60, 20, 2600);
-   
+   hM["Wprime_1onlybtag"] = new TH1F("Wprime_1onlybtag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_2btag"] = new TH1F("Wprime_2btag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   if ( fSample.Contains("Wprime") )
+     {
+       hM["Wprime_0btag_MChad"] = new TH1F("Wprime_0btag_MChad"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_0btag_MCsemimu"] = new TH1F("Wprime_0btag_MCsemimu"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_0btag_MCsemie"] = new TH1F("Wprime_0btag_MCsemie"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_1btag_MChad"] = new TH1F("Wprime_1btag_MChad"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_1btag_MCsemimu"] = new TH1F("Wprime_1btag_MCsemimu"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+       hM["Wprime_1btag_MCsemie"] = new TH1F("Wprime_1btag_MCsemie"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+     }
+
    hjets["pt"] = new TH1F("jet_pt"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
    hjets["pt_b"] = new TH1F("jet_pt_b"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
    hjets["pt_c"] = new TH1F("jet_pt_c"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
@@ -242,6 +253,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["2nd_eta"] = new TH1F("jet2_eta"+hname,"2nd jet #eta",50, -2.4, 2.4);
    hjets["phi"] = new TH1F("jet_phi"+hname,"jet #phi",50, 0, 3.15);
    hjets["Njets"] = new TH1F("Njets"+hname,"jet multiplicity",4,0.5,4.5);
+   hjets["Njets_1tag"] = new TH1F("Njets_1tag"+hname,"jet multiplicity",4,0.5,4.5);
    hjets["Nbtags_TCHPM"] = new TH1F("Nbjets_TCHPM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    
@@ -271,6 +283,7 @@ void Analyzer::SlaveBegin(TTree * tree)
        fCutLabels.push_back("3Jet");
        fCutLabels.push_back("4Jet");
        fCutLabels.push_back("2Jet1b");
+       fCutLabels.push_back("2Jet2b");
      }
    else
      { //electron+jets
@@ -285,6 +298,7 @@ void Analyzer::SlaveBegin(TTree * tree)
        fCutLabels.push_back("3Jet");
        fCutLabels.push_back("4Jet");
        fCutLabels.push_back("2Jet1b");
+       fCutLabels.push_back("2Jet2b");
      }
    hcutflow = new TH1D("cutflow","cut flow", fCutLabels.size(), 0.5, fCutLabels.size() +0.5 );
 
@@ -376,6 +390,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   float PVz = 0.;
   TLorentzVector p4muon, p4ele, p4lepton, p4MET;
   TLorentzVector p4Nu, p4OtherNu;
+  TLorentzVector p4QCDmuon;
 
   vector< TLorentzVector > p4jets;
 
@@ -413,8 +428,12 @@ Bool_t Analyzer::Process(Long64_t entry)
   //////////////////////////////////
   int nloosemuons = 0;
   int ntightmuons = 0;
+  int nqcdmuons = 0;
+
   double RelIso = -1.;
   double deltaR = -1.;
+  double QCDRelIso = -1.;
+  double QCDdeltaR = -1;
 
   for ( size_t imu=0; imu < total_muons; ++imu) {
      
@@ -439,6 +458,18 @@ Bool_t Analyzer::Process(Long64_t entry)
 	RelIso = muon.reliso03;
 	
       }
+    // check muon in QCD control region
+    if ( fMuSelector.MuonRelax02IsoQCD( muon, PVz, jets ) ) 
+      {
+	nqcdmuons++;
+	// keep the leading muon for selection
+	if (nqcdmuons==1) {
+	  p4QCDmuon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
+	  QCDRelIso = muon.reliso03;
+	  QCDdeltaR = fMuSelector.GetDeltaR();
+	}
+      }
+
   }
 
   if (fVerbose) cout << "done muons" << endl;
@@ -475,22 +506,36 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   if ( fChannel == 1 ) // muon+jets
     {
-      if ( ntightmuons != 1 ) return kTRUE;
-      cutmap["OneIsoMu"] += PUweight;
-      hmuons["pt"]->Fill( p4muon.Pt(), PUweight );
-      hmuons["eta"]->Fill( p4muon.Eta(), PUweight );
-      hmuons["phi"]->Fill( p4muon.Phi(), PUweight );
+
+      if (fdoQCD2SideBand) {
+
+	if (nqcdmuons  == 0) return kTRUE;
+	cutmap["OneIsoMu"] += PUweight;
+
+	p4lepton = p4QCDmuon;
+	RelIso = QCDRelIso;
+	deltaR = QCDdeltaR;
+      } else {
+
+	if ( ntightmuons != 1 ) return kTRUE;
+	cutmap["OneIsoMu"] += PUweight;
+	
+	if ( nloosemuons > 1 ) return kTRUE;
+	cutmap["LooseMuVeto"] += PUweight;
+	
+	if ( nlooseelectrons > 0 ) return kTRUE;
+	cutmap["ElectronVeto"] += PUweight;
+	
+	p4lepton = p4muon;
+	if (fVerbose) cout << "got a good lepton" << endl;
+      }
+
+      hmuons["pt"]->Fill( p4lepton.Pt(), PUweight );
+      hmuons["eta"]->Fill( p4lepton.Eta(), PUweight );
+      hmuons["phi"]->Fill( p4lepton.Phi(), PUweight );
       hmuons["reliso"]->Fill( RelIso, PUweight );
       hmuons["deltaR"]->Fill( deltaR, PUweight );
 
-      if ( nloosemuons > 1 ) return kTRUE;
-      cutmap["LooseMuVeto"] += PUweight;
-
-      if ( nlooseelectrons > 0 ) return kTRUE;
-      cutmap["ElectronVeto"] += PUweight;
-
-      p4lepton = p4muon;
-      if (fVerbose) cout << "got a good lepton" << endl;
     }
   else // electron+jets
     {
@@ -507,8 +552,10 @@ Bool_t Analyzer::Process(Long64_t entry)
 		      0.,
 		      ntuple->PFMETphi,
 		      ntuple->PFMET );
+  
+  if (fdoQCD1SideBand && p4MET.Et() > 20.) return kTRUE;
+  else if ( p4MET.Et() <= 20. && fdoQCD2SideBand==false ) return kTRUE;
 
-  if ( p4MET.Et() <= 20. ) return kTRUE;
   if (fVerbose) cout << "pass MET cut" << endl;
 
   cutmap["MET"] += PUweight;
@@ -560,6 +607,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   // JETS
   ////////////////////////////////
   
+  //JetCombinatorics myCombi = JetCombinatorics();
+
   int njets = 0;
   map< string, vector<float> > bdisc;
   map< string, vector<bool> >  isTagb;
@@ -665,6 +714,7 @@ Bool_t Analyzer::Process(Long64_t entry)
       hjets["2nd_eta"]->Fill( p4jets[1].Eta(), PUweight );
 
       hmuons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
+      hmuons["reliso_2jet"]->Fill( RelIso, PUweight );
       hMET["MET_2jet"]->Fill( p4MET.Pt(), PUweight );
       hM["WMt_2jet"]->Fill( WMt, PUweight );
 
@@ -693,25 +743,55 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      int FH = ntuple->flavorHistory;
 	      if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_0btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb );
 	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_0btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb );
+	      else if ( FH == 11 ) hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb );
 	    }
+	  if (fSample.Contains("Wprime"))
+	    {
+	      if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_0btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb );
+	      else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_0btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb );
+	      else hM["Wprime_0btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb );
+	    }
+
         }
 
       if ( Nbtags_TCHPM >= 1 )
 	{
-	  cutmap["2Jet1b"] += PUweight;
-	  hM["dijet"]->Fill( p4Dijet.M(), PUweight*SFb );
+	  cutmap["2Jet1b"] += PUweight*SFb;
+	  hjets["Njets_1tag"]->Fill( njets, PUweight*SFb );
+
+	  // calculate dijet mass closest to W mass
+	  double the_dijet_mass = 0;
+	  double sigma2 = 13.*13.;
+	  double tmpchi2 = 999999.;
+	  for ( size_t itejet = 0; itejet < p4jets.size(); ++itejet )
+	    {
+	      for ( size_t jtejet = itejet+1; jtejet < p4jets.size(); ++jtejet )
+		{
+		  TLorentzVector tmpvv = p4jets[itejet] + p4jets[jtejet];
+		  double tmpmass = tmpvv.M();
+		  if ( (tmpmass - 83.8 )*(tmpmass - 83.8)/sigma2 < tmpchi2 ) { tmpchi2 = (tmpmass - 83.8 )*(tmpmass - 83.8)/sigma2; the_dijet_mass = tmpmass; }
+		} 
+	    }
+	  hM["dijet"]->Fill( the_dijet_mass, PUweight*SFb );
 	  if ( njets > 2 ) {
 	    TLorentzVector p4Trijet = p4jets[0] + p4jets[1] + p4jets[2];
 	    hM["trijet"]->Fill( p4Trijet.M(), PUweight*SFb );
 	  }
+	  
 	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb );
+	  if (fSample.Contains("Wprime"))
+            {
+              if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb );
+              else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb );
+              else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb );
+            }
+
 	  if (fSample=="WJets")
             {
 	      int FH = ntuple->flavorHistory;
               if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb );
 	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb );
+	      else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb );
             }
 
 	}

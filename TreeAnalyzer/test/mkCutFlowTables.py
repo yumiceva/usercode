@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 from ROOT import *
-
+from decimal import Decimal
 import sys,os, math
 
 path = "./"
@@ -57,7 +57,7 @@ if IsMC:
     xsec['Wprime1000'] = 1.93
     xsec['Wprime1200'] = 0.773
     xsec['Wprime1500'] = 0.228
-    xsec['Wpriem2000'] = 0.034
+    xsec['Wprime2000'] = 0.034
 
     Nevents["Wprime800"] = 107347. 
     Nevents["Wprime1000"] = 109204.0
@@ -173,14 +173,14 @@ for sample in keys:
             cutmap[ cutname ] = int(float(acut))
             cutmaperr[ cutname ] = math.sqrt( cutmap[cutname] )
         else:
-            cutmap[ cutname ] = float(acut)
-            cutmaperr[ cutname ] = math.sqrt( cutmap[cutname] )
+            cutmap[ cutname ] = Decimal(str(acut))
+            cutmaperr[ cutname ] = cutmap[cutname].sqrt() #math.sqrt( cutmap[cutname] )
             
     roofile.Close()
     
     scale = 1.
     if IsMC and Lumi>0:
-        scale = ( Lumi * xsec[ sample ] / Nevents[sample] )
+        scale = Decimal( str( Lumi * xsec[ sample ] / Nevents[sample] ))
         print "sample weight = "+ str( xsec[ sample ] / Nevents[sample] )
         weightmap[sample] = xsec[ sample ] / Nevents[sample]
     ilabel = 0
@@ -212,14 +212,15 @@ cutflowerr["Total"] = allmaperr
 
 # write latex
 #sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
-sortedcutlist = ['GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','2Jet1b']
+sortedcutlist = ['GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto']#,'MET','1Jet','2Jet','2Jet1b']
+sortedcutlist2= ['MET','1Jet','2Jet','2Jet1b']
 
 if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
          
-#tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','WZ','Total']
-tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
+tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','WZ','Total']
+#tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch']
     
@@ -293,6 +294,67 @@ outtex.write(''' \hline
 \end{centering}
 \end{table}
 ''')
+
+
+if len(sortedcutlist2) > 0:
+
+    
+    # Write Header
+    outtex.write('''
+\\begin{table}[h]
+\\begin{centering}
+    ''')
+    if IsMC:
+        aline = '\\begin{tabular}{|l|'+'c|'*(len(sortedcutlist2)+1) +'} \hline \n'
+        if Lumi<=0:
+            aline = '\\begin{tabular}{|l|'+'c|'*len(sortedcutlist2) +'} \hline \n'
+        outtex.write(aline)
+        #outtex.write('Cut & ttbar & Wjets & Zjets & QCD & STtch \hline')
+        line = "Sample"
+        for icut in sortedcutlist2:
+            line += sss+cutlabel[icut]
+        outtex.write(line+" \\\ \hline \n")
+    else:
+        aline = '\\begin{tabular}{|l|r|r|r|} \hline \n'
+            
+        outtex.write(aline)
+        line = "Sample"
+        for icut in sortedcutlist2:
+            line += sss+cutlabel[icut]
+        outtex.write(line+" \\\ \hline \n")
+
+    ilabel = 0
+    #for key in allmap.keys():
+    # Write content
+    for sample in tablelist:
+        
+        line = label[sample]
+
+        for key in sortedcutlist2:
+            cutmap = cutflow[sample]
+            cutmaperr = cutflowerr[sample]
+            acut = cutmap[key]
+            acuterr = cutmaperr[key]
+            stracut = str(int(acut))
+            stracuterr = str(round(math.sqrt(acuterr),1))
+            #stracut = stracut.strip('.0')
+            if IsMC:
+                acut = round(cutmap[key],1)
+                stracut = str(acut)
+                line += sss + stracut + " $\\pm$ " + stracuterr
+            else:
+                line += sss + stracut
+        if sample=="Total":line = '\\hline \n'+line
+        outtex.write(line+" \\\ \n")
+        ilabel += 1
+            
+    outtex.write(''' \hline
+\end{tabular}
+%\caption{MC cutflow}\label{tab:tab}
+\end{centering}
+\end{table}
+    ''')
+    
 
 print "file "+texname+ " has been written."
 
