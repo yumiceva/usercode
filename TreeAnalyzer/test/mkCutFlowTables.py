@@ -35,6 +35,9 @@ if IsMC:
     file['tch']   = path+'/results_STtch.root'
     file['tWch']  = path+'/results_STtWch.root'
     file['sch']   = path+'/results_STsch.root'
+    file['tch_bar']   = path+'/results_STtch_bar.root'
+    file['tWch_bar']  = path+'/results_STtWch_bar.root'
+    file['sch_bar']   = path+'/results_STsch_bar.root'
     file['WW']    = path+'/results_WW.root'
     file['WZ']    = path+'/results_WZ.root'
     file['Wprime800'] = path+'/results_Wprime_800.root'
@@ -44,15 +47,17 @@ if IsMC:
     file['Wprime2000'] = path+'/results_Wprime_2000.root'
     
     xsec['ttbar'] = 157.5
-    xsec['QCD']   = 84679.3 #79688.
+    xsec['QCD']   = 84679.3
     xsec['Wjets'] = 31314.0
     xsec['Zjets'] = 3048.0
-    xsec['tch']   = 20.93
-    xsec['tWch']  = 10.6
-    xsec['sch']   = 1.49
+    xsec['tch']   = 41.92
+    xsec['tWch']  = 7.87
+    xsec['sch']   = 3.19
+    xsec['tch_bar']   = 22.65
+    xsec['tWch_bar']  = 7.87
+    xsec['sch_bar']   = 1.44
     xsec['WW']    = 43.0
     xsec['WZ']    = 18.0
-
     xsec['Wprime800'] = 5.26
     xsec['Wprime1000'] = 1.93
     xsec['Wprime1200'] = 0.773
@@ -71,7 +76,10 @@ if IsMC:
     Nevents['Zjets'] = 32475188.0
     Nevents['tch']   = 3897643.0
     Nevents['tWch']  = 813629.0
-    Nevents['sch']   = 137916.0
+    Nevents['sch']   = 259762.0
+    Nevents['tch_bar']   = 1943821.0 
+    Nevents['tWch_bar']  = 809293.0
+    Nevents['sch_bar']   = 137916.0            
     Nevents['WW']    = 4223922.0
     Nevents['WZ']    = 4263076.0
     
@@ -79,9 +87,12 @@ if IsMC:
     label['QCD'] = 'QCD'
     label['Wjets'] = '$W\\rightarrow l\\nu$'
     label['Zjets'] = '$Z\\rightarrow l^{+}l^{-}$'
-    label['tch'] = 't channel'
-    label['tWch'] = 'tW channel'
-    label['sch'] = 's channel'
+    label['tch'] = 'top t-ch'
+    label['tWch'] = 'top tW-ch'
+    label['sch'] = 'top s-ch'
+    label['tch_bar'] = 'anti-top t-ch'
+    label['tWch_bar'] = 'anti-top tW-ch'
+    label['sch_bar'] = 'anti-top s-ch'
     label['WW'] = 'WW'
     label['WZ'] = 'WZ'
 
@@ -136,8 +147,9 @@ cutlabel['2Jet'] = 'jets $> 1$'
 cutlabel['3Jet'] = 'jets $> 2$'
 cutlabel['4Jet'] = 'jets $> 3$'
 cutlabel['2Jet1b'] = 'jets $> 1$, btags $> 0$'
+cutlabel['2Jet2b'] = 'jets $> 1$, btags $> 1$'
 
-cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet','2Jet1b']
+cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet','2Jet1b','2Jet2b']
 SKIPCUTS = ['3Jet','4Jet']
 
 allmap = {}
@@ -213,16 +225,16 @@ cutflowerr["Total"] = allmaperr
 # write latex
 #sortedcutlist = ['CleanFilters','HLT','GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto','MET','1Jet','2Jet','3Jet','4Jet']
 sortedcutlist = ['GoodPV','OneIsoMu','LooseMuVeto','ElectronVeto']#,'MET','1Jet','2Jet','2Jet1b']
-sortedcutlist2= ['MET','1Jet','2Jet','2Jet1b']
+sortedcutlist2= ['MET','1Jet','2Jet','2Jet1b','2Jet2b']
 
 if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
          
-tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch','sch','WW','WZ','Total']
-#tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
+#tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
+tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
 if Lumi<=0:
-    tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tWch']
+    tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
     
 if not IsMC:
     #tablelist = ['MB','Jun14','Jul16','Prompt','Total']

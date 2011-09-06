@@ -236,18 +236,18 @@ void Analyzer::SlaveBegin(TTree * tree)
        hM["Wprime_1btag_MCsemie"] = new TH1F("Wprime_1btag_MCsemie"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
      }
 
-   hjets["pt"] = new TH1F("jet_pt"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_b"] = new TH1F("jet_pt_b"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_c"] = new TH1F("jet_pt_c"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_l"] = new TH1F("jet_pt_l"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_btag"] = new TH1F("jet_pt_btag"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_btag_b"] = new TH1F("jet_pt_btag_b"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_btag_c"] = new TH1F("jet_pt_btag_c"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["pt_btag_l"] = new TH1F("jet_pt_btag_l"+hname,"jet p_{T} [GeV/c]", 50, 30, 500);
-   hjets["1st_pt"] = new TH1F("jet1_pt"+hname,"Leading jet p_{T} [GeV/c]",50, 30, 500);
-   hjets["2nd_pt"] = new TH1F("jet2_pt"+hname,"2nd jet p_{T} [GeV/c]",50, 30, 500);
-   hjets["3rd_pt"] = new TH1F("jet3_pt"+hname,"3rd jet p_{T} [GeV/c]",50, 30, 500);
-   hjets["4th_pt"] = new TH1F("jet4_pt"+hname,"4th jet p_{T} [GeV/c]",50, 30, 500);
+   hjets["pt"] = new TH1F("jet_pt"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_b"] = new TH1F("jet_pt_b"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_c"] = new TH1F("jet_pt_c"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_l"] = new TH1F("jet_pt_l"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_btag"] = new TH1F("jet_pt_btag"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_btag_b"] = new TH1F("jet_pt_btag_b"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_btag_c"] = new TH1F("jet_pt_btag_c"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_btag_l"] = new TH1F("jet_pt_btag_l"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["1st_pt"] = new TH1F("jet1_pt"+hname,"Leading jet p_{T} [GeV/c]",60, 30, 800);
+   hjets["2nd_pt"] = new TH1F("jet2_pt"+hname,"2nd jet p_{T} [GeV/c]",60, 30, 800);
+   hjets["3rd_pt"] = new TH1F("jet3_pt"+hname,"3rd jet p_{T} [GeV/c]",60, 30, 800);
+   hjets["4th_pt"] = new TH1F("jet4_pt"+hname,"4th jet p_{T} [GeV/c]",60, 30, 800);
    hjets["eta"] = new TH1F("jet_eta"+hname,"jet #eta",50, -2.4, 2.4);
    hjets["1st_eta"] = new TH1F("jet1_eta"+hname,"Leading jet #eta",50, -2.4, 2.4);
    hjets["2nd_eta"] = new TH1F("jet2_eta"+hname,"2nd jet #eta",50, -2.4, 2.4);
@@ -256,7 +256,10 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["Njets_1tag"] = new TH1F("Njets_1tag"+hname,"jet multiplicity",4,0.5,4.5);
    hjets["Nbtags_TCHPM"] = new TH1F("Nbjets_TCHPM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
-   
+   hjets["Dijet_deltaPhi"] = new TH1F("Dijet_deltaPhi"+hname,"#Delta #phi(j,j)",30,-3.15,3.15);
+   hjets["tb_deltaPhi"] = new TH1F("tb_deltaPhi"+hname,"#Delta #phi(t,b)",30,-3.15,3.15);
+   hjets["tb_deltaR"] = new TH1F("tb_deltaR"+hname,"#Delta R(t,b)",30,0,7);
+
    map<string,TH1* > allhistos = hmuons;
    allhistos.insert( helectrons.begin(), helectrons.end() );
    allhistos.insert( hMET.begin(), hMET.end() );
@@ -675,7 +678,10 @@ Bool_t Analyzer::Process(Long64_t entry)
       int number_of_b = 0;
       int number_of_c = 0;
       int number_of_l = 0;
-      float SFb = 1.;
+      float SFb_0tag = 1.;
+      float SFb_only1tag = 1.;
+      float SFb_1tag = 1.;
+      float SFb_2tag = 1.;
 
       for ( size_t kk=0; kk < p4jets.size(); ++kk)
 	{
@@ -692,21 +698,6 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      if ( abs(listflavor[kk])==1 || abs(listflavor[kk])==2 || abs(listflavor[kk])==3 || abs(listflavor[kk])==21 ) hjets["pt_btag_l"]->Fill( p4jets[kk].Pt(), PUweight );
 	    }
 	}
-      if ( fIsMC ) 
-	{
-	  BTagWeight b(1,3); // number of tags 1 to 3
-	  BTagWeight::JetInfo bj(0.63,0.91); // mean MC eff and mean SF
-	  BTagWeight::JetInfo cj(0.15,0.91);
-	  BTagWeight::JetInfo lj(0.03,1.22);
-
-	  vector<BTagWeight::JetInfo> j;
-	  for(int i=0;i<number_of_b;i++)j.push_back(bj);
-	  for(int i=0;i<number_of_c;i++)j.push_back(cj);
-	  for(int i=0;i<number_of_l;i++)j.push_back(lj);
-	  //cout << " btag weight:" << endl;
-	  //std::cout << number_of_b << "   " << number_of_c << "  " << "  " << number_of_l << "  " << b.weight(j,1) << " +- " <<  0 << std::endl; 
-	  SFb = b.weight(j,1);
-	}
 
       hjets["1st_pt"]->Fill( p4jets[0].Pt(), PUweight );
       hjets["2nd_pt"]->Fill( p4jets[1].Pt(), PUweight );
@@ -719,6 +710,11 @@ Bool_t Analyzer::Process(Long64_t entry)
       hM["WMt_2jet"]->Fill( WMt, PUweight );
 
       TLorentzVector p4Dijet = p4jets[0] + p4jets[1];
+      double Dijet_deltaPhi = p4jets[0].DeltaPhi(p4jets[1]);
+      TLorentzVector p4top = p4jets[2] + p4LepW;
+      double tb_deltaPhi = p4top.DeltaPhi( p4jets[1] );
+      double tb_deltaR = p4top.DeltaR( p4jets[1] );
+
       TLorentzVector p4Wprime = p4LepW + p4Dijet;
       hM["Wprime"]->Fill( p4Wprime.M(), PUweight );
 
@@ -732,32 +728,77 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  if ( isTagb["TCHPM"][itag] ) Nbtags_TCHPM++;
 	  if ( isTagb["SSVHEM"][itag] ) Nbtags_SSVHEM++;
 	}
-      hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb );
-      hjets["Nbtags_SSVHEM"]->Fill( Nbtags_SSVHEM, PUweight*SFb );
+
+      // compute b-tag event weight
+      if ( fIsMC )
+        {
+
+	  // zeto tag
+          BTagWeight b0(0,0); // number of tags 
+	  BTagWeight::JetInfo bj(0.63,0.91); // mean MC eff and mean SF
+	  BTagWeight::JetInfo cj(0.15,0.91);
+          double light_mceff = 0.017;
+          if ( 100 < p4jets[0].Pt() && p4jets[0].Pt() <= 200 ) light_mceff = 0.04;
+          if ( 200 < p4jets[0].Pt() && p4jets[0].Pt() <= 300 ) light_mceff = 0.08;
+          if ( 300 < p4jets[0].Pt() && p4jets[0].Pt() <= 400 ) light_mceff = 0.12;
+          if ( 400 < p4jets[0].Pt() ) light_mceff = 0.14;
+	  BTagWeight::JetInfo lj(light_mceff,1.22);
+
+          vector<BTagWeight::JetInfo> j;
+          for(int i=0;i<number_of_b;i++)j.push_back(bj);
+          for(int i=0;i<number_of_c;i++)j.push_back(cj);
+          for(int i=0;i<number_of_l;i++)j.push_back(lj);
+          
+	  if (Nbtags_TCHPM==0) {
+	    SFb_0tag = b0.weight(j,0);
+	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_0tag );
+	  }
+	  // only one tag
+	  BTagWeight b11(1,1); // number of tags
+          if (Nbtags_TCHPM==1) {
+	    SFb_only1tag = b11.weight(j,1);
+	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_only1tag );
+	  }
+	  // at least one tag
+	  BTagWeight b1(1,Nbtags_TCHPM); // number of tags
+	  if (Nbtags_TCHPM>=1) SFb_1tag = b1.weight(j,1);
+	  // at least two tags
+	  BTagWeight b2(2,Nbtags_TCHPM); // number of tags
+	  if (Nbtags_TCHPM>=2) {
+	    SFb_2tag = b2.weight(j,2);
+	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_2tag );
+	  }
+        }
+      else hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM );
+
+      //hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb );
+      //hjets["Nbtags_SSVHEM"]->Fill( Nbtags_SSVHEM, PUweight*SFb );
 
       if ( Nbtags_TCHPM == 0 )
         {
-          hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight*SFb );
+          hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
 	  if (fSample=="WJets")
 	    {
 	      int FH = ntuple->flavorHistory;
-	      if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_0btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_0btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else if ( FH == 11 ) hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb );
+	      if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_0btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_0btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+	      else if ( FH == 11 ) hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
 	    }
 	  if (fSample.Contains("Wprime"))
 	    {
-	      if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_0btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_0btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else hM["Wprime_0btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb );
+	      if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_0btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+	      else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_0btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+	      else hM["Wprime_0btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
 	    }
 
         }
 
-      if ( Nbtags_TCHPM >= 1 )
+      // check if the two leading jets have a b jet 
+      if ( Nbtags_TCHPM >= 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) )
 	{
-	  cutmap["2Jet1b"] += PUweight*SFb;
-	  hjets["Njets_1tag"]->Fill( njets, PUweight*SFb );
+
+	  cutmap["2Jet1b"] += PUweight*SFb_1tag;
+	  hjets["Njets_1tag"]->Fill( njets, PUweight*SFb_1tag );
 
 	  // calculate dijet mass closest to W mass
 	  double the_dijet_mass = 0;
@@ -772,32 +813,39 @@ Bool_t Analyzer::Process(Long64_t entry)
 		  if ( (tmpmass - 83.8 )*(tmpmass - 83.8)/sigma2 < tmpchi2 ) { tmpchi2 = (tmpmass - 83.8 )*(tmpmass - 83.8)/sigma2; the_dijet_mass = tmpmass; }
 		} 
 	    }
-	  hM["dijet"]->Fill( the_dijet_mass, PUweight*SFb );
+	  hM["dijet"]->Fill( the_dijet_mass, PUweight*SFb_1tag );
+	  hjets["Dijet_deltaPhi"]->Fill( Dijet_deltaPhi, PUweight*SFb_1tag );
+	  hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
+	  hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
+
 	  if ( njets > 2 ) {
 	    TLorentzVector p4Trijet = p4jets[0] + p4jets[1] + p4jets[2];
-	    hM["trijet"]->Fill( p4Trijet.M(), PUweight*SFb );
+	    hM["trijet"]->Fill( p4Trijet.M(), PUweight*SFb_1tag );
 	  }
 	  
-	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb );
+	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
 	  if (fSample.Contains("Wprime"))
             {
-              if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb );
-              else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb );
-              else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb );
+              if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+              else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+              else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
             }
 
 	  if (fSample=="WJets")
             {
 	      int FH = ntuple->flavorHistory;
-              if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb );
-	      else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb );
+              if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	      else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
             }
 
 	}
 
-      if ( Nbtags_TCHPM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb );
-      if ( Nbtags_TCHPM > 1 ) hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb );
+      if ( Nbtags_TCHPM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb_only1tag );
+      if ( Nbtags_TCHPM > 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) ) {
+	hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
+	cutmap["2Jet2b"] += PUweight*SFb_2tag;
+      }
 
     }
   /*

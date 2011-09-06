@@ -1,5 +1,5 @@
 
-void runAnalysis() 
+void runAnalysis(TString sample="all",bool NoGUI=false) 
 {
   TString desdir = "/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/";
   TProof *p = TProof::Open("lite://", desdir ,desdir);
@@ -10,71 +10,147 @@ void runAnalysis()
 
   p->Archive(" ",desdir);
 
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
   //p->AddInput(new TNamed("PROOF_OUTPUTFILE_LOCATION", "LOCAL"));
 
-  TDSet *mc_wp_800 = new TDSet("top","*","/PATNtupleMaker");
-  //mc_wp_800->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-800_Z2_Mu.root");
-  mc_wp_800->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime800_Mu/Wprime800_Mu.root");
-  mc_wp_800->Process("Analyzer.C+","sample=Wprime_800");
-
-  TDSet *mc_wp_1000 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_1000->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime1000_Mu/Wprime1000_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1000_Z2_Mu.root");
-  mc_wp_1000->Process("Analyzer.C+","sample=Wprime_1000");
-
-  TDSet *mc_wp_1200 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_1200->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime1200_Mu/Wprime1200_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1200_Z2_Mu.root");
-  mc_wp_1200->Process("Analyzer.C+","sample=Wprime_1200");
-
-  TDSet *mc_wp_1500 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_1500->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime1500_Mu/Wprime1500_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-1500_Z2_Mu.root");
-  mc_wp_1500->Process("Analyzer.C+","sample=Wprime_1500");
-
-  TDSet *mc_wp_2000 = new TDSet("top","*","/PATNtupleMaker");
-  mc_wp_2000->Add("/uscmst1b_scratch/lpc1/cmsroc/yumiceva/wprime_prod_Aug26/Wprime2000_Mu/Wprime2000_Mu.root");//"/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/Wprime_M-2000_Z2_Mu.root");
-  mc_wp_2000->Process("Analyzer.C+","sample=Wprime_2000");
-
-  TDSet *mc_ttbar = new TDSet("top","*","/PATNtupleMaker");
-  mc_ttbar->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/TTbar_Z2_Mu.root");
-  mc_ttbar->Process("Analyzer.C+","sample=ttbar");
-
-  TDSet *mc_Wjets = new TDSet("top","*","/PATNtupleMaker");
-  mc_Wjets->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/WJets_Z2_Mu.root");
-  mc_Wjets->Process("Analyzer.C+","sample=WJets");
-
-  TDSet *mc_QCD = new TDSet("top","*","/PATNtupleMaker");
-  mc_QCD->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/QCD_Z2_Mu.root");
-  mc_QCD->Process("Analyzer.C+","sample=QCD");
-
-  TDSet *mc_STsch = new TDSet("top","*","/PATNtupleMaker");
-  mc_STsch->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/STsch_Z2_Mu.root");
-  mc_STsch->Process("Analyzer.C+","sample=STsch");
-
-  TDSet *mc_STtch = new TDSet("top","*","/PATNtupleMaker");
-  mc_STtch->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/STtch_Z2_Mu.root");
-  mc_STtch->Process("Analyzer.C+","sample=STtch");
-
-  TDSet *mc_STtWch = new TDSet("top","*","/PATNtupleMaker");
-  mc_STtWch->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/STtWch_Z2_Mu.root");
-  mc_STtWch->Process("Analyzer.C+","sample=STtWch");
-
-  TDSet *mc_WW = new TDSet("top","*","/PATNtupleMaker");
-  mc_WW->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/WW_Z2_Mu.root");
-  mc_WW->Process("Analyzer.C+","sample=WW");
-
-  TDSet *mc_WZ = new TDSet("top","*","/PATNtupleMaker");
-  mc_WZ->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/WZ_Z2_Mu.root");
-  mc_WZ->Process("Analyzer.C+","sample=WZ");
-
-  TDSet *mc_ZJets = new TDSet("top","*","/PATNtupleMaker");
-  mc_ZJets->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011MC/42x_v8/ZJets_Z2_Mu.root");
-  mc_ZJets->Process("Analyzer.C+","sample=ZJets");
-
-  TDSet *data = new TDSet("top","*","/PATNtupleMaker");
-  data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8/SingleMu_May10ReReco_Mu.root");
-  data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8/SingleMu_PromptReco-v4_Mu.root");
-  data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8/SingleMu_PromptReco-v4_exlcusive_Mu.root");
-  data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8/SingleMu_PromptReco-v5_Mu.root");
-  data->Process("Analyzer.C+","sample=data");
-
+  if (sample=="MC"||sample=="Wprime800"||sample=="all")
+    {
+      TDSet *mc_wp_800 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_800->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/Wprime800_Mu.root");
+      mc_wp_800->Process("Analyzer.C+","sample=Wprime_800");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="Wprime1000"||sample=="all")
+    {
+      TDSet *mc_wp_1000 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_1000->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/Wprime1000_Mu.root");
+      mc_wp_1000->Process("Analyzer.C+","sample=Wprime_1000");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="Wprime1200"||sample=="all")
+    {
+      TDSet *mc_wp_1200 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_1200->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1//Wprime1200_Mu.root");
+      mc_wp_1200->Process("Analyzer.C+","sample=Wprime_1200");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="Wprime1500"||sample=="all")
+    {
+      TDSet *mc_wp_1500 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_1500->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/Wprime1500_Mu.root");
+      mc_wp_1500->Process("Analyzer.C+","sample=Wprime_1500");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="Wprime2000"||sample=="all")
+    {
+      TDSet *mc_wp_2000 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_2000->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/Wprime2000_Mu.root");
+      mc_wp_2000->Process("Analyzer.C+","sample=Wprime_2000");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="ttbar"||sample=="all")
+    {
+      TDSet *mc_ttbar = new TDSet("top","*","/PATNtupleMaker");
+      mc_ttbar->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/TTbar_Mu.root");
+      mc_ttbar->Process("Analyzer.C+","sample=ttbar");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="WJets"||sample=="all")
+    {
+      TDSet *mc_Wjets = new TDSet("top","*","/PATNtupleMaker");
+      mc_Wjets->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WJets_Mu.root");
+      mc_Wjets->Process("Analyzer.C+","sample=WJets");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="QCD"||sample=="all")
+    {
+      TDSet *mc_QCD = new TDSet("top","*","/PATNtupleMaker");
+      mc_QCD->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/QCD_Mu.root");
+      mc_QCD->Process("Analyzer.C+","sample=QCD");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="STsch"||sample=="all")
+    {
+      TDSet *mc_STsch = new TDSet("top","*","/PATNtupleMaker");
+      mc_STsch->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/STsch_Mu.root");
+      mc_STsch->Process("Analyzer.C+","sample=STsch");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="STtch"||sample=="all")
+    {
+      TDSet *mc_STtch = new TDSet("top","*","/PATNtupleMaker");
+      mc_STtch->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/STtch_Mu.root");
+      mc_STtch->Process("Analyzer.C+","sample=STtch");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="STtWch"||sample=="all")
+    {
+      TDSet *mc_STtWch = new TDSet("top","*","/PATNtupleMaker");
+      mc_STtWch->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/STtWch_Mu.root");
+      mc_STtWch->Process("Analyzer.C+","sample=STtWch");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="STsch_bar"||sample=="all")
+    {
+      TDSet *mc_STsch_bar = new TDSet("top","*","/PATNtupleMaker");
+      mc_STsch_bar->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/STsch_bar_Mu.root");
+      mc_STsch_bar->Process("Analyzer.C+","sample=STsch_bar");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="STtch_bar"||sample=="all")
+    {
+      TDSet *mc_STtch_bar = new TDSet("top","*","/PATNtupleMaker");
+      mc_STtch_bar->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/STtch_bar_Mu.root");
+      mc_STtch_bar->Process("Analyzer.C+","sample=STtch_bar");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="STtWch_bar"||sample=="all")
+    {
+      TDSet *mc_STtWch_bar = new TDSet("top","*","/PATNtupleMaker");
+      mc_STtWch_bar->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/STtWch_bar_Mu.root");
+      mc_STtWch_bar->Process("Analyzer.C+","sample=STtWch_bar");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="WW"||sample=="all")
+    {
+      TDSet *mc_WW = new TDSet("top","*","/PATNtupleMaker");
+      mc_WW->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WW_Mu.root");
+      mc_WW->Process("Analyzer.C+","sample=WW");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="WZ"||sample=="all")
+    {
+      TDSet *mc_WZ = new TDSet("top","*","/PATNtupleMaker");
+      mc_WZ->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WZ_Mu.root");
+      mc_WZ->Process("Analyzer.C+","sample=WZ");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MC"||sample=="ZJets"||sample=="all")
+    {
+      TDSet *mc_ZJets = new TDSet("top","*","/PATNtupleMaker");
+      mc_ZJets->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/ZJets_Mu.root");
+      mc_ZJets->Process("Analyzer.C+","sample=ZJets");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="data"||sample=="all")
+    {
+      TDSet *data = new TDSet("top","*","/PATNtupleMaker");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_May10ReReco.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco1.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco2.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco3.root");
+      data->Process("Analyzer.C+","sample=data");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="dataQCD2"||sample=="all")
+    {
+      TDSet *dataQCD2 = new TDSet("top","*","/PATNtupleMaker");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_May10ReReco.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco1.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco2.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco3.root");
+      dataQCD2->Process("Analyzer.C+","QCD2 sample=data");
+    }
 
 }
