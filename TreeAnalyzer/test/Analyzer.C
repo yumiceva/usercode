@@ -50,6 +50,8 @@ void Analyzer::ParseInput()
     {
       fVerbose = true;
     }
+  if (fMyOpt.Contains("JECUP")) { fdoJECunc = true; fdoJECup = true; }
+  if (fMyOpt.Contains("JECDOWN")) { fdoJECunc = true; fdoJECup = false; }
   if (fMyOpt.Contains("QCD1")) fdoQCD1SideBand = true;
   if (fMyOpt.Contains("QCD2")) fdoQCD2SideBand = true;
   if (fMyOpt.Contains("sample"))
@@ -57,6 +59,9 @@ void Analyzer::ParseInput()
       TString tmp = fMyOpt;
       tmp = tmp.Remove(0,fMyOpt.Index("sample")+7);
       fSample = tmp;
+      if (fdoJECunc && fdoJECup==true) fSample += "_JECUP";
+      if (fdoJECunc && fdoJECup==false) fSample += "_JECDOWN";
+
       Info("Begin","Histogram names will have suffix: %s", fSample.Data());
 
       if ( fSample.Contains("data") )
@@ -215,6 +220,8 @@ void Analyzer::SlaveBegin(TTree * tree)
    hM["Wprime_0btag_bb"] = new TH1F("Wprime_0btag_bb"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
    hM["Wprime_0btag_cc"] = new TH1F("Wprime_0btag_cc"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
    hM["Wprime_1btag"] = new TH1F("Wprime_1btag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_1btag_systUp"] = new TH1F("Wprime_1btag_systUp"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_1btag_systDown"] = new TH1F("Wprime_1btag_systDown"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
    if (fSample == "WJets")
      {
        hM["Wprime_0btag_light"] = new TH1F("Wprime_0btag_light"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
@@ -226,6 +233,8 @@ void Analyzer::SlaveBegin(TTree * tree)
      }
    hM["Wprime_1onlybtag"] = new TH1F("Wprime_1onlybtag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
    hM["Wprime_2btag"] = new TH1F("Wprime_2btag"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_2btag_systUp"] = new TH1F("Wprime_2btag_systUp"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
+   hM["Wprime_2btag_systDown"] = new TH1F("Wprime_2btag_systDown"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
    if ( fSample.Contains("Wprime") )
      {
        hM["Wprime_0btag_MChad"] = new TH1F("Wprime_0btag_MChad"+hname,"W' invariant mass [GeV/c^{2}]", 70, 100, 3000);
@@ -339,6 +348,9 @@ void Analyzer::SlaveBegin(TTree * tree)
    };
 
    fpu_weights_vec.assign( pu_weights, pu_weights + 25 );
+
+   // For JEC uncertainties
+   if (fdoJECunc) fJECunc = new JetCorrectionUncertainty("/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/GR_R_42_V19_AK5PF_Uncertainty.txt");
 
 }
 
@@ -621,17 +633,27 @@ Bool_t Analyzer::Process(Long64_t entry)
     {
 
     TopJetEvent jet = jets[ijet];
-
-    if ( jet.pt > 35. && fabs(jet.eta) < 2.4 && jets[0].pt > 120. ) 
+    double SF_JEC = 1.;
+    if (fdoJECunc)
       {
-	if (fVerbose) cout << " jet pt " << jet.pt << endl;
+	fJECunc->setJetEta( jet.eta);
+	fJECunc->setJetPt( jet.pt);
+	double jec_unc = fJECunc->getUncertainty(true);
+	if (fVerbose) cout << "JEC uncertainty is " << jec_unc << endl;
+	if (fdoJECup) SF_JEC = 1.+jec_unc;
+	else SF_JEC = 1.-jec_unc;
+      }
+
+    if ( SF_JEC*jet.pt > 35. && fabs(jet.eta) < 2.4 && SF_JEC*jets[0].pt > 120. ) 
+      {
+	if (fVerbose) cout << " jet pt " << SF_JEC*jet.pt << endl;
 	
 	//hjets["pt"]->Fill( jet.pt, PUweight );
 	//hjets["eta"]->Fill( jet.eta, PUweight );
 	//hjets["phi"]->Fill( jet.phi, PUweight );
 
 	TLorentzVector tmpjet;
-	tmpjet.SetPtEtaPhiE(jet.pt, jet.eta, jet.phi, jet.e);
+	tmpjet.SetPtEtaPhiE(SF_JEC*jet.pt, jet.eta, jet.phi, jet.e);
 	p4jets.push_back( tmpjet);
 	listflavor.push_back( jet.mc.flavor );
 
@@ -682,6 +704,9 @@ Bool_t Analyzer::Process(Long64_t entry)
       float SFb_only1tag = 1.;
       float SFb_1tag = 1.;
       float SFb_2tag = 1.;
+      float SFb_0tag_syst[2] = {1.}; // for systematics
+      float SFb_1tag_syst[2] = {1.};
+      float SFb_2tag_syst[2] = {1.};
 
       for ( size_t kk=0; kk < p4jets.size(); ++kk)
 	{
@@ -743,6 +768,12 @@ Bool_t Analyzer::Process(Long64_t entry)
           if ( 300 < p4jets[0].Pt() && p4jets[0].Pt() <= 400 ) light_mceff = 0.12;
           if ( 400 < p4jets[0].Pt() ) light_mceff = 0.14;
 	  BTagWeight::JetInfo lj(light_mceff,1.22);
+	  // b-tag systematic UP 9% for b, 18% for c
+	  BTagWeight::JetInfo bjUP(0.63,0.99);                                                                                                                                                                
+	  BTagWeight::JetInfo cjUP(0.15,1.07);
+	  // b-tag systemacit DOWN 9% for b, 18% for c
+	  BTagWeight::JetInfo bjDOWN(0.63,0.83);
+	  BTagWeight::JetInfo cjDOWN(0.15,0.75);
 
           vector<BTagWeight::JetInfo> j;
           for(int i=0;i<number_of_b;i++)j.push_back(bj);
@@ -751,22 +782,47 @@ Bool_t Analyzer::Process(Long64_t entry)
           
 	  if (Nbtags_TCHPM==0) {
 	    SFb_0tag = b0.weight(j,0);
-	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_0tag );
+	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_0tag ); // fill bin 0
 	  }
 	  // only one tag
 	  BTagWeight b11(1,1); // number of tags
           if (Nbtags_TCHPM==1) {
 	    SFb_only1tag = b11.weight(j,1);
-	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_only1tag );
+	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_only1tag ); // fill bin 1
 	  }
 	  // at least one tag
 	  BTagWeight b1(1,Nbtags_TCHPM); // number of tags
-	  if (Nbtags_TCHPM>=1) SFb_1tag = b1.weight(j,1);
+	  if (Nbtags_TCHPM>=1) {
+	    SFb_1tag = b1.weight(j,1);
+
+	    vector<BTagWeight::JetInfo> jj;
+	    for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
+	    for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
+	    for(int i=0;i<number_of_l;i++)jj.push_back(lj);
+	    SFb_1tag_syst[0] = b1.weight(jj,1); //UP
+	    vector<BTagWeight::JetInfo> jk;
+            for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
+            for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
+            for(int i=0;i<number_of_l;i++)jk.push_back(lj);
+            SFb_1tag_syst[1] = b1.weight(jk,1);//DOWN
+	  }
 	  // at least two tags
 	  BTagWeight b2(2,Nbtags_TCHPM); // number of tags
 	  if (Nbtags_TCHPM>=2) {
 	    SFb_2tag = b2.weight(j,2);
-	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_2tag );
+	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_2tag ); // fill bin >=2
+	    
+	    vector<BTagWeight::JetInfo> jj;
+            for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
+            for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
+            for(int i=0;i<number_of_l;i++)jj.push_back(lj);
+            SFb_2tag_syst[0] = b2.weight(jj,2); //UP
+                                                                                                                                                                                   
+            vector<BTagWeight::JetInfo> jk;
+            for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
+            for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
+            for(int i=0;i<number_of_l;i++)jk.push_back(lj);
+            SFb_2tag_syst[1] = b2.weight(jk,2);//DOWN
 	  }
         }
       else hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM );
@@ -824,6 +880,12 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  }
 	  
 	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	  if (fIsMC)
+	    {
+	      hM["Wprime_1btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[0] );
+	      hM["Wprime_1btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[1] );
+	    }
+
 	  if (fSample.Contains("Wprime"))
             {
               if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
@@ -845,6 +907,11 @@ Bool_t Analyzer::Process(Long64_t entry)
       if ( Nbtags_TCHPM > 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) ) {
 	hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
 	cutmap["2Jet2b"] += PUweight*SFb_2tag;
+	if (fIsMC)
+	  {
+	    hM["Wprime_2btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[0] );
+	    hM["Wprime_2btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[1] );
+	  }
       }
 
     }

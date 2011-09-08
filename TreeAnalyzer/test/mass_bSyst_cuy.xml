@@ -1,0 +1,181 @@
+<cuy>
+
+  <validation type="ttbar" file="./results_ttbar.root" weight="4.27548221332e-05">
+    <TH1 name="Wprime_1btag_systUp_ttbar" source="/mass/Wprime_1btag_systUp_ttbar"/>
+    <TH1 name="Wprime_1btag_systDown_ttbar" source="/mass/Wprime_1btag_systDown_ttbar"/>
+    <TH1 name="Wprime_2btag_systUp_ttbar" source="/mass/Wprime_2btag_systUp_ttbar"/>
+    <TH1 name="Wprime_2btag_systDown_ttbar" source="/mass/Wprime_2btag_systDown_ttbar"/>
+  </validation>
+
+  <validation type="Wjets" file="./results_WJets.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_systUp_WJets" source="/mass/Wprime_1btag_systUp_WJets"/>
+    <TH1 name="Wprime_1btag_systDown_WJets" source="/mass/Wprime_1btag_systDown_WJets"/>
+    <TH1 name="Wprime_2btag_systUp_WJets" source="/mass/Wprime_2btag_systUp_WJets"/>
+    <TH1 name="Wprime_2btag_systDown_WJets" source="/mass/Wprime_2btag_systDown_WJets"/>
+  </validation>
+
+  <validation type="Zjets" file="./results_ZJets.root" weight="9.38562695927e-05">
+    <TH1 name="Wprime_1btag_systUp_ZJets" source="/mass/Wprime_1btag_systUp_ZJets"/>
+    <TH1 name="Wprime_1btag_systDown_ZJets" source="/mass/Wprime_1btag_systDown_ZJets"/>
+    <TH1 name="Wprime_2btag_systUp_ZJets" source="/mass/Wprime_2btag_systUp_ZJets"/>
+    <TH1 name="Wprime_2btag_systDown_ZJets" source="/mass/Wprime_2btag_systDown_ZJets"/>
+  </validation>
+
+  <validation type="STtch" file="./results_STtch.root" weight="1.07552179612e-05">
+    <TH1 name="Wprime_1btag_systUp_STtch" source="/mass/Wprime_1btag_systUp_STtch"/>
+    <TH1 name="Wprime_1btag_systDown_STtch" source="/mass/Wprime_1btag_systDown_STtch"/>
+    <TH1 name="Wprime_2btag_systUp_STtch" source="/mass/Wprime_2btag_systUp_STtch"/>
+    <TH1 name="Wprime_2btag_systDown_STtch" source="/mass/Wprime_2btag_systDown_STtch"/>
+  </validation>
+
+  <validation type="STtch_bar" file="./results_STtch_bar.root" weight="1.16523074913e-05">
+    <TH1 name="Wprime_1btag_systUp_STtch_bar" source="/mass/Wprime_1btag_systUp_STtch_bar"/>
+    <TH1 name="Wprime_1btag_systDown_STtch_bar" source="/mass/Wprime_1btag_systDown_STtch_bar"/>
+    <TH1 name="Wprime_2btag_systUp_STtch_bar" source="/mass/Wprime_2btag_systUp_STtch_bar"/>
+    <TH1 name="Wprime_2btag_systDown_STtch_bar" source="/mass/Wprime_2btag_systDown_STtch_bar"/>
+  </validation>
+
+  <validation type="STtWch" file="./results_STtWch.root" weight="9.67271323908e-06">
+    <TH1 name="Wprime_1btag_systUp_STtWch" source="/mass/Wprime_1btag_systUp_STtWch"/>
+    <TH1 name="Wprime_1btag_systDown_STtWch" source="/mass/Wprime_1btag_systDown_STtWch"/>
+    <TH1 name="Wprime_2btag_systUp_STtWch" source="/mass/Wprime_2btag_systUp_STtWch"/>
+    <TH1 name="Wprime_2btag_systDown_STtWch" source="/mass/Wprime_2btag_systDown_STtWch"/>
+  </validation>
+
+  <validation type="STtWch_bar" file="./results_STtWch_bar.root" weight="9.72453734309e-06">
+    <TH1 name="Wprime_1btag_systUp_STtWch_bar" source="/mass/Wprime_1btag_systUp_STtWch_bar"/>
+    <TH1 name="Wprime_1btag_systDown_STtWch_bar" source="/mass/Wprime_1btag_systDown_STtWch_bar"/>
+    <TH1 name="Wprime_2btag_systUp_STtWch_bar" source="/mass/Wprime_2btag_systUp_STtWch_bar"/>
+    <TH1 name="Wprime_2btag_systDown_STtWch_bar" source="/mass/Wprime_2btag_systDown_STtWch_bar"/>
+  </validation>
+
+  <validation type="STsch" file="./results_STsch.root" weight="1.22804721245e-05">
+    <TH1 name="Wprime_1btag_systUp_STsch" source="/mass/Wprime_1btag_systUp_STsch"/>
+    <TH1 name="Wprime_1btag_systDown_STsch" source="/mass/Wprime_1btag_systDown_STsch"/>
+    <TH1 name="Wprime_2btag_systUp_STsch" source="/mass/Wprime_2btag_systUp_STsch"/>
+    <TH1 name="Wprime_2btag_systDown_STsch" source="/mass/Wprime_2btag_systDown_STsch"/>
+  </validation>
+
+  <validation type="STsch_bar" file="./results_STsch_bar.root" weight="1.04411380841e-05">
+    <TH1 name="Wprime_1btag_systUp_STsch_bar" source="/mass/Wprime_1btag_systUp_STsch_bar"/>
+    <TH1 name="Wprime_1btag_systDown_STsch_bar" source="/mass/Wprime_1btag_systDown_STsch_bar"/>
+    <TH1 name="Wprime_2btag_systUp_STsch_bar" source="/mass/Wprime_2btag_systUp_STsch_bar"/>
+    <TH1 name="Wprime_2btag_systDown_STsch_bar" source="/mass/Wprime_2btag_systDown_STsch_bar"/>
+  </validation>
+
+  <validation type="WW" file="./results_WW.root" weight="1.01801122275e-05">
+    <TH1 name="Wprime_1btag_systUp_WW" source="/mass/Wprime_1btag_systUp_WW"/>
+    <TH1 name="Wprime_1btag_systDown_WW" source="/mass/Wprime_1btag_systDown_WW"/>
+    <TH1 name="Wprime_2btag_systUp_WW" source="/mass/Wprime_2btag_systUp_WW"/>
+    <TH1 name="Wprime_2btag_systDown_WW" source="/mass/Wprime_2btag_systDown_WW"/>
+  </validation>
+
+  <validation type="WZ" file="./results_WZ.root" weight="4.22230333215e-06">
+    <TH1 name="Wprime_1btag_systUp_WZ" source="/mass/Wprime_1btag_systUp_WZ"/>
+    <TH1 name="Wprime_1btag_systDown_WZ" source="/mass/Wprime_1btag_systDown_WZ"/>
+    <TH1 name="Wprime_2btag_systUp_WZ" source="/mass/Wprime_2btag_systUp_WZ"/>
+    <TH1 name="Wprime_2btag_systDown_WZ" source="/mass/Wprime_2btag_systDown_WZ"/>
+  </validation>
+
+  <validation type="Wprime_800" file="./results_Wprime_800.root" weight="4.89999720532e-04">
+    <TH1 name="Wprime_1btag_systUp_Wprime_800" source="/mass/Wprime_1btag_systUp_Wprime_800"/>
+    <TH1 name="Wprime_1btag_systDown_Wprime_800" source="/mass/Wprime_1btag_systDown_Wprime_800"/>
+    <TH1 name="Wprime_2btag_systUp_Wprime_800" source="/mass/Wprime_2btag_systUp_Wprime_800"/>
+    <TH1 name="Wprime_2btag_systDown_Wprime_800" source="/mass/Wprime_2btag_systDown_Wprime_800"/>
+  </validation>
+
+  <validation type="Wprime_1000" file="./results_Wprime_1000.root" weight="1.76733452987e-04">
+    <TH1 name="Wprime_1btag_systUp_Wprime_1000" source="/mass/Wprime_1btag_systUp_Wprime_1000"/>
+    <TH1 name="Wprime_1btag_systDown_Wprime_1000" source="/mass/Wprime_1btag_systDown_Wprime_1000"/>
+    <TH1 name="Wprime_2btag_systUp_Wprime_1000" source="/mass/Wprime_2btag_systUp_Wprime_1000"/>
+    <TH1 name="Wprime_2btag_systDown_Wprime_1000" source="/mass/Wprime_2btag_systDown_Wprime_1000"/>
+  </validation>
+
+  <validation type="Wprime_1200" file="./results_Wprime_1200.root" weight="7.06486833654e-05">
+    <TH1 name="Wprime_1btag_systUp_Wprime_1200" source="/mass/Wprime_1btag_systUp_Wprime_1200"/>
+    <TH1 name="Wprime_1btag_systDown_Wprime_1200" source="/mass/Wprime_1btag_systDown_Wprime_1200"/>
+    <TH1 name="Wprime_2btag_systUp_Wprime_1200" source="/mass/Wprime_2btag_systUp_Wprime_1200"/>
+    <TH1 name="Wprime_2btag_systDown_Wprime_1200" source="/mass/Wprime_2btag_systDown_Wprime_1200"/>
+  </validation>
+
+  <validation type="Wprime_1500" file="./results_Wprime_1500.root" weight="2.0968795122e-05">
+    <TH1 name="Wprime_1btag_systUp_Wprime_1500" source="/mass/Wprime_1btag_systUp_Wprime_1500"/>
+    <TH1 name="Wprime_1btag_systDown_Wprime_1500" source="/mass/Wprime_1btag_systDown_Wprime_1500"/>
+    <TH1 name="Wprime_2btag_systUp_Wprime_1500" source="/mass/Wprime_2btag_systUp_Wprime_1500"/>
+    <TH1 name="Wprime_2btag_systDown_Wprime_1500" source="/mass/Wprime_2btag_systDown_Wprime_1500"/>
+  </validation>
+
+  <validation type="Wprime_2000" file="./results_Wprime_2000.root" weight="3.20654059274e-06">
+    <TH1 name="Wprime_1btag_systUp_Wprime_2000" source="/mass/Wprime_1btag_systUp_Wprime_2000"/>
+    <TH1 name="Wprime_1btag_systDown_Wprime_2000" source="/mass/Wprime_1btag_systDown_Wprime_2000"/>
+    <TH1 name="Wprime_2btag_systUp_Wprime_2000" source="/mass/Wprime_2btag_systUp_Wprime_2000"/>
+    <TH1 name="Wprime_2btag_systDown_Wprime_2000" source="/mass/Wprime_2btag_systDown_Wprime_2000"/>
+  </validation>
+
+  <additionArray name="ST" title="ST">
+    <additionArrayItem array="STtch"/>
+    <additionArrayItem array="STtWch"/>
+    <additionArrayItem array="STsch"/>
+    <additionArrayItem array="STtch_bar"/>
+    <additionArrayItem array="STtWch_bar"/>
+    <additionArrayItem array="STsch_bar"/>
+  </additionArray>
+
+  <additionArray name="Dibosons" title="Dibosons">
+    <additionArrayItem array="WW"/>
+    <additionArrayItem array="WZ"/>
+  </additionArray>
+
+  <superimpose name="Wprime_1btagSystUp" title="Wprime_1btagSystUp" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+    <superimposeItem name="Wprime_1btag_systUp_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_1btag_systUp_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_1btag_systUp_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_1btag_systUp_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_1btag_systUp_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_1btag_systUp_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systUp_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systUp_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systUp_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systUp_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btagSystDown" title="Wprime_1btagSystDown" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+    <superimposeItem name="Wprime_1btag_systDown_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_1btag_systDown_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_1btag_systDown_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_1btag_systDown_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_1btag_systDown_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_1btag_systDown_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systDown_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systDown_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systDown_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_systDown_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime_2btagSystUp" title="Wprime_2btag" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq2">
+    <superimposeItem name="Wprime_2btag_systUp_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_2btag_systUp_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_2btag_systUp_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_2btag_systUp_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_2btag_systUp_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_2btag_systUp_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systUp_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systUp_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systUp_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systUp_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime_2btagSystDown" title="Wprime_2btag" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq2">
+    <superimposeItem name="Wprime_2btag_systDown_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_2btag_systDown_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_2btag_systDown_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_2btag_systDown_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_2btag_systDown_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_2btag_systDown_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systDown_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systDown_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systDown_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_systDown_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+</cuy>

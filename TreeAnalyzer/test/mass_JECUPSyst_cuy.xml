@@ -1,0 +1,123 @@
+<cuy>
+
+  <validation type="ttbar" file="./results_ttbar_JECUP.root" weight="4.27548221332e-05">
+    <TH1 name="Wprime_1btag_ttbar_JECUP" source="/mass/Wprime_1btag_ttbar_JECUP"/>
+    <TH1 name="Wprime_2btag_ttbar_JECUP" source="/mass/Wprime_2btag_ttbar_JECUP"/>
+  </validation>
+
+  <validation type="Wjets" file="./results_WJets_JECUP.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_WJets_JECUP" source="/mass/Wprime_1btag_WJets_JECUP"/>
+    <TH1 name="Wprime_2btag_WJets_JECUP" source="/mass/Wprime_2btag_WJets_JECUP"/>
+  </validation>
+
+  <validation type="Zjets" file="./results_ZJets_JECUP.root" weight="9.38562695927e-05">
+    <TH1 name="Wprime_1btag_ZJets_JECUP" source="/mass/Wprime_1btag_ZJets_JECUP"/>
+    <TH1 name="Wprime_2btag_ZJets_JECUP" source="/mass/Wprime_2btag_ZJets_JECUP"/>
+  </validation>
+
+  <validation type="STtch" file="./results_STtch_JECUP.root" weight="1.07552179612e-05">
+    <TH1 name="Wprime_1btag_STtch_JECUP" source="/mass/Wprime_1btag_STtch_JECUP"/>
+    <TH1 name="Wprime_2btag_STtch_JECUP" source="/mass/Wprime_2btag_STtch_JECUP"/>
+  </validation>
+
+  <validation type="STtch_bar" file="./results_STtch_bar_JECUP.root" weight="1.16523074913e-05">
+    <TH1 name="Wprime_1btag_STtch_bar_JECUP" source="/mass/Wprime_1btag_STtch_bar_JECUP"/>
+    <TH1 name="Wprime_2btag_STtch_bar_JECUP" source="/mass/Wprime_2btag_STtch_bar_JECUP"/>
+  </validation>
+
+  <validation type="STtWch" file="./results_STtWch_JECUP.root" weight="9.67271323908e-06">
+    <TH1 name="Wprime_1btag_STtWch_JECUP" source="/mass/Wprime_1btag_STtWch_JECUP"/>
+    <TH1 name="Wprime_2btag_STtWch_JECUP" source="/mass/Wprime_2btag_STtWch_JECUP"/>
+  </validation>
+
+  <validation type="STtWch_bar" file="./results_STtWch_bar_JECUP.root" weight="9.72453734309e-06">
+    <TH1 name="Wprime_1btag_STtWch_bar_JECUP" source="/mass/Wprime_1btag_STtWch_bar_JECUP"/>
+    <TH1 name="Wprime_2btag_STtWch_bar_JECUP" source="/mass/Wprime_2btag_STtWch_bar_JECUP"/>
+  </validation>
+
+  <validation type="STsch" file="./results_STsch_JECUP.root" weight="1.22804721245e-05">
+    <TH1 name="Wprime_1btag_STsch_JECUP" source="/mass/Wprime_1btag_STsch_JECUP"/>
+    <TH1 name="Wprime_2btag_STsch_JECUP" source="/mass/Wprime_2btag_STsch_JECUP"/>
+  </validation>
+
+  <validation type="STsch_bar" file="./results_STsch_bar_JECUP.root" weight="1.04411380841e-05">
+    <TH1 name="Wprime_1btag_STsch_bar_JECUP" source="/mass/Wprime_1btag_STsch_bar_JECUP"/>
+    <TH1 name="Wprime_2btag_STsch_bar_JECUP" source="/mass/Wprime_2btag_STsch_bar_JECUP"/>
+  </validation>
+
+  <validation type="WW" file="./results_WW_JECUP.root" weight="1.01801122275e-05">
+    <TH1 name="Wprime_1btag_WW_JECUP" source="/mass/Wprime_1btag_WW_JECUP"/>
+    <TH1 name="Wprime_2btag_WW_JECUP" source="/mass/Wprime_2btag_WW_JECUP"/>
+  </validation>
+
+  <validation type="WZ" file="./results_WZ_JECUP.root" weight="4.22230333215e-06">
+    <TH1 name="Wprime_1btag_WZ_JECUP" source="/mass/Wprime_1btag_WZ_JECUP"/>
+    <TH1 name="Wprime_2btag_WZ_JECUP" source="/mass/Wprime_2btag_WZ_JECUP"/>
+  </validation>
+
+  <validation type="Wprime_800" file="./results_Wprime_800_JECUP.root" weight="4.89999720532e-04">
+    <TH1 name="Wprime_1btag_Wprime_800_JECUP" source="/mass/Wprime_1btag_Wprime_800_JECUP"/>
+    <TH1 name="Wprime_2btag_Wprime_800_JECUP" source="/mass/Wprime_2btag_Wprime_800_JECUP"/>
+  </validation>
+
+  <validation type="Wprime_1000" file="./results_Wprime_1000_JECUP.root" weight="1.76733452987e-04">
+    <TH1 name="Wprime_1btag_Wprime_1000_JECUP" source="/mass/Wprime_1btag_Wprime_1000_JECUP"/>
+    <TH1 name="Wprime_2btag_Wprime_1000_JECUP" source="/mass/Wprime_2btag_Wprime_1000_JECUP"/>
+  </validation>
+
+  <validation type="Wprime_1200" file="./results_Wprime_1200_JECUP.root" weight="7.06486833654e-05">
+    <TH1 name="Wprime_1btag_Wprime_1200_JECUP" source="/mass/Wprime_1btag_Wprime_1200_JECUP"/>
+    <TH1 name="Wprime_2btag_Wprime_1200_JECUP" source="/mass/Wprime_2btag_Wprime_1200_JECUP"/>
+  </validation>
+
+  <validation type="Wprime_1500" file="./results_Wprime_1500_JECUP.root" weight="2.0968795122e-05">
+    <TH1 name="Wprime_1btag_Wprime_1500_JECUP" source="/mass/Wprime_1btag_Wprime_1500_JECUP"/>
+    <TH1 name="Wprime_2btag_Wprime_1500_JECUP" source="/mass/Wprime_2btag_Wprime_1500_JECUP"/>
+  </validation>
+
+  <validation type="Wprime_2000" file="./results_Wprime_2000_JECUP.root" weight="3.20654059274e-06">
+    <TH1 name="Wprime_1btag_Wprime_2000_JECUP" source="/mass/Wprime_1btag_Wprime_2000_JECUP"/>
+    <TH1 name="Wprime_2btag_Wprime_2000_JECUP" source="/mass/Wprime_2btag_Wprime_2000_JECUP"/>
+  </validation>
+
+  <additionArray name="ST" title="ST">
+    <additionArrayItem array="STtch"/>
+    <additionArrayItem array="STtWch"/>
+    <additionArrayItem array="STsch"/>
+    <additionArrayItem array="STtch_bar"/>
+    <additionArrayItem array="STtWch_bar"/>
+    <additionArrayItem array="STsch_bar"/>
+  </additionArray>
+
+  <additionArray name="Dibosons" title="Dibosons">
+    <additionArrayItem array="WW"/>
+    <additionArrayItem array="WZ"/>
+  </additionArray>
+
+  <superimpose name="Wprime_1btag_JECUP" title="Wprime_1btag_JECUP" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+    <superimposeItem name="Wprime_1btag_WJets_JECUP" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_1btag_ZJets_JECUP" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_1btag_Dibosons_JECUP" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_1btag_ST_JECUP" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_1btag_ttbar_JECUP" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_1btag_Wprime_800_JECUP" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_1000_JECUP" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_1200_JECUP" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_1500_JECUP" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_2000_JECUP" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime_2btag_JECUP" title="Wprime_2btag" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq2">
+    <superimposeItem name="Wprime_2btag_WJets_JECUP" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_2btag_ZJets_JECUP" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_2btag_Dibosons_JECUP" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_2btag_ST_JECUP" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_2btag_ttbar_JECUP" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_2btag_Wprime_800_JECUP" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_1000_JECUP" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_1200_JECUP" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_1500_JECUP" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_2000_JECUP" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+</cuy>

@@ -1,0 +1,407 @@
+<cuy>
+
+  <validation type="data" file="./results_data.root" weight="1">
+    <TH1 name="dijet_data" source="/mass/dijet_data"/>
+    <TH1 name="trijet_data" source="/mass/trijet_data"/>
+    <TH1 name="Mt_data" source="/mass/Mt_data"/>
+    <TH1 name="Wprime_data" source="/mass/Wprime_data"/>
+    <TH1 name="Wprime_0btag_data" source="/mass/Wprime_0btag_data"/>
+    <TH1 name="Wprime_1btag_data" source="/mass/Wprime_1btag_data"/>
+    <TH1 name="Wprime_2btag_data" source="/mass/Wprime_2btag_data"/>
+    <TH1 name="MET_data" source="/MET/MET_data"/>
+    <TH1 name="MET_2jet_data" source="/MET/MET_2jet_data"/>
+  </validation>
+
+  <validation type="dataQCD2" file="./results_dataQCD2.root" weight="1.28205128205128205e-04">
+<!-- weight = 6.6/44./1170 -->
+    <TH1 name="Wprime_1btag_dataQCD2" source="/mass/Wprime_1btag_dataQCD2"/>
+  </validation>
+
+  <validation type="ttbar" file="./results_ttbar.root" weight="4.27548221332e-05">
+    <TH1 name="dijet_ttbar" source="/mass/dijet_ttbar"/>
+    <TH1 name="trijet_ttbar" source="/mass/trijet_ttbar"/>
+    <TH1 name="Mt_ttbar" source="/mass/Mt_ttbar"/>
+    <TH1 name="Wprime_ttbar" source="/mass/Wprime_ttbar"/>
+    <TH1 name="Wprime_0btag_ttbar" source="/mass/Wprime_0btag_ttbar"/>
+    <TH1 name="Wprime_1btag_ttbar" source="/mass/Wprime_1btag_ttbar"/>
+    <TH1 name="Wprime_2btag_ttbar" source="/mass/Wprime_2btag_ttbar"/>
+    <TH1 name="MET_ttbar" source="/MET/MET_ttbar"/>
+    <TH1 name="MET_2jet_ttbar" source="/MET/MET_2jet_ttbar"/>
+  </validation>
+
+  <validation type="Wjets" file="./results_WJets.root" weight="0.000634709217683">
+    <TH1 name="dijet_WJets" source="/mass/dijet_WJets"/>
+    <TH1 name="trijet_WJets" source="/mass/trijet_WJets"/>
+    <TH1 name="Mt_WJets" source="/mass/Mt_WJets"/>
+    <TH1 name="Wprime_WJets" source="/mass/Wprime_WJets"/>
+    <TH1 name="Wprime_0btag_WJets" source="/mass/Wprime_0btag_WJets"/>
+    <TH1 name="Wprime_1btag_WJets" source="/mass/Wprime_1btag_WJets"/>
+    <TH1 name="Wprime_2btag_WJets" source="/mass/Wprime_2btag_WJets"/>
+    <TH1 name="MET_WJets" source="/MET/MET_WJets"/>
+    <TH1 name="MET_2jet_WJets" source="/MET/MET_2jet_WJets"/>
+    <TH1 name="Wprime_0btag_light_WJets" source="/mass/Wprime_0btag_light_WJets"/>
+    <TH1 name="Wprime_0btag_bb_WJets" source="/mass/Wprime_0btag_bb_WJets"/>
+    <TH1 name="Wprime_0btag_cc_WJets" source="/mass/Wprime_0btag_cc_WJets"/>
+    <TH1 name="Wprime_1btag_light_WJets" source="/mass/Wprime_1btag_light_WJets"/>
+    <TH1 name="Wprime_1btag_bb_WJets" source="/mass/Wprime_1btag_bb_WJets"/>
+    <TH1 name="Wprime_1btag_cc_WJets" source="/mass/Wprime_1btag_cc_WJets"/>
+  </validation>
+
+  <validation type="Zjets" file="./results_ZJets.root" weight="9.38562695927e-05">
+    <TH1 name="dijet_ZJets" source="/mass/dijet_ZJets"/>
+    <TH1 name="trijet_ZJets" source="/mass/trijet_ZJets"/>
+    <TH1 name="Mt_ZJets" source="/mass/Mt_ZJets"/>
+    <TH1 name="Wprime_ZJets" source="/mass/Wprime_ZJets"/>
+    <TH1 name="Wprime_0btag_ZJets" source="/mass/Wprime_0btag_ZJets"/>
+    <TH1 name="Wprime_1btag_ZJets" source="/mass/Wprime_1btag_ZJets"/>
+    <TH1 name="Wprime_2btag_ZJets" source="/mass/Wprime_2btag_ZJets"/>
+    <TH1 name="MET_ZJets" source="/MET/MET_ZJets"/>
+    <TH1 name="MET_2jet_ZJets" source="/MET/MET_2jet_ZJets"/>
+  </validation>
+
+  <validation type="QCD" file="./results_QCD.root" weight="0.00344570880379">
+    <TH1 name="dijet_QCD" source="/mass/dijet_QCD"/>
+    <TH1 name="trijet_QCD" source="/mass/trijet_QCD"/>
+    <TH1 name="Mt_QCD" source="/mass/Mt_QCD"/>
+    <TH1 name="Wprime_QCD" source="/mass/Wprime_QCD"/>
+    <TH1 name="Wprime_0btag_QCD" source="/mass/Wprime_0btag_QCD"/>
+    <TH1 name="Wprime_1btag_QCD" source="/mass/Wprime_1btag_QCD"/>
+    <TH1 name="Wprime_2btag_QCD" source="/mass/Wprime_2btag_QCD"/>
+    <TH1 name="MET_QCD" source="/MET/MET_QCD"/>
+    <TH1 name="MET_2jet_QCD" source="/MET/MET_2jet_QCD"/>
+  </validation>
+
+  <validation type="STtch" file="./results_STtch.root" weight="1.07552179612e-05">
+    <TH1 name="dijet_STtch" source="/mass/dijet_STtch"/>
+    <TH1 name="trijet_STtch" source="/mass/trijet_STtch"/>
+    <TH1 name="Mt_STtch" source="/mass/Mt_STtch"/>
+    <TH1 name="Wprime_STtch" source="/mass/Wprime_STtch"/>
+    <TH1 name="Wprime_0btag_STtch" source="/mass/Wprime_0btag_STtch"/>
+    <TH1 name="Wprime_1btag_STtch" source="/mass/Wprime_1btag_STtch"/>
+    <TH1 name="Wprime_2btag_STtch" source="/mass/Wprime_2btag_STtch"/>
+    <TH1 name="MET_STtch" source="/MET/MET_STtch"/>
+    <TH1 name="MET_2jet_STtch" source="/MET/MET_2jet_STtch"/>
+  </validation>
+
+  <validation type="STtch_bar" file="./results_STtch_bar.root" weight="1.16523074913e-05">
+    <TH1 name="dijet_STtch_bar" source="/mass/dijet_STtch_bar"/>
+    <TH1 name="trijet_STtch_bar" source="/mass/trijet_STtch_bar"/>
+    <TH1 name="Mt_STtch_bar" source="/mass/Mt_STtch_bar"/>
+    <TH1 name="Wprime_STtch_bar" source="/mass/Wprime_STtch_bar"/>
+    <TH1 name="Wprime_0btag_STtch_bar" source="/mass/Wprime_0btag_STtch_bar"/>
+    <TH1 name="Wprime_1btag_STtch_bar" source="/mass/Wprime_1btag_STtch_bar"/>
+    <TH1 name="Wprime_2btag_STtch_bar" source="/mass/Wprime_2btag_STtch_bar"/>
+    <TH1 name="MET_STtch_bar" source="/MET/MET_STtch_bar"/>
+    <TH1 name="MET_2jet_STtch_bar" source="/MET/MET_2jet_STtch_bar"/>
+  </validation>
+
+  <validation type="STtWch" file="./results_STtWch.root" weight="9.67271323908e-06">
+    <TH1 name="dijet_STtWch" source="/mass/dijet_STtWch"/>
+    <TH1 name="trijet_STtWch" source="/mass/trijet_STtWch"/>
+    <TH1 name="Mt_STtWch" source="/mass/Mt_STtWch"/>
+    <TH1 name="Wprime_STtWch" source="/mass/Wprime_STtWch"/>
+    <TH1 name="Wprime_0btag_STtWch" source="/mass/Wprime_0btag_STtWch"/>
+    <TH1 name="Wprime_1btag_STtWch" source="/mass/Wprime_1btag_STtWch"/>
+    <TH1 name="Wprime_2btag_STtWch" source="/mass/Wprime_2btag_STtWch"/>
+    <TH1 name="MET_STtWch" source="/MET/MET_STtWch"/>
+    <TH1 name="MET_2jet_STtWch" source="/MET/MET_2jet_STtWch"/>
+  </validation>
+
+  <validation type="STtWch_bar" file="./results_STtWch_bar.root" weight="9.72453734309e-06">
+    <TH1 name="dijet_STtWch_bar" source="/mass/dijet_STtWch_bar"/>
+    <TH1 name="trijet_STtWch_bar" source="/mass/trijet_STtWch_bar"/>
+    <TH1 name="Mt_STtWch_bar" source="/mass/Mt_STtWch_bar"/>
+    <TH1 name="Wprime_STtWch_bar" source="/mass/Wprime_STtWch_bar"/>
+    <TH1 name="Wprime_0btag_STtWch_bar" source="/mass/Wprime_0btag_STtWch_bar"/>
+    <TH1 name="Wprime_1btag_STtWch_bar" source="/mass/Wprime_1btag_STtWch_bar"/>
+    <TH1 name="Wprime_2btag_STtWch_bar" source="/mass/Wprime_2btag_STtWch_bar"/>
+    <TH1 name="MET_STtWch_bar" source="/MET/MET_STtWch_bar"/>
+    <TH1 name="MET_2jet_STtWch_bar" source="/MET/MET_2jet_STtWch_bar"/>
+  </validation>
+
+  <validation type="STsch" file="./results_STsch.root" weight="1.22804721245e-05">
+    <TH1 name="dijet_STsch" source="/mass/dijet_STsch"/>
+    <TH1 name="trijet_STsch" source="/mass/trijet_STsch"/>
+    <TH1 name="Mt_STsch" source="/mass/Mt_STsch"/>
+    <TH1 name="Wprime_STsch" source="/mass/Wprime_STsch"/>
+    <TH1 name="Wprime_0btag_STsch" source="/mass/Wprime_0btag_STsch"/>
+    <TH1 name="Wprime_1btag_STsch" source="/mass/Wprime_1btag_STsch"/>
+    <TH1 name="Wprime_2btag_STsch" source="/mass/Wprime_2btag_STsch"/>
+    <TH1 name="MET_STsch" source="/MET/MET_STsch"/>
+    <TH1 name="MET_2jet_STsch" source="/MET/MET_2jet_STsch"/>
+  </validation>
+
+  <validation type="STsch_bar" file="./results_STsch_bar.root" weight="1.04411380841e-05">
+    <TH1 name="dijet_STsch_bar" source="/mass/dijet_STsch_bar"/>
+    <TH1 name="trijet_STsch_bar" source="/mass/trijet_STsch_bar"/>
+    <TH1 name="Mt_STsch_bar" source="/mass/Mt_STsch_bar"/>
+    <TH1 name="Wprime_STsch_bar" source="/mass/Wprime_STsch_bar"/>
+    <TH1 name="Wprime_0btag_STsch_bar" source="/mass/Wprime_0btag_STsch_bar"/>
+    <TH1 name="Wprime_1btag_STsch_bar" source="/mass/Wprime_1btag_STsch_bar"/>
+    <TH1 name="Wprime_2btag_STsch_bar" source="/mass/Wprime_2btag_STsch_bar"/>
+    <TH1 name="MET_STsch_bar" source="/MET/MET_STsch_bar"/>
+    <TH1 name="MET_2jet_STsch_bar" source="/MET/MET_2jet_STsch_bar"/>
+  </validation>
+
+  <validation type="WW" file="./results_WW.root" weight="1.01801122275e-05">
+    <TH1 name="dijet_WW" source="/mass/dijet_WW"/>
+    <TH1 name="trijet_WW" source="/mass/trijet_WW"/>
+    <TH1 name="Mt_WW" source="/mass/Mt_WW"/>
+    <TH1 name="Wprime_WW" source="/mass/Wprime_WW"/>
+    <TH1 name="Wprime_0btag_WW" source="/mass/Wprime_0btag_WW"/>
+    <TH1 name="Wprime_1btag_WW" source="/mass/Wprime_1btag_WW"/>
+    <TH1 name="Wprime_2btag_WW" source="/mass/Wprime_2btag_WW"/>
+    <TH1 name="MET_WW" source="/MET/MET_WW"/>
+    <TH1 name="MET_2jet_WW" source="/MET/MET_2jet_WW"/>
+  </validation>
+
+  <validation type="WZ" file="./results_WZ.root" weight="4.22230333215e-06">
+    <TH1 name="dijet_WZ" source="/mass/dijet_WZ"/>
+    <TH1 name="trijet_WZ" source="/mass/trijet_WZ"/>
+    <TH1 name="Mt_WZ" source="/mass/Mt_WZ"/>
+    <TH1 name="Wprime_WZ" source="/mass/Wprime_WZ"/>
+    <TH1 name="Wprime_0btag_WZ" source="/mass/Wprime_0btag_WZ"/>
+    <TH1 name="Wprime_1btag_WZ" source="/mass/Wprime_1btag_WZ"/>
+    <TH1 name="Wprime_2btag_WZ" source="/mass/Wprime_2btag_WZ"/>
+    <TH1 name="MET_WZ" source="/MET/MET_WZ"/>
+    <TH1 name="MET_2jet_WZ" source="/MET/MET_2jet_WZ"/>
+  </validation>
+
+  <validation type="Wprime_800" file="./results_Wprime_800.root" weight="4.89999720532e-04">
+    <TH1 name="dijet_Wprime_800" source="/mass/dijet_Wprime_800"/>
+    <TH1 name="trijet_Wprime_800" source="/mass/trijet_Wprime_800"/>
+    <TH1 name="Mt_Wprime_800" source="/mass/Mt_Wprime_800"/>
+    <TH1 name="Wprime_Wprime_800" source="/mass/Wprime_Wprime_800"/>
+    <TH1 name="Wprime_0btag_Wprime_800" source="/mass/Wprime_0btag_Wprime_800"/>
+    <TH1 name="Wprime_1btag_Wprime_800" source="/mass/Wprime_1btag_Wprime_800"/>
+    <TH1 name="Wprime_2btag_Wprime_800" source="/mass/Wprime_2btag_Wprime_800"/>
+    <TH1 name="MET_Wprime_800" source="/MET/MET_Wprime_800"/>
+    <TH1 name="MET_2jet_Wprime_800" source="/MET/MET_2jet_Wprime_800"/>
+  </validation>
+
+  <validation type="Wprime_1000" file="./results_Wprime_1000.root" weight="1.76733452987e-04">
+    <TH1 name="dijet_Wprime_1000" source="/mass/dijet_Wprime_1000"/>
+    <TH1 name="trijet_Wprime_1000" source="/mass/trijet_Wprime_1000"/>
+    <TH1 name="Mt_Wprime_1000" source="/mass/Mt_Wprime_1000"/>
+    <TH1 name="Wprime_Wprime_1000" source="/mass/Wprime_Wprime_1000"/>
+    <TH1 name="Wprime_0btag_Wprime_1000" source="/mass/Wprime_0btag_Wprime_1000"/>
+    <TH1 name="Wprime_1btag_Wprime_1000" source="/mass/Wprime_1btag_Wprime_1000"/>
+    <TH1 name="Wprime_2btag_Wprime_1000" source="/mass/Wprime_2btag_Wprime_1000"/>
+    <TH1 name="MET_Wprime_1000" source="/MET/MET_Wprime_1000"/>
+    <TH1 name="MET_2jet_Wprime_1000" source="/MET/MET_2jet_Wprime_1000"/>
+  </validation>
+
+  <validation type="Wprime_1200" file="./results_Wprime_1200.root" weight="7.06486833654e-05">
+    <TH1 name="dijet_Wprime_1200" source="/mass/dijet_Wprime_1200"/>
+    <TH1 name="trijet_Wprime_1200" source="/mass/trijet_Wprime_1200"/>
+    <TH1 name="Mt_Wprime_1200" source="/mass/Mt_Wprime_1200"/>
+    <TH1 name="Wprime_Wprime_1200" source="/mass/Wprime_Wprime_1200"/>
+    <TH1 name="Wprime_0btag_Wprime_1200" source="/mass/Wprime_0btag_Wprime_1200"/>
+    <TH1 name="Wprime_1btag_Wprime_1200" source="/mass/Wprime_1btag_Wprime_1200"/>
+    <TH1 name="Wprime_2btag_Wprime_1200" source="/mass/Wprime_2btag_Wprime_1200"/>
+    <TH1 name="MET_Wprime_1200" source="/MET/MET_Wprime_1200"/>
+    <TH1 name="MET_2jet_Wprime_1200" source="/MET/MET_2jet_Wprime_1200"/>
+  </validation>
+
+  <validation type="Wprime_1500" file="./results_Wprime_1500.root" weight="2.0968795122e-05">
+    <TH1 name="dijet_Wprime_1500" source="/mass/dijet_Wprime_1500"/>
+    <TH1 name="trijet_Wprime_1500" source="/mass/trijet_Wprime_1500"/>
+    <TH1 name="Mt_Wprime_1500" source="/mass/Mt_Wprime_1500"/>
+    <TH1 name="Wprime_Wprime_1500" source="/mass/Wprime_Wprime_1500"/>
+    <TH1 name="Wprime_0btag_Wprime_1500" source="/mass/Wprime_0btag_Wprime_1500"/>
+    <TH1 name="Wprime_1btag_Wprime_1500" source="/mass/Wprime_1btag_Wprime_1500"/>
+    <TH1 name="Wprime_2btag_Wprime_1500" source="/mass/Wprime_2btag_Wprime_1500"/>
+    <TH1 name="MET_Wprime_1500" source="/MET/MET_Wprime_1500"/>
+    <TH1 name="MET_2jet_Wprime_1500" source="/MET/MET_2jet_Wprime_1500"/>
+  </validation>
+
+  <validation type="Wprime_2000" file="./results_Wprime_2000.root" weight="3.20654059274e-06">
+    <TH1 name="dijet_Wprime_2000" source="/mass/dijet_Wprime_2000"/>
+    <TH1 name="trijet_Wprime_2000" source="/mass/trijet_Wprime_2000"/>
+    <TH1 name="Mt_Wprime_2000" source="/mass/Mt_Wprime_2000"/>
+    <TH1 name="Wprime_Wprime_2000" source="/mass/Wprime_Wprime_2000"/>
+    <TH1 name="Wprime_0btag_Wprime_2000" source="/mass/Wprime_0btag_Wprime_2000"/>
+    <TH1 name="Wprime_1btag_Wprime_2000" source="/mass/Wprime_1btag_Wprime_2000"/>
+    <TH1 name="Wprime_2btag_Wprime_2000" source="/mass/Wprime_2btag_Wprime_2000"/>
+    <TH1 name="MET_Wprime_2000" source="/MET/MET_Wprime_2000"/>
+    <TH1 name="MET_2jet_Wprime_2000" source="/MET/MET_2jet_Wprime_2000"/>
+  </validation>
+
+  <additionArray name="ST" title="ST">
+    <additionArrayItem array="STtch"/>
+    <additionArrayItem array="STtWch"/>
+    <additionArrayItem array="STsch"/>
+    <additionArrayItem array="STtch_bar"/>
+    <additionArrayItem array="STtWch_bar"/>
+    <additionArrayItem array="STsch_bar"/>
+  </additionArray>
+
+  <additionArray name="Dibosons" title="Dibosons">
+    <additionArrayItem array="WW"/>
+    <additionArrayItem array="WZ"/>
+  </additionArray>
+
+  <addition name="Wprime_WJetsData" title="Wprime_WJetsData" YTitle="Events">
+<!-- weights scaled to 1170 pb-1, get WJets data driven -->
+    <additionItem name="Wprime_0btag_data"   weight="1"/>
+    <additionItem name="Wprime_0btag_ttbar"  weight="-4.98521226073112000e-02"/>
+    <additionItem name="Wprime_0btag_QCD"  weight="-4.01769646521913959"/>
+    <additionItem name="Wprime_0btag_ZJets"  weight="-1.09436410345088206e-01"/>
+    <additionItem name="Wprime_0btag_Dibosons"  weight="-1170"/>
+    <additionItem name="Wprime_0btag_ST"  weight="-1170"/>
+  </addition>
+
+  <superimpose name="WprimeComparison" title="WprimeComparison" Normalize="true" YTitle="Unit Area" Stack="false" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="Wprime_WJetsData" color="1" legend="Data"/>
+    <superimposeItem name="Wprime_1btag_WJets" color="2" legend="W+jets"/>
+  </superimpose>
+
+  <superimpose name="WhfComparison0tag" title="WhfComparison0tag" Normalize="true" YTitle="Unit Area" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}=0">
+    <superimposeItem name="Wprime_0btag_light_WJets" color="1" legend="W+light"/>
+    <superimposeItem name="Wprime_0btag_bb_WJets" color="2" legend="Wb(b)"/>
+    <superimposeItem name="Wprime_0btag_cc_WJets" color="3" legend="Wcc"/>
+  </superimpose>
+
+  <superimpose name="WhfComparison1tag" title="WhfComparison1tag" Normalize="true" YTitle="Unit Area" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}#geq1">
+    <superimposeItem name="Wprime_1btag_light_WJets" color="1" legend="W+light"/>
+    <superimposeItem name="Wprime_1btag_bb_WJets" color="2" legend="Wb(b)"/>
+    <superimposeItem name="Wprime_1btag_cc_WJets" color="3" legend="Wcc"/>
+  </superimpose>
+
+  <superimpose name="Whf0tag" title="Whf0tag" Fill="true" Weight="true" Lumi="1170." YTitle="Events" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}=0">
+    <superimposeItem name="Wprime_0btag_bb_WJets" color="2" legend="Wb(b)" SF="2."/>
+    <superimposeItem name="Wprime_0btag_cc_WJets" color="4" legend="Wcc" SF="2."/>
+    <superimposeItem name="Wprime_0btag_light_WJets" color="3" legend="Wlight"/>
+    <superimposeItem name="Wprime_0btag_WJets" color="1" legend="W+jets" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Whf1tag" title="Whf1tag" Fill="true" Weight="true" Lumi="1170." YTitle="Events" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}#geq1">
+    <superimposeItem name="Wprime_1btag_bb_WJets" color="2" legend="Wb(b)" SF="2."/>
+    <superimposeItem name="Wprime_1btag_cc_WJets" color="4" legend="Wcc" SF="2."/>
+    <superimposeItem name="Wprime_1btag_light_WJets" color="3" legend="Wlight"/>
+    <superimposeItem name="Wprime_1btag_WJets" color="1" legend="W+jets" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Mt" title="Mt" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+    <superimposeItem name="Mt_data" color="top" legend="Data"/>
+    <superimposeItem name="Mt_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Mt_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Mt_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Mt_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="Mt_ST" color="top" legend="ST"/>
+    <superimposeItem name="Mt_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Mt_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Mt_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+<!--    <superimposeItem name="Mt_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Mt_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Mt_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/> -->
+  </superimpose>
+
+  <superimpose name="dijet" title="dijet" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="dijet_data" color="top" legend="Data"/>
+    <superimposeItem name="dijet_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="dijet_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="dijet_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="dijet_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="dijet_ST" color="top" legend="ST"/>
+    <superimposeItem name="dijet_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="dijet_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="dijet_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="trijet" title="trijet" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="trijet_data" color="top" legend="Data"/>
+    <superimposeItem name="trijet_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="trijet_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="trijet_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="trijet_QCD" color="top" legend="QCD"/> -->
+    <superimposeItem name="trijet_ST" color="top" legend="ST"/>
+    <superimposeItem name="trijet_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="trijet_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="trijet_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="MET" title="MET" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+    <superimposeItem name="MET_data" color="top" legend="Data"/>
+    <superimposeItem name="MET_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="MET_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="MET_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="MET_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="MET_ST" color="top" legend="ST"/>
+    <superimposeItem name="MET_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="MET_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="MET_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="MET_2jet" title="MET_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="MET_2jet_data" color="top" legend="Data"/>
+    <superimposeItem name="MET_2jet_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="MET_2jet_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="MET_2jet_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="MET_2jet_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="MET_2jet_ST" color="top" legend="ST"/>
+    <superimposeItem name="MET_2jet_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="MET_2jet_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="MET_2jet_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime" title="Wprime" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="Wprime_data" color="top" legend="Data"/>
+    <superimposeItem name="Wprime_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="Wprime_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime_0btag" title="Wprime_0btag" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}=0" PlotDiff="true">
+    <superimposeItem name="Wprime_0btag_data" color="top" legend="Data"/>
+    <superimposeItem name="Wprime_0btag_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_0btag_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_0btag_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="Wprime_0btag_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="Wprime_0btag_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_0btag_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_0btag_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_0btag_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
+    <superimposeItem name="Wprime_1btag_data" color="top" legend="Data"/>
+    <superimposeItem name="Wprime_1btag_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_1btag_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_1btag_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="Wprime_1btag_QCD" color="top" legend="QCD"/> -->
+    <superimposeItem name="Wprime_1btag_dataQCD2" color="top" legend="QCD"/>
+    <superimposeItem name="Wprime_1btag_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_1btag_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_1btag_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/> -->
+  </superimpose>
+
+ <superimpose name="Wprime_1btag_QCDComparison" title="Wprime_1btag_QCDComparison" YTitle="Events" Weight="true" Lumi="1170.">
+    <superimposeItem name="Wprime_1btag_QCD" color="2" legend="QCD MC"/>
+ </superimpose>
+
+  <superimpose name="Wprime_2btag" title="Wprime_2btag" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq2" PlotDiff="true">
+    <superimposeItem name="Wprime_2btag_data" color="top" legend="Data"/>
+    <superimposeItem name="Wprime_2btag_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Wprime_2btag_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Wprime_2btag_Dibosons" color="top" legend="Dibosons"/>
+<!-- empty    <superimposeItem name="Wprime_2btag_QCD" color="top" legend="QCD"/> -->
+    <superimposeItem name="Wprime_2btag_ST" color="top" legend="ST"/>
+    <superimposeItem name="Wprime_2btag_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Wprime_2btag_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
+  </superimpose>
+
+</cuy>

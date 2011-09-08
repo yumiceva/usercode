@@ -22,6 +22,7 @@ const Int_t kMaxtop = 1;
 #include "Yumiceva/TreeAnalyzer/interface/ElectronSelector.h"
 //#include "Yumiceva/TreeAnalyzer/interface/HistoManager.h"
 #include "Yumiceva/TreeAnalyzer/interface/METzCalculator.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
 #include <map>
 #include <string>
@@ -37,6 +38,8 @@ private:
   bool            fIsMC;
   bool            fdoQCD1SideBand;
   bool            fdoQCD2SideBand;
+  bool            fdoJECunc;
+  bool            fdoJECup;
   //HistoManager    *fHist;
   TString         fSample;
   TH1F            *h1test;
@@ -50,6 +53,7 @@ private:
   vector< string > fCutLabels;
   vector< double > fpu_weights_vec;
   METzCalculator fzCalculator;
+  JetCorrectionUncertainty *fJECunc;
 
 public :
 
@@ -69,6 +73,8 @@ public :
        fSample = "";
        fdoQCD1SideBand = false;
        fdoQCD2SideBand = false;
+       fdoJECunc = false;
+       fdoJECup = true;
      }
    virtual ~Analyzer() { }
    virtual Int_t   Version() const { return 2; }
