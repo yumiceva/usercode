@@ -1,4 +1,5 @@
 <cuy>
+<!-- old lumi 1170 -->
 
   <validation type="data" file="./results_data.root" weight="1">
     <!-- muon -->
@@ -9,6 +10,7 @@
     <TH1 name="reliso_2jet_data" source="/muons/muon_reliso_2jet_data"/>
     <TH1 name="deltaR_data" source="/muons/deltaR_data"/>
     <TH1 name="pt_2jet_data" source="/muons/muon_pt_2jet_data"/>
+    <TH1 name="NPV_data" source="/PVs/NPVreweight_2jet_data"/>
   </validation>
 <!--
   <validation type="dataReverse" file="./results_dataReverse.root" weight="1">
@@ -30,6 +32,7 @@
     <TH1 name="reliso_2jet_ttbar" source="/muons/muon_reliso_2jet_ttbar"/>
     <TH1 name="deltaR_ttbar" source="/muons/deltaR_ttbar"/>
     <TH1 name="pt_2jet_ttbar" source="/muons/muon_pt_2jet_ttbar"/>
+    <TH1 name="NPV_ttbar" source="/PVs/NPVreweight_2jet_ttbar"/>
   </validation>
 
   <validation type="Wjets" file="./results_WJets.root" weight="0.000634709217683">
@@ -41,6 +44,7 @@
     <TH1 name="reliso_2jet_WJets" source="/muons/muon_reliso_2jet_WJets"/>
     <TH1 name="deltaR_WJets" source="/muons/deltaR_WJets"/>
     <TH1 name="pt_2jet_WJets" source="/muons/muon_pt_2jet_WJets"/>
+    <TH1 name="NPV_WJets" source="/PVs/NPVreweight_2jet_WJets"/>
   </validation>
 
   <validation type="Zjets" file="./results_ZJets.root" weight="9.38562695927e-05">
@@ -52,6 +56,7 @@
     <TH1 name="reliso_2jet_ZJets" source="/muons/muon_reliso_2jet_ZJets"/>
     <TH1 name="deltaR_ZJets" source="/muons/deltaR_ZJets"/>
     <TH1 name="pt_2jet_ZJets" source="/muons/muon_pt_2jet_ZJets"/>
+    <TH1 name="NPV_ZJets" source="/PVs/NPVreweight_2jet_ZJets"/>
   </validation>
 
   <validation type="QCD" file="./results_QCD.root" weight="0.00344570880379">
@@ -63,6 +68,7 @@
     <TH1 name="reliso_2jet_QCD" source="/muons/muon_reliso_2jet_QCD"/>
     <TH1 name="deltaR_QCD" source="/muons/deltaR_QCD"/>
     <TH1 name="pt_2jet_QCD" source="/muons/muon_pt_2jet_QCD"/>
+    <TH1 name="NPV_QCD" source="/PVs/NPVreweight_2jet_QCD"/>
   </validation>
 
   <validation type="STtch" file="./results_STtch.root" weight="1.07552179612e-05">
@@ -74,6 +80,7 @@
     <TH1 name="reliso_2jet_STtch" source="/muons/muon_reliso_2jet_STtch"/>
     <TH1 name="deltaR_STtch" source="/muons/deltaR_STtch"/>
     <TH1 name="pt_2jet_STtch" source="/muons/muon_pt_2jet_STtch"/>
+    <TH1 name="NPV_STtch" source="/PVs/NPVreweight_2jet_STtch"/>
   </validation>
 
   <validation type="STtch_bar" file="./results_STtch_bar.root" weight="1.16523074913e-05">
@@ -85,6 +92,7 @@
     <TH1 name="reliso_2jet_STtch_bar" source="/muons/muon_reliso_2jet_STtch_bar"/>
     <TH1 name="deltaR_STtch_bar" source="/muons/deltaR_STtch_bar"/>
     <TH1 name="pt_2jet_STtch_bar" source="/muons/muon_pt_2jet_STtch_bar"/>
+    <TH1 name="NPV_STtch_bar" source="/PVs/NPVreweight_2jet_STtch_bar"/>
   </validation>
 
   <validation type="STtWch" file="./results_STtWch.root" weight="9.67271323908e-06">
@@ -96,6 +104,7 @@
     <TH1 name="reliso_2jet_STtWch" source="/muons/muon_reliso_2jet_STtWch"/>
     <TH1 name="deltaR_STtWch" source="/muons/deltaR_STtWch"/>
     <TH1 name="pt_2jet_STtWch" source="/muons/muon_pt_2jet_STtWch"/>
+    <TH1 name="NPV_STtWch" source="/PVs/NPVreweight_2jet_STtWch"/>
   </validation>
 
   <validation type="STtWch_bar" file="./results_STtWch_bar.root" weight="9.72453734309e-06">
@@ -107,6 +116,7 @@
     <TH1 name="reliso_2jet_STtWch_bar" source="/muons/muon_reliso_2jet_STtWch_bar"/>
     <TH1 name="deltaR_STtWch_bar" source="/muons/deltaR_STtWch_bar"/>
     <TH1 name="pt_2jet_STtWch_bar" source="/muons/muon_pt_2jet_STtWch_bar"/>
+    <TH1 name="NPV_STtWch_bar" source="/PVs/NPVreweight_2jet_STtWch_bar"/>
   </validation>
 
   <validation type="STsch" file="./results_STsch.root" weight="1.22804721245e-05">
@@ -118,6 +128,7 @@
     <TH1 name="reliso_2jet_STsch" source="/muons/muon_reliso_2jet_STsch"/>
     <TH1 name="deltaR_STsch" source="/muons/deltaR_STsch"/>
     <TH1 name="pt_2jet_STsch" source="/muons/muon_pt_2jet_STsch"/>
+    <TH1 name="NPV_STsch" source="/PVs/NPVreweight_2jet_STsch"/>
   </validation>
 
   <validation type="STsch_bar" file="./results_STsch_bar.root" weight="1.04411380841e-05">
@@ -129,6 +140,7 @@
     <TH1 name="reliso_2jet_STsch_bar" source="/muons/muon_reliso_2jet_STsch_bar"/>
     <TH1 name="deltaR_STsch_bar" source="/muons/deltaR_STsch_bar"/>
     <TH1 name="pt_2jet_STsch_bar" source="/muons/muon_pt_2jet_STsch_bar"/>
+    <TH1 name="NPV_STsch_bar" source="/PVs/NPVreweight_2jet_STsch_bar"/>
   </validation>
 
   <validation type="WW" file="./results_WW.root" weight="1.01801122275e-05">
@@ -140,6 +152,7 @@
     <TH1 name="reliso_2jet_WW" source="/muons/muon_reliso_2jet_WW"/>
     <TH1 name="deltaR_WW" source="/muons/deltaR_WW"/>
     <TH1 name="pt_2jet_WW" source="/muons/muon_pt_2jet_WW"/>
+    <TH1 name="NPV_WW" source="/PVs/NPVreweight_2jet_WW"/>
   </validation>
 
   <validation type="WZ" file="./results_WZ.root" weight="4.22230333215e-06">
@@ -151,6 +164,7 @@
     <TH1 name="reliso_2jet_WZ" source="/muons/muon_reliso_2jet_WZ"/>
     <TH1 name="deltaR_WZ" source="/muons/deltaR_WZ"/>
     <TH1 name="pt_2jet_WZ" source="/muons/muon_pt_2jet_WZ"/>
+    <TH1 name="NPV_WZ" source="/PVs/NPVreweight_2jet_WZ"/>
   </validation>
 
   <validation type="Wprime_800" file="./results_Wprime_800.root" weight="4.89999720532e-04">
@@ -162,6 +176,7 @@
     <TH1 name="reliso_2jet_Wprime_800" source="/muons/muon_reliso_2jet_Wprime_800"/>
     <TH1 name="deltaR_Wprime_800" source="/muons/deltaR_Wprime_800"/>
     <TH1 name="pt_2jet_Wprime_800" source="/muons/muon_pt_2jet_Wprime_800"/>
+    <TH1 name="NPV_Wprime_800" source="/PVs/NPVreweight_2jet_Wprime_800"/>
   </validation>
 
   <validation type="Wprime_1000" file="./results_Wprime_1000.root" weight="1.76733452987e-04">
@@ -173,6 +188,7 @@
     <TH1 name="reliso_2jet_Wprime_1000" source="/muons/muon_reliso_2jet_Wprime_1000"/>
     <TH1 name="deltaR_Wprime_1000" source="/muons/deltaR_Wprime_1000"/>
     <TH1 name="pt_2jet_Wprime_1000" source="/muons/muon_pt_2jet_Wprime_1000"/>
+    <TH1 name="NPV_Wprime_1000" source="/PVs/NPVreweight_2jet_Wprime_1000"/>
   </validation>
 
   <validation type="Wprime_1200" file="./results_Wprime_1200.root" weight="7.06486833654e-05">
@@ -184,6 +200,7 @@
     <TH1 name="reliso_2jet_Wprime_1200" source="/muons/muon_reliso_2jet_Wprime_1200"/>
     <TH1 name="deltaR_Wprime_1200" source="/muons/deltaR_Wprime_1200"/>
     <TH1 name="pt_2jet_Wprime_1200" source="/muons/muon_pt_2jet_Wprime_1200"/>
+    <TH1 name="NPV_Wprime_1200" source="/PVs/NPVreweight_2jet_Wprime_1200"/>
   </validation>
 
   <validation type="Wprime_1500" file="./results_Wprime_1500.root" weight="2.0968795122e-05">
@@ -195,6 +212,7 @@
     <TH1 name="reliso_2jet_Wprime_1500" source="/muons/muon_reliso_2jet_Wprime_1500"/>
     <TH1 name="deltaR_Wprime_1500" source="/muons/deltaR_Wprime_1500"/>
     <TH1 name="pt_2jet_Wprime_1500" source="/muons/muon_pt_2jet_Wprime_1500"/>
+    <TH1 name="NPV_Wprime_1500" source="/PVs/NPVreweight_2jet_Wprime_1500"/>
   </validation>
 
   <validation type="Wprime_2000" file="./results_Wprime_2000.root" weight="3.20654059274e-06">
@@ -227,7 +245,7 @@
   <divide name="muon_hltg_pt_ttbar" numerator="tT0j_muon_pt_cut1" denominator="tT0j_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
 -->
 
-  <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="pt_data" color="top" legend="Data"/>
     <superimposeItem name="pt_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="pt_ZJets" color="top" legend="Zjets"/>
@@ -239,7 +257,7 @@
     <superimposeItem name="pt_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="eta_data" color="top" legend="Data"/>
     <superimposeItem name="eta_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="eta_ZJets" color="top" legend="Zjets"/>
@@ -250,7 +268,7 @@
     <superimposeItem name="eta_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="phi_data" color="top" legend="Data"/>
     <superimposeItem name="phi_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="phi_ZJets" color="top" legend="Zjets"/>
@@ -261,7 +279,7 @@
     <superimposeItem name="phi_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_pt_2jet" title="muon_pt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="muon_pt_2jet" title="muon_pt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="pt_2jet_data" color="top" legend="Data"/>
     <superimposeItem name="pt_2jet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="pt_2jet_ZJets" color="top" legend="Zjets"/>
@@ -275,7 +293,7 @@
     <superimposeItem name="pt_2jet_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" SetLogy="true">
+  <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" SetLogy="true">
     <superimposeItem name="reliso_data" color="top" legend="Data"/>
     <superimposeItem name="reliso_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="reliso_ZJets" color="top" legend="Zjets"/>
@@ -286,7 +304,7 @@
     <superimposeItem name="reliso_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_reliso_2jet" title="muon_reliso_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true" PlotDiff="true" Ndivisions='505'>
+  <superimpose name="muon_reliso_2jet" title="muon_reliso_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true" PlotDiff="true" Ndivisions='505'>
     <superimposeItem name="reliso_2jet_data" color="top" legend="Data"/>
     <superimposeItem name="reliso_2jet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="reliso_2jet_ZJets" color="top" legend="Zjets"/>
@@ -301,7 +319,17 @@
     <superimposeItem name="reliso_2jet_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_deltaR" title="muon_deltaR" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+  <superimpose name="NPV" title="NPVS" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets" PlotDiff="true">
+    <superimposeItem name="NPV_data" color="top" legend="Data"/>
+    <superimposeItem name="NPV_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="NPV_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="NPV_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="NPV_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="NPV_ST" color="top" legend="ST"/>
+    <superimposeItem name="NPV_ttbar" color="top" legend="TTbar"/>
+  </superimpose>
+
+  <superimpose name="muon_deltaR" title="muon_deltaR" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
     <superimposeItem name="deltaR_data" color="top" legend="Data"/>
     <superimposeItem name="deltaR_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="deltaR_ZJets" color="top" legend="Zjets"/>
@@ -310,7 +338,7 @@
     <superimposeItem name="deltaR_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 <!--
-  <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0" Ndivisions='505'>
+  <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0" Ndivisions='505'>
     <superimposeItem name="d0_cut1_data" color="top" legend="Data"/>
     <superimposeItem name="d0_cut1_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="d0_cut1_ZJets" color="top" legend="Zjets"/>
@@ -318,7 +346,7 @@
     <superimposeItem name="d0_cut1_ttbar" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_dz" title="muon_dz" YTitle="Events" Fill="true" Weight="true" Lumi="1170." Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="muon_dz" title="muon_dz" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="dz_data" color="top" legend="Data"/>
     <superimposeItem name="dz_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="dz_ZJets" color="top" legend="Zjets"/>

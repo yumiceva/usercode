@@ -231,8 +231,8 @@ if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
          
-#tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
-tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
+tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
+#tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
     
