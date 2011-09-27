@@ -245,7 +245,7 @@
   <divide name="muon_hltg_pt_ttbar" numerator="tT0j_muon_pt_cut1" denominator="tT0j_muon_pt_nohltgood" DivideOption="B" Option="e1"/>
 -->
 
-  <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="muon_pt" title="muon_pt" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="pt_data" color="top" legend="Data"/>
     <superimposeItem name="pt_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="pt_ZJets" color="top" legend="Zjets"/>
@@ -257,7 +257,7 @@
     <superimposeItem name="pt_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="eta_data" color="top" legend="Data"/>
     <superimposeItem name="eta_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="eta_ZJets" color="top" legend="Zjets"/>
@@ -268,7 +268,7 @@
     <superimposeItem name="eta_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="phi_data" color="top" legend="Data"/>
     <superimposeItem name="phi_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="phi_ZJets" color="top" legend="Zjets"/>
@@ -279,7 +279,7 @@
     <superimposeItem name="phi_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_pt_2jet" title="muon_pt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="muon_pt_2jet" title="muon_pt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="pt_2jet_data" color="top" legend="Data"/>
     <superimposeItem name="pt_2jet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="pt_2jet_ZJets" color="top" legend="Zjets"/>
@@ -293,7 +293,7 @@
     <superimposeItem name="pt_2jet_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" SetLogy="true">
+  <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" SetLogy="true">
     <superimposeItem name="reliso_data" color="top" legend="Data"/>
     <superimposeItem name="reliso_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="reliso_ZJets" color="top" legend="Zjets"/>
@@ -304,7 +304,7 @@
     <superimposeItem name="reliso_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="muon_reliso_2jet" title="muon_reliso_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true" PlotDiff="true" Ndivisions='505'>
+  <superimpose name="muon_reliso_2jet" title="muon_reliso_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true" PlotDiff="true" Ndivisions='505'>
     <superimposeItem name="reliso_2jet_data" color="top" legend="Data"/>
     <superimposeItem name="reliso_2jet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="reliso_2jet_ZJets" color="top" legend="Zjets"/>
@@ -319,7 +319,7 @@
     <superimposeItem name="reliso_2jet_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="NPV" title="NPVS" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets" PlotDiff="true">
+  <superimpose name="NPV" title="NPVS" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets" PlotDiff="true">
     <superimposeItem name="NPV_data" color="top" legend="Data"/>
     <superimposeItem name="NPV_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="NPV_ZJets" color="top" legend="Zjets"/>
@@ -329,7 +329,7 @@
     <superimposeItem name="NPV_ttbar" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_deltaR" title="muon_deltaR" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
+  <superimpose name="muon_deltaR" title="muon_deltaR" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq1">
     <superimposeItem name="deltaR_data" color="top" legend="Data"/>
     <superimposeItem name="deltaR_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="deltaR_ZJets" color="top" legend="Zjets"/>
@@ -338,7 +338,7 @@
     <superimposeItem name="deltaR_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
   </superimpose>
 <!--
-  <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0" Ndivisions='505'>
+  <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0" Ndivisions='505'>
     <superimposeItem name="d0_cut1_data" color="top" legend="Data"/>
     <superimposeItem name="d0_cut1_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="d0_cut1_ZJets" color="top" legend="Zjets"/>
@@ -346,7 +346,7 @@
     <superimposeItem name="d0_cut1_ttbar" color="top" legend="TTbar"/>
   </superimpose>
 
-  <superimpose name="muon_dz" title="muon_dz" YTitle="Events" Fill="true" Weight="true" Lumi="2097.3" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0">
+  <superimpose name="muon_dz" title="muon_dz" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0">
     <superimposeItem name="dz_data" color="top" legend="Data"/>
     <superimposeItem name="dz_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="dz_ZJets" color="top" legend="Zjets"/>

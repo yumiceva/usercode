@@ -137,22 +137,22 @@ void runAnalysis(TString sample="all",bool NoGUI=false)
   if (sample=="data"||sample=="all")
     {
       TDSet *data = new TDSet("top","*","/PATNtupleMaker");
-      data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/Run2011_May10ReReco_Mu.root");
-      data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/Run2011_PromptReco1_Mu.root");
-      data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/Run2011_PromptReco2_Mu.root");
-      data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/SingleMu_Aug05ReReco_Mu.root");
-      data->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/SingleMu_PromptReco-v6_Mu.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_May10ReReco_Mu.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco1_Mu.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco2_Mu.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/SingleMu_Aug05ReReco_Mu.root");
+      data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/SingleMu_PromptReco-v6_Mu.root");
       data->Process("Analyzer.C+","sample=data");
     }
   if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
   if (sample=="dataQCD2"||sample=="all")
     {
       TDSet *dataQCD2 = new TDSet("top","*","/PATNtupleMaker");
-      dataQCD2->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/Run2011_May10ReReco_Mu.root");
-      dataQCD2->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/Run2011_PromptReco1_Mu.root");
-      dataQCD2->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/Run2011_PromptReco2_Mu.root");
-      dataQCD2->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/SingleMu_Aug05ReReco_Mu.root");
-      dataQCD2->Add("/uscms_data/d3/weizou/ROOTSample/PATSkim/2011Data/42x_v8_1/SingleMu_PromptReco-v6_Mu.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_May10ReReco_Mu.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco1_Mu.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/Run2011_PromptReco2_Mu.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/SingleMu_Aug05ReReco_Mu.root");
+      dataQCD2->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/SingleMu_PromptReco-v6_Mu.root");
       dataQCD2->Process("Analyzer.C+","QCD2 sample=data");
     }
 

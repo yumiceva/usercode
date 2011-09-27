@@ -301,6 +301,8 @@ void Analyzer::SlaveBegin(TTree * tree)
        fCutLabels.push_back("4Jet");
        fCutLabels.push_back("2Jet1b");
        fCutLabels.push_back("2Jet2b");
+       fCutLabels.push_back("phi");
+       fCutLabels.push_back("topmass");
      }
    else
      { //electron+jets
@@ -324,7 +326,8 @@ void Analyzer::SlaveBegin(TTree * tree)
        cutmap[ *ivec ] = 0;
      }
 
-   /* for the 1fb-1
+   // for the 1fb-1
+   
    double pu_weights[25] = { 
      0,
      0.216263,
@@ -352,7 +355,7 @@ void Analyzer::SlaveBegin(TTree * tree)
      0.0160992,
      0.0171581,
    };
-   */
+   /*
    double pu_weights[25] = {
      0.064888713208,
      0.291826467914,
@@ -380,7 +383,7 @@ void Analyzer::SlaveBegin(TTree * tree)
      0.102175460936,
      0.143295896336
    };
-
+   */
    fpu_weights_vec.assign( pu_weights, pu_weights + 25 );
 
    // For JEC uncertainties
