@@ -15,6 +15,72 @@ void runAnalysis(TString sample="all",bool NoGUI=false)
 
   //p->AddInput(new TNamed("PROOF_OUTPUTFILE_LOCATION", "LOCAL"));
 
+  if (sample=="MCcomphep"||sample=="WpRH800"||sample=="all")
+    {
+      TDSet *mc_wp_rh_800 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_800->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-800_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_800->Process("Analyzer.C+","sample=WpRH800");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);  
+  if (sample=="MCcomphep"||sample=="WpRH900"||sample=="all")
+    {
+      TDSet *mc_wp_rh_900 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_900->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-900_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_900->Process("Analyzer.C+","sample=WpRH900");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1000"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1000 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1000->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1000_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1000->Process("Analyzer.C+","sample=WpRH1000");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1100"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1100 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1100->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1100_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1100->Process("Analyzer.C+","sample=WpRH1100");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1200"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1200 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1200->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1200_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1200->Process("Analyzer.C+","sample=WpRH1200");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1300"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1300 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1300->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1300_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1300->Process("Analyzer.C+","sample=WpRH1300");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1400"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1400 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1400->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1400_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1400->Process("Analyzer.C+","sample=WpRH1400");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1500"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1500 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1500->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1500_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1500->Process("Analyzer.C+","sample=WpRH1500");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  if (sample=="MCcomphep"||sample=="WpRH1600"||sample=="all")
+    {
+      TDSet *mc_wp_rh_1600 = new TDSet("top","*","/PATNtupleMaker");
+      mc_wp_rh_1600->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1600_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      mc_wp_rh_1600->Process("Analyzer.C+","sample=WpRH1600");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
+  /*
+
   if (sample=="MC"||sample=="Wprime800"||sample=="all")
     {
       TDSet *mc_wp_800 = new TDSet("top","*","/PATNtupleMaker");
@@ -49,7 +115,8 @@ void runAnalysis(TString sample="all",bool NoGUI=false)
       mc_wp_2000->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/Wprime2000_Mu.root");
       mc_wp_2000->Process("Analyzer.C+","sample=Wprime_2000");
     }
-  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  */
+
   if (sample=="MC"||sample=="ttbar"||sample=="all")
     {
       TDSet *mc_ttbar = new TDSet("top","*","/PATNtupleMaker");

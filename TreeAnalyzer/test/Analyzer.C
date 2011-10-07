@@ -266,12 +266,14 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["2nd_eta"] = new TH1F("jet2_eta"+hname,"2nd jet #eta",50, -2.4, 2.4);
    hjets["phi"] = new TH1F("jet_phi"+hname,"jet #phi",50, 0, 3.15);
    hjets["Njets"] = new TH1F("Njets"+hname,"jet multiplicity",6,0.5,6.5);
-   hjets["Njets_1tag"] = new TH1F("Njets_1tag"+hname,"jet multiplicity",4,0.5,4.5);
+   hjets["Njets_1tag"] = new TH1F("Njets_1tag"+hname,"jet multiplicity",6,0.5,6.5);
+   hjets["Njets_2tag"] = new TH1F("Njets_2tag"+hname,"jet multiplicity",6,0.5,6.5);
    hjets["Nbtags_TCHPM"] = new TH1F("Nbjets_TCHPM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Dijet_deltaPhi"] = new TH1F("Dijet_deltaPhi"+hname,"#Delta #phi(j,j)",30,-3.15,3.15);
-   hjets["tb_deltaPhi"] = new TH1F("tb_deltaPhi"+hname,"#Delta #phi(t,b)",30,-3.15,3.15);
+   hjets["tb_deltaPhi"] = new TH1F("tb_deltaPhi"+hname,"#Delta #phi(t,b)",30,0.,3.15);
    hjets["tb_deltaR"] = new TH1F("tb_deltaR"+hname,"#Delta R(t,b)",30,0,7);
+   h2_pt_Wprime = new TH2F("toppt_vs_Wprime"+hname,"top p_{T} vs W' mass",60,0,1500,70, 100, 3000);
    hjets["pt_ratio_tb"] = new TH1F("pt_ratio_tb"+hname,"( p_{T}^{top} ) / ( p_{T}^{b} ) ",30,0,2);
 
    map<string,TH1* > allhistos = hmuons;
@@ -301,6 +303,7 @@ void Analyzer::SlaveBegin(TTree * tree)
        fCutLabels.push_back("4Jet");
        fCutLabels.push_back("2Jet1b");
        fCutLabels.push_back("2Jet2b");
+       fCutLabels.push_back("MaxJets");
        fCutLabels.push_back("phi");
        fCutLabels.push_back("topmass");
      }
@@ -654,7 +657,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   TLorentzVector p4LepW = p4lepton + p4Nu;
   TLorentzVector p4OtherLepW = p4lepton + p4OtherNu;
 
-  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight );
+  //hMET["LepWmass"]->Fill(p4LepW.M(), PUweight );
   if ( fzCalculator.IsComplex() ) hMET["LepWmassComplex"]->Fill( p4LepW.M(), PUweight );
 
 
@@ -693,7 +696,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	//hjets["phi"]->Fill( jet.phi, PUweight );
 
 	TLorentzVector tmpjet;
-	tmpjet.SetPtEtaPhiE(SF_JEC*jet.pt, jet.eta, jet.phi, jet.e);
+	tmpjet.SetPtEtaPhiE(SF_JEC*jet.pt, jet.eta, jet.phi, SF_JEC*jet.e);
 	p4jets.push_back( tmpjet);
 	listflavor.push_back( jet.mc.flavor );
 
@@ -740,6 +743,8 @@ Bool_t Analyzer::Process(Long64_t entry)
       int number_of_b = 0;
       int number_of_c = 0;
       int number_of_l = 0;
+      int number_of_b_highpt = 0;
+      int number_of_c_highpt = 0;
       float SFb_0tag = 1.;
       float SFb_only1tag = 1.;
       float SFb_1tag = 1.;
@@ -747,14 +752,18 @@ Bool_t Analyzer::Process(Long64_t entry)
       float SFb_0tag_syst[2] = {1.}; // for systematics
       float SFb_1tag_syst[2] = {1.};
       float SFb_2tag_syst[2] = {1.};
+      float SFb_1tag_systhighpt[2] = {1.};
 
       for ( size_t kk=0; kk < p4jets.size(); ++kk)
 	{
 	  hjets["pt"]->Fill( p4jets[kk].Pt(), PUweight );
-	  if ( abs(listflavor[kk])==5 ) { number_of_b++; hjets["pt_b"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==4 ) { number_of_c++; hjets["pt_c"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()<=240 ) { number_of_b++; hjets["pt_b"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()<=240 ) { number_of_c++; hjets["pt_c"]->Fill( p4jets[kk].Pt(), PUweight );}
 	  if ( abs(listflavor[kk])==1 || abs(listflavor[kk])==2 || abs(listflavor[kk])==3 || abs(listflavor[kk])==21 ) 
 	    { number_of_l++; hjets["pt_l"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++;}
+	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++;}
+
 	  if ( isTagb["TCHPM"][kk] ) 
 	    {
 	      hjets["pt_btag"]->Fill( p4jets[kk].Pt(), PUweight );
@@ -778,8 +787,6 @@ Bool_t Analyzer::Process(Long64_t entry)
       TLorentzVector p4Dijet = p4jets[0] + p4jets[1];
       double Dijet_deltaPhi = p4jets[0].DeltaPhi(p4jets[1]);
       TLorentzVector p4top = p4jets[2] + p4LepW;
-      double tb_deltaPhi = p4top.DeltaPhi( p4jets[1] );
-      double tb_deltaR = p4top.DeltaR( p4jets[1] );
 
       TLorentzVector p4Wprime = p4LepW + p4Dijet;
       hM["Wprime"]->Fill( p4Wprime.M(), PUweight );
@@ -815,10 +822,18 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  // b-tag systemacit DOWN 9% for b, 18% for c
 	  BTagWeight::JetInfo bjDOWN(0.63,0.83);
 	  BTagWeight::JetInfo cjDOWN(0.15,0.75);
+	  // for high pt jets > 240 UP 50% for b and c
+	  BTagWeight::JetInfo bjUPhighpt(0.63,1.36);
+	  BTagWeight::JetInfo cjUPhighpt(0.15,1.36);
+          // for high pt jets > 240 UP 50% for b and c
+	  BTagWeight::JetInfo bjDOWNhighpt(0.63,0.46);
+	  BTagWeight::JetInfo cjDOWNhighpt(0.15,0.46);
 
           vector<BTagWeight::JetInfo> j;
           for(int i=0;i<number_of_b;i++)j.push_back(bj);
+	  for(int i=0;i<number_of_b_highpt;i++)j.push_back(bj);
           for(int i=0;i<number_of_c;i++)j.push_back(cj);
+	  for(int i=0;i<number_of_c_highpt;i++)j.push_back(cj);
           for(int i=0;i<number_of_l;i++)j.push_back(lj);
           
 	  if (Nbtags_TCHPM==0) {
@@ -838,14 +853,19 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	    vector<BTagWeight::JetInfo> jj;
 	    for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
+	    for(int i=0;i<number_of_b_highpt;i++)jj.push_back(bjUPhighpt);
 	    for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
+	    for(int i=0;i<number_of_c_highpt;i++)jj.push_back(cjUPhighpt);
 	    for(int i=0;i<number_of_l;i++)jj.push_back(lj);
 	    SFb_1tag_syst[0] = b1.weight(jj,1); //UP
 	    vector<BTagWeight::JetInfo> jk;
             for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
+	    for(int i=0;i<number_of_b_highpt;i++)jk.push_back(bjDOWNhighpt);
             for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
+	    for(int i=0;i<number_of_c_highpt;i++)jk.push_back(cjDOWNhighpt);
             for(int i=0;i<number_of_l;i++)jk.push_back(lj);
             SFb_1tag_syst[1] = b1.weight(jk,1);//DOWN
+	    
 	  }
 	  // at least two tags
 	  BTagWeight b2(2,Nbtags_TCHPM); // number of tags
@@ -855,13 +875,17 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    
 	    vector<BTagWeight::JetInfo> jj;
             for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
+	    for(int i=0;i<number_of_b_highpt;i++)jj.push_back(bjUPhighpt);
             for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
+	    for(int i=0;i<number_of_c_highpt;i++)jj.push_back(cjUPhighpt);
             for(int i=0;i<number_of_l;i++)jj.push_back(lj);
             SFb_2tag_syst[0] = b2.weight(jj,2); //UP
                                                                                                                                                                                    
             vector<BTagWeight::JetInfo> jk;
             for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
+	    for(int i=0;i<number_of_b_highpt;i++)jk.push_back(bjDOWNhighpt);
             for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
+	    for(int i=0;i<number_of_c_highpt;i++)jk.push_back(cjDOWNhighpt);
             for(int i=0;i<number_of_l;i++)jk.push_back(lj);
             SFb_2tag_syst[1] = b2.weight(jk,2);//DOWN
 	  }
@@ -894,9 +918,12 @@ Bool_t Analyzer::Process(Long64_t entry)
       if ( Nbtags_TCHPM >= 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) )
 	{
 
-	  cutmap["2Jet1b"] += PUweight*SFb_1tag;
+	  //cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	  hjets["Njets_1tag"]->Fill( njets, PUweight*SFb_1tag );
 
+	  if ( njets < 5 ) {
+
+	    cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	  // calculate dijet mass closest to W mass
 	  double the_dijet_mass = 0;
 	  double sigma2 = 13.*13.;
@@ -912,8 +939,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    }
 	  hM["dijet"]->Fill( the_dijet_mass, PUweight*SFb_1tag );
 	  hjets["Dijet_deltaPhi"]->Fill( Dijet_deltaPhi, PUweight*SFb_1tag );
-	  hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
-	  hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
+	  
 	  // compute jjj mass for events with >=3 jets
 	  if ( njets > 2 ) {
 	    TLorentzVector p4Trijet = p4jets[0] + p4jets[1] + p4jets[2];
@@ -943,12 +969,24 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    }
 
 	  hM["top_1btag"]->Fill( p4Top.M(), PUweight*SFb_1tag );
+	  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight*SFb_1tag ); 
 
-	  if ( top_bjet_index == 0 )
+	  double tb_deltaPhi = 0.;
+	  double tb_deltaR = 0.;
+
+	  if ( top_bjet_index == 0 ) {
 	    p4Wprime = p4Top + p4jets[1];
-	  else 
+	    tb_deltaPhi = p4top.DeltaPhi( p4jets[1] );
+	    tb_deltaR = p4top.DeltaR( p4jets[1] );
+	  }
+	  else {
 	    p4Wprime = p4Top + p4jets[0];
-
+	    tb_deltaPhi = fabs( p4top.DeltaPhi( p4jets[0] ) );
+            tb_deltaR = p4top.DeltaR( p4jets[0] );
+	  }
+	  hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
+          hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
+	  h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
 	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
 	  hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
 
@@ -973,17 +1011,26 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
             }
 
+	  }
+
 	}
 
       if ( Nbtags_TCHPM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb_only1tag );
       if ( Nbtags_TCHPM > 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) ) {
-	hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
+	
 	cutmap["2Jet2b"] += PUweight*SFb_2tag;
+	hjets["Njets_2tag"]->Fill( njets, PUweight*SFb_2tag );
+
+	if ( njets < 5 ) {
+
+	  hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
+
 	if (fIsMC)
 	  {
 	    hM["Wprime_2btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[0] );
 	    hM["Wprime_2btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[1] );
 	  }
+	}
       }
 
     }
@@ -1032,6 +1079,7 @@ void Analyzer::SlaveTerminate()
       fFile->cd();
       h1test->Write();
       hcutflow->Write();
+      h2_pt_Wprime->Write();
       fFile->mkdir("muons");
       fFile->cd("muons");
       for ( map<string,TH1* >::const_iterator imap=hmuons.begin(); imap!=hmuons.end(); ++imap )
@@ -1086,6 +1134,9 @@ void Analyzer::SlaveTerminate()
     } else {
       cleanup = kTRUE;
     }
+
+    h2_pt_Wprime->SetDirectory(0);
+
     h1test->SetDirectory(0);
     hcutflow->SetDirectory(0);
     gDirectory = savedir;

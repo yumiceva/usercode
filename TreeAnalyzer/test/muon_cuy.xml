@@ -319,7 +319,7 @@
     <superimposeItem name="reliso_2jet_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="NPV" title="NPVS" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets" PlotDiff="true">
+  <superimpose name="NPV" title="NPVS" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq1" XTitle="Primary Vertices" PlotDiff="true">
     <superimposeItem name="NPV_data" color="top" legend="Data"/>
     <superimposeItem name="NPV_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="NPV_ZJets" color="top" legend="Zjets"/>

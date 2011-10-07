@@ -40,11 +40,17 @@ if IsMC:
     file['sch_bar']   = path+'/results_STsch_bar.root'
     file['WW']    = path+'/results_WW.root'
     file['WZ']    = path+'/results_WZ.root'
-    file['Wprime800'] = path+'/results_Wprime_800.root'
-    file['Wprime1000'] = path+'/results_Wprime_1000.root'
-    file['Wprime1200'] = path+'/results_Wprime_1200.root'
-    file['Wprime1500'] = path+'/results_Wprime_1500.root'
-    file['Wprime2000'] = path+'/results_Wprime_2000.root'
+    file['Wprime800'] = path+'/results_WpRH800.root'
+    file['Wprime900'] = path+'/results_WpRH900.root'
+    file['Wprime1000'] = path+'/results_WpRH1000.root'
+    file['Wprime1400'] = path+'/results_WpRH1400.root'
+    file['Wprime1500'] = path+'/results_WpRH1500.root'
+    file['Wprime1600'] = path+'/results_WpRH1600.root'
+#    file['Wprime800'] = path+'/results_Wprime_800.root'
+#    file['Wprime1000'] = path+'/results_Wprime_1000.root'
+#    file['Wprime1200'] = path+'/results_Wprime_1200.root'
+#    file['Wprime1500'] = path+'/results_Wprime_1500.root'
+#    file['Wprime2000'] = path+'/results_Wprime_2000.root'
     
     xsec['ttbar'] = 157.5
     xsec['QCD']   = 84679.3
@@ -58,17 +64,28 @@ if IsMC:
     xsec['sch_bar']   = 1.44
     xsec['WW']    = 43.0
     xsec['WZ']    = 18.0
-    xsec['Wprime800'] = 5.26
-    xsec['Wprime1000'] = 1.93
-    xsec['Wprime1200'] = 0.773
-    xsec['Wprime1500'] = 0.228
-    xsec['Wprime2000'] = 0.034
-
-    Nevents["Wprime800"] = 107347. 
-    Nevents["Wprime1000"] = 109204.0
-    Nevents["Wprime1200"] = 108990.0
-    Nevents["Wprime1500"] = 108733.0
-    Nevents["Wprime2000"] = 106657.0
+    xsec['Wprime800'] = 1.6697
+    xsec['Wprime900'] = 0.97609
+    xsec['Wprime1000'] = 0.58782
+    xsec['Wprime1400'] = 0.094496
+    xsec['Wprime1500'] = 0.061946
+    xsec['Wprime1600'] = 0.04102
+    Nevents['Wprime800'] = 1.09734000000000000e+05
+    Nevents['Wprime900'] = 1.09695000000000000e+05
+    Nevents['Wprime1000'] = 1.09613000000000000e+05
+    Nevents['Wprime1400'] = 1.09558000000000000e+05
+    Nevents['Wprime1500'] = 1.09532000000000000e+05
+    Nevents['Wprime1600'] = 9.12900000000000000e+04
+#    xsec['Wprime800'] = 6.838
+#    xsec['Wprime1000'] = 2.509
+#    xsec['Wprime1200'] = 1.1595
+#    xsec['Wprime1500'] = 0.2964
+#    xsec['Wprime2000'] = 0.0442
+#    Nevents["Wprime800"] = 107347. 
+#    Nevents["Wprime1000"] = 109204.0
+#    Nevents["Wprime1200"] = 108990.0
+#    Nevents["Wprime1500"] = 108733.0
+#    Nevents["Wprime2000"] = 106657.0
     
     Nevents['ttbar'] = 3683795.0
     Nevents['QCD']   = 24575292.0
@@ -97,9 +114,12 @@ if IsMC:
     label['WZ'] = 'WZ'
 
     label['Wprime800'] = "W' 0.8 TeV"
+    label['Wprime900'] = "W' 0.9 TeV"
     label['Wprime1000'] = "W' 1 TeV"
     label['Wprime1200'] = "W' 1.2 TeV"
+    label['Wprime1400'] = "W' 1.4 TeV"
     label['Wprime1500'] = "W' 1.5 TeV"
+    label['Wprime1600'] = "W' 1.6 TeV"
     label['Wprime2000'] = "W' 2 TeV"
     
     label['Total'] = 'Total MC'
@@ -148,17 +168,31 @@ cutlabel['3Jet'] = 'jets $> 2$'
 cutlabel['4Jet'] = 'jets $> 3$'
 cutlabel['2Jet1b'] = 'jets $> 1$, btags $> 0$'
 cutlabel['2Jet2b'] = 'jets $> 1$, btags $> 1$'
+cutlabel['MaxJets'] = 'max jets'
+cutlabel['phi'] = 'delta phi'
+cutlabel['topmass'] = 'top mass'
 
-cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet','2Jet1b','2Jet2b']
-SKIPCUTS = ['3Jet','4Jet']
+cutlabelvector = [ 'GoodPV', 'OneIsoMu', 'LooseMuVeto', 'ElectronVeto', 'MET', '1Jet', '2Jet', '3Jet', '4Jet','2Jet1b','2Jet2b','MaxJets','phi','topmass']
+SKIPCUTS = ['3Jet','4Jet','MaxJets','phi','topmass']
 
 allmap = {}
 allmaperr = {}
 
 weightmap = {}
 
-for sample in keys:
+#tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
+tablelist = ['Wprime800','Wprime900','Wprime1000','Wprime1400','Wprime1500','Wprime1600']
+#tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
+if Lumi<=0:
+    tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
 
+if not IsMC:
+    tablelist = ['data']
+
+                            
+for sample in tablelist:
+
+    if sample=="Total": continue
     print " processing " + sample
 
     cutmap = {}
@@ -230,17 +264,6 @@ sortedcutlist2= ['MET','1Jet','2Jet','2Jet1b','2Jet2b']
 if IsMC:
     cutlabel['CleanFilters'] = 'Processed'
 
-         
-tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
-#tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
-if Lumi<=0:
-    tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
-    
-if not IsMC:
-    #tablelist = ['MB','Jun14','Jul16','Prompt','Total']
-    #tablelist = ['dataJPT','datacalo','dataJPTMET','datacaloMET']
-    tablelist = ['data']
-    #tablelist = ['dataPFMET']
     
 texname = "cutflow_"+JetType+"_data.tex"
 

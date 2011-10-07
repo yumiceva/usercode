@@ -10,6 +10,7 @@
 
 #include <TROOT.h>
 #include <TH1F.h>
+#include <TH2F.h>
 #include <TH1D.h>
 #include <TChain.h>
 #include <TFile.h>
@@ -44,6 +45,7 @@ private:
   TString         fSample;
   TH1F            *h1test;
   TH1D            *hcutflow;
+  TH2F            *h2_pt_Wprime;
   map< string, TH1*> hmuons;
   map< string, TH1*> helectrons;
   map< string, TH1*> hjets;
