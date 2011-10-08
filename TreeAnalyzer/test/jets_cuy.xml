@@ -29,6 +29,8 @@
     <TH1 name="pt_ttbar" source="/jets/jet_pt_ttbar"/>
     <TH1 name="jet1pt_ttbar" source="/jets/jet1_pt_ttbar"/>
     <TH1 name="jet2pt_ttbar" source="/jets/jet2_pt_ttbar"/>
+    <TH1 name="jet1eta_ttbar" source="/jets/jet1_eta_ttbar"/>
+    <TH1 name="jet2eta_ttbar" source="/jets/jet2_eta_ttbar"/>
     <TH1 name="Njets_ttbar" source="/jets/Njets_ttbar"/>
     <TH1 name="Njets_1tag_ttbar" source="/jets/Njets_1tag_ttbar"/>
     <TH1 name="Njets_2tag_ttbar" source="/jets/Njets_2tag_ttbar"/>
@@ -341,6 +343,34 @@
     <superimposeItem name="jet2pt_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
     <superimposeItem name="jet2pt_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
     <superimposeItem name="jet2pt_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="jet1eta" title="jet1eta" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="jet1eta_data" color="top" legend="Data"/>
+    <superimposeItem name="jet1eta_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="jet1eta_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="jet1eta_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="jet1eta_QCD" color="top" legend="QCD"/>
+<!--    <superimposeItem name="jet1eta_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
+    <superimposeItem name="jet1eta_ST" color="top" legend="ST"/>
+    <superimposeItem name="jet1eta_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="jet1eta_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="jet1eta_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="jet1eta_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="jet2eta" title="jet2eta" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="jet2eta_data" color="top" legend="Data"/>
+    <superimposeItem name="jet2eta_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="jet2eta_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="jet2eta_Dibosons" color="top" legend="Dibosons"/>
+    <superimposeItem name="jet2eta_QCD" color="top" legend="QCD"/>
+<!--    <superimposeItem name="jet2eta_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
+    <superimposeItem name="jet2eta_ST" color="top" legend="ST"/>
+    <superimposeItem name="jet2eta_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="jet2eta_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="jet2eta_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="jet2eta_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
   </superimpose>
 
   <superimpose name="Njets" title="Njets" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets" PlotDiff="true">

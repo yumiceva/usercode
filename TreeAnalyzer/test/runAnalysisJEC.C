@@ -87,7 +87,7 @@ void runAnalysisJEC(TString sample="all",bool NoGUI=false)
       mc_wp_rh_1600->Process("Analyzer.C+","JECDOWN sample=WpRH1600");
     }
   if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
-
+  /*
   if (sample=="MC"||sample=="Wprime800"||sample=="all")
     {
       TDSet *mc_wp_800 = new TDSet("top","*","/PATNtupleMaker");
@@ -120,6 +120,7 @@ void runAnalysisJEC(TString sample="all",bool NoGUI=false)
       mc_wp_1500->Process("Analyzer.C+","JECDOWN sample=Wprime_1500");
     }
   if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+  */
   if (sample=="MC"||sample=="Wprime2000"||sample=="all")
     {
       TDSet *mc_wp_2000 = new TDSet("top","*","/PATNtupleMaker");

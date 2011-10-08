@@ -235,6 +235,48 @@
     <TH1 name="LepWmass_WpRH1000" source="/MET/LepWmass_WpRH1000"/>
   </validation>
 
+  <validation type="WpRH1100" file="./results_WpRH1100.root" weight="3.30824735685e-06">
+    <TH1 name="dijet_WpRH1100" source="/mass/dijet_WpRH1100"/>
+    <TH1 name="trijet_WpRH1100" source="/mass/trijet_WpRH1100"/>
+    <TH1 name="Mt_2jet_WpRH1100" source="/mass/Mt_2jet_WpRH1100"/>
+    <TH1 name="Wprime_WpRH1100" source="/mass/Wprime_WpRH1100"/>
+    <TH1 name="Wprime_0btag_WpRH1100" source="/mass/Wprime_0btag_WpRH1100"/>
+    <TH1 name="Wprime_1btag_WpRH1100" source="/mass/Wprime_1btag_WpRH1100"/>
+    <TH1 name="Wprime_2btag_WpRH1100" source="/mass/Wprime_2btag_WpRH1100"/>
+    <TH1 name="MET_WpRH1100" source="/MET/MET_WpRH1100"/>
+    <TH1 name="MET_2jet_WpRH1100" source="/MET/MET_2jet_WpRH1100"/>
+    <TH1 name="top_1btag_WpRH1100" source="/mass/top_1btag_WpRH1100"/>
+    <TH1 name="LepWmass_WpRH1100" source="/MET/LepWmass_WpRH1100"/>
+  </validation>
+
+  <validation type="WpRH1200" file="./results_WpRH1200.root" weight="2.08181254106e-06">
+    <TH1 name="dijet_WpRH1200" source="/mass/dijet_WpRH1200"/>
+    <TH1 name="trijet_WpRH1200" source="/mass/trijet_WpRH1200"/>
+    <TH1 name="Mt_2jet_WpRH1200" source="/mass/Mt_2jet_WpRH1200"/>
+    <TH1 name="Wprime_WpRH1200" source="/mass/Wprime_WpRH1200"/>
+    <TH1 name="Wprime_0btag_WpRH1200" source="/mass/Wprime_0btag_WpRH1200"/>
+    <TH1 name="Wprime_1btag_WpRH1200" source="/mass/Wprime_1btag_WpRH1200"/>
+    <TH1 name="Wprime_2btag_WpRH1200" source="/mass/Wprime_2btag_WpRH1200"/>
+    <TH1 name="MET_WpRH1200" source="/MET/MET_WpRH1200"/>
+    <TH1 name="MET_2jet_WpRH1200" source="/MET/MET_2jet_WpRH1200"/>
+    <TH1 name="top_1btag_WpRH1200" source="/mass/top_1btag_WpRH1200"/>
+    <TH1 name="LepWmass_WpRH1200" source="/MET/LepWmass_WpRH1200"/>
+  </validation>
+
+  <validation type="WpRH1300" file="./results_WpRH1300.root" weight="1.33106985744e-06">
+    <TH1 name="dijet_WpRH1300" source="/mass/dijet_WpRH1300"/>
+    <TH1 name="trijet_WpRH1300" source="/mass/trijet_WpRH1300"/>
+    <TH1 name="Mt_2jet_WpRH1300" source="/mass/Mt_2jet_WpRH1300"/>
+    <TH1 name="Wprime_WpRH1300" source="/mass/Wprime_WpRH1300"/>
+    <TH1 name="Wprime_0btag_WpRH1300" source="/mass/Wprime_0btag_WpRH1300"/>
+    <TH1 name="Wprime_1btag_WpRH1300" source="/mass/Wprime_1btag_WpRH1300"/>
+    <TH1 name="Wprime_2btag_WpRH1300" source="/mass/Wprime_2btag_WpRH1300"/>
+    <TH1 name="MET_WpRH1300" source="/MET/MET_WpRH1300"/>
+    <TH1 name="MET_2jet_WpRH1300" source="/MET/MET_2jet_WpRH1300"/>
+    <TH1 name="top_1btag_WpRH1300" source="/mass/top_1btag_WpRH1300"/>
+    <TH1 name="LepWmass_WpRH1300" source="/MET/LepWmass_WpRH1300"/>
+  </validation>
+
   <validation type="WpRH1400" file="./results_WpRH1400.root" weight="8.62520308877e-07">
     <TH1 name="dijet_WpRH1400" source="/mass/dijet_WpRH1400"/>
     <TH1 name="trijet_WpRH1400" source="/mass/trijet_WpRH1400"/>
@@ -275,6 +317,20 @@
     <TH1 name="MET_2jet_WpRH1600" source="/MET/MET_2jet_WpRH1600"/>
     <TH1 name="top_1btag_WpRH1600" source="/mass/top_1btag_WpRH1600"/>
     <TH1 name="LepWmass_WpRH1600" source="/MET/LepWmass_WpRH1600"/>
+  </validation>
+
+  <validation type="WpRH2000" file="./results_WpRH2000.root" weight="7.43973672614e-08">
+    <TH1 name="dijet_WpRH2000" source="/mass/dijet_Wprime_2000"/>
+    <TH1 name="trijet_WpRH2000" source="/mass/trijet_Wprime_2000"/>
+    <TH1 name="Mt_2jet_WpRH2000" source="/mass/Mt_2jet_Wprime_2000"/>
+    <TH1 name="Wprime_WpRH2000" source="/mass/Wprime_Wprime_2000"/>
+    <TH1 name="Wprime_0btag_WpRH2000" source="/mass/Wprime_0btag_Wprime_2000"/>
+    <TH1 name="Wprime_1btag_WpRH2000" source="/mass/Wprime_1btag_Wprime_2000"/>
+    <TH1 name="Wprime_2btag_WpRH2000" source="/mass/Wprime_2btag_Wprime_2000"/>
+    <TH1 name="MET_WpRH2000" source="/MET/MET_Wprime_2000"/>
+    <TH1 name="MET_2jet_WpRH2000" source="/MET/MET_2jet_Wprime_2000"/>
+    <TH1 name="top_1btag_WpRH2000" source="/mass/top_1btag_Wprime_2000"/>
+    <TH1 name="LepWmass_WpRH2000" source="/MET/LepWmass_Wprime_2000"/>
   </validation>
 
 <!--
@@ -347,6 +403,7 @@
     <TH1 name="top_1btag_Wprime_2000" source="/mass/top_1btag_Wprime_2000"/>
     <TH1 name="LepWmass_Wprime_2000" source="/MET/LepWmass_Wprime_2000"/>
   </validation>
+
 -->
 
   <additionArray name="ST" title="ST">
@@ -530,9 +587,13 @@
     <superimposeItem name="Wprime_1btag_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH900" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH1100" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH1300" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1400" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1600" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
   </superimpose>
 <!--
  <superimpose name="Wprime_1btag_QCDComparison" title="Wprime_1btag_QCDComparison" YTitle="Events" Weight="true" Lumi="2180.9">
