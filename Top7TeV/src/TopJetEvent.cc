@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.cc,v 1.5 2010/09/29 20:32:05 yumiceva Exp $
+ version $Id: TopJetEvent.cc,v 1.6 2011/05/16 19:44:28 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -39,6 +39,7 @@ void TopJetEvent::Reset()
   btag_TCHP = -999;
   btag_SSVHE= -999;
   btag_SSVHP= -999;
+  btag_CSV = -999;
 
   mc.Reset();
 

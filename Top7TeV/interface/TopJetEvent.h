@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.h,v 1.6 2010/09/29 20:32:04 yumiceva Exp $
+ version $Id: TopJetEvent.h,v 1.7 2011/05/16 19:43:37 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -51,6 +51,7 @@ public:
     Float_t btag_TCHP;
     Float_t btag_SSVHE;
     Float_t btag_SSVHP;
+    Float_t btag_CSV;
 
     //___ MC
     TopGenJetEvent mc;

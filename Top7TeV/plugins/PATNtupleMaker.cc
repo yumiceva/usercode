@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.27 2011/08/24 19:35:38 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.28 2011/08/24 21:44:35 yumiceva Exp $
 //
 //
 
@@ -318,6 +318,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
       reco::GenParticleCollection::const_iterator mcIter ;
       for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
+	
 	//cout << "pdgId= " << mcIter->pdgId() << endl;
 
 	// find a W
@@ -329,7 +330,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	// find a neutrino from W
 	if ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 ) {
 
-	  if (fabs( (mcIter->mother())->pdgId() ) == 24) {
+	  if (mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
 	    mygen.nu_pt = mcIter->pt();
 	    mygen.nu_e = mcIter->energy();
 	    mygen.nu_eta = mcIter->eta();
@@ -337,10 +338,11 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    mygen.isSemiLeptonic = 1;
 	  }
 	}
+	
 	// find a lepton from W
 	if ( fabs(mcIter->pdgId()) == 11 || fabs(mcIter->pdgId()) == 13 ) {
 
-          if (fabs( (mcIter->mother())->pdgId() ) == 24) {
+          if ( mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
 	    mygen.mu_pt = mcIter->pt();
             mygen.mu_e = mcIter->energy();
             mygen.mu_eta = mcIter->eta();
@@ -349,6 +351,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    else mygen.LeptonicChannel = 13; // muons
 	  }
 	}
+	
       }
       
       _ntuple->gen = mygen;
@@ -768,7 +771,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.btag_TCHP  = jet->bDiscriminator( "trackCountingHighPurBJetTags" );
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
             topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
-	    
+	    topjet.btag_CSV = jet->bDiscriminator( "combinedSecondaryVertexBJetTags" );
+
             if (! isDataInput_ ) {
               topjet.mc.flavor = jet->partonFlavour();
 	      if (jet->genJet()) {
