@@ -54,6 +54,7 @@ void Analyzer::ParseInput()
   if (fMyOpt.Contains("JECDOWN")) { fdoJECunc = true; fdoJECup = false; }
   if (fMyOpt.Contains("QCD1")) fdoQCD1SideBand = true;
   if (fMyOpt.Contains("QCD2")) fdoQCD2SideBand = true;
+  if (fMyOpt.Contains("mtop")) fdoMtopCut = true;
   if (fMyOpt.Contains("sample"))
     {
       TString tmp = fMyOpt;
@@ -710,14 +711,15 @@ Bool_t Analyzer::Process(Long64_t entry)
 	bdisc["SSVHE"].push_back( jet.btag_SSVHE );
 	if (fVerbose) cout << "store bdisc" << endl;
 	// TCHPL cut at 1.19
-	// check TCHPM
+	// check TCHPM cut at 1.93
 	if ( jet.btag_TCHP > 1.93 ) isTagb["TCHPM"].push_back(true);
 	else isTagb["TCHPM"].push_back(false);
 	if (fVerbose) cout << "done tchpl" << endl;
-	// check SSVHEM
+	// check SSVHEM cut at 1.74
 	if ( jet.btag_SSVHE > 1.74) isTagb["SSVHEM"].push_back(true);
 	else isTagb["SSVHEM"].push_back(false);
 	if (fVerbose) cout << "done ssvem" << endl;
+	// CSVM cut at 0.679
 
 	njets++;
       }
@@ -786,7 +788,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
       TLorentzVector p4Dijet = p4jets[0] + p4jets[1];
       double Dijet_deltaPhi = p4jets[0].DeltaPhi(p4jets[1]);
-      TLorentzVector p4top = p4jets[2] + p4LepW;
+      TLorentzVector p4Top = p4jets[2] + p4LepW;
 
       TLorentzVector p4Wprime = p4LepW + p4Dijet;
       hM["Wprime"]->Fill( p4Wprime.M(), PUweight );
@@ -808,14 +810,14 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	  // zeto tag
           BTagWeight b0(0,0); // number of tags 
-	  BTagWeight::JetInfo bj(0.63,0.91); // mean MC eff and mean SF
+	  BTagWeight::JetInfo bj(0.63,0.91); // mean MC eff and mean SF. For TCHPM=0.91\pm0.09, CSVM=0.96\pm0.096
 	  BTagWeight::JetInfo cj(0.15,0.91);
           double light_mceff = 0.017;
           if ( 100 < p4jets[0].Pt() && p4jets[0].Pt() <= 200 ) light_mceff = 0.04;
           if ( 200 < p4jets[0].Pt() && p4jets[0].Pt() <= 300 ) light_mceff = 0.08;
           if ( 300 < p4jets[0].Pt() && p4jets[0].Pt() <= 400 ) light_mceff = 0.12;
           if ( 400 < p4jets[0].Pt() ) light_mceff = 0.14;
-	  BTagWeight::JetInfo lj(light_mceff,1.22);
+	  BTagWeight::JetInfo lj(light_mceff,1.22); //for TCHPM=1.22, CSVM=1.08 \pm 0.13
 	  // b-tag systematic UP 9% for b, 18% for c
 	  BTagWeight::JetInfo bjUP(0.63,0.99);                                                                                                                                                                
 	  BTagWeight::JetInfo cjUP(0.15,1.07);
@@ -920,6 +922,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	  //cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	  hjets["Njets_1tag"]->Fill( njets, PUweight*SFb_1tag );
+	  if (Nbtags_TCHPM > 1 ) hjets["Njets_2tag"]->Fill( njets, PUweight*SFb_2tag );
 
 	  if ( njets < 5 ) {
 
@@ -949,7 +952,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  int top_bjet_index = 0;
 	  double deltaM = 99999.;
 	  //double top_mass = 0.;
-	  TLorentzVector p4Top;
+	  //TLorentzVector p4Top;
+	  TLorentzVector bestp4Top;
 	  for ( size_t itejet = 0; itejet < p4jets.size(); ++itejet )
             {
 	      
@@ -963,11 +967,12 @@ Bool_t Analyzer::Process(Long64_t entry)
 		    top_bjet_index = itejet;
 		    //top_mass = p4Top.M();
 		    deltaM = fabs( p4Top.M() - 172.);
+		    bestp4Top = p4Top;
 		  }
 	      
 		}
 	    }
-
+	  p4Top = bestp4Top;
 	  hM["top_1btag"]->Fill( p4Top.M(), PUweight*SFb_1tag );
 	  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight*SFb_1tag ); 
 
@@ -976,64 +981,68 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	  if ( top_bjet_index == 0 ) {
 	    p4Wprime = p4Top + p4jets[1];
-	    tb_deltaPhi = p4top.DeltaPhi( p4jets[1] );
-	    tb_deltaR = p4top.DeltaR( p4jets[1] );
+	    tb_deltaPhi = p4Top.DeltaPhi( p4jets[1] );
+	    tb_deltaR = p4Top.DeltaR( p4jets[1] );
 	  }
 	  else {
 	    p4Wprime = p4Top + p4jets[0];
-	    tb_deltaPhi = fabs( p4top.DeltaPhi( p4jets[0] ) );
-            tb_deltaR = p4top.DeltaR( p4jets[0] );
+	    tb_deltaPhi = fabs( p4Top.DeltaPhi( p4jets[0] ) );
+            tb_deltaR = p4Top.DeltaR( p4jets[0] );
 	  }
 	  hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
           hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
-	  h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
-	  hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-	  hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
 
-	  if (fIsMC)
-	    {
-	      hM["Wprime_1btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[0] );
-	      hM["Wprime_1btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[1] );
-	    }
+	  bool passcut = true;
+	  if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
 
-	  if (fSample.Contains("Wprime"))
-            {
-              if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-              else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-              else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-            }
+	  if (passcut) {
+	    h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
+	    hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	    hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
 
-	  if (fSample=="WJets")
-            {
-	      int FH = ntuple->flavorHistory;
-              if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-	      else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-            }
+	    if (fIsMC)
+	      {
+		hM["Wprime_1btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[0] );
+		hM["Wprime_1btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[1] );
+	      }
 
-	  }
+	    if (fSample.Contains("Wprime"))
+	      {
+		if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	      }
+
+	    if (fSample=="WJets")
+	      {
+		int FH = ntuple->flavorHistory;
+		if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	      }
+
+	    // check two b-tags
+	    if ( Nbtags_TCHPM > 1 )
+	      {
+		cutmap["2Jet2b"] += PUweight*SFb_2tag;
+		hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
+
+		if (fIsMC)
+		  {
+		    hM["Wprime_2btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[0] );
+		    hM["Wprime_2btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[1] );
+		  }
+	      }
+
+	  }//passcut mtop cut if requested
+	  }// njets < 5
 
 	}
 
       if ( Nbtags_TCHPM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb_only1tag );
-      if ( Nbtags_TCHPM > 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) ) {
-	
-	cutmap["2Jet2b"] += PUweight*SFb_2tag;
-	hjets["Njets_2tag"]->Fill( njets, PUweight*SFb_2tag );
-
-	if ( njets < 5 ) {
-
-	  hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
-
-	if (fIsMC)
-	  {
-	    hM["Wprime_2btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[0] );
-	    hM["Wprime_2btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[1] );
-	  }
-	}
-      }
 
     }
+
   /*
   if (njets==2)
     {

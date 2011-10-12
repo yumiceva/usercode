@@ -133,7 +133,7 @@
     <TH1 name="Wprime_2btag_systDown_WpRH1500" source="/mass/Wprime_2btag_systDown_WpRH1500"/>
   </validation>
 
-  <validation type="WpRH1600" file="./results_WpRH1600.root" weight="4.4933727681e-07">
+  <validation type="WpRH1600" file="./results_WpRH1600.root" weight="3.82153737225e-07">
     <TH1 name="Wprime_1btag_systUp_WpRH1600" source="/mass/Wprime_1btag_systUp_WpRH1600"/>
     <TH1 name="Wprime_1btag_systDown_WpRH1600" source="/mass/Wprime_1btag_systDown_WpRH1600"/>
     <TH1 name="Wprime_2btag_systUp_WpRH1600" source="/mass/Wprime_2btag_systUp_WpRH1600"/>

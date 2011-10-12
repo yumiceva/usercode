@@ -41,6 +41,7 @@ private:
   bool            fdoQCD2SideBand;
   bool            fdoJECunc;
   bool            fdoJECup;
+  bool            fdoMtopCut;
   //HistoManager    *fHist;
   TString         fSample;
   TH1F            *h1test;
@@ -77,6 +78,7 @@ public :
        fdoQCD2SideBand = false;
        fdoJECunc = false;
        fdoJECup = true;
+       fdoMtopCut = false;
      }
    virtual ~Analyzer() { }
    virtual Int_t   Version() const { return 2; }

@@ -88,7 +88,7 @@ if IsMC:
     Nevents['Wprime1300'] = 1.09566000000000000e+05
     Nevents['Wprime1400'] = 1.09558000000000000e+05
     Nevents['Wprime1500'] = 1.09532000000000000e+05
-    Nevents['Wprime1600'] = 9.12900000000000000e+04
+    Nevents['Wprime1600'] = 107339 #9.12900000000000000e+04
         
 #    xsec['Wprime800'] = 6.838
 #    xsec['Wprime1000'] = 2.509
