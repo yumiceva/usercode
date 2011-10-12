@@ -25,18 +25,19 @@ templates_cfg = "Wp_templates.cfg"
 masses = [ '800', '900', '1000', '1100','1200','1300','1400', '1500','1600','2000' ]
 
 #prefix = "Wprime_" # for pythia
-prefix = "WpRH"+"_"+Channel # comphep
+prefix = Channel+"_"+"WpRH" # comphep
 
 for OP in masses:
 
     if OP==Mass or Mass=="-1":
 
         # create dir
-        os.system("mkdir "+prefix+OP)
-        dir = prefix+OP+"/"
+        dir = prefix+OP
+        os.system("mkdir "+dir)
+        dir += "/"
 
         if Channel=="muons" or Channel=="combined":
-            os.system("ln -s ../commonWp.cfg "+dir+"commonWp.cfg")
+            #os.system("ln -s ../commonWp.cfg "+dir+"commonWp.cfg")
             os.system("ln -s ../templates.root "+dir+"templates.root")
             os.system("ln -s ../templates_btag_syst.root "+dir+"templates_btag_syst.root")
             os.system("ln -s ../templates_jes_up.root "+dir+"templates_jes_up.root")
@@ -47,7 +48,8 @@ for OP in masses:
             os.system("ln -s ../templates_e_btagDown.root "+dir+"templates_e_btagDown.root")
             os.system("ln -s ../templates_e_jesUp.root "+dir+"templates_e_jesUp.root")
             os.system("ln -s ../templates_e_jesDown.root "+dir+"templates_e_jesDown.root")
-                
+
+        os.system("cp commonWp.cfg "+dir)        
         os.system("cp "+obs_cfg+" "+dir+obs_cfg) 
         os.system("cp "+exp_cfg+" "+dir+exp_cfg)
         os.system("cp "+templates_cfg+" "+dir+templates_cfg)
