@@ -12,7 +12,7 @@ void plotLimits()
   // frame
   TH2F* frame = new TH2F("frame", "frame", 10, 700, 1700, 100, 0, 1.8); // for semilog: 0.01, 4
   frame->GetXaxis()->SetTitle("W'(tb) mass [GeV]");
-  frame->GetYaxis()->SetTitle("BR x #sigma [pb]");
+  frame->GetYaxis()->SetTitle("#sigma#upointBR(t#rightarrowWb,W#rightarrowl#nu) [pb]");
   frame->SetNdivisions(505);
 
   // 1 sigma expected
@@ -66,10 +66,11 @@ void plotLimits()
   //expec->RemovePoint(9);
 
   // theory
-  float x_th[6] = {800 , 900, 1000, 1400, 1500, 2000};
-  float y_th[6] = {1.6, 0.926, 0.566, 0.094, 0.063, 0.0093};
+  float x_th[9] = {800 ,   900, 1000, 1100, 1200, 1300, 1400, 1500, 2000};
+  //float y_th[6] = {1.6, 0.926, 0.566, 0.094, 0.063, 0.0093}; OLD
+  float y_th[9] = {2.426,1.389,0.849,0.516,0.334,0.214,0.141,0.094,0.014};
 
-  TGraph* theory = new TGraph(6, x_th, y_th);
+  TGraph* theory = new TGraph(9, x_th, y_th);
   //theory->SetLineStyle(kDashed);
   theory->SetLineColor(2);
   theory->SetLineWidth(2);
