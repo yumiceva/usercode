@@ -7,6 +7,7 @@ METzCalculator::METzCalculator() {
 	isComplex_ = false;
 	otherSol_ = 0.;
 	leptonMass_ = 0.105658367;
+	newPtneutrino = -1;
 }
 
 /// destructor
@@ -35,12 +36,30 @@ METzCalculator::Calculate(int type) {
 
         double tmproot = B*B - 4.0*A*C;
 
+	double newptnu = 0.;
+
         if (tmproot<0) {
                 isComplex_= true;
                 pznu = - B/(2*A); // take real part of complex roots
 		otherSol_ = pznu;
-		//std::cout << " Neutrino Solutions: complex, real part " << pznu << std::endl;
-		}
+
+		// recalculate the neutrino pT
+		// solve quadratic eq. discriminator = 0 for pT of nu
+		double ptmu = TMath::Sqrt( pxmu*pxmu + pymu*pymu);
+		double ptnu = TMath::Sqrt( pxnu*pxnu + pynu*pynu); // old
+		double AA = 4.*(pzmu*pzmu + M_mu*M_mu);
+		double BB = -4.*(M_W*M_W - M_mu*M_mu)*ptmu;
+		double CC = -1.*(M_W*M_W - M_mu*M_mu)*(M_W*M_W - M_mu*M_mu);
+		
+		double tmpdisc = BB*BB - 4.0*AA*CC;
+		double tmpsolpt1 = (-BB + TMath::Sqrt(tmpdisc))/(2.0*AA);
+		double tmpsolpt2 = (-BB - TMath::Sqrt(tmpdisc))/(2.0*AA);
+		
+		if ( fabs( tmpsolpt1 - ptnu ) < fabs( tmpsolpt2 - ptnu) ) newptnu = tmpsolpt1;
+		else newptnu = tmpsolpt2;
+		
+		newPtneutrino_ = newptnu;
+	}
         else {
 			isComplex_ = false;
 			double tmpsol1 = (-B + TMath::Sqrt(tmproot))/(2.0*A);

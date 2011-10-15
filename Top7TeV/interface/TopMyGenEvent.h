@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMyGenEvent.h,v 1.1 2010/08/26 17:58:18 yumiceva Exp $
+ version $Id: TopMyGenEvent.h,v 1.2 2010/12/15 19:50:44 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -65,6 +65,8 @@ public:
   Float_t bLep_eta;
   Float_t bLep_phi;
   Float_t bLep_e;
+  Float_t MET;
+  Float_t METPhi;
 
   ClassDef(TopMyGenEvent,1);
 

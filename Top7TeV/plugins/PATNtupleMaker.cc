@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.28 2011/08/24 21:44:35 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.29 2011/10/10 20:53:12 yumiceva Exp $
 //
 //
 
@@ -42,6 +42,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/METReco/interface/GenMETCollection.h"
 #include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
@@ -159,7 +160,10 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   iEvent.getByLabel(PFMETTag_, pfmetHandle); //patMETsPFlow
   const METCollection *pfmetCol = pfmetHandle.product();
   pfmet = &(pfmetCol->front());
-
+  
+  Handle<GenMETCollection> genMetTrue;
+  iEvent.getByLabel("genMetTrue", genMetTrue);
+  
   if (verbose_) cout << "got all collections" << endl;
 
   // count number of processed events by analyzer                                                                                                                                                                           
@@ -312,48 +316,56 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       } else 
     */
   Handle<reco::GenParticleCollection> genParticles; 
-  if ( (!iEvent.isRealData()) && iEvent.getByLabel("prunedGenParticles", genParticles) ) 
+  if ( (!iEvent.isRealData()) )
     {
-      TopMyGenEvent mygen; // mostly for ttbar MC
 
-      reco::GenParticleCollection::const_iterator mcIter ;
-      for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
-	
-	//cout << "pdgId= " << mcIter->pdgId() << endl;
+      TopMyGenEvent mygen; // generator storage
 
-	// find a W
-	if ( fabs(mcIter->pdgId()) == 24 && mcIter->energy() > 10.0) {
-	  
-	  mygen.Wp_pt = mcIter->pt();
-	  mygen.isWevent = 1;
-	}
-	// find a neutrino from W
-	if ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 ) {
-
-	  if (mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
-	    mygen.nu_pt = mcIter->pt();
-	    mygen.nu_e = mcIter->energy();
-	    mygen.nu_eta = mcIter->eta();
-	    mygen.nu_phi = mcIter->phi();
-	    mygen.isSemiLeptonic = 1;
-	  }
-	}
-	
-	// find a lepton from W
-	if ( fabs(mcIter->pdgId()) == 11 || fabs(mcIter->pdgId()) == 13 ) {
-
-          if ( mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
-	    mygen.mu_pt = mcIter->pt();
-            mygen.mu_e = mcIter->energy();
-            mygen.mu_eta = mcIter->eta();
-            mygen.mu_phi = mcIter->phi();
-	    if ( fabs(mcIter->pdgId()) == 11 ) mygen.LeptonicChannel = 11; // electrons
+      if ( iEvent.getByLabel("prunedGenParticles", genParticles) ) 
+	{
+	  reco::GenParticleCollection::const_iterator mcIter ;
+	  for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
+	    
+	    //cout << "pdgId= " << mcIter->pdgId() << endl;
+	    
+	    // find a W
+	    if ( fabs(mcIter->pdgId()) == 24 && mcIter->energy() > 10.0 ) {
+	      mygen.Wp_pt = mcIter->pt();
+	      mygen.isWevent = 1;
+	    }
+	    // find a neutrino from W
+	    if ( ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 ) && mcIter->status()==3 ) {
+	      
+	      //if (mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
+	      mygen.nu_pt = mcIter->pt();
+	      mygen.nu_e = mcIter->energy();
+	      mygen.nu_eta = mcIter->eta();
+	      mygen.nu_phi = mcIter->phi();
+	      mygen.isSemiLeptonic = 1;
+	      //}
+	    }
+	    // find a lepton from W
+	    if ( ( fabs(mcIter->pdgId()) == 11 || fabs(mcIter->pdgId()) == 13 ) && mcIter->status()==3 ) {
+	      
+	      //if ( mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
+	      mygen.mu_pt = mcIter->pt();
+	      mygen.mu_e = mcIter->energy();
+	      mygen.mu_eta = mcIter->eta();
+	      mygen.mu_phi = mcIter->phi();
+	      if ( fabs(mcIter->pdgId()) == 11 ) mygen.LeptonicChannel = 11; // electrons
 	    else mygen.LeptonicChannel = 13; // muons
+	      //}
+	    }
 	  }
 	}
-	
-      }
-      
+
+      if (genMetTrue.isValid()) 
+	{
+	  const GenMETCollection *genmetcol = genMetTrue.product();
+	  const GenMET *genMetTrue = &(genmetcol->front());
+	  mygen.MET = genMetTrue->pt();
+	  mygen.METPhi = genMetTrue->phi();
+	}
       _ntuple->gen = mygen;
     }
     
@@ -756,13 +768,13 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.pt = jet->pt();
             topjet.e  = jet->energy();
 	    topjet.jetArea = jet->jetArea();
+	    
+	    ++npfjets;
 
-            ++npfjets;
-
-	    topjet.id_neutralEmE = (jet->correctedJet("Uncorrected")).neutralEmEnergy();
-	    topjet.id_chargedEmE = (jet->correctedJet("Uncorrected")).chargedEmEnergy();
-	    topjet.id_muonMultiplicity = (jet->correctedJet("Uncorrected")).muonMultiplicity();
-
+	    //topjet.id_neutralEmE = (jet->correctedJet("Uncorrected")).neutralEmEnergy();
+	    //topjet.id_chargedEmE = (jet->correctedJet("Uncorrected")).chargedEmEnergy();
+	    //topjet.id_muonMultiplicity = (jet->correctedJet("Uncorrected")).muonMultiplicity();
+	    
 	    topjet.ntracks = jet->associatedTracks().size();
 	    //const reco::SecondaryVertexTagInfo & svTagInfo = *(jet->tagInfoSecondaryVertex());
 	    //topjet.nSVs = svTagInfo.nVertices();
@@ -772,7 +784,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.btag_SSVHE = jet->bDiscriminator( "simpleSecondaryVertexHighEffBJetTags" );
             topjet.btag_SSVHP = jet->bDiscriminator( "simpleSecondaryVertexHighPurBJetTags" );
 	    topjet.btag_CSV = jet->bDiscriminator( "combinedSecondaryVertexBJetTags" );
-
+	    
             if (! isDataInput_ ) {
               topjet.mc.flavor = jet->partonFlavour();
 	      if (jet->genJet()) {

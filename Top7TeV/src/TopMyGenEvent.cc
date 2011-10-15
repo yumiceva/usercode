@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMyGenEvent.cc,v 1.1 2010/08/26 17:58:22 yumiceva Exp $
+ version $Id: TopMyGenEvent.cc,v 1.2 2010/12/15 19:50:45 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -64,5 +64,6 @@ void TopMyGenEvent::Reset()
    bLep_eta = -99;
    bLep_phi = -99;
    bLep_e = -99;
-
+   MET = -99;
+   METPhi = -99;
 }
