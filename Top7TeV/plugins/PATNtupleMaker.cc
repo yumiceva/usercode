@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.29 2011/10/10 20:53:12 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.30 2011/10/15 03:25:29 yumiceva Exp $
 //
 //
 
@@ -42,7 +42,6 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
-#include "DataFormats/METReco/interface/GenMETCollection.h"
 #include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
@@ -160,10 +159,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   iEvent.getByLabel(PFMETTag_, pfmetHandle); //patMETsPFlow
   const METCollection *pfmetCol = pfmetHandle.product();
   pfmet = &(pfmetCol->front());
-  
-  Handle<GenMETCollection> genMetTrue;
-  iEvent.getByLabel("genMetTrue", genMetTrue);
-  
+    
   if (verbose_) cout << "got all collections" << endl;
 
   // count number of processed events by analyzer                                                                                                                                                                           
@@ -359,13 +355,10 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  }
 	}
 
-      if (genMetTrue.isValid()) 
-	{
-	  const GenMETCollection *genmetcol = genMetTrue.product();
-	  const GenMET *genMetTrue = &(genmetcol->front());
-	  mygen.MET = genMetTrue->pt();
-	  mygen.METPhi = genMetTrue->phi();
-	}
+
+      mygen.MET = pfmet->genMET()->pt();
+      mygen.METPhi = pfmet->genMET()->phi();
+
       _ntuple->gen = mygen;
     }
     
