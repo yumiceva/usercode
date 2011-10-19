@@ -33,7 +33,7 @@ void median(bool IsObserved=false, int mass=800)
   xsec[1400] = 0.094496;
   xsec[1500] = 0.061946;
   xsec[1600] = 0.04102;
-  xsec[2000] = 7.935e-3;
+  //xsec[2000] = 7.935e-3;
 
   float sigma = xsec[mass];
 
