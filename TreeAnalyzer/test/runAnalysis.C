@@ -75,8 +75,18 @@ void runAnalysis(TString sample="all",bool NoGUI=false)
     {
       TDSet *mc_wp_rh_1600 = new TDSet("top","*","/PATNtupleMaker");
       mc_wp_rh_1600->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v8_1/WprimeToTB_M-1600_RightWprime_TuneZ2_7TeV_comphep_Mu.root");
+      //mc_wp_rh_1600->Add("/uscms/home/weizou/work/NtupleMaker/CMSSW_4_2_4/src/Yumiceva/Top7TeV/test/tools/Wprimr1600_CA8_GENMET_Mu.root");
       mc_wp_rh_1600->Process("Analyzer.C+","sample=WpRH1600");
     }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
+  if (sample=="WpRH1600CA8")
+     {
+       TDSet *mc_wp_rh_1600CA8 = new TDSet("top","*","/PATNtupleMaker");
+       //mc_wp_rh_1600CA8->Add("/uscms/home/weizou/work/NtupleMaker/CMSSW_4_2_4/src/Yumiceva/Top7TeV/test/tools/Wprime1600_CA8_NotPruned_Mu.root");
+       mc_wp_rh_1600CA8->Add("/uscms/home/weizou/work/NtupleMaker/CMSSW_4_2_4/src/Yumiceva/Top7TeV/test/tools/Wprimr1600_CA8_Mu.root");
+       mc_wp_rh_1600CA8->Process("Analyzer.C+","sample=WpRH1600CA8");
+     }
   if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
 
   /*

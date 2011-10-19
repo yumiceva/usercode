@@ -167,40 +167,40 @@
     <TH1 name="NPV_WZ" source="/PVs/NPVreweight_2jet_WZ"/>
   </validation>
 
-  <validation type="Wprime_800" file="./results_Wprime_800.root" weight="4.89999720532e-04">
+  <validation type="WpRH800" file="./results_WpRH800.root" weight="1.52158856872e-05">
     <!-- muon -->
-    <TH1 name="pt_Wprime_800" source="/muons/muon_pt_Wprime_800"/>
-    <TH1 name="eta_Wprime_800" source="/muons/muon_eta_Wprime_800"/>
-    <TH1 name="phi_Wprime_800" source="/muons/muon_phi_Wprime_800"/>
-    <TH1 name="reliso_Wprime_800" source="/muons/muon_reliso_Wprime_800"/>
-    <TH1 name="reliso_2jet_Wprime_800" source="/muons/muon_reliso_2jet_Wprime_800"/>
-    <TH1 name="deltaR_Wprime_800" source="/muons/deltaR_Wprime_800"/>
-    <TH1 name="pt_2jet_Wprime_800" source="/muons/muon_pt_2jet_Wprime_800"/>
-    <TH1 name="NPV_Wprime_800" source="/PVs/NPVreweight_2jet_Wprime_800"/>
+    <TH1 name="pt_WpRH800" source="/muons/muon_pt_WpRH800"/>
+    <TH1 name="eta_WpRH800" source="/muons/muon_eta_WpRH800"/>
+    <TH1 name="phi_WpRH800" source="/muons/muon_phi_WpRH800"/>
+    <TH1 name="reliso_WpRH800" source="/muons/muon_reliso_WpRH800"/>
+    <TH1 name="reliso_2jet_WpRH800" source="/muons/muon_reliso_2jet_WpRH800"/>
+    <TH1 name="deltaR_WpRH800" source="/muons/deltaR_WpRH800"/>
+    <TH1 name="pt_2jet_WpRH800" source="/muons/muon_pt_2jet_WpRH800"/>
+    <TH1 name="NPV_WpRH800" source="/PVs/NPVreweight_2jet_WpRH800"/>
   </validation>
 
-  <validation type="Wprime_1000" file="./results_Wprime_1000.root" weight="1.76733452987e-04">
+  <validation type="WpRH1000" file="./results_WpRH1000.root" weight="5.36268508297e-06">
     <!-- muon -->
-    <TH1 name="pt_Wprime_1000" source="/muons/muon_pt_Wprime_1000"/>
-    <TH1 name="eta_Wprime_1000" source="/muons/muon_eta_Wprime_1000"/>
-    <TH1 name="phi_Wprime_1000" source="/muons/muon_phi_Wprime_1000"/>
-    <TH1 name="reliso_Wprime_1000" source="/muons/muon_reliso_Wprime_1000"/>
-    <TH1 name="reliso_2jet_Wprime_1000" source="/muons/muon_reliso_2jet_Wprime_1000"/>
-    <TH1 name="deltaR_Wprime_1000" source="/muons/deltaR_Wprime_1000"/>
-    <TH1 name="pt_2jet_Wprime_1000" source="/muons/muon_pt_2jet_Wprime_1000"/>
-    <TH1 name="NPV_Wprime_1000" source="/PVs/NPVreweight_2jet_Wprime_1000"/>
+    <TH1 name="pt_WpRH1000" source="/muons/muon_pt_WpRH1000"/>
+    <TH1 name="eta_WpRH1000" source="/muons/muon_eta_WpRH1000"/>
+    <TH1 name="phi_WpRH1000" source="/muons/muon_phi_WpRH1000"/>
+    <TH1 name="reliso_WpRH1000" source="/muons/muon_reliso_WpRH1000"/>
+    <TH1 name="reliso_2jet_WpRH1000" source="/muons/muon_reliso_2jet_WpRH1000"/>
+    <TH1 name="deltaR_WpRH1000" source="/muons/deltaR_WpRH1000"/>
+    <TH1 name="pt_2jet_WpRH1000" source="/muons/muon_pt_2jet_WpRH1000"/>
+    <TH1 name="NPV_WpRH1000" source="/PVs/NPVreweight_2jet_WpRH1000"/>
   </validation>
 
-  <validation type="Wprime_1200" file="./results_Wprime_1200.root" weight="7.06486833654e-05">
+  <validation type="WpRH1200" file="./results_WpRH1200.root" weight="2.08181254106e-06">
     <!-- muon -->
-    <TH1 name="pt_Wprime_1200" source="/muons/muon_pt_Wprime_1200"/>
-    <TH1 name="eta_Wprime_1200" source="/muons/muon_eta_Wprime_1200"/>
-    <TH1 name="phi_Wprime_1200" source="/muons/muon_phi_Wprime_1200"/>
-    <TH1 name="reliso_Wprime_1200" source="/muons/muon_reliso_Wprime_1200"/>
-    <TH1 name="reliso_2jet_Wprime_1200" source="/muons/muon_reliso_2jet_Wprime_1200"/>
-    <TH1 name="deltaR_Wprime_1200" source="/muons/deltaR_Wprime_1200"/>
-    <TH1 name="pt_2jet_Wprime_1200" source="/muons/muon_pt_2jet_Wprime_1200"/>
-    <TH1 name="NPV_Wprime_1200" source="/PVs/NPVreweight_2jet_Wprime_1200"/>
+    <TH1 name="pt_WpRH1200" source="/muons/muon_pt_WpRH1200"/>
+    <TH1 name="eta_WpRH1200" source="/muons/muon_eta_WpRH1200"/>
+    <TH1 name="phi_WpRH1200" source="/muons/muon_phi_WpRH1200"/>
+    <TH1 name="reliso_WpRH1200" source="/muons/muon_reliso_WpRH1200"/>
+    <TH1 name="reliso_2jet_WpRH1200" source="/muons/muon_reliso_2jet_WpRH1200"/>
+    <TH1 name="deltaR_WpRH1200" source="/muons/deltaR_WpRH1200"/>
+    <TH1 name="pt_2jet_WpRH1200" source="/muons/muon_pt_2jet_WpRH1200"/>
+    <TH1 name="NPV_WpRH1200" source="/PVs/NPVreweight_2jet_WpRH1200"/>
   </validation>
 
   <validation type="Wprime_1500" file="./results_Wprime_1500.root" weight="2.0968795122e-05">
@@ -254,7 +254,7 @@
     <superimposeItem name="pt_QCD" color="top" legend="QCD"/>
     <superimposeItem name="pt_ST" color="top" legend="ST"/>
     <superimposeItem name="pt_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="pt_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="pt_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
@@ -265,7 +265,7 @@
     <superimposeItem name="eta_QCD" color="top" legend="QCD"/>
     <superimposeItem name="eta_ST" color="top" legend="ST"/>
     <superimposeItem name="eta_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="eta_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="eta_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
@@ -276,7 +276,7 @@
     <superimposeItem name="phi_QCD" color="top" legend="QCD"/>
     <superimposeItem name="phi_ST" color="top" legend="ST"/>
     <superimposeItem name="phi_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="phi_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="phi_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_pt_2jet" title="muon_pt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
@@ -288,9 +288,9 @@
 <!--    <superimposeItem name="pt_2jet_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
     <superimposeItem name="pt_2jet_ST" color="top" legend="ST"/>
     <superimposeItem name="pt_2jet_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="pt_2jet_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="pt_2jet_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-    <superimposeItem name="pt_2jet_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="pt_2jet_WpRH800" color="1" legend="W' 0.8TeV " NoStack="true"/>
+    <superimposeItem name="pt_2jet_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
+    <superimposeItem name="pt_2jet_WpRH1200" color="1" legend="W' 1.2TeV " NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_reliso" title="muon_reliso" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" SetLogy="true">
@@ -301,7 +301,9 @@
     <superimposeItem name="reliso_QCD" color="top" legend="QCD"/>
     <superimposeItem name="reliso_ST" color="top" legend="ST"/>
     <superimposeItem name="reliso_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="reliso_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="reliso_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="reliso_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="reliso_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_reliso_2jet" title="muon_reliso_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true" PlotDiff="true" Ndivisions='505'>
@@ -312,11 +314,11 @@
     <superimposeItem name="reliso_2jet_QCD" color="top" legend="QCD"/>
     <superimposeItem name="reliso_2jet_ST" color="top" legend="ST"/>
     <superimposeItem name="reliso_2jet_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="reliso_2jet_Wprime_800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="reliso_2jet_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-    <superimposeItem name="reliso_2jet_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
-    <superimposeItem name="reliso_2jet_Wprime_1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
-    <superimposeItem name="reliso_2jet_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/>
+    <superimposeItem name="reliso_2jet_WpRH800" color="1" legend="W' 0.8TeV " NoStack="true"/>
+    <superimposeItem name="reliso_2jet_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
+    <superimposeItem name="reliso_2jet_WpRH1200" color="1" legend="W' 1.2TeV " NoStack="true"/>
+<!--    <superimposeItem name="reliso_2jet_Wprime_1500" color="1" legend="W' 1.5TeV " NoStack="true"/>
+    <superimposeItem name="reliso_2jet_Wprime_2000" color="1" legend="W' 2TeV " NoStack="true"/>-->
   </superimpose>
 
   <superimpose name="NPV" title="NPVS" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq1" XTitle="Primary Vertices" PlotDiff="true">
@@ -335,7 +337,7 @@
     <superimposeItem name="deltaR_ZJets" color="top" legend="Zjets"/>
     <superimposeItem name="deltaR_QCD" color="top" legend="QCD"/>
     <superimposeItem name="deltaR_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="deltaR_Wprime_1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="deltaR_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
   </superimpose>
 <!--
   <superimpose name="muon_d0_cut1" title="muon_d0_cut1" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SetLogy="true" SubBanner="#mu+jets N_{jets}#geq0" Ndivisions='505'>

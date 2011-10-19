@@ -469,11 +469,11 @@
     <superimposeItem name="Mt_2jet_QCD" color="top" legend="QCD"/>
     <superimposeItem name="Mt_2jet_ST" color="top" legend="ST"/>
     <superimposeItem name="Mt_2jet_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="Mt_2jet_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="Mt_2jet_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Mt_2jet_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/> -->
-    <superimposeItem name="Mt_2jet_WpRH1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Mt_2jet_Wprime_2000" color="1" legend="W' 2TeV x10" NoStack="true"/> -->
+    <superimposeItem name="Mt_2jet_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="Mt_2jet_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+<!--    <superimposeItem name="Mt_2jet_Wprime_1200" color="1" legend="W' 1.2TeV" NoStack="true"/> -->
+    <superimposeItem name="Mt_2jet_WpRH1500" color="1" legend="W' 1.5TeV" NoStack="true"/>
+<!--    <superimposeItem name="Mt_2jet_Wprime_2000" color="1" legend="W' 2TeV" NoStack="true"/> -->
   </superimpose>
 
   <superimpose name="dijet" title="dijet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
@@ -484,8 +484,8 @@
 <!--    <superimposeItem name="dijet_QCD" color="top" legend="QCD"/> -->
     <superimposeItem name="dijet_ST" color="top" legend="ST"/>
     <superimposeItem name="dijet_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="dijet_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="dijet_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="dijet_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="dijet_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
   </superimpose>
 
 <!--
@@ -497,8 +497,8 @@
 
     <superimposeItem name="trijet_ST" color="top" legend="ST"/>
     <superimposeItem name="trijet_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="trijet_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="trijet_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="trijet_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="trijet_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
   </superimpose>
 -->
   <superimpose name="top_1btag" title="top_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
@@ -509,9 +509,9 @@
 <!--    <superimposeItem name="top_1btag_QCD" color="top" legend="QCD"/> -->
     <superimposeItem name="top_1btag_ST" color="top" legend="ST"/>
     <superimposeItem name="top_1btag_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="top_1btag_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="top_1btag_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="top_1btag_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/> -->
+    <superimposeItem name="top_1btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="top_1btag_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+<!--    <superimposeItem name="top_1btag_Wprime_1200" color="1" legend="W' 1.2TeV" NoStack="true"/> -->
   </superimpose>
 
   <superimpose name="LepWmass" title="LepWmass" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
@@ -522,9 +522,9 @@
 <!--    <superimposeItem name="LepWmass_QCD" color="top" legend="QCD"/> -->
     <superimposeItem name="LepWmass_ST" color="top" legend="ST"/>
     <superimposeItem name="LepWmass_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="LepWmass_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="LepWmass_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="LepWmass_Wprime_1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>-->
+    <superimposeItem name="LepWmass_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="LepWmass_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+<!--    <superimposeItem name="LepWmass_Wprime_1200" color="1" legend="W' 1.2TeV" NoStack="true"/>-->
   </superimpose>
 
   <superimpose name="MET" title="MET" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
@@ -535,8 +535,8 @@
     <superimposeItem name="MET_QCD" color="top" legend="QCD"/>
     <superimposeItem name="MET_ST" color="top" legend="ST"/>
     <superimposeItem name="MET_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="MET_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="MET_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="MET_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="MET_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
   </superimpose>
 
   <superimpose name="MET_2jet" title="MET_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
@@ -547,8 +547,9 @@
     <superimposeItem name="MET_2jet_QCD" color="top" legend="QCD"/>
     <superimposeItem name="MET_2jet_ST" color="top" legend="ST"/>
     <superimposeItem name="MET_2jet_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="MET_2jet_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="MET_2jet_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="MET_2jet_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="MET_2jet_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="MET_2jet_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
   <superimpose name="Wprime" title="Wprime" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
@@ -559,8 +560,9 @@
     <superimposeItem name="Wprime_QCD" color="top" legend="QCD"/>
     <superimposeItem name="Wprime_ST" color="top" legend="ST"/>
     <superimposeItem name="Wprime_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="Wprime_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
   <superimpose name="Wprime_0btag" title="Wprime_0btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}=0" PlotDiff="true">
@@ -571,8 +573,9 @@
     <superimposeItem name="Wprime_0btag_QCD" color="top" legend="QCD"/>
     <superimposeItem name="Wprime_0btag_ST" color="top" legend="ST"/>
     <superimposeItem name="Wprime_0btag_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="Wprime_0btag_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_0btag_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_0btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_0btag_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_0btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
   <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
@@ -584,16 +587,16 @@
     <superimposeItem name="Wprime_1btag_dataQCD2" color="top" legend="QCD"/> -->
     <superimposeItem name="Wprime_1btag_ST" color="top" legend="ST"/>
     <superimposeItem name="Wprime_1btag_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="Wprime_1btag_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Wprime_1btag_WpRH900" color="1" legend="W' 0.9TeV x10" NoStack="true"/>-->
-    <superimposeItem name="Wprime_1btag_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Wprime_1btag_WpRH1100" color="1" legend="W' 1.1TeV x10" NoStack="true"/>-->
-    <superimposeItem name="Wprime_1btag_WpRH1200" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Wprime_1btag_WpRH1300" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1400" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>-->
-    <superimposeItem name="Wprime_1btag_WpRH1600" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Wprime_1btag_WpRH2000" color="1" legend="W' 2TeV x10" NoStack="true"/>-->
+    <superimposeItem name="Wprime_1btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpRH900" color="1" legend="W' 0.9TeV" NoStack="true"/>-->
+    <superimposeItem name="Wprime_1btag_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpRH1100" color="1" legend="W' 1.1TeV" NoStack="true"/>-->
+    <superimposeItem name="Wprime_1btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpRH1300" color="1" legend="W' 1.3TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH1400" color="1" legend="W' 1.4TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH1500" color="1" legend="W' 1.5TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpRH1600" color="1" legend="W' 1.6TeV" NoStack="true"/>-->
+<!--    <superimposeItem name="Wprime_1btag_WpRH2000" color="1" legend="W' 2TeV" NoStack="true"/>-->
   </superimpose>
 <!--
  <superimpose name="Wprime_1btag_QCDComparison" title="Wprime_1btag_QCDComparison" YTitle="Events" Weight="true" Lumi="2180.9">
@@ -608,12 +611,13 @@
 <!-- empty    <superimposeItem name="Wprime_2btag_QCD" color="top" legend="QCD"/> -->
     <superimposeItem name="Wprime_2btag_ST" color="top" legend="ST"/>
     <superimposeItem name="Wprime_2btag_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="Wprime_2btag_WpRH800" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_2btag_WpRH900" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_2btag_WpRH1000" color="1" legend="W' 1TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_2btag_WpRH1400" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_2btag_WpRH1500" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_2btag_WpRH1600" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_2btag_WpRH900" color="1" legend="W' 0.9TeV" NoStack="true"/>-->
+    <superimposeItem name="Wprime_2btag_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_2btag_WpRH1400" color="1" legend="W' 1.4TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_WpRH1500" color="1" legend="W' 1.5TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_2btag_WpRH1600" color="1" legend="W' 1.6TeV" NoStack="true"/>-->
   </superimpose>
 
 </cuy>

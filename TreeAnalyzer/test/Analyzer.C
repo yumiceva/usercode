@@ -204,13 +204,15 @@ void Analyzer::SlaveBegin(TTree * tree)
       
    hMET["MET"] = new TH1F("MET"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["MET_2jet"] = new TH1F("MET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
+   hMET["genMET_2jet"] = new TH1F("genMET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
+   hMET["deltaMET_2jet"] = new TH1F("deltaMET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, -200, 200);
    hMET["phi"] = new TH1F("MET_phi"+hname,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15);
    hMET["Ht"] = new TH1F("Ht"+hname,"H_{T} [GeV]", 50, 0, 1000);
    hMET["Htlep"] = new TH1F("Htlep"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
    hMET["PzNu"] = new TH1F("PzNu"+hname,"p_{z} #nu [GeV]", 40, -300,300);
    hMET["EtaNu"] = new TH1F("EtaNu"+hname,"#eta",50,-2.2,2.2);
    hMET["LepWmass"] = new TH1F("LepWmass"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
-   hMET["LepWmassComplex"]=new TH1F("LepWmassComplex"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
+   hMET["LepWmassNoComplex"]=new TH1F("LepWmassNoComplex"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["deltaPhi"] = new TH1F("deltaPhi"+hname,"#Delta #phi(#mu,MET)",50, -3.15, 3.15);
 
    hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
@@ -357,37 +359,50 @@ void Analyzer::SlaveBegin(TTree * tree)
      0.0308829,
      0.0248396,
      0.0160992,
-     0.0171581,
+     0.0171581
    };
    /*
    double pu_weights[25] = {
-     0.064888713208,
-     0.291826467914,
-     0.696368419672,
-     1.17822283975,
-     1.59168630198,
-     1.81981034437,
-     1.8425303022,
-     1.69478965865,
-     1.46613375366,
-     1.21639592281,
-     0.994392496328,
-     0.80617163455,
-     0.66145893498,
-     0.541436455253,
-     0.450839505319,
-     0.376077422762,
-     0.318878372059,
-     0.268514636462,
-     0.228857285219,
-     0.197575291224,
-     0.167238461743,
-     0.142856396424,
-     0.119417201403,
-     0.102175460936,
-     0.143295896336
+     1.45346E-01,
+     6.42802E-02,
+     6.95255E-02,
+     6.96747E-02,
+     6.92955E-02,
+     6.84997E-02,
+     6.69528E-02,
+     6.45515E-02,
+     6.09865E-02,
+     5.63323E-02,
+     5.07322E-02,
+     4.44681E-02,
+     3.79205E-02,
+     3.15131E-02,
+     2.54220E-02,
+     2.00184E-02,
+     1.53776E-02,
+     1.15387E-02,
+     8.47608E-03,
+     6.08715E-03,
+     4.28255E-03,
+     2.97185E-03,
+     2.01918E-03,
+     1.34490E-03,
+     8.81587E-04
    };
    */
+   /* 
+      5.69954E-04,
+      3.61493E-04,
+      2.28692E-04,
+      1.40791E-04,
+      8.44606E-05,
+      5.10204E-05,
+      3.07802E-05,
+      1.81401E-05,
+      1.00201E-05,
+      5.80004E-06
+      }; */
+   
    fpu_weights_vec.assign( pu_weights, pu_weights + 25 );
 
    // For JEC uncertainties
@@ -605,10 +620,16 @@ Bool_t Analyzer::Process(Long64_t entry)
   /////////////////////////////////
   
   p4MET.SetPtEtaPhiE( ntuple->PFMET,
-		      0.,
-		      ntuple->PFMETphi,
-		      ntuple->PFMET );
-  
+  		      0.,
+  		      ntuple->PFMETphi,
+  		      ntuple->PFMET );
+
+  //temporal check using genMET
+  //p4MET.SetPtEtaPhiE( ntuple->gen.MET,
+  //                    0.,
+  //                    ntuple->gen.METPhi,
+  //                    ntuple->gen.MET );
+
   if (fdoQCD1SideBand && p4MET.Et() > 20.) return kTRUE;
   else if ( p4MET.Et() <= 20. && fdoQCD2SideBand==false ) return kTRUE;
 
@@ -652,14 +673,37 @@ Bool_t Analyzer::Process(Long64_t entry)
   //print "p4Nu =("+str(p4Nu.Px())+","+str(p4Nu.Py())+","+str(p4Nu.Pz())+","+str(p4Nu.E())
   double pzOtherNu = fzCalculator.getOther();
   p4OtherNu.SetPxPyPzE( p4MET.Px(), p4MET.Py(),pzOtherNu,sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzOtherNu*pzOtherNu));
-  
+
+  if ( fzCalculator.IsComplex() )
+    {
+      double ptNu1 = fzCalculator.getPtneutrino(1);
+      double ptNu2 = fzCalculator.getPtneutrino(2);
+      TLorentzVector p4Nu1tmp;
+      TLorentzVector p4Nu2tmp;
+
+      p4Nu1tmp.SetPxPyPzE( ptNu1*p4MET.Px()/p4MET.Pt(), ptNu1*p4MET.Py()/p4MET.Pt(), pzNu, sqrt(ptNu1*ptNu1+pzNu*pzNu));
+      p4Nu2tmp.SetPxPyPzE( ptNu2*p4MET.Px()/p4MET.Pt(), ptNu2*p4MET.Py()/p4MET.Pt(), pzNu, sqrt(ptNu2*ptNu2+pzNu*pzNu));
+      
+      TLorentzVector Wtmp;
+      Wtmp = p4lepton + p4Nu1tmp;
+      double Wm1 = 0;
+      double Wm2 = 0;
+      Wm1 = Wtmp.M();
+      Wtmp = p4lepton + p4Nu2tmp;
+      Wm2 = Wtmp.M();
+      if ( fabs( Wm1 - 80.) < fabs( Wm2 - 80.) ) p4Nu = p4Nu1tmp;
+      else p4Nu = p4Nu2tmp;
+
+      p4OtherNu = p4Nu; // since we chose the real part, the two solutions are the same.
+    }
+
   hMET["PzNu"]->Fill(pzNu, PUweight ); //change this to 2d with two sol and as a function of jets
                                                                                                                        
   TLorentzVector p4LepW = p4lepton + p4Nu;
   TLorentzVector p4OtherLepW = p4lepton + p4OtherNu;
 
   //hMET["LepWmass"]->Fill(p4LepW.M(), PUweight );
-  if ( fzCalculator.IsComplex() ) hMET["LepWmassComplex"]->Fill( p4LepW.M(), PUweight );
+  //if ( fzCalculator.IsComplex() ) hMET["LepWmassComplex"]->Fill( p4LepW.M(), PUweight );
 
 
   /////////////////////////////////
@@ -784,6 +828,11 @@ Bool_t Analyzer::Process(Long64_t entry)
       hmuons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
       hmuons["reliso_2jet"]->Fill( RelIso, PUweight );
       hMET["MET_2jet"]->Fill( p4MET.Pt(), PUweight );
+      if (fIsMC) {
+	hMET["genMET_2jet"]->Fill( ntuple->gen.MET, PUweight );
+	hMET["deltaMET_2jet"]->Fill( p4MET.Pt() - ntuple->gen.MET, PUweight );
+      }
+
       hM["WMt_2jet"]->Fill( WMt, PUweight );
 
       TLorentzVector p4Dijet = p4jets[0] + p4jets[1];

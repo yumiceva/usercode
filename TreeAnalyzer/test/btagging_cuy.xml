@@ -1,0 +1,198 @@
+<cuy>
+
+  <validation type="data" file="./results_data.root" weight="1">
+    <TH1 name="pt_data" source="/jets/jet_pt_data"/>
+    <TH1 name="pt_btag_data" source="/jets/jet_pt_btag_data"/>
+  </validation>
+
+  <validation type="ttbar" file="./results_ttbar.root" weight="4.27548221332e-05">
+    <TH1 name="pt_ttbar" source="/jets/jet_pt_ttbar"/>
+    <TH1 name="pt_b_ttbar" source="/jets/jet_pt_b_ttbar"/>
+    <TH1 name="pt_c_ttbar" source="/jets/jet_pt_c_ttbar"/>
+    <TH1 name="pt_l_ttbar" source="/jets/jet_pt_l_ttbar"/>
+    <TH1 name="pt_btag_ttbar" source="/jets/jet_pt_btag_ttbar"/>
+    <TH1 name="pt_btag_b_ttbar" source="/jets/jet_pt_btag_b_ttbar"/>
+    <TH1 name="pt_btag_c_ttbar" source="/jets/jet_pt_btag_c_ttbar"/>
+    <TH1 name="pt_btag_l_ttbar" source="/jets/jet_pt_btag_l_ttbar"/>
+  </validation>
+
+  <validation type="Wjets" file="./results_WJets.root" weight="0.000634709217683">
+    <TH1 name="pt_WJets" source="/jets/jet_pt_WJets"/>
+    <TH1 name="pt_b_WJets" source="/jets/jet_pt_b_WJets"/>
+    <TH1 name="pt_c_WJets" source="/jets/jet_pt_c_WJets"/>
+    <TH1 name="pt_l_WJets" source="/jets/jet_pt_l_WJets"/>
+    <TH1 name="pt_btag_WJets" source="/jets/jet_pt_btag_WJets"/>
+    <TH1 name="pt_btag_b_WJets" source="/jets/jet_pt_btag_b_WJets"/>
+    <TH1 name="pt_btag_c_WJets" source="/jets/jet_pt_btag_c_WJets"/>
+    <TH1 name="pt_btag_l_WJets" source="/jets/jet_pt_btag_l_WJets"/>
+  </validation>
+
+  <validation type="Zjets" file="./results_ZJets.root" weight="9.38562695927e-05">
+    <TH1 name="pt_ZJets" source="/jets/jet_pt_ZJets"/>
+    <TH1 name="pt_b_ZJets" source="/jets/jet_pt_b_ZJets"/>
+    <TH1 name="pt_c_ZJets" source="/jets/jet_pt_c_ZJets"/>
+    <TH1 name="pt_l_ZJets" source="/jets/jet_pt_l_ZJets"/>
+    <TH1 name="pt_btag_ZJets" source="/jets/jet_pt_btag_ZJets"/>
+    <TH1 name="pt_btag_b_ZJets" source="/jets/jet_pt_btag_b_ZJets"/>
+    <TH1 name="pt_btag_c_ZJets" source="/jets/jet_pt_btag_c_ZJets"/>
+    <TH1 name="pt_btag_l_ZJets" source="/jets/jet_pt_btag_l_ZJets"/>
+  </validation>
+
+  <validation type="QCD" file="./results_QCD.root" weight="0.00344570880379">
+    <TH1 name="pt_QCD" source="/jets/jet_pt_QCD"/>
+    <TH1 name="pt_b_QCD" source="/jets/jet_pt_b_QCD"/>
+    <TH1 name="pt_c_QCD" source="/jets/jet_pt_c_QCD"/>
+    <TH1 name="pt_l_QCD" source="/jets/jet_pt_l_QCD"/>
+    <TH1 name="pt_btag_QCD" source="/jets/jet_pt_btag_QCD"/>
+    <TH1 name="pt_btag_b_QCD" source="/jets/jet_pt_btag_b_QCD"/>
+    <TH1 name="pt_btag_c_QCD" source="/jets/jet_pt_btag_c_QCD"/>
+    <TH1 name="pt_btag_l_QCD" source="/jets/jet_pt_btag_l_QCD"/>
+  </validation>
+
+  <validation type="STtch" file="./results_STtch.root" weight="5.36991202119e-06">
+    <TH1 name="pt_STtch" source="/jets/jet_pt_STtch"/>
+    <TH1 name="pt_b_STtch" source="/jets/jet_pt_b_STtch"/>
+    <TH1 name="pt_c_STtch" source="/jets/jet_pt_c_STtch"/>
+    <TH1 name="pt_l_STtch" source="/jets/jet_pt_l_STtch"/>
+    <TH1 name="pt_btag_STtch" source="/jets/jet_pt_btag_STtch"/>
+    <TH1 name="pt_btag_b_STtch" source="/jets/jet_pt_btag_b_STtch"/>
+    <TH1 name="pt_btag_c_STtch" source="/jets/jet_pt_btag_c_STtch"/>
+    <TH1 name="pt_btag_l_STtch" source="/jets/jet_pt_btag_l_STtch"/>
+  </validation>
+
+  <validation type="STtWch" file="./results_STtWch.root" weight="1.30280508684e-05">
+    <TH1 name="pt_STtWch" source="/jets/jet_pt_STtWch"/>
+    <TH1 name="pt_b_STtWch" source="/jets/jet_pt_b_STtWch"/>
+    <TH1 name="pt_c_STtWch" source="/jets/jet_pt_c_STtWch"/>
+    <TH1 name="pt_l_STtWch" source="/jets/jet_pt_l_STtWch"/>
+    <TH1 name="pt_btag_STtWch" source="/jets/jet_pt_btag_STtWch"/>
+    <TH1 name="pt_btag_b_STtWch" source="/jets/jet_pt_btag_b_STtWch"/>
+    <TH1 name="pt_btag_c_STtWch" source="/jets/jet_pt_btag_c_STtWch"/>
+    <TH1 name="pt_btag_l_STtWch" source="/jets/jet_pt_btag_l_STtWch"/>
+  </validation>
+
+  <validation type="STsch" file="./results_STsch.root" weight="1.08036776009e-05">
+    <TH1 name="pt_STsch" source="/jets/jet_pt_STsch"/>
+    <TH1 name="pt_b_STsch" source="/jets/jet_pt_b_STsch"/>
+    <TH1 name="pt_c_STsch" source="/jets/jet_pt_c_STsch"/>
+    <TH1 name="pt_l_STsch" source="/jets/jet_pt_l_STsch"/>
+    <TH1 name="pt_btag_STsch" source="/jets/jet_pt_btag_STsch"/>
+    <TH1 name="pt_btag_b_STsch" source="/jets/jet_pt_btag_b_STsch"/>
+    <TH1 name="pt_btag_c_STsch" source="/jets/jet_pt_btag_c_STsch"/>
+    <TH1 name="pt_btag_l_STsch" source="/jets/jet_pt_btag_l_STsch"/>
+  </validation>
+
+  <validation type="WW" file="./results_WW.root" weight="1.01801122275e-05">
+    <TH1 name="pt_WW" source="/jets/jet_pt_WW"/>
+    <TH1 name="pt_b_WW" source="/jets/jet_pt_b_WW"/>
+    <TH1 name="pt_c_WW" source="/jets/jet_pt_c_WW"/>
+    <TH1 name="pt_l_WW" source="/jets/jet_pt_l_WW"/>
+    <TH1 name="pt_btag_WW" source="/jets/jet_pt_btag_WW"/>
+    <TH1 name="pt_btag_b_WW" source="/jets/jet_pt_btag_b_WW"/>
+    <TH1 name="pt_btag_c_WW" source="/jets/jet_pt_btag_c_WW"/>
+    <TH1 name="pt_btag_l_WW" source="/jets/jet_pt_btag_l_WW"/>
+  </validation>
+
+  <validation type="WZ" file="./results_WZ.root" weight="4.22230333215e-06">
+    <TH1 name="pt_WZ" source="/jets/jet_pt_WZ"/>
+    <TH1 name="pt_b_WZ" source="/jets/jet_pt_b_WZ"/>
+    <TH1 name="pt_c_WZ" source="/jets/jet_pt_c_WZ"/>
+    <TH1 name="pt_l_WZ" source="/jets/jet_pt_l_WZ"/>
+    <TH1 name="pt_btag_WZ" source="/jets/jet_pt_btag_WZ"/>
+    <TH1 name="pt_btag_b_WZ" source="/jets/jet_pt_btag_b_WZ"/>
+    <TH1 name="pt_btag_c_WZ" source="/jets/jet_pt_btag_c_WZ"/>
+    <TH1 name="pt_btag_l_WZ" source="/jets/jet_pt_btag_l_WZ"/>
+  </validation>
+
+  <validation type="WpRH800" file="./results_WpRH800.root" weight="1.52158856872e-05">
+    <TH1 name="pt_WpRH800" source="/jets/jet_pt_WpRH800"/>
+    <TH1 name="pt_b_WpRH800" source="/jets/jet_pt_b_WpRH800"/>
+    <TH1 name="pt_c_WpRH800" source="/jets/jet_pt_c_WpRH800"/>
+    <TH1 name="pt_l_WpRH800" source="/jets/jet_pt_l_WpRH800"/>
+    <TH1 name="pt_btag_WpRH800" source="/jets/jet_pt_btag_WpRH800"/>
+    <TH1 name="pt_btag_b_WpRH800" source="/jets/jet_pt_btag_b_WpRH800"/>
+    <TH1 name="pt_btag_c_WpRH800" source="/jets/jet_pt_btag_c_WpRH800"/>
+    <TH1 name="pt_btag_l_WpRH800" source="/jets/jet_pt_btag_l_WpRH800"/>
+  </validation>
+
+  <validation type="WpRH1000" file="./results_WpRH1000.root" weight="5.36268508297e-06">
+    <TH1 name="pt_WpRH1000" source="/jets/jet_pt_WpRH1000"/>
+    <TH1 name="pt_b_WpRH1000" source="/jets/jet_pt_b_WpRH1000"/>
+    <TH1 name="pt_c_WpRH1000" source="/jets/jet_pt_c_WpRH1000"/>
+    <TH1 name="pt_l_WpRH1000" source="/jets/jet_pt_l_WpRH1000"/>
+    <TH1 name="pt_btag_WpRH1000" source="/jets/jet_pt_btag_WpRH1000"/>
+    <TH1 name="pt_btag_b_WpRH1000" source="/jets/jet_pt_btag_b_WpRH1000"/>
+    <TH1 name="pt_btag_c_WpRH1000" source="/jets/jet_pt_btag_c_WpRH1000"/>
+    <TH1 name="pt_btag_l_WpRH1000" source="/jets/jet_pt_btag_l_WpRH1000"/>
+  </validation>
+
+  <additionArray name="ST" title="ST">
+    <additionArrayItem array="STtch"/>
+    <additionArrayItem array="STtWch"/>
+    <additionArrayItem array="STsch"/>
+  </additionArray>
+
+  <additionArray name="Dibosons" title="Dibosons">
+    <additionArrayItem array="WW"/>
+    <additionArrayItem array="WZ"/>
+  </additionArray>
+
+
+
+  <divide name="btag_eff_b_ttbar" numerator="pt_btag_b_ttbar" denominator="pt_b_ttbar" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_b_WJets" numerator="pt_btag_b_WJets" denominator="pt_b_WJets" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_b_ZJets" numerator="pt_btag_b_ZJets" denominator="pt_b_ZJets" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_b_Dibosons" numerator="pt_btag_b_Dibosons" denominator="pt_b_Dibosons" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_b_ST" numerator="pt_btag_b_ST" denominator="pt_b_ST" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+<!--  <divide name="btag_eff_b_QCD" numerator="pt_btag_b_QCD" denominator="pt_b_QCD" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/> -->
+  <divide name="btag_eff_b_WpRH800" numerator="pt_btag_b_WpRH800" denominator="pt_b_WpRH800" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_b_WpRH1000" numerator="pt_btag_b_WpRH1000" denominator="pt_b_WpRH1000" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+
+  <superimpose name="btag_eff_b" title="btag_eff_b" Stack="false" YTitle="b-tag Efficiency" SubBanner="#mu+jets N_{jets}#geq2">
+    <superimposeItem name="btag_eff_b_ttbar" color="2" legend="ttbar"/>
+    <superimposeItem name="btag_eff_b_WJets" color="3" legend="W+jets"/>
+<!--    <superimposeItem name="btag_eff_b_ZJets" color="4" legend="Z+jets"/> 
+    <superimposeItem name="btag_eff_b_Dibosons" color="5" legend="Dibosons"/> -->
+    <superimposeItem name="btag_eff_b_ST" color="6" legend="ST"/>
+    <superimposeItem name="btag_eff_b_WpRH800" color="7" legend="W' 0.8TeV"/>
+    <superimposeItem name="btag_eff_b_WpRH1000" color="8" legend="W' 1TeV"/>
+  </superimpose>
+
+  <divide name="btag_eff_c_ttbar" numerator="pt_btag_c_ttbar" denominator="pt_c_ttbar" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_c_WJets" numerator="pt_btag_c_WJets" denominator="pt_c_WJets" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_c_ZJets" numerator="pt_btag_c_ZJets" denominator="pt_c_ZJets" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_c_Dibosons" numerator="pt_btag_c_Dibosons" denominator="pt_c_Dibosons" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_c_ST" numerator="pt_btag_c_ST" denominator="pt_c_ST" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+<!--  <divide name="btag_eff_c_QCD" numerator="pt_btag_c_QCD" denominator="pt_c_QCD" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/> -->
+  <divide name="btag_eff_c_WpRH800" numerator="pt_btag_c_WpRH800" denominator="pt_c_WpRH800" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_c_WpRH1000" numerator="pt_btag_c_WpRH1000" denominator="pt_c_WpRH1000" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+
+  <superimpose name="btag_eff_c" title="btag_eff_c" Stack="false" YTitle="c-tag Efficiency" SubBanner="#mu+jets N_{jets}#geq2">
+    <superimposeItem name="btag_eff_c_ttbar" color="2" legend="ttbar"/>
+    <superimposeItem name="btag_eff_c_WJets" color="3" legend="W+jets"/>
+<!--    <superimposeItem name="btag_eff_c_ZJets" color="4" legend="Z+jets"/>
+    <superimposeItem name="btag_eff_c_Dibosons" color="5" legend="Dibosons"/> -->
+    <superimposeItem name="btag_eff_c_ST" color="6" legend="ST"/>
+    <superimposeItem name="btag_eff_c_WpRH800" color="7" legend="W' 0.8TeV"/>
+    <superimposeItem name="btag_eff_c_WpRH1000" color="8" legend="W' 1TeV"/>
+  </superimpose>
+
+  <divide name="btag_eff_l_ttbar" numerator="pt_btag_l_ttbar" denominator="pt_l_ttbar" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_l_WJets" numerator="pt_btag_l_WJets" denominator="pt_l_WJets" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_l_ZJets" numerator="pt_btag_l_ZJets" denominator="pt_l_ZJets" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_l_Dibosons" numerator="pt_btag_l_Dibosons" denominator="pt_l_Dibosons" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_l_ST" numerator="pt_btag_l_ST" denominator="pt_l_ST" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+<!--  <divide name="btag_eff_l_QCD" numerator="pt_btag_l_QCD" denominator="pt_l_QCD" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/> -->
+  <divide name="btag_eff_l_WpRH800" numerator="pt_btag_l_WpRH800" denominator="pt_l_WpRH800" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_l_WpRH1000" numerator="pt_btag_l_WpRH1000" denominator="pt_l_WpRH1000" DivideOption="B" Option="e1" YTitle="light mistaggingtag" XTitle="jet p_{T} [GeV]"/>
+
+  <superimpose name="btag_eff_l" title="btag_eff_l" Stack="false" YTitle="light mistagging" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true">
+    <superimposeItem name="btag_eff_l_ttbar" color="2" legend="ttbar"/>
+    <superimposeItem name="btag_eff_l_WJets" color="3" legend="W+jets"/>
+<!--    <superimposeItem name="btag_eff_l_ZJets" color="4" legend="Z+jets"/>
+    <superimposeItem name="btag_eff_l_Dibosons" color="5" legend="Dibosons"/>-->
+    <superimposeItem name="btag_eff_l_ST" color="6" legend="ST"/>
+    <superimposeItem name="btag_eff_l_WpRH800" color="7" legend="W' 0.8TeV"/>
+    <superimposeItem name="btag_eff_l_WpRH1000" color="8" legend="W' 1TeV"/>
+  </superimpose>
+</cuy>
