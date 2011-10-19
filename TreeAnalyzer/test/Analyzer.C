@@ -212,6 +212,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hMET["PzNu"] = new TH1F("PzNu"+hname,"p_{z} #nu [GeV]", 40, -300,300);
    hMET["EtaNu"] = new TH1F("EtaNu"+hname,"#eta",50,-2.2,2.2);
    hMET["LepWmass"] = new TH1F("LepWmass"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
+   hMET["LepWmass_topcut"] = new TH1F("LepWmass_topcut"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["LepWmassNoComplex"]=new TH1F("LepWmassNoComplex"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["deltaPhi"] = new TH1F("deltaPhi"+hname,"#Delta #phi(#mu,MET)",50, -3.15, 3.15);
 
@@ -649,8 +650,6 @@ Bool_t Analyzer::Process(Long64_t entry)
   if ( WMt <= 40. ) return kTRUE;
   cutmap["MET"] += PUweight;
 
-  hM["WMt"]->Fill( WMt, PUweight );
-
   if (fVerbose) cout << "pass W MT cut " << endl;
 
   /////////////////////////////////
@@ -768,6 +767,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 	njets++;
       }
     }
+
+  if (njets>0) hM["WMt"]->Fill( WMt, PUweight );
 
   hjets["Njets"]->Fill( njets, PUweight );
 
@@ -1023,67 +1024,74 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    }
 	  p4Top = bestp4Top;
 	  hM["top_1btag"]->Fill( p4Top.M(), PUweight*SFb_1tag );
-	  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight*SFb_1tag ); 
+	  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight*SFb_1tag );
+	  bool passcutWlep = false;
+	  if ( p4LepW.M() > 60 && p4LepW.M() < 90 ) passcutWlep = true;
 
-	  double tb_deltaPhi = 0.;
-	  double tb_deltaR = 0.;
+	  if (passcutWlep) {
 
-	  if ( top_bjet_index == 0 ) {
-	    p4Wprime = p4Top + p4jets[1];
-	    tb_deltaPhi = p4Top.DeltaPhi( p4jets[1] );
-	    tb_deltaR = p4Top.DeltaR( p4jets[1] );
-	  }
-	  else {
-	    p4Wprime = p4Top + p4jets[0];
-	    tb_deltaPhi = fabs( p4Top.DeltaPhi( p4jets[0] ) );
-            tb_deltaR = p4Top.DeltaR( p4jets[0] );
-	  }
-	  hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
-          hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
+	    if ( p4Top.M() > 130 && p4Top.M() < 210 ) hMET["LepWmass_topcut"]->Fill(p4LepW.M(), PUweight*SFb_1tag );
 
-	  bool passcut = true;
-	  if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
+	    double tb_deltaPhi = 0.;
+	    double tb_deltaR = 0.;
 
-	  if (passcut) {
-	    h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
-	    hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-	    hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
+	    if ( top_bjet_index == 0 ) {
+	      p4Wprime = p4Top + p4jets[1];
+	      tb_deltaPhi = p4Top.DeltaPhi( p4jets[1] );
+	      tb_deltaR = p4Top.DeltaR( p4jets[1] );
+	    }
+	    else {
+	      p4Wprime = p4Top + p4jets[0];
+	      tb_deltaPhi = fabs( p4Top.DeltaPhi( p4jets[0] ) );
+	      tb_deltaR = p4Top.DeltaR( p4jets[0] );
+	    }
+	    hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
+	    hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
 
-	    if (fIsMC)
-	      {
-		hM["Wprime_1btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[0] );
-		hM["Wprime_1btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[1] );
-	      }
+	    bool passcut = true;
+	    if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
 
-	    if (fSample.Contains("Wprime"))
-	      {
-		if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-		else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-		else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-	      }
+	    if (passcut) {
+	      h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
+	      hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	      hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
 
-	    if (fSample=="WJets")
-	      {
-		int FH = ntuple->flavorHistory;
-		if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-		else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-		else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
-	      }
+	      if (fIsMC)
+		{
+		  hM["Wprime_1btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[0] );
+		  hM["Wprime_1btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_1tag_syst[1] );
+		}
 
-	    // check two b-tags
-	    if ( Nbtags_TCHPM > 1 )
-	      {
-		cutmap["2Jet2b"] += PUweight*SFb_2tag;
-		hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
+	      if (fSample.Contains("Wprime"))
+		{
+		  if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_1btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		  else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_1btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		  else hM["Wprime_1btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		}
 
-		if (fIsMC)
-		  {
-		    hM["Wprime_2btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[0] );
-		    hM["Wprime_2btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[1] );
-		  }
-	      }
+	      if (fSample=="WJets")
+		{
+		  int FH = ntuple->flavorHistory;
+		  if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_1btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		  else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_1btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		  else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+		}
 
-	  }//passcut mtop cut if requested
+	      // check two b-tags
+	      if ( Nbtags_TCHPM > 1 )
+		{
+		  cutmap["2Jet2b"] += PUweight*SFb_2tag;
+		  hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
+
+		  if (fIsMC)
+		    {
+		      hM["Wprime_2btag_systUp"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[0] );
+		      hM["Wprime_2btag_systDown"]->Fill( p4Wprime.M(), PUweight*SFb_2tag_syst[1] );
+		    }
+		}
+
+	    }//passcut mtop cut if requested
+	  }//passcutWlep cut
 	  }// njets < 5
 
 	}
