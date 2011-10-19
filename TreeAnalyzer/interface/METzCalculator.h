@@ -6,7 +6,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: METzCalculator.h,v 1.1 2011/05/29 21:02:06 yumiceva Exp $
+ version $Id: METzCalculator.h,v 1.2 2011/10/15 03:26:19 yumiceva Exp $
 
 ________________________________________________________________**/
 #include<iostream>
@@ -52,7 +52,10 @@ class METzCalculator {
     /// check for complex root
 	bool IsComplex() const { return isComplex_; };
 	double getOther() const { return otherSol_; };
-	double getPtneutrino() const { return newPtneutrino_; };
+	double getPtneutrino(int option=1) const { 
+	  if ( option == 1 ) return newPtneutrino1_;
+	  else return newPtneutrino2_;
+	}
 	void Print() {
 		std::cout << " METzCalculator: pxmu = " << lepton_.Px() << " pzmu= " << lepton_.Pz() << std::endl;
 		std::cout << " METzCalculator: pxnu = " << MET_.Px() << " pynu= " << MET_.Py() << std::endl;
@@ -65,7 +68,8 @@ class METzCalculator {
 	TLorentzVector MET_;
 	double otherSol_;
 	double leptonMass_;
-	double newPtneutrino_;
+	double newPtneutrino1_;
+	double newPtneutrino2_;
 };
 
 #endif

@@ -7,7 +7,8 @@ METzCalculator::METzCalculator() {
 	isComplex_ = false;
 	otherSol_ = 0.;
 	leptonMass_ = 0.105658367;
-	newPtneutrino = -1;
+	newPtneutrino1_ = -1;
+	newPtneutrino2_ = -1;
 }
 
 /// destructor
@@ -36,8 +37,6 @@ METzCalculator::Calculate(int type) {
 
         double tmproot = B*B - 4.0*A*C;
 
-	double newptnu = 0.;
-
         if (tmproot<0) {
                 isComplex_= true;
                 pznu = - B/(2*A); // take real part of complex roots
@@ -55,10 +54,9 @@ METzCalculator::Calculate(int type) {
 		double tmpsolpt1 = (-BB + TMath::Sqrt(tmpdisc))/(2.0*AA);
 		double tmpsolpt2 = (-BB - TMath::Sqrt(tmpdisc))/(2.0*AA);
 		
-		if ( fabs( tmpsolpt1 - ptnu ) < fabs( tmpsolpt2 - ptnu) ) newptnu = tmpsolpt1;
-		else newptnu = tmpsolpt2;
+		if ( fabs( tmpsolpt1 - ptnu ) < fabs( tmpsolpt2 - ptnu) ) { newPtneutrino1_ = tmpsolpt1; newPtneutrino2_ = tmpsolpt2;}
+		else { newPtneutrino1_ = tmpsolpt2; newPtneutrino2_ = tmpsolpt1; }
 		
-		newPtneutrino_ = newptnu;
 	}
         else {
 			isComplex_ = false;
