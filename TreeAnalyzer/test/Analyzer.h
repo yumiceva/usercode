@@ -78,7 +78,7 @@ public :
        fdoQCD2SideBand = false;
        fdoJECunc = false;
        fdoJECup = true;
-       fdoMtopCut = false;
+       fdoMtopCut = true;
      }
    virtual ~Analyzer() { }
    virtual Int_t   Version() const { return 2; }

@@ -976,7 +976,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	  if ( njets < 5 ) {
 
-	    cutmap["2Jet1b"] += PUweight*SFb_1tag;
+	    //cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	  // calculate dijet mass closest to W mass
 	  double the_dijet_mass = 0;
 	  double sigma2 = 13.*13.;
@@ -1052,6 +1052,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
 
 	    if (passcut) {
+	      cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	      h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
 	      hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
 	      hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );

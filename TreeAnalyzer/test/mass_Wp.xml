@@ -134,7 +134,7 @@
 -->
 
 
-  <superimpose name="Wprime_0btag" title="Wprime_0btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+  <superimpose name="WpRH_0btag" title="WpRH_0btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
     <superimposeItem name="Wprime_0btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
     <superimposeItem name="Wprime_0btag_WpRH900" color="2" legend="W' 0.9TeV" NoStack="true"/>
     <superimposeItem name="Wprime_0btag_WpRH1000" color="3" legend="W' 1TeV" NoStack="true"/>
@@ -147,7 +147,7 @@
 <!--    <superimposeItem name="Wprime_0btag_WpRH2000" color="10" legend="W' 2TeV" NoStack="true"/>-->
   </superimpose>
 
-  <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+  <superimpose name="WpRH_1btag" title="WpRH_1btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
     <superimposeItem name="Wprime_1btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH900" color="2" legend="W' 0.9TeV" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1000" color="3" legend="W' 1TeV" NoStack="true"/>
@@ -160,7 +160,7 @@
 <!--    <superimposeItem name="Wprime_1btag_WpRH2000" color="10" legend="W' 2TeV" NoStack="true"/>-->
   </superimpose>
 
-  <superimpose name="Wprime_2btag" title="Wprime_2btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+  <superimpose name="WpRH_2btag" title="WpRH_2btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
     <superimposeItem name="Wprime_2btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
     <superimposeItem name="Wprime_2btag_WpRH900" color="2" legend="W' 0.9TeV" NoStack="true"/>
     <superimposeItem name="Wprime_2btag_WpRH1000" color="3" legend="W' 1TeV" NoStack="true"/>

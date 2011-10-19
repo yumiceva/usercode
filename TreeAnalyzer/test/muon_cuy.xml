@@ -254,7 +254,6 @@
     <superimposeItem name="pt_QCD" color="top" legend="QCD"/>
     <superimposeItem name="pt_ST" color="top" legend="ST"/>
     <superimposeItem name="pt_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="pt_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_eta" title="muon_eta" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
@@ -265,7 +264,6 @@
     <superimposeItem name="eta_QCD" color="top" legend="QCD"/>
     <superimposeItem name="eta_ST" color="top" legend="ST"/>
     <superimposeItem name="eta_ttbar" color="top" legend="TTbar"/>
-    <superimposeItem name="eta_WpRH1000" color="1" legend="W' 1TeV " NoStack="true"/>
   </superimpose>
 
   <superimpose name="muon_phi" title="muon_phi" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
