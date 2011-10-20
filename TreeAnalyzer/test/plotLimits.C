@@ -1,5 +1,5 @@
 
-void plotLimits()
+void plotLimits(TString sample="muons")
 {
   gROOT->SetStyle("Plain");
 
@@ -106,11 +106,17 @@ void plotLimits()
   aleg->AddEntry( theory, "Theory W' RH","L");
   aleg->Draw();
 
-  TLatex *banner = new TLatex(0.28,0.87,"#splitline{CMS Preliminary}{2.18 fb^{-1} at #sqrt{s}=7TeV #mu+jets,e+jets}");
+  TString sbanner = "#splitline{CMS Preliminary}{2.18 fb^{-1} at #sqrt{s}=7TeV #mu+jets}";
+  if ( sample == "combined" ) sbanner = "#splitline{CMS Preliminary}{2.18 fb^{-1} at #sqrt{s}=7TeV #mu+jets,e+jets}";
+    
+  TLatex *banner = new TLatex(0.28,0.87, sbanner);
   banner->SetNDC();
   banner->SetTextSize(0.035);
   banner->Draw();
 
-  cv->Print("WprimeLimits.pdf");
+  TString outname = "WprimeRH_Limits_mu.pdf";
+  if ( sample == "combined" ) outname = "WprimeRH_Limits_combined.pdf";
+    
+  cv->Print(outname);
     
 }

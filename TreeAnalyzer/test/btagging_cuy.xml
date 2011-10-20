@@ -150,8 +150,8 @@
 
   <superimpose name="btag_eff_b" title="btag_eff_b" Stack="false" YTitle="b-tag Efficiency" SubBanner="#mu+jets N_{jets}#geq2">
     <superimposeItem name="btag_eff_b_ttbar" color="2" legend="ttbar"/>
-    <superimposeItem name="btag_eff_b_WJets" color="3" legend="W+jets"/>
-<!--    <superimposeItem name="btag_eff_b_ZJets" color="4" legend="Z+jets"/> 
+<!--    <superimposeItem name="btag_eff_b_WJets" color="3" legend="W+jets"/>
+    <superimposeItem name="btag_eff_b_ZJets" color="4" legend="Z+jets"/> 
     <superimposeItem name="btag_eff_b_Dibosons" color="5" legend="Dibosons"/> -->
     <superimposeItem name="btag_eff_b_ST" color="6" legend="ST"/>
     <superimposeItem name="btag_eff_b_WpRH800" color="7" legend="W' 0.8TeV"/>
@@ -169,8 +169,8 @@
 
   <superimpose name="btag_eff_c" title="btag_eff_c" Stack="false" YTitle="c-tag Efficiency" SubBanner="#mu+jets N_{jets}#geq2">
     <superimposeItem name="btag_eff_c_ttbar" color="2" legend="ttbar"/>
-    <superimposeItem name="btag_eff_c_WJets" color="3" legend="W+jets"/>
-<!--    <superimposeItem name="btag_eff_c_ZJets" color="4" legend="Z+jets"/>
+<!--    <superimposeItem name="btag_eff_c_WJets" color="3" legend="W+jets"/>
+    <superimposeItem name="btag_eff_c_ZJets" color="4" legend="Z+jets"/>
     <superimposeItem name="btag_eff_c_Dibosons" color="5" legend="Dibosons"/> -->
     <superimposeItem name="btag_eff_c_ST" color="6" legend="ST"/>
     <superimposeItem name="btag_eff_c_WpRH800" color="7" legend="W' 0.8TeV"/>
@@ -188,8 +188,8 @@
 
   <superimpose name="btag_eff_l" title="btag_eff_l" Stack="false" YTitle="light mistagging" SubBanner="#mu+jets N_{jets}#geq2" SetLogy="true">
     <superimposeItem name="btag_eff_l_ttbar" color="2" legend="ttbar"/>
-    <superimposeItem name="btag_eff_l_WJets" color="3" legend="W+jets"/>
-<!--    <superimposeItem name="btag_eff_l_ZJets" color="4" legend="Z+jets"/>
+<!--    <superimposeItem name="btag_eff_l_WJets" color="3" legend="W+jets"/>
+    <superimposeItem name="btag_eff_l_ZJets" color="4" legend="Z+jets"/>
     <superimposeItem name="btag_eff_l_Dibosons" color="5" legend="Dibosons"/>-->
     <superimposeItem name="btag_eff_l_ST" color="6" legend="ST"/>
     <superimposeItem name="btag_eff_l_WpRH800" color="7" legend="W' 0.8TeV"/>

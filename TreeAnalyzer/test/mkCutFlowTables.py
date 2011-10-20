@@ -11,7 +11,7 @@ JetType = "PF" #calo
 showWprime = False
 
 if len(sys.argv) < 2:
-    print "usage: mkCutFlowTables.py <path to files> <Lumi for MC>"
+    print "usage: mkCutFlowTables.py <path to files> <Lumi for MC> < 1 =will produce table for signal Wprime>"
     sys.exit()
 
 if len(sys.argv) > 1:
@@ -57,7 +57,7 @@ if IsMC:
 #    file['Wprime1000'] = path+'/results_Wprime_1000.root'
 #    file['Wprime1200'] = path+'/results_Wprime_1200.root'
 #    file['Wprime1500'] = path+'/results_Wprime_1500.root'
-    file['Wprime2000'] = path+'/results_WpRH2000.root'
+#    file['Wprime2000'] = path+'/results_WpRH2000.root'
     
     xsec['ttbar'] = 157.5
     xsec['QCD']   = 84679.3
@@ -198,7 +198,7 @@ weightmap = {}
 
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
 if showWprime:
-    tablelist = ['Wprime800','Wprime900','Wprime1000','Wprime1100','Wprime1200','Wprime1300','Wprime1400','Wprime1500','Wprime1600','Wprime2000']
+    tablelist = ['Wprime800','Wprime900','Wprime1000','Wprime1100','Wprime1200','Wprime1300','Wprime1400','Wprime1500','Wprime1600'] #,'Wprime2000']
 #tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
@@ -286,7 +286,8 @@ texname = "cutflow_"+JetType+"_data.tex"
 
 if IsMC:
     texname = "cutflow_"+JetType+"_MC.tex"
-
+    if showWprime: texname = "cutflow_"+JetType+"_MC_Wprime.tex"
+    
 outtex = open(texname,"w")
 
 sss = " & "

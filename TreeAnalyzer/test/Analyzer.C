@@ -808,8 +808,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()<=240 ) { number_of_c++; hjets["pt_c"]->Fill( p4jets[kk].Pt(), PUweight );}
 	  if ( abs(listflavor[kk])==1 || abs(listflavor[kk])==2 || abs(listflavor[kk])==3 || abs(listflavor[kk])==21 ) 
 	    { number_of_l++; hjets["pt_l"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++;}
-	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++;}
+	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++; hjets["pt_b"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++; hjets["pt_c"]->Fill( p4jets[kk].Pt(), PUweight );}
 
 	  if ( isTagb["TCHPM"][kk] ) 
 	    {

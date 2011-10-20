@@ -202,9 +202,8 @@
     <TH1 name="pt_2jet_WpRH1200" source="/muons/muon_pt_2jet_WpRH1200"/>
     <TH1 name="NPV_WpRH1200" source="/PVs/NPVreweight_2jet_WpRH1200"/>
   </validation>
-
+<!--
   <validation type="Wprime_1500" file="./results_Wprime_1500.root" weight="2.0968795122e-05">
-    <!-- muon -->
     <TH1 name="pt_Wprime_1500" source="/muons/muon_pt_Wprime_1500"/>
     <TH1 name="eta_Wprime_1500" source="/muons/muon_eta_Wprime_1500"/>
     <TH1 name="phi_Wprime_1500" source="/muons/muon_phi_Wprime_1500"/>
@@ -216,7 +215,6 @@
   </validation>
 
   <validation type="Wprime_2000" file="./results_Wprime_2000.root" weight="3.20654059274e-06">
-    <!-- muon -->
     <TH1 name="pt_Wprime_2000" source="/muons/muon_pt_Wprime_2000"/>
     <TH1 name="eta_Wprime_2000" source="/muons/muon_eta_Wprime_2000"/>
     <TH1 name="phi_Wprime_2000" source="/muons/muon_phi_Wprime_2000"/>
@@ -225,7 +223,7 @@
     <TH1 name="deltaR_Wprime_2000" source="/muons/deltaR_Wprime_2000"/>
     <TH1 name="pt_2jet_Wprime_2000" source="/muons/muon_pt_2jet_Wprime_2000"/>
   </validation>
-
+-->
   <additionArray name="ST" title="ST">
     <additionArrayItem array="STtch"/>
     <additionArrayItem array="STtWch"/>

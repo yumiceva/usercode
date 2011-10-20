@@ -421,13 +421,13 @@
   </additionArray>
 
   <addition name="Wprime_WJetsData" title="Wprime_WJetsData" YTitle="Events">
-<!-- weights scaled to 1170 pb-1, get WJets data driven -->
+<!-- weights scaled to 2180.88 pb-1, get WJets data driven -->
     <additionItem name="Wprime_0btag_data"   weight="1"/>
-    <additionItem name="Wprime_0btag_ttbar"  weight="-4.98521226073112000e-02"/>
-    <additionItem name="Wprime_0btag_QCD"  weight="-4.01769646521913959"/>
-    <additionItem name="Wprime_0btag_ZJets"  weight="-1.09436410345088206e-01"/>
-    <additionItem name="Wprime_0btag_Dibosons"  weight="-1170"/>
-    <additionItem name="Wprime_0btag_ST"  weight="-1170"/>
+    <additionItem name="Wprime_0btag_ttbar"  weight="-9.32431364938532264e-02"/>
+    <additionItem name="Wprime_0btag_QCD"  weight="-7.51467741600953509e+00"/>
+    <additionItem name="Wprime_0btag_ZJets"  weight="-2.04689261229327596e-01"/>
+    <additionItem name="Wprime_0btag_Dibosons"  weight="-2180.88"/>
+    <additionItem name="Wprime_0btag_ST"  weight="-2180.88"/>
   </addition>
 
   <superimpose name="WprimeComparison" title="WprimeComparison" Normalize="true" YTitle="Unit Area" Stack="false" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
@@ -588,15 +588,15 @@
     <superimposeItem name="Wprime_1btag_ST" color="top" legend="ST"/>
     <superimposeItem name="Wprime_1btag_ttbar" color="top" legend="TTbar"/>
     <superimposeItem name="Wprime_1btag_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH900" color="1" legend="W' 0.9TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpRH900" color="1" legend="W' 0.9TeV" NoStack="true"/>-->
     <superimposeItem name="Wprime_1btag_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1100" color="1" legend="W' 1.1TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpRH1100" color="1" legend="W' 1.1TeV" NoStack="true"/>-->
     <superimposeItem name="Wprime_1btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1300" color="1" legend="W' 1.3TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpRH1300" color="1" legend="W' 1.3TeV" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1400" color="1" legend="W' 1.4TeV" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1500" color="1" legend="W' 1.5TeV" NoStack="true"/>
     <superimposeItem name="Wprime_1btag_WpRH1600" color="1" legend="W' 1.6TeV" NoStack="true"/>
-<!--    <superimposeItem name="Wprime_1btag_WpRH2000" color="1" legend="W' 2TeV" NoStack="true"/>-->
+    <superimposeItem name="Wprime_1btag_WpRH2000" color="1" legend="W' 2TeV" NoStack="true"/>-->
   </superimpose>
 <!--
  <superimpose name="Wprime_1btag_QCDComparison" title="Wprime_1btag_QCDComparison" YTitle="Events" Weight="true" Lumi="2180.9">
