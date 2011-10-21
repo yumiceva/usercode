@@ -15,8 +15,8 @@ else if( $argv[1] == "electrons" ) then
   ln -s Wp_obs_limits_e.cfg Wp_obs_limits.cfg
   ln -s commonWp_e.cfg commonWp.cfg
   ln -s Wp_templates_e.cfg Wp_templates.cfg
-else if( $argv[1] == "combination" ) then
-  echo "Setup files to run COMBINATION"
+else if( $argv[1] == "combined" ) then
+  echo "Setup files to run COMBINED"
   rm -f Wp_exp_limit.cfg Wp_obs_limits.cfg Wp_templates.cfg commonWp.cfg
   ln -s Wp_exp_limit_emu.cfg Wp_exp_limit.cfg
   ln -s Wp_obs_limits_emu.cfg Wp_obs_limits.cfg
