@@ -799,7 +799,7 @@ Bool_t Analyzer::Process(Long64_t entry)
       float SFb_0tag_syst[2] = {1.}; // for systematics
       float SFb_1tag_syst[2] = {1.};
       float SFb_2tag_syst[2] = {1.};
-      float SFb_1tag_systhighpt[2] = {1.};
+      //float SFb_1tag_systhighpt[2] = {1.};
 
       for ( size_t kk=0; kk < p4jets.size(); ++kk)
 	{
@@ -1056,6 +1056,13 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
 	      hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
 	      hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
+
+	      if ( p4Wprime.M() > 1000.)
+		{
+		  TString outstring = "run: ";
+		  outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event)); 
+		  Info("Process",outstring);
+		}
 
 	      if (fIsMC)
 		{

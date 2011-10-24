@@ -237,6 +237,15 @@ void runAnalysis(TString sample="all",bool NoGUI=false)
       data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/SingleMu_Aug05ReReco_Mu.root");
       data->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/42x/SingleMu_PromptReco-v6_Mu.root");
       data->Process("Analyzer.C+","sample=data");
+      //ifstream outfile;
+      //outfile.open("data_muon.txt", ifstream::out);
+      logList = p->GetManager()->GetSessionLogs()->GetListOfLogs();
+      for (int i=1; i< logList->GetSize(); ++i)
+	{
+	  logElem = ( TProofLogElem* ) logList->At( i );
+	  macro = logElem->GetMacro();
+	  //macro->SaveSource("data_muons_"+TString(Form("%i",i))+".stdout");
+	}
     }
   if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
   if (sample=="dataQCD2"||sample=="all")
