@@ -1,4 +1,5 @@
 <use   name="DataFormats/PatCandidates"/>
+<use   name="SimDataFormats/PileupSummaryInfo"/>
 <use   name="PhysicsTools/SelectorUtils"/>
 <use   name="root"/>
 <use   name="rootcore"/>
