@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.30 2011/10/15 03:25:29 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.31 2011/10/16 01:17:42 yumiceva Exp $
 //
 //
 
@@ -43,6 +43,7 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/BTauReco/interface/SecondaryVertexTagInfo.h"
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "AnalysisDataFormats/TopObjects/interface/TtGenEvent.h"
 
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
@@ -316,6 +317,29 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     {
 
       TopMyGenEvent mygen; // generator storage
+
+      // add beam crossing information
+      Handle<std::vector< PileupSummaryInfo > >  PupInfo;
+      if ( iEvent.getByLabel("addPileupInfo", PupInfo) )
+	{
+	  std::vector<PileupSummaryInfo>::const_iterator PVInfo;
+
+	  for(PVInfo = PupInfo->begin(); PVInfo != PupInfo->end(); ++PVInfo) {
+
+	    int BX = PVInfo->getBunchCrossing();
+
+	    if(BX == -1) { 
+	      mygen.Bx_minus1 = PVInfo->getPU_NumInteractions();
+	    }
+	    if(BX == 0) { 
+	      mygen.Bx_0 = PVInfo->getPU_NumInteractions();
+	    }
+	    if(BX == 1) { 
+	      mygen.Bx_plus1 = PVInfo->getPU_NumInteractions();
+	    }
+
+	  }
+	}
 
       if ( iEvent.getByLabel("prunedGenParticles", genParticles) ) 
 	{

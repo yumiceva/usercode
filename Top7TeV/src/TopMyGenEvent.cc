@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMyGenEvent.cc,v 1.2 2010/12/15 19:50:45 yumiceva Exp $
+ version $Id: TopMyGenEvent.cc,v 1.3 2011/10/15 03:25:29 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -31,6 +31,10 @@ void TopMyGenEvent::Reset()
   isDilepton = 0;
   LeptonicChannel = 0;
   isWevent = 0;
+
+  Bx_minus1 = -99;
+  Bx_0 = -99;
+  Bx_plus1 = 99;
 
    t_pt = -99;
    t_eta = -99;
