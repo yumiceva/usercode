@@ -23,6 +23,7 @@
    -e, --example = EXAMPLE: generate an example xml file.
    -f, --flag    = FLAG: create a baneer
    -l, --list    = LIST: list of objects in the ROOT file.
+   -O, --OutputFilename = OUTPUTFILENAME: name of the output ROOT file. 
    -o, --output  = OUTPUT: output directory
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
    -t, --tag     = TAG: tag name for XML configuration file.
@@ -141,7 +142,14 @@ class additionElement:
 	self.SetGrid = ""
 	self.histos = []
 	self.weight = []
-	
+
+class additionArrayElement:
+    def __init__(self):
+        self.name = ""
+        self.title = ""
+        self.array = []
+        self.weight = []
+                                                        
 class superimposeElement:
     def __init__(self):
 	self.name = ""
@@ -156,12 +164,14 @@ class superimposeElement:
         self.SF = []
         self.Error = []
         self.Norm = []
-
+        self.NoStack = []
+        
 class FindIssue(handler.ContentHandler):
     def __init__(self):
 	self.data = {}
 	self.divide = {}
 	self.addition = {}
+        self.additionArray = {}
 	self.superimpose = {}
 	self.tmpaddname = ""
 	self.plot = {}
@@ -189,6 +199,8 @@ class FindIssue(handler.ContentHandler):
 	    self.divide[aname].numerator = attrs.get('numerator',None)
 	    self.divide[aname].denominator = attrs.get('denominator',None)
 	    self.divide[aname].DivideOption = attrs.get('DivideOption',None)
+            self.divide[aname].YTitle = attrs.get('YTitle',None)
+            self.divide[aname].XTitle = attrs.get('XTitle',None)                        
 	    self.divide[aname].Option = attrs.get('Option',None)
 	if name == 'addition':
 	    aname = attrs.get('name',None)
@@ -207,6 +219,17 @@ class FindIssue(handler.ContentHandler):
 	    #print "in element: " + self.tmpsupername
 	    self.addition[self.tmpaddname].histos.append(attrs.get('name',None))
 	    self.addition[self.tmpaddname].weight.append(attrs.get('weight',None))
+        if name == 'additionArray':
+            aname = attrs.get('name',None)
+            self.additionArray[aname] = additionArrayElement()
+            self.tmpaddname = aname
+            self.additionArray[aname].name = aname
+            self.additionArray[aname].title = attrs.get('title',None)
+        if name == 'additionArrayItem':
+            #print "in element: " + self.tmpsupername
+            self.additionArray[self.tmpaddname].array.append(attrs.get('array',None))
+            self.additionArray[self.tmpaddname].weight.append(attrs.get('weight',None))
+                                                
 	if name == 'superimpose':
 	    aname = attrs.get('name',None)
 	    self.superimpose[aname] = superimposeElement()
@@ -241,6 +264,7 @@ class FindIssue(handler.ContentHandler):
 	    self.superimpose[self.tmpsupername].SF.append(attrs.get('SF',None))
             self.superimpose[self.tmpsupername].Error.append(attrs.get('Error',None))
             self.superimpose[self.tmpsupername].Norm.append(attrs.get('Normalize',None))
+            self.superimpose[self.tmpsupername].NoStack.append(attrs.get('NoStack',None))
             
 if __name__ == '__main__':
 
@@ -343,7 +367,10 @@ if __name__ == '__main__':
     stacklist = {}
 
     # root output file
-    outputroot = TFile("cuy.root","RECREATE")
+    outputroot_name = "cuy.root"
+    if option.OutputFilename: outputroot_name = option.OutputFilename
+    
+    outputroot = TFile(outputroot_name,"RECREATE")
 
     # new histograms
     newTH1list = []
@@ -473,6 +500,72 @@ if __name__ == '__main__':
 	outputroot.cd()
 	newth.Write()
 	
+
+    #### addition array
+    theadditionArray = dh.additionArray
+    
+    if verbose : print "= Create addition arrays:"
+
+    for ikey in theadditionArray:
+        if verbose : print "== block name: \""+theadditionArray[ikey].name+"\" title: \""+theadditionArray[ikey].title+"\""
+        listarray = theadditionArray[ikey].array
+        #listweight = theaddition[ikey].weight
+
+        # get first list of histos to add
+        tmplisthistos = thedata[ listarray[0] ].histos.keys()
+        new_tmplisthistos = []
+        for isuffix in range(0, len(tmplisthistos)):
+            tmpname = ''
+            blist = tmplisthistos[isuffix].split('_')
+            for iblist in range(0,len(blist)-1):
+                tmpname += blist[iblist] +"_"
+            #tmpname = tmplisthistos[isuffix].strip(listarray[0])
+            new_tmplisthistos.append( tmpname )
+        tmplisthistos = new_tmplisthistos
+        if verbose:
+            print "  histogram names to be added: "
+            print tmplisthistos
+        for namehisto in tmplisthistos:
+
+            isFirst = True
+            # loop over samples
+            for jsample in listarray:
+
+                the_namehisto = namehisto+jsample
+                
+                aweight = float( thedata[jsample].weight )
+                if verbose: print " get histogram name: "+the_namehisto+" from sample: "+ jsample
+
+                
+                ath = thedata[jsample].TH1s[the_namehisto]
+                if ath is None:
+                    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
+                if verbose : print "=== add histogram: "+ath.GetName() + " from " + thedata[jsample].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
+                if isFirst:
+                    newth = ath.Clone(namehisto + theadditionArray[ikey].name)
+                    newth.SetName(namehisto + theadditionArray[ikey].name)
+                    if verbose: print "=== new histogram name: "+ newth.GetName()
+                    newth.Sumw2()
+                    #newth.Scale(1/newth.Integral())
+                    newth.Scale(aweight)
+                    isFirst = False
+                else:
+                    atmpth = ath.Clone()
+                    atmpth.Sumw2()
+                    #if theaddition[ikey].Normalize == "true":
+                    #    atmpth.Scale(1/atmpth.Integral())
+                    atmpth.Scale(aweight)
+                    newth.Add( atmpth )
+
+            # add new histogram to the list
+            #newth.SetName(theadditionArray[ikey].name)
+            newTH1list.append(newth.GetName())
+            thedata[newth.GetName()] = ValElement()
+            thedata[newth.GetName()].TH1s[newth.GetName()] = newth
+            thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
+            thedata[newth.GetName()].weight = 1.
+            if verbose: print "=== new histogram added to list: "+ newth.GetName() + " integral: "+str(newth.Integral())
+                                                   
     
     if verbose : print "= Create ratio histograms:"
     
@@ -506,23 +599,24 @@ if __name__ == '__main__':
 	
 	numeratorth.Sumw2()
 	denominatorth.Sumw2()
-	newth = numeratorth.Clone()
+	newth = numeratorth.Clone("ratio")
 	newth.Clear()
 	if thedivition[ikey].DivideOption is None:
 	    newth.Divide(numeratorth,denominatorth)
 	else:
 	    newth.Divide(numeratorth,denominatorth,1.,1.,thedivition[ikey].DivideOption)
-#	if theaddition[ikey].XTitle != None:
-#	    newth.SetXTitle(theaddition[ikey].XTitle)
-#	if theaddition[ikey].YTitle != None:
-#	    newth.SetYTitle(theaddition[ikey].YTitle)
+	if thedivition[ikey].XTitle != None:
+	    newth.SetXTitle(thedivition[ikey].XTitle)
+	if thedivition[ikey].YTitle != None:
+	    newth.SetYTitle(thedivition[ikey].YTitle)
 
+                
 	if thedivition[ikey].Option:
 	    newth.Draw(thedivition[ikey].Option)
 	else:
 	    newth.Draw()
 
-	cv[thedivition[ikey].name].Update()
+        cv[thedivition[ikey].name].Update()
 	
 	
 	# pause
@@ -544,6 +638,7 @@ if __name__ == '__main__':
     thesuper = dh.superimpose
     if verbose : print "= Create superimpose histograms:"
     datahist = {}
+    tmpNoStackhist = {}
     ratiohist = {}
     errorgraph = {}
     tex = {}
@@ -615,7 +710,7 @@ if __name__ == '__main__':
 	#create canvas
 	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
 	#legend
-	aleg = TLegend(0.66,0.68,0.93,0.93)
+	aleg = TLegend(0.66,0.65,0.93,0.93)
 	SetOwnership( aleg, 0 ) 
 	aleg.SetMargin(0.12)
         aleg.SetTextSize(0.035)
@@ -641,6 +736,7 @@ if __name__ == '__main__':
 	astack = stacklist[thesuper[ikey].name]
         astack2 = None # subset of histograms to superimpose
         datahist[thesuper[ikey].name] = None
+        tmpNoStackhist[thesuper[ikey].name] = []
         ratiohist[thesuper[ikey].name] = None # for plot diff
         errorgraph[thesuper[ikey].name] = None # error band
         thisistheMax = 0.
@@ -733,7 +829,9 @@ if __name__ == '__main__':
                                     print " with binned SF = "
                                     print SFforallbins
                                 if listlegend[ii]=="Data": aweight = 1.
-                                if ath.GetName().find("data")!=-1: aweight = aSF
+                                
+                                #print "aweight="+str(aweight)
+                                #if ath.GetName().find("data")!=-1: aweight = aSF
                                 
 			if verbose: print " with weight = " + str(aweight)
 			#if listweight[ii]:
@@ -746,7 +844,7 @@ if __name__ == '__main__':
                         listofnorm = thesuper[ikey].Norm
                         #print listofnorm
                         if listofnorm[ii] == "true":
-                            newth.Scale(1./newth.GetEntries())
+                            newth.Scale(1./newth.Integral())
                             if verbose: print " histogram has been normalized before applying weight"
                             
 			newth.Scale(aweight)
@@ -811,12 +909,18 @@ if __name__ == '__main__':
 			    if thesuper[ikey].XTitle != None:
 				newth.SetXTitle("")
                             if listlegend[ii]=="Data": datahist[thesuper[ikey].name] = newth
+                            elif thesuper[ikey].NoStack[ii] != None:
+                                #print "HEEEEEEEEEEEERE: "
+                                #print thesuper[ikey].NoStack[ii]
+                                newth.SetFillColor(0)
+                                tmpNoStackhist[thesuper[ikey].name].append(newth)
                             else:
                                 astack.Add(newth,"HIST")
 			elif thesuper[ikey].Option:
 			    astack.Add(newth,thesuper[ikey].Option)
 			else:
 			    #newth.Fit("landau")
+                            if listlegend[ii]=="Data": datahist[thesuper[ikey].name] = newth
 			    astack.Add(newth)
 			    
 			astack.SetTitle(thesuper[ikey].title)
@@ -862,9 +966,14 @@ if __name__ == '__main__':
 	if thesuper[ikey].XTitle != None:
 	    astack.GetHistogram().SetXTitle(thesuper[ikey].XTitle)
             if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetXTitle(thesuper[ikey].XTitle)
+            for iitmp in tmpNoStackhist[thesuper[ikey].name]:
+                iitmp.SetXTitle(thesuper[ikey].XTitle)
+                                                
         else:
             astack.GetHistogram().SetXTitle(defaultXTitle)
             if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetXTitle(defaultXTitle)
+            for iitmp in tmpNoStackhist[thesuper[ikey].name]:
+                iitmp.SetXTitle(defaultXTitle)
 	if thesuper[ikey].YTitle != None:
 	    astack.GetHistogram().SetYTitle(thesuper[ikey].YTitle)
             if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetYTitle(thesuper[ikey].YTitle)
@@ -875,7 +984,13 @@ if __name__ == '__main__':
                 if thesuper[ikey].Ndivisions !=None: datahist[thesuper[ikey].name].GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
 	    #astack.Draw("same") #sameaxis")
             #if thesuper[ikey].Ndivisions !=None: astack.GetHistogram().GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
-            
+            #if tmpNoStackhist[thesuper[ikey].name] != None:
+            jjtmp = 0
+            for iitmp in tmpNoStackhist[thesuper[ikey].name]:
+                #tmpNoStackhist[thesuper[ikey].name].Draw("HIST same")
+                iitmp.SetLineStyle(jjtmp+1)
+                iitmp.Draw("HIST same")
+                jjtmp+=1
         gPad.RedrawAxis()
 
         if doPlotError:
@@ -948,12 +1063,27 @@ if __name__ == '__main__':
             
             ratiohist[thesuper[ikey].name+"_diff"] = datahist[thesuper[ikey].name].Clone(thesuper[ikey].name+"_diff")
             ratiohist[thesuper[ikey].name+"_diff"].Reset()
-            if astack.GetStack().Last().GetEntries() != 0: 
-                ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
+                    
+            if astack.GetStack().Last().GetEntries() != 0:
+                if len(astack.GetStack() ) ==2:
+                    atemphist = astack.GetStack().Last()
+                    atemphist.Add(datahist[thesuper[ikey].name],-1.)
+                    ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], atemphist )
+                else:
+                    ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
+                    #S = tmpNoStackhist[thesuper[ikey].name][1].Integral(tmpNoStackhist[thesuper[ikey].name][1].FindBin(800),-1)
+                    #S = S*0.1
+                    #B = astack.GetStack().Last().Integral(astack.GetStack().Last().FindBin(800),-1)
+                    #print "FOM for "+thesuper[ikey].name+" in "+str(tmpNoStackhist[thesuper[ikey].name][1].GetName())
+                    #print " S/sqrt(B) = "+str(S/math.sqrt(B))
+                    #print " S/sqrt(S+B) = "+str(S/math.sqrt(S+B))
                 #cv[thesuper[ikey].name].Clear()
                 pad2.cd()
                 ratiohist[thesuper[ikey].name+"_diff"].SetYTitle("Data/MC")
                 ratiohist[thesuper[ikey].name+"_diff"].Draw()
+                ratiohist[thesuper[ikey].name+"_diff"].SetMaximum(2.)
+                ratiohist[thesuper[ikey].name+"_diff"].SetMinimum(0.)
+                            
                 pad2.SetGrid()
                 pad2.Update()
 
