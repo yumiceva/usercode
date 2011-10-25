@@ -49,7 +49,7 @@ METzCalculator::Calculate(int type) {
 		double alpha = (pxmu*pxnu/pnu + pymu*pynu/pnu);
 		double ptmu = TMath::Sqrt( pxmu*pxmu + pymu*pymu);
 		double ptnu = TMath::Sqrt( pxnu*pxnu + pynu*pynu); // old
-		double AA = 4.*pzmu*pzmu + 4*emu*emu+4*alpha*alpha;
+		double AA = 4.*pzmu*pzmu - 4*emu*emu + 4*alpha*alpha;
 		double BB = 4.*alpha*Delta;
 		double CC = Delta*Delta;
 		
