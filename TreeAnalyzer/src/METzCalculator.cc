@@ -44,11 +44,14 @@ METzCalculator::Calculate(int type) {
 
 		// recalculate the neutrino pT
 		// solve quadratic eq. discriminator = 0 for pT of nu
+		double pnu = MET_.E();
+		double Delta = (M_W*M_W - M_mu*M_mu);
+		double alpha = (pxmu*pxnu/pnu + pymu*pynu/pnu);
 		double ptmu = TMath::Sqrt( pxmu*pxmu + pymu*pymu);
 		double ptnu = TMath::Sqrt( pxnu*pxnu + pynu*pynu); // old
-		double AA = 4.*(pzmu*pzmu + M_mu*M_mu);
-		double BB = -4.*(M_W*M_W - M_mu*M_mu)*ptmu;
-		double CC = -1.*(M_W*M_W - M_mu*M_mu)*(M_W*M_W - M_mu*M_mu);
+		double AA = 4.*pzmu*pzmu + 4*emu*emu+4*alpha*alpha;
+		double BB = 4.*alpha*Delta;
+		double CC = Delta*Delta;
 		
 		double tmpdisc = BB*BB - 4.0*AA*CC;
 		double tmpsolpt1 = (-BB + TMath::Sqrt(tmpdisc))/(2.0*AA);
