@@ -55,6 +55,12 @@ void Analyzer::ParseInput()
   if (fMyOpt.Contains("QCD1")) fdoQCD1SideBand = true;
   if (fMyOpt.Contains("QCD2")) fdoQCD2SideBand = true;
   if (fMyOpt.Contains("mtop")) fdoMtopCut = true;
+  if (fMyOpt.Contains("outdir")) {
+    TString tmp = fMyOpt;
+    tmp = tmp.Remove(0,fMyOpt.Index("outdir")+7);
+    fOutdir = tmp+"/";
+    Info("Begin","output files will be written to directory: %s", fOutdir.Data());
+  }
   if (fMyOpt.Contains("sample"))
     {
       TString tmp = fMyOpt;
@@ -127,7 +133,7 @@ void Analyzer::SlaveBegin(TTree * tree)
      else tmpfilename = "results.root";
      fProofFile = new TProofOutputFile(tmpfilename, (out ? out->GetTitle() : "M"));
      out = (TNamed *) fInput->FindObject("PROOF_OUTPUTFILE");
-     if (out) fProofFile->SetOutputFileName(out->GetTitle());
+     if (out) fProofFile->SetOutputFileName(fOutdir + out->GetTitle());
    }
 
    // Open the file
@@ -213,7 +219,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hMET["EtaNu"] = new TH1F("EtaNu"+hname,"#eta",50,-2.2,2.2);
    hMET["LepWmass"] = new TH1F("LepWmass"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["LepWmass_topcut"] = new TH1F("LepWmass_topcut"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
-   hMET["LepWmassNoComplex"]=new TH1F("LepWmassNoComplex"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
+   hMET["LepWmassNoPt"]=new TH1F("LepWmassNoPt"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["deltaPhi"] = new TH1F("deltaPhi"+hname,"#Delta #phi(#mu,MET)",50, -3.15, 3.15);
 
    hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
@@ -334,7 +340,7 @@ void Analyzer::SlaveBegin(TTree * tree)
      }
 
    // for the 1fb-1
-   
+   /*
    double pu_weights[25] = { 
      0,
      0.216263,
@@ -361,50 +367,84 @@ void Analyzer::SlaveBegin(TTree * tree)
      0.0248396,
      0.0160992,
      0.0171581
-   };
-   /*
-   double pu_weights[25] = {
-     1.45346E-01,
-     6.42802E-02,
-     6.95255E-02,
-     6.96747E-02,
-     6.92955E-02,
-     6.84997E-02,
-     6.69528E-02,
-     6.45515E-02,
-     6.09865E-02,
-     5.63323E-02,
-     5.07322E-02,
-     4.44681E-02,
-     3.79205E-02,
-     3.15131E-02,
-     2.54220E-02,
-     2.00184E-02,
-     1.53776E-02,
-     1.15387E-02,
-     8.47608E-03,
-     6.08715E-03,
-     4.28255E-03,
-     2.97185E-03,
-     2.01918E-03,
-     1.34490E-03,
-     8.81587E-04
-   };
+     }; 
    */
-   /* 
-      5.69954E-04,
-      3.61493E-04,
-      2.28692E-04,
-      1.40791E-04,
-      8.44606E-05,
-      5.10204E-05,
-      3.07802E-05,
-      1.81401E-05,
-      1.00201E-05,
-      5.80004E-06
-      }; */
+   double pu_weights[35] = {
+     0.023585,
+     0.234436,
+     0.517824,
+     0.90917,
+     1.31626,
+     1.61859,
+     1.72259,
+     1.77745,
+     1.66995,
+     1.4221,
+     1.21974,
+     1.11424,
+     1.05321,
+     1.00567,
+     0.965597,
+     0.924777,
+     0.882675,
+     0.837798,
+     0.788722,
+     0.737481,
+     0.683695,
+     0.624478,
+     0.566523,
+     0.510216,
+     0.454788,
+     0.400715,
+     0.351203,
+     0.30143,
+     0.259931,
+     0.225116,
+     0.189664,
+     0.156875,
+     0.130342,
+     0.113478,
+     0.171243
+   };
+     /*
+     0.00114291,
+     0.0176121,
+     0.0604592,
+     0.157344,
+     0.323424,
+     0.557855,
+     0.844349,
+     1.15484,
+     1.4646,
+     1.75079,
+     1.99923,
+     2.20248,
+     2.35689,
+     2.4583,
+     2.5194,
+     2.53173,
+     2.50326,
+     2.43816,
+     2.33907,
+     2.21742,
+     2.0764,
+     1.91042,
+     1.7423,
+     1.57514,
+     1.4079,
+     1.24298,
+     1.09095,
+     0.937302,
+     0.808853,
+     0.700883,
+     0.590723,
+     0.488729,
+     0.406146,
+     0.353644,
+     0.533737
+     };*/
    
-   fpu_weights_vec.assign( pu_weights, pu_weights + 25 );
+   fpu_weights_vec.assign( pu_weights, pu_weights + 35 );
 
    // For JEC uncertainties
    if (fdoJECunc) fJECunc = new JetCorrectionUncertainty("/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/GR_R_42_V19_AK5PF_Uncertainty.txt");
@@ -484,8 +524,10 @@ Bool_t Analyzer::Process(Long64_t entry)
     int iibin = 0;
     for ( vector<double>::iterator ivec = fpu_weights_vec.begin(); ivec != fpu_weights_vec.end(); ++ivec )
       {
-	if ( (int)total_pvs >= iibin+1 ) PUweight = *ivec; // use the last weight for last bin
-	if ( ( iibin <= (int)total_pvs ) && ( (int)total_pvs < iibin + 1 ) ) PUweight = *ivec; 
+	int mc_npvs = ntuple->gen.Bx_0; // in-time pile up
+	//int mc_npvs = (int)total_pvs;
+	if ( mc_npvs >= iibin+1 ) PUweight = *ivec; // use the last weight for last bin
+	if ( ( iibin <= mc_npvs ) && ( mc_npvs < iibin + 1 ) ) PUweight = *ivec; 
 	iibin++;
       }
   }
@@ -673,6 +715,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   double pzOtherNu = fzCalculator.getOther();
   p4OtherNu.SetPxPyPzE( p4MET.Px(), p4MET.Py(),pzOtherNu,sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzOtherNu*pzOtherNu));
 
+  double WmassNoPt = (p4Nu+p4lepton).M();
+
   if ( fzCalculator.IsComplex() )
     {
       double ptNu1 = fzCalculator.getPtneutrino(1);
@@ -695,6 +739,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 
       p4OtherNu = p4Nu; // since we chose the real part, the two solutions are the same.
     }
+
 
   hMET["PzNu"]->Fill(pzNu, PUweight ); //change this to 2d with two sol and as a function of jets
                                                                                                                        
@@ -1025,6 +1070,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  p4Top = bestp4Top;
 	  hM["top_1btag"]->Fill( p4Top.M(), PUweight*SFb_1tag );
 	  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight*SFb_1tag );
+	  hMET["LepWmassNoPt"]->Fill(WmassNoPt, PUweight*SFb_1tag );
+
 	  bool passcutWlep = false;
 	  if ( p4LepW.M() > 60 && p4LepW.M() < 90 ) passcutWlep = true;
 
