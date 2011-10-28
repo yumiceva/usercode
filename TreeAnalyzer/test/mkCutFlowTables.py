@@ -44,20 +44,38 @@ if IsMC:
     file['sch_bar']   = path+'/results_STsch_bar.root'
     file['WW']    = path+'/results_WW.root'
     file['WZ']    = path+'/results_WZ.root'
-    file['Wprime800'] = path+'/results_WpRH800.root'
-    file['Wprime900'] = path+'/results_WpRH900.root'
-    file['Wprime1000'] = path+'/results_WpRH1000.root'
-    file['Wprime1100'] = path+'/results_WpRH1100.root'
-    file['Wprime1200'] = path+'/results_WpRH1200.root'
-    file['Wprime1300'] = path+'/results_WpRH1300.root'
-    file['Wprime1400'] = path+'/results_WpRH1400.root'
-    file['Wprime1500'] = path+'/results_WpRH1500.root'
-    file['Wprime1600'] = path+'/results_WpRH1600.root'
-#    file['Wprime800'] = path+'/results_Wprime_800.root'
-#    file['Wprime1000'] = path+'/results_Wprime_1000.root'
-#    file['Wprime1200'] = path+'/results_Wprime_1200.root'
-#    file['Wprime1500'] = path+'/results_Wprime_1500.root'
-#    file['Wprime2000'] = path+'/results_WpRH2000.root'
+
+    file['WpRH800'] = path+'/results_WpRH800.root'
+    file['WpRH900'] = path+'/results_WpRH900.root'
+    file['WpRH1000'] = path+'/results_WpRH1000.root'
+    file['WpRH1100'] = path+'/results_WpRH1100.root'
+    file['WpRH1200'] = path+'/results_WpRH1200.root'
+    file['WpRH1300'] = path+'/results_WpRH1300.root'
+    file['WpRH1400'] = path+'/results_WpRH1400.root'
+    file['WpRH1500'] = path+'/results_WpRH1500.root'
+    file['WpRH1600'] = path+'/results_WpRH1600.root'
+
+    file['WpLH800'] = path+'/results_WpLH800.root'
+    file['WpLH900'] = path+'/results_WpLH900.root'
+    file['WpLH1000'] = path+'/results_WpLH1000.root'
+    file['WpLH1100'] = path+'/results_WpLH1100.root'
+    file['WpLH1200'] = path+'/results_WpLH1200.root'
+    file['WpLH1300'] = path+'/results_WpLH1300.root'
+    file['WpLH1400'] = path+'/results_WpLH1400.root'
+    file['WpLH1500'] = path+'/results_WpLH1500.root'
+    file['WpLH1600'] = path+'/results_WpLH1600.root'
+
+    file['WpMix800'] = path+'/results_WpMix800.root'
+    file['WpMix900'] = path+'/results_WpMix900.root'
+    file['WpMix1000'] = path+'/results_WpMix1000.root'
+    file['WpMix1100'] = path+'/results_WpMix1100.root'
+    file['WpMix1200'] = path+'/results_WpMix1200.root'
+    file['WpMix1300'] = path+'/results_WpMix1300.root'
+    file['WpMix1400'] = path+'/results_WpMix1400.root'
+    file['WpMix1500'] = path+'/results_WpMix1500.root'
+    file['WpMix1600'] = path+'/results_WpMix1600.root'
+
+#    file['WpRH2000'] = path+'/results_WpRH2000.root'
     
     xsec['ttbar'] = 157.5
     xsec['QCD']   = 84679.3
@@ -71,46 +89,82 @@ if IsMC:
     xsec['sch_bar']   = 1.44
     xsec['WW']    = 43.0
     xsec['WZ']    = 18.0
-    xsec['Wprime800'] = 1.6697
-    xsec['Wprime900'] = 0.97609
-    xsec['Wprime1000'] = 0.58782
-    xsec['Wprime1100'] = 0.36266
-    xsec['Wprime1200'] = 0.22815
-    xsec['Wprime1300'] = 0.14584
-    xsec['Wprime1400'] = 0.094496
-    xsec['Wprime1500'] = 0.061946
-    xsec['Wprime1600'] = 0.04102
-    Nevents['Wprime800'] = 1.09734000000000000e+05
-    Nevents['Wprime900'] = 1.09695000000000000e+05
-    Nevents['Wprime1000'] = 1.09613000000000000e+05
-    Nevents['Wprime1100'] = 1.09623000000000000e+05 
-    Nevents['Wprime1200'] = 1.09592000000000000e+05
-    Nevents['Wprime1300'] = 1.09566000000000000e+05
-    Nevents['Wprime1400'] = 1.09558000000000000e+05
-    Nevents['Wprime1500'] = 1.09532000000000000e+05
-    Nevents['Wprime1600'] = 107339 #9.12900000000000000e+04
-        
-#    xsec['Wprime800'] = 6.838
-#    xsec['Wprime1000'] = 2.509
-#    xsec['Wprime1200'] = 1.1595
-#    xsec['Wprime1500'] = 0.2964
-    xsec['Wprime2000'] = 7.935e-3 #0.0442
-#    Nevents["Wprime800"] = 107347. 
-#    Nevents["Wprime1000"] = 109204.0
-#    Nevents["Wprime1200"] = 108990.0
-#    Nevents["Wprime1500"] = 108733.0
-    Nevents["Wprime2000"] = 106657.0
+    xsec['WpRH800'] = 1.6697
+    xsec['WpRH900'] = 0.97609
+    xsec['WpRH1000'] = 0.58782
+    xsec['WpRH1100'] = 0.36266
+    xsec['WpRH1200'] = 0.22815
+    xsec['WpRH1300'] = 0.14584
+    xsec['WpRH1400'] = 0.094496
+    xsec['WpRH1500'] = 0.061946
+    xsec['WpRH1600'] = 0.04102
+    Nevents['WpRH800'] = 109734.0 
+    Nevents['WpRH900'] = 109695.0
+    Nevents['WpRH1000'] = 109613.0
+    Nevents['WpRH1100'] = 109623.0
+    Nevents['WpRH1200'] = 109592.0
+    Nevents['WpRH1300'] = 109566.0
+    Nevents['WpRH1400'] = 109558.0
+    Nevents['WpRH1500'] = 109532.0
+    Nevents['WpRH1600'] = 109529.0
+
+    xsec['WpLH800'] = 2.3139
+    xsec['WpLH1000'] = 1.3529
+    xsec['WpLH1100'] = 1.1649
+    xsec['WpLH1200'] = 1.0587
+    xsec['WpLH1300'] = 0.9982
+    xsec['WpLH1400'] = 0.96318
+    xsec['WpLH1500'] = 0.94378
+    xsec['WpLH1600'] = 0.93355
+    Nevents['WpLH800'] = 105441.0
+    Nevents['WpLH1000'] = 109762.0
+    Nevents['WpLH1100'] = 109501.0
+    Nevents['WpLH1200'] = 109116.0
+    Nevents['WpLH1300'] = 107481.0
+    Nevents['WpLH1400'] = 109846.0
+    Nevents['WpLH1500'] = 108879.0
+    Nevents['WpLH1600'] = 109880.0
+
+    xsec['WpMix800'] = 3.9983
+    xsec['WpMix900'] = 2.6853
+    xsec['WpMix1000'] = 1.9589
+    xsec['WpMix1100'] = 1.5443
+    xsec['WpMix1200'] = 1.3008
+    xsec['WpMix1300'] = 1.1552
+    xsec['WpMix1400'] = 1.067
+    xsec['WpMix1500'] = 1.0132
+    xsec['WpMix1600'] = 0.98074
+    Nevents['WpMix800'] = 109681.0
+    Nevents['WpMix900'] = 108706.0
+    Nevents['WpMix1000'] = 108735.0
+    Nevents['WpMix1100'] = 109498.0
+    Nevents['WpMix1200'] = 109168.0
+    Nevents['WpMix1300'] = 109799.0
+    Nevents['WpMix1400'] = 109163.0
+    Nevents['WpMix1500'] = 108854.0
+    Nevents['WpMix1600'] = 109862.0
     
-    Nevents['ttbar'] = 3683795.0
-    Nevents['QCD']   = 24575292.0
-    Nevents['Wjets'] = 49335978.0
-    Nevents['Zjets'] = 32475188.0
-    Nevents['tch']   = 3897643.0
-    Nevents['tWch']  = 813629.0
+#    xsec['WpRH800'] = 6.838
+#    xsec['WpRH1000'] = 2.509
+#    xsec['WpRH1200'] = 1.1595
+#    xsec['WpRH1500'] = 0.2964
+    xsec['WpRH2000'] = 7.935e-3 #0.0442
+#    Nevents["WpRH800"] = 107347. 
+#    Nevents["WpRH1000"] = 109204.0
+#    Nevents["WpRH1200"] = 108990.0
+#    Nevents["WpRH1500"] = 108733.0
+    Nevents["WpRH2000"] = 106657.0
+    
+    Nevents['ttbar'] = 3697476.0 #3683795.0
+    Nevents['QCD']   = 24909653.0 
+    Nevents['Wjets'] = 76978604.0 #49335978.0
+    Nevents['Zjets'] = 36236728.0 #32475188.0
+    Nevents['tch']   = 3897643.0 
+    Nevents['tWch']  = 813629.0 
     Nevents['sch']   = 259762.0
-    Nevents['tch_bar']   = 1943821.0 
-    Nevents['tWch_bar']  = 809293.0
-    Nevents['sch_bar']   = 137916.0            
+    Nevents['tch_bar']  = 1943821.0 #1943821.0 
+    Nevents['tWch_bar'] = 809293.0
+    Nevents['sch_bar']  = 137916.0 #137916.0            
     Nevents['WW']    = 4223922.0
     Nevents['WZ']    = 4263076.0
     
@@ -127,17 +181,37 @@ if IsMC:
     label['WW'] = 'WW'
     label['WZ'] = 'WZ'
 
-    label['Wprime800'] = "W' 0.8 TeV"
-    label['Wprime900'] = "W' 0.9 TeV"
-    label['Wprime1000'] = "W' 1 TeV"
-    label['Wprime1100'] = "W' 1.1 TeV"
-    label['Wprime1200'] = "W' 1.2 TeV"
-    label['Wprime1300'] = "W' 1.3 TeV"
-    label['Wprime1400'] = "W' 1.4 TeV"
-    label['Wprime1500'] = "W' 1.5 TeV"
-    label['Wprime1600'] = "W' 1.6 TeV"
-    label['Wprime2000'] = "W' 2 TeV"
-    
+    label['WpRH800'] = "W' RH 0.8 TeV"
+    label['WpRH900'] = "W' RH 0.9 TeV"
+    label['WpRH1000'] = "W' RH 1 TeV"
+    label['WpRH1100'] = "W' RH 1.1 TeV"
+    label['WpRH1200'] = "W' RH 1.2 TeV"
+    label['WpRH1300'] = "W' RH 1.3 TeV"
+    label['WpRH1400'] = "W' RH 1.4 TeV"
+    label['WpRH1500'] = "W' RH 1.5 TeV"
+    label['WpRH1600'] = "W' RH 1.6 TeV"
+    label['WpRH2000'] = "W' RH 2 TeV"
+
+    label['WpLH800'] = "W' LH 0.8 TeV"
+    label['WpLH900'] = "W' LH 0.9 TeV"
+    label['WpLH1000'] = "W' LH 1 TeV"
+    label['WpLH1100'] = "W' LH 1.1 TeV"
+    label['WpLH1200'] = "W' LH 1.2 TeV"
+    label['WpLH1300'] = "W' LH 1.3 TeV"
+    label['WpLH1400'] = "W' LH 1.4 TeV"
+    label['WpLH1500'] = "W' LH 1.5 TeV"
+    label['WpLH1600'] = "W' LH 1.6 TeV"
+
+    label['WpMix800'] = "W' Mix 0.8 TeV"
+    label['WpMix900'] = "W' Mix 0.9 TeV"
+    label['WpMix1000'] = "W' Mix 1 TeV"
+    label['WpMix1100'] = "W' Mix 1.1 TeV"
+    label['WpMix1200'] = "W' Mix 1.2 TeV"
+    label['WpMix1300'] = "W' Mix 1.3 TeV"
+    label['WpMix1400'] = "W' Mix 1.4 TeV"
+    label['WpMix1500'] = "W' Mix 1.5 TeV"
+    label['WpMix1600'] = "W' Mix 1.6 TeV"
+                                    
     label['Total'] = 'Total MC'
 else:
 # data files
@@ -198,8 +272,8 @@ weightmap = {}
 
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
 if showWprime:
-    tablelist = ['Wprime800','Wprime900','Wprime1000','Wprime1100','Wprime1200','Wprime1300','Wprime1400','Wprime1500','Wprime1600'] #,'Wprime2000']
-#tablelist = ['Wprime800','Wprime1000','Wprime1200','Wprime1500','Wprime2000']
+    tablelist = ['WpRH800','WpRH900','WpRH1000','WpRH1100','WpRH1200','WpRH1300','WpRH1400','WpRH1500','WpRH1600'] #,'WpRH2000']
+#tablelist = ['WpRH800','WpRH1000','WpRH1200','WpRH1500','WpRH2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
 
@@ -286,7 +360,7 @@ texname = "cutflow_"+JetType+"_data.tex"
 
 if IsMC:
     texname = "cutflow_"+JetType+"_MC.tex"
-    if showWprime: texname = "cutflow_"+JetType+"_MC_Wprime.tex"
+    if showWprime: texname = "cutflow_"+JetType+"_MC_WpRH.tex"
     
 outtex = open(texname,"w")
 
