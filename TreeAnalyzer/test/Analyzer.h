@@ -44,6 +44,7 @@ private:
   bool            fdoMtopCut;
   //HistoManager    *fHist;
   TString         fSample;
+  TString         fOutdir;
   TH1F            *h1test;
   TH1D            *hcutflow;
   TH2F            *h2_pt_Wprime;
@@ -74,6 +75,7 @@ public :
        fVerbose = false;
        fIsMC = true;
        fSample = "";
+       fOutdir = "";
        fdoQCD1SideBand = false;
        fdoQCD2SideBand = false;
        fdoJECunc = false;
