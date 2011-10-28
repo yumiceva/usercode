@@ -19,7 +19,7 @@
     <TH1 name="Wprime_1btag_dataQCD2" source="/mass/Wprime_1btag_dataQCD2"/>
   </validation>
 
-  <validation type="ttbar" file="./results_ttbar.root" weight="4.27548221332e-05">
+  <validation type="ttbar" file="./results_ttbar.root" weight="4.25966253736e-05">
     <TH1 name="dijet_ttbar" source="/mass/dijet_ttbar"/>
     <TH1 name="trijet_ttbar" source="/mass/trijet_ttbar"/>
     <TH1 name="Mt_2jet_ttbar" source="/mass/Mt_2jet_ttbar"/>
@@ -33,7 +33,7 @@
     <TH1 name="LepWmass_ttbar" source="/MET/LepWmass_ttbar"/>
   </validation>
 
-  <validation type="Wjets" file="./results_WJets.root" weight="0.000634709217683">
+  <validation type="Wjets" file="./results_WJets.root" weight="0.000406788359009">
     <TH1 name="dijet_WJets" source="/mass/dijet_WJets"/>
     <TH1 name="trijet_WJets" source="/mass/trijet_WJets"/>
     <TH1 name="Mt_2jet_WJets" source="/mass/Mt_2jet_WJets"/>
@@ -447,21 +447,21 @@
     <superimposeItem name="Wprime_1btag_cc_WJets" color="3" legend="Wcc"/>
   </superimpose>
 
-  <superimpose name="Whf0tag" title="Whf0tag" Fill="true" Weight="true" Lumi="2180.9" YTitle="Events" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}=0">
+  <superimpose name="Whf0tag" title="Whf0tag" Fill="true" Weight="true" Lumi="3553." YTitle="Events" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}=0">
     <superimposeItem name="Wprime_0btag_bb_WJets" color="2" legend="Wb(b)" SF="2."/>
     <superimposeItem name="Wprime_0btag_cc_WJets" color="4" legend="Wcc" SF="2."/>
     <superimposeItem name="Wprime_0btag_light_WJets" color="3" legend="Wlight"/>
     <superimposeItem name="Wprime_0btag_WJets" color="1" legend="W+jets" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="Whf1tag" title="Whf1tag" Fill="true" Weight="true" Lumi="2180.9" YTitle="Events" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}#geq1">
+  <superimpose name="Whf1tag" title="Whf1tag" Fill="true" Weight="true" Lumi="3553." YTitle="Events" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{bjets}#geq1">
     <superimposeItem name="Wprime_1btag_bb_WJets" color="2" legend="Wb(b)" SF="2."/>
     <superimposeItem name="Wprime_1btag_cc_WJets" color="4" legend="Wcc" SF="2."/>
     <superimposeItem name="Wprime_1btag_light_WJets" color="3" legend="Wlight"/>
     <superimposeItem name="Wprime_1btag_WJets" color="1" legend="W+jets" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="Mt_2jet" title="Mt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="Mt_2jet" title="Mt_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="Mt_2jet_data" color="top" legend="Data"/>
     <superimposeItem name="Mt_2jet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="Mt_2jet_ZJets" color="top" legend="Zjets"/>
@@ -476,7 +476,7 @@
     <superimposeItem name="Mt_2jet_Wprime_2000" color="1" legend="W' 2TeV" NoStack="true"/> -->
   </superimpose>
 
-  <superimpose name="dijet" title="dijet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="dijet" title="dijet" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="dijet_data" color="top" legend="Data"/>
     <superimposeItem name="dijet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="dijet_ZJets" color="top" legend="Zjets"/>
@@ -489,7 +489,7 @@
   </superimpose>
 
 <!--
-  <superimpose name="trijet" title="trijet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="trijet" title="trijet" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="trijet_data" color="top" legend="Data"/>
     <superimposeItem name="trijet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="trijet_ZJets" color="top" legend="Zjets"/>
@@ -501,7 +501,7 @@
     <superimposeItem name="trijet_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
   </superimpose>
 -->
-  <superimpose name="top_1btag" title="top_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
+  <superimpose name="top_1btag" title="top_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
     <superimposeItem name="top_1btag_data" color="top" legend="Data"/>
     <superimposeItem name="top_1btag_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="top_1btag_ZJets" color="top" legend="Zjets"/>
@@ -514,7 +514,7 @@
     <superimposeItem name="top_1btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="LepWmass" title="LepWmass" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
+  <superimpose name="LepWmass" title="LepWmass" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
     <superimposeItem name="LepWmass_data" color="top" legend="Data"/>
     <superimposeItem name="LepWmass_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="LepWmass_ZJets" color="top" legend="Zjets"/>
@@ -527,7 +527,7 @@
     <superimposeItem name="LepWmass_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="MET" title="MET" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
+  <superimpose name="MET" title="MET" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq0" PlotDiff="true">
     <superimposeItem name="MET_data" color="top" legend="Data"/>
     <superimposeItem name="MET_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="MET_ZJets" color="top" legend="Zjets"/>
@@ -539,7 +539,7 @@
     <superimposeItem name="MET_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="MET_2jet" title="MET_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="MET_2jet" title="MET_2jet" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="MET_2jet_data" color="top" legend="Data"/>
     <superimposeItem name="MET_2jet_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="MET_2jet_ZJets" color="top" legend="Zjets"/>
@@ -552,7 +552,7 @@
     <superimposeItem name="MET_2jet_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="Wprime" title="Wprime" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+  <superimpose name="Wprime" title="Wprime" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="Wprime_data" color="top" legend="Data"/>
     <superimposeItem name="Wprime_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="Wprime_ZJets" color="top" legend="Zjets"/>
@@ -565,7 +565,7 @@
     <superimposeItem name="Wprime_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="Wprime_0btag" title="Wprime_0btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}=0" PlotDiff="true">
+  <superimpose name="Wprime_0btag" title="Wprime_0btag" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}=0" PlotDiff="true">
     <superimposeItem name="Wprime_0btag_data" color="top" legend="Data"/>
     <superimposeItem name="Wprime_0btag_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="Wprime_0btag_ZJets" color="top" legend="Zjets"/>
@@ -578,7 +578,7 @@
     <superimposeItem name="Wprime_0btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
+  <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true">
     <superimposeItem name="Wprime_1btag_data" color="top" legend="Data"/>
     <superimposeItem name="Wprime_1btag_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="Wprime_1btag_ZJets" color="top" legend="Zjets"/>
@@ -599,11 +599,11 @@
     <superimposeItem name="Wprime_1btag_WpRH2000" color="1" legend="W' 2TeV" NoStack="true"/>-->
   </superimpose>
 <!--
- <superimpose name="Wprime_1btag_QCDComparison" title="Wprime_1btag_QCDComparison" YTitle="Events" Weight="true" Lumi="2180.9">
+ <superimpose name="Wprime_1btag_QCDComparison" title="Wprime_1btag_QCDComparison" YTitle="Events" Weight="true" Lumi="3553.">
     <superimposeItem name="Wprime_1btag_QCD" color="2" legend="QCD MC"/>
  </superimpose>
 -->
-  <superimpose name="Wprime_2btag" title="Wprime_2btag" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq2" PlotDiff="true">
+  <superimpose name="Wprime_2btag" title="Wprime_2btag" YTitle="Events" Fill="true" Weight="true" Lumi="3553." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq2" PlotDiff="true">
     <superimposeItem name="Wprime_2btag_data" color="top" legend="Data"/>
     <superimposeItem name="Wprime_2btag_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="Wprime_2btag_ZJets" color="top" legend="Zjets"/>
