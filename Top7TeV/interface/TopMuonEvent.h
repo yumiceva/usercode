@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.h,v 1.4 2010/09/03 16:16:03 yumiceva Exp $
+ version $Id: TopMuonEvent.h,v 1.5 2010/09/28 15:49:23 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -57,6 +57,7 @@ public:
     Float_t iso03_ecalveto;
     Float_t iso03_hcalveto;
     Float_t reliso03;
+    Float_t pfreliso;
     Float_t CalodeltaR;
     Float_t JPTdeltaR;
     Float_t PFdeltaR;

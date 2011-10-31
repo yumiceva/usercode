@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopElectronEvent.h,v 1.6 2011/05/04 22:37:19 yumiceva Exp $
+ version $Id: TopElectronEvent.h,v 1.7 2011/08/24 19:35:38 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -47,7 +47,8 @@ class TopElectronEvent : public TopCandidateEvent
     Float_t iso03_ecalveto;
     Float_t iso03_hcalveto;
     Float_t reliso03;
-    
+    Float_t pfreliso;
+
     Int_t IsTight;
     Int_t pass70;
     Int_t pass95;

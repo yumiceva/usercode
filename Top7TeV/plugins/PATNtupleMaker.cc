@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.31 2011/10/16 01:17:42 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.32 2011/10/24 21:15:57 yumiceva Exp $
 //
 //
 
@@ -462,7 +462,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       
       // relative isolation
       double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
-
+      double PFRelIso= (mu->chargedHadronIso()+mu->neutralHadronIso()+mu->photonIso()) / mu->pt();
       // calculate deltaR
       double PFDeltaR = 99.;
 
@@ -525,6 +525,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       topmuon.iso03_ecalveto = mu->isolationR03().emVetoEt;
       topmuon.iso03_hcalveto = mu->isolationR03().hadVetoEt;
       topmuon.reliso03 = reliso;
+      topmuon.pfreliso = PFRelIso;
       topmuon.PFdeltaR = PFDeltaR;
 
       topmuon.IsTrackerMuon = mu->isTrackerMuon();
@@ -677,6 +678,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       {
 
         double RelIso = (elec->dr03TkSumPt()+elec->dr03EcalRecHitSumEt()+elec->dr03HcalTowerSumEt())/elec->et();
+	double PFRelIso = (elec->chargedHadronIso()+elec->neutralHadronIso()+elec->photonIso()) / elec->et();
         double eta_sc = elec->superCluster()->eta();
 
         bool pass70 = patEle70(*elec);
@@ -728,6 +730,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         //topele.iso03_ecalveto = elec->isolationR03().emVetoEt;
         //topele.iso03_hcalveto = elec->isolationR03().hadVetoEt;
         topele.reliso03 = RelIso;
+	topele.pfreliso = PFRelIso;
         topele.IsTight = int(IsTight);
         topele.pass70 = int(pass70);
         topele.pass95 = int(pass95);
