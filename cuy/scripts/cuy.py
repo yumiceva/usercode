@@ -254,6 +254,7 @@ class FindIssue(handler.ContentHandler):
             self.superimpose[aname].SubBanner = attrs.get('SubBanner',None)
             self.superimpose[aname].Ndivisions = attrs.get('Ndivisions',None)
             self.superimpose[aname].PlotDiff = attrs.get('PlotDiff',None)
+            self.superimpose[aname].doKS = attrs.get('doKS',None)
 	    self.tmpsupername = aname
 	if name == 'superimposeItem':
 	    #print "in element: " + self.tmpsupername
@@ -532,8 +533,21 @@ if __name__ == '__main__':
             for jsample in listarray:
 
                 the_namehisto = namehisto+jsample
-                
-                aweight = float( thedata[jsample].weight )
+
+                # first check if SF/weight is given as a file and check the key
+                the_big_weight = 1
+                if type(thedata[jsample].weight) is not float and len(thedata[jsample].weight.split(":"))>1:
+                    keySF = thedata[jsample].weight.split(":")[1]
+                    if os.path.isfile(thedata[jsample].weight.split(":")[0]):
+                        SFfile = open(thedata[jsample].weight.split(":")[0])
+                        for sfline in SFfile:
+                            if sfline.find("#")!=-1: continue
+                            if sfline.find(keySF)!=-1:
+                                the_big_weight = sfline.split()[1]
+                                break
+                else: the_big_weight = thedata[jsample].weight
+                                                                                                        
+                aweight = float( the_big_weight )
                 if verbose: print " get histogram name: "+the_namehisto+" from sample: "+ jsample
 
                 
@@ -719,8 +733,10 @@ if __name__ == '__main__':
 
         # check if diff plot requested
         makeDiffPlot = False
+        doKS = False
         if thesuper[ikey].PlotDiff == "true":
             makeDiffPlot = True
+            if thesuper[ikey].doKS == "true": doKS = True
             #cv[thesuper[ikey].name+"_diff"] = TCanvas(thesuper[ikey].name+"_diff",thesuper[ikey].title,700,700)
             #cv[thesuper[ikey].name].cd()
             pad1 = TPad("pad1","histogram",0.01,0.25,0.99,0.99)
@@ -784,7 +800,22 @@ if __name__ == '__main__':
                         SFforallbins = {} #used for jet bins
                                                                                                                                     
 			if thedata[jkey].weight != None and thesuper[ikey].Weight=="true":
-			    aweight = float( thedata[jkey].weight )
+
+                            # first check if SF/weight is given as a file and check the key
+                            the_big_weight = 1
+                            if type(thedata[jkey].weight) is not float and len(thedata[jkey].weight.split(":"))>1:
+                                keySF = thedata[jkey].weight.split(":")[1]
+                                if os.path.isfile(thedata[jkey].weight.split(":")[0]):
+                                    SFfile = open(thedata[jkey].weight.split(":")[0])
+                                    for sfline in SFfile:
+                                        if sfline.find("#")!=-1: continue
+                                        if sfline.find(keySF)!=-1:
+                                            the_big_weight = sfline.split()[1]
+                                            break
+                            else: the_big_weight = thedata[jkey].weight
+                            #print " WEIGHT==="+the_big_weight
+			    aweight = float( the_big_weight )
+                            
                             if thesuper[ikey].Lumi != None:
                                 aweight = aweight * float(thesuper[ikey].Lumi)
                                 # check if we have additianal SF
@@ -1070,6 +1101,8 @@ if __name__ == '__main__':
                     atemphist.Add(datahist[thesuper[ikey].name],-1.)
                     ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], atemphist )
                 else:
+                    # get KS value
+                    if doKS: KSvalue = datahist[thesuper[ikey].name].KolmogorovTest(astack.GetStack().Last() )
                     ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
                     #S = tmpNoStackhist[thesuper[ikey].name][1].Integral(tmpNoStackhist[thesuper[ikey].name][1].FindBin(800),-1)
                     #S = S*0.1
@@ -1083,7 +1116,12 @@ if __name__ == '__main__':
                 ratiohist[thesuper[ikey].name+"_diff"].Draw()
                 ratiohist[thesuper[ikey].name+"_diff"].SetMaximum(2.)
                 ratiohist[thesuper[ikey].name+"_diff"].SetMinimum(0.)
-                            
+                if doKS:
+                    texKS = TLatex(0.25,0.82,"KS="+str(round(KSvalue,2)))
+                    texKS.SetNDC()
+                    texKS.SetTextSize(0.1)
+                    texKS.Draw()
+                                                        
                 pad2.SetGrid()
                 pad2.Update()
 
