@@ -5,8 +5,8 @@
 // found on file: /uscms_data/d3/ttmuj/Documents/NtupleMaker/Data/2011/41x/v2/SingleMu2011A_v1.root
 //////////////////////////////////////////////////////////
 
-#ifndef Analyzer_h
-#define Analyzer_h
+#ifndef Zprime_h
+#define Zprime_h
 
 #include <TROOT.h>
 #include <TH1F.h>
@@ -21,7 +21,7 @@ const Int_t kMaxtop = 1;
 #include "Yumiceva/Top7TeV/interface/TopEventNtuple.h"
 #include "Yumiceva/TreeAnalyzer/interface/MuonSelector.h"
 #include "Yumiceva/TreeAnalyzer/interface/ElectronSelector.h"
-//#include "Yumiceva/TreeAnalyzer/interface/HistoManager.h"
+//#include "Yumiceva/TreeAnalyzzer/interface/HistoManager.h"
 #include "Yumiceva/TreeAnalyzer/interface/METzCalculator.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 
@@ -29,12 +29,11 @@ const Int_t kMaxtop = 1;
 #include <string>
 #include <vector>
 
-class Analyzer : public TSelector {
+class Zprime : public TSelector {
 
 private:
   void            ParseInput();
   TString         fMyOpt;
-  TString         fpuhistogram;
   int             fChannel;
   bool            fVerbose;
   bool            fIsMC;
@@ -49,6 +48,8 @@ private:
   TH1F            *h1test;
   TH1D            *hcutflow;
   TH2F            *h2_pt_Wprime;
+  TH2F            *h2_2Dcut;
+  TH2F            *h2_2Dcut_2jet;
   map< string, TH1*> hmuons;
   map< string, TH1*> helectrons;
   map< string, TH1*> hjets;
@@ -59,8 +60,6 @@ private:
   vector< double > fpu_weights_vec;
   METzCalculator fzCalculator;
   JetCorrectionUncertainty *fJECunc;
-  TFile *fweightfile;
-  TH1D  *f3Dweight;
 
 public :
 
@@ -72,10 +71,9 @@ public :
    ElectronSelector fEleSelector;
    map< string, double > cutmap;
 
-   Analyzer(TTree * /*tree*/ =0):h1test(0),fChain(0),ntuple(),fFile(0),fweightfile(0),fProofFile(0),f3Dweight(0),fMuSelector(),fEleSelector() 
+   Zprime(TTree * /*tree*/ =0):h1test(0),fChain(0),ntuple(),fFile(0),fProofFile(0),fMuSelector(),fEleSelector() 
      {
-       fpuhistogram = "WHist";
-       fChannel = 1; //default mu+jets
+       fChannel = 2; //default e+jets
        fVerbose = false;
        fIsMC = true;
        fSample = "";
@@ -86,7 +84,7 @@ public :
        fdoJECup = true;
        fdoMtopCut = true;
      }
-   virtual ~Analyzer() { }
+   virtual ~Zprime() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
    virtual void    SlaveBegin(TTree *tree);
@@ -101,14 +99,14 @@ public :
    virtual void    SlaveTerminate();
    virtual void    Terminate();
    
-   ClassDef(Analyzer,0);
+   ClassDef(Zprime,0);
 };
 
 #endif
 
 
-//#ifdef Analyzer_cxx
-void Analyzer::Init(TTree *tree)
+//#ifdef Zprime_cxx
+void Zprime::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -127,7 +125,7 @@ void Analyzer::Init(TTree *tree)
    fChain->SetBranchAddress("top.", &ntuple); 
 }
 
-Bool_t Analyzer::Notify()
+Bool_t Zprime::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -138,4 +136,4 @@ Bool_t Analyzer::Notify()
    return kTRUE;
 }
 
-//#endif // #ifdef Analyzer_cxx
+//#endif // #ifdef Zprime_cxx

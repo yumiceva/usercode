@@ -1,5 +1,5 @@
 
-// The class definition in Analyzer.h has been generated automatically
+// The class definition in Zprime.h has been generated automatically
 // by the ROOT utility TTree::MakeSelector(). This class is derived
 // from the ROOT class TSelector. For more information on the TSelector
 // framework see $ROOTSYS/README/README.SELECTOR or the ROOT User Manual.
@@ -18,14 +18,14 @@
 //
 // To use this file, try the following session on your Tree T:
 //
-// Root > T->Process("Analyzer.C")
-// Root > T->Process("Analyzer.C","some options")
-// Root > T->Process("Analyzer.C+")
+// Root > T->Process("Zprime.C")
+// Root > T->Process("Zprime.C","some options")
+// Root > T->Process("Zprime.C+")
 //
 
-#include "Analyzer.h"
+#include "Zprime.h"
 #include "BTagWeight.h"
-//#include "Yumiceva/TreeAnalyzer/interface/JetCombinatorics.h"
+#include "Yumiceva/TreeZprime/interface/JetCombinatorics.h"
 
 #include <TStyle.h>
 #include <TSystem.h>
@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void Analyzer::ParseInput()
+void Zprime::ParseInput()
 {
 
   if (fMyOpt.Contains("muon")) 
@@ -52,8 +52,6 @@ void Analyzer::ParseInput()
     }
   if (fMyOpt.Contains("JECUP")) { fdoJECunc = true; fdoJECup = true; }
   if (fMyOpt.Contains("JECDOWN")) { fdoJECunc = true; fdoJECup = false; }
-  if (fMyOpt.Contains("PUUP")) { fpuhistogram = "WHistUp";}
-  if (fMyOpt.Contains("PUDOWN")) { fpuhistogram = "WHistDown";}
   if (fMyOpt.Contains("QCD1")) fdoQCD1SideBand = true;
   if (fMyOpt.Contains("QCD2")) fdoQCD2SideBand = true;
   if (fMyOpt.Contains("mtop")) fdoMtopCut = true;
@@ -87,7 +85,7 @@ void Analyzer::ParseInput()
     }
 }
 
-void Analyzer::Begin(TTree * /*tree*/)
+void Zprime::Begin(TTree * /*tree*/)
 {
    // The Begin() function is called at the start of the query.
    // When running with PROOF Begin() is only called on the client.
@@ -101,7 +99,7 @@ void Analyzer::Begin(TTree * /*tree*/)
 
 }
 
-void Analyzer::SlaveBegin(TTree * tree)
+void Zprime::SlaveBegin(TTree * tree)
 {
   
    // The SlaveBegin() function is called after the Begin() function.
@@ -130,9 +128,9 @@ void Analyzer::SlaveBegin(TTree * tree)
      // Check if an output URL has been given
      TNamed *out = (TNamed *) fInput->FindObject("PROOF_OUTPUTFILE_LOCATION");
      Info("SlaveBegin", "PROOF_OUTPUTFILE_LOCATION: %s", (out ? out->GetTitle() : "undef"));
-     TString tmpfilename = "results";
+     TString tmpfilename = "zprime_results";
      if ( fSample != "" ) tmpfilename += "_"+fSample+".root";
-     else tmpfilename = "results.root";
+     else tmpfilename = "zprime_results.root";
      fProofFile = new TProofOutputFile(tmpfilename, (out ? out->GetTitle() : "M"));
      out = (TNamed *) fInput->FindObject("PROOF_OUTPUTFILE");
      if (out) fProofFile->SetOutputFileName(fOutdir + out->GetTitle());
@@ -145,11 +143,6 @@ void Analyzer::SlaveBegin(TTree * tree)
 	     fProofFile->GetDir(), fProofFile->GetFileName());
    }
 
-   // Get PU weights
-   TString weightfilename = "/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/Weight3D.root";
-   fweightfile =  new TFile(weightfilename,"read");
-   f3Dweight = (TH1D*) fweightfile->Get(fpuhistogram);
-
    //create histograms
    h1test = new TH1F("h1test","muon p_{T}",100,10.,400);
    //fHist = new HistoManager(string(fSample));
@@ -159,7 +152,6 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["pt_2jet"] = new TH1F("muon_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
    hmuons["pt_3jet"] = new TH1F("muon_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
    hmuons["pt_4jet"] = new TH1F("muon_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
-   hmuons["eta"] = new TH1F("muon_eta"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_1jet"] = new TH1F("muon_eta_1jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_2jet"] = new TH1F("muon_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_3jet"] = new TH1F("muon_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
@@ -187,14 +179,10 @@ void Analyzer::SlaveBegin(TTree * tree)
    hPVs["Nreweight"] = new TH1F("NPVreweight"+hname,"Number of PVs",25,-0.5,24.5);
    hPVs["Nreweight_2jet"] = new TH1F("NPVreweight_2jet"+hname,"Number of PVs",25,-0.5,24.5);
 
-   helectrons["pt"] = new TH1F("electron_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
-   helectrons["pt_cut2"] = new TH1F("electron_pt_cut2"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["pt_1jet"] = new TH1F("electron_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["pt_2jet"] = new TH1F("electron_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["pt_3jet"] = new TH1F("electron_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
    helectrons["pt_4jet"] = new TH1F("electron_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 20, 500);
-   helectrons["eta"] = new TH1F("electron_eta"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
-   helectrons["eta_cut2"] = new TH1F("electron_eta_cut2"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_1jet"] = new TH1F("electron_eta_1jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_2jet"] = new TH1F("electron_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    helectrons["eta_3jet"] = new TH1F("electron_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
@@ -210,18 +198,24 @@ void Analyzer::SlaveBegin(TTree * tree)
    helectrons["reliso_2jet"] = new TH1F("electron_reliso_2jet"+hname,"Relative Isolation", 40, 0, 0.2);
    helectrons["reliso_3jet"] = new TH1F("electron_reliso_3jet"+hname,"Relative Isolation", 40, 0, 0.2);
    helectrons["reliso_4jet"] = new TH1F("electron_reliso_4jet"+hname,"Relative Isolation", 40, 0, 0.2);
-   helectrons["deltaR_cut0"] = new TH1F("electron_deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
-   helectrons["deltaR"] = new TH1F("electron_deltaR"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
+   helectrons["deltaR_cut0"] = new TH1F("electron_deltaR_cut0"+hname,"#DeltaR(e,jet)",80, 0, 8);
+   helectrons["deltaR_2jet"] = new TH1F("electron_deltaR_2jet"+hname,"#DeltaR(e,jet)",80, 0, 8);
    helectrons["d0_cut1"] = new TH1F("electron_d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
    helectrons["dz"] = new TH1F("electron_dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
-      
+   helectrons["ptrel_2jet"] = new TH1F("electron_ptrel_2jet"+hname,"p_{T}^{Rel} [GeV]",25,0,50);
+   h2_2Dcut = new TH2F("electrons_2Dcut"+hname,"deltaR vs ptrel", 50,0,8,50,0,100);
+   h2_2Dcut_2jet = new TH2F("electrons_2Dcut_2jet"+hname,"deltaR vs ptrel",50,0,8,50,0,100);
+
    hMET["MET"] = new TH1F("MET"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["MET_2jet"] = new TH1F("MET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
+   hMET["Htlep_2jet"] = new TH1F("Htlep_2jet"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
+   hMET["Htlep2_2jet"] = new TH1F("Htlep2_2jet"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
    hMET["genMET_2jet"] = new TH1F("genMET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["deltaMET_2jet"] = new TH1F("deltaMET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, -200, 200);
    hMET["phi"] = new TH1F("MET_phi"+hname,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15);
    hMET["Ht"] = new TH1F("Ht"+hname,"H_{T} [GeV]", 50, 0, 1000);
    hMET["Htlep"] = new TH1F("Htlep"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
+   hMET["Htlep2"] = new TH1F("Htlep2"+hname,"H_{T,lep} [GeV]", 50, 0, 1000);
    hMET["PzNu"] = new TH1F("PzNu"+hname,"p_{z} #nu [GeV]", 40, -300,300);
    hMET["EtaNu"] = new TH1F("EtaNu"+hname,"#eta",50,-2.2,2.2);
    hMET["LepWmass"] = new TH1F("LepWmass"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
@@ -289,9 +283,9 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Dijet_deltaPhi"] = new TH1F("Dijet_deltaPhi"+hname,"#Delta #phi(j,j)",30,-3.15,3.15);
    hjets["tb_deltaPhi"] = new TH1F("tb_deltaPhi"+hname,"#Delta #phi(t,b)",30,0.,3.15);
-   hjets["tb_deltaEta"] = new TH1F("tb_deltaEta"+hname,"#Delta #eta(t,b)",30,0.,5);
+   hjets["tb_deltaR"] = new TH1F("tb_deltaR"+hname,"#Delta R(t,b)",30,0,7);
    h2_pt_Wprime = new TH2F("toppt_vs_Wprime"+hname,"top p_{T} vs W' mass",60,0,1500,70, 100, 3000);
-   hjets["pt_Wprime"] = new TH1F("pt_Wprime"+hname,"W' p_{T} [GeV]",30,0,100);
+   hjets["pt_ratio_tb"] = new TH1F("pt_ratio_tb"+hname,"( p_{T}^{top} ) / ( p_{T}^{b} ) ",30,0,2);
 
    map<string,TH1* > allhistos = hmuons;
    allhistos.insert( helectrons.begin(), helectrons.end() );
@@ -327,11 +321,11 @@ void Analyzer::SlaveBegin(TTree * tree)
    else
      { //electron+jets
        fCutLabels.push_back("Processed");
-       fCutLabels.push_back("OneIsoElectron");
+       fCutLabels.push_back("OneElectron");
        fCutLabels.push_back("LooseMuVeto");
        fCutLabels.push_back("ZVeto");
        fCutLabels.push_back("ConversionVeto");
-       fCutLabels.push_back("MET");
+       fCutLabels.push_back("Htlep");
        fCutLabels.push_back("1Jet");
        fCutLabels.push_back("2Jet");
        fCutLabels.push_back("3Jet");
@@ -458,12 +452,12 @@ void Analyzer::SlaveBegin(TTree * tree)
 
 }
 
-Bool_t Analyzer::Process(Long64_t entry)
+Bool_t Zprime::Process(Long64_t entry)
 {
    // The Process() function is called for each entry in the tree (or possibly
    // keyed object in the case of PROOF) to be processed. The entry argument
    // specifies which entry in the currently loaded tree is to be processed.
-   // It can be passed to either Analyzer::GetEntry() or TBranch::GetEntry()
+   // It can be passed to either Zprime::GetEntry() or TBranch::GetEntry()
    // to read either all or the required parts of the data. When processing
    // keyed objects with PROOF, the object is already loaded and is available
    // via the fObject pointer.
@@ -528,22 +522,15 @@ Bool_t Analyzer::Process(Long64_t entry)
   double PUweight = 1.;
 
   if (fIsMC) {
-
-    Int_t      mc_npvminus1 = TMath::Min(ntuple->gen.Bx_minus1,34);
-    Int_t      mc_npv0   = TMath::Min(ntuple->gen.Bx_0,34);
-    Int_t      mc_npvplus1  = TMath::Min(ntuple->gen.Bx_plus1,34);
-
-    PUweight = f3Dweight->GetBinContent(mc_npvminus1,mc_npv0,mc_npvplus1);
-
-    //int iibin = 0;
-    //for ( vector<double>::iterator ivec = fpu_weights_vec.begin(); ivec != fpu_weights_vec.end(); ++ivec )
-    // {
-    //	int mc_npvs = ntuple->gen.Bx_0; // in-time pile up
-    ////int mc_npvs = (int)total_pvs;
-    //if ( mc_npvs >= iibin+1 ) PUweight = *ivec; // use the last weight for last bin
-    //if ( ( iibin <= mc_npvs ) && ( mc_npvs < iibin + 1 ) ) PUweight = *ivec; 
-    //iibin++;
-    //}
+    int iibin = 0;
+    for ( vector<double>::iterator ivec = fpu_weights_vec.begin(); ivec != fpu_weights_vec.end(); ++ivec )
+      {
+	int mc_npvs = ntuple->gen.Bx_0; // in-time pile up
+	//int mc_npvs = (int)total_pvs;
+	if ( mc_npvs >= iibin+1 ) PUweight = *ivec; // use the last weight for last bin
+	if ( ( iibin <= mc_npvs ) && ( mc_npvs < iibin + 1 ) ) PUweight = *ivec; 
+	iibin++;
+      }
   }
 
   hPVs["Nreweight"]->Fill( total_pvs, PUweight );
@@ -577,14 +564,20 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	nloosemuons++;
 
-	if ( fMuSelector.MuonTight( muon, PVz) )  hmuons["pt_cut2"]->Fill( muon.pt, PUweight );
-	if ( fMuSelector.MuonTightDeltaR( muon, PVz, jets) ) {
+	//if ( fMuSelector.MuonTight( muon, PVz) )  hmuons["pt_cut2"]->Fill( muon.pt, PUweight );
+	//if ( fMuSelector.MuonTightDeltaR( muon, PVz, jets) ) {
+      }
+    
+    if ( fMuSelector.MuonNoIsoTight( muon, PVz, jets) ) 
+      {
 	  ntightmuons++;
-	  deltaR = fMuSelector.GetDeltaR();
-	}
-	p4muon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
-	RelIso = muon.reliso03;
-	
+	  
+	  if ( ntightmuons ==1 )
+	    {
+	      deltaR = fMuSelector.GetDeltaR();
+	      p4muon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
+	      RelIso = muon.reliso03;
+	    }
       }
     // check muon in QCD control region
     if ( fMuSelector.MuonRelax02IsoQCD( muon, PVz, jets ) ) 
@@ -608,23 +601,26 @@ Bool_t Analyzer::Process(Long64_t entry)
   int ntightelectrons = 0;
   bool IsConversion = false;
 
+  fEleSelector.SetElectronPt( 70. );
+  fEleSelector.SetJetPt( 50. );
+
   for ( size_t iele=0; iele < total_electrons; ++iele) {
 
     TopElectronEvent electron = electrons[iele];
     
     if ( fEleSelector.ElectronLoose(electron) ) nlooseelectrons++;
 
-    if ( fEleSelector.ElectronTight(electron, PVz ) )
+    if ( fEleSelector.ElectronNoIsoTight(electron, PVz, jets ) && electron.pt > 70)
       {
 
 	if (ntightelectrons == 0)
 	  {
 	    IsConversion = electron.IsConversion;
 	    p4ele.SetPtEtaPhiE( electron.pt, electron.eta, electron.phi, electron.e );
-	    helectrons["pt_cut2"]->Fill( p4ele.Pt(), PUweight );
-	    helectrons["eta_cut2"]->Fill( p4ele.Eta(), PUweight );
-	    helectrons["phi_cut2"]->Fill( p4ele.Phi(), PUweight );
-
+	    //helectrons["pt_cut2"]->Fill( p4ele.Pt(), PUweight );
+	    //helectrons["eta_cut2"]->Fill( p4ele.Eta(), PUweight );
+	    //helectrons["phi_cut2"]->Fill( p4ele.Phi(), PUweight );
+	    RelIso = electron.reliso03;
 	  }
 	ntightelectrons++;
       }
@@ -667,7 +663,26 @@ Bool_t Analyzer::Process(Long64_t entry)
     }
   else // electron+jets
     {
-      // pending ...
+      //
+
+      if ( ntightelectrons != 1 ) return kTRUE;
+      cutmap["OneElectron"] += PUweight;
+
+      if ( nloosemuons > 0 || ntightmuons >0 ) return kTRUE;
+      cutmap["LooseMuVeto"] += PUweight;
+
+      if ( fEleSelector.ElectronZveto(p4ele,electrons) ) return kTRUE;
+      cutmap["ZVeto"] += PUweight;
+
+      //if (IsConversion) return kTRUE;
+      cutmap["ConversionVeto"] += PUweight;
+
+      p4lepton = p4ele;
+      if (fVerbose) cout << "got a good lepton" << endl;
+      h2_2Dcut->Fill(fEleSelector.GetDeltaR(), fEleSelector.GetPtrel() );
+      helectrons["pt"]->Fill( p4lepton.Pt(), PUweight );
+      helectrons["eta"]->Fill( p4lepton.Eta(), PUweight );
+
     }
   
   if (fVerbose) cout << "done lepton selection " << endl;
@@ -687,8 +702,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   //                    ntuple->gen.METPhi,
   //                    ntuple->gen.MET );
 
-  if (fdoQCD1SideBand && p4MET.Et() > 20.) return kTRUE;
-  else if ( p4MET.Et() <= 20. && fdoQCD2SideBand==false ) return kTRUE;
+  //if (fdoQCD1SideBand && p4MET.Et() > 20.) return kTRUE;
+  //else if ( p4MET.Et() <= 20. && fdoQCD2SideBand==false ) return kTRUE;
 
   if (fVerbose) cout << "pass MET cut" << endl;
 
@@ -696,6 +711,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   hMET["MET"]->Fill( p4MET.Pt(), PUweight );
   hMET["phi"]->Fill( p4MET.Phi(), PUweight );
   hMET["Ht"]->Fill( ntuple->PFHt, PUweight );
+  double Htlep2 = p4MET.Pt() + p4lepton.Pt();
+
   hMET["Htlep"]->Fill( ntuple->PFHt + p4lepton.Pt(), PUweight );
 
   double Wpt = p4lepton.Pt() + p4MET.Pt();
@@ -703,8 +720,13 @@ Bool_t Analyzer::Process(Long64_t entry)
   double Wpy = p4lepton.Py() + p4MET.Py();
   double WMt = sqrt(Wpt*Wpt-Wpx*Wpx-Wpy*Wpy);
 
-  if ( WMt <= 40. ) return kTRUE;
-  cutmap["MET"] += PUweight;
+  //if ( WMt <= 40. ) return kTRUE;
+  //cutmap["MET"] += PUweight;
+
+  hMET["Htlep2"]->Fill( Htlep2, PUweight );
+
+  if ( Htlep2 <= 150 ) return kTRUE;
+  cutmap["Htlep"] += PUweight;
 
   if (fVerbose) cout << "pass W MT cut " << endl;
 
@@ -768,12 +790,16 @@ Bool_t Analyzer::Process(Long64_t entry)
   // JETS
   ////////////////////////////////
   
-  //JetCombinatorics myCombi = JetCombinatorics();
+  JetCombinatorics myCombi = JetCombinatorics();
 
   int njets = 0;
   map< string, vector<float> > bdisc;
   map< string, vector<bool> >  isTagb;
   vector<int> listflavor;
+
+  double ptrel = -99;
+  double deltaRelectron = 999;
+  TLorentzVector tmp1stjet;
 
   for ( size_t ijet=0; ijet < total_jets; ++ijet) 
     {
@@ -790,7 +816,47 @@ Bool_t Analyzer::Process(Long64_t entry)
 	else SF_JEC = 1.-jec_unc;
       }
 
-    if ( SF_JEC*jet.pt > 35. && fabs(jet.eta) < 2.4 && SF_JEC*jets[0].pt > 120. ) 
+    TLorentzVector tmpjet;
+    tmpjet.SetPtEtaPhiE(SF_JEC*jet.pt, jet.eta, jet.phi, SF_JEC*jet.e);
+
+    // skim jet = electron in the collection
+    if ( p4lepton.DeltaR( tmpjet) < 0.3 ) continue;
+
+    // remove muons from jets
+    bool skipjet = false;
+    for ( size_t imu=0; imu < total_muons; ++imu) {
+
+      TopMuonEvent muon = muons[imu];
+
+      if ( fMuSelector.MuonLoose(muon) )
+        {
+          TLorentzVector tmpmu;
+          tmpmu.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e);
+          if ( tmpmu.DeltaR( tmpjet) < 0.3 ) skipjet = true;
+        }
+    }// end of mu removal  
+    if (skipjet) continue;
+    skipjet = false;
+    // remove electrons from jets
+    for ( size_t iele=0; iele < total_electrons; ++iele) {
+
+      TopElectronEvent electron = electrons[iele];
+      
+      if ( fEleSelector.ElectronLoose(electron) )
+	{
+	  TLorentzVector tmpele;
+	  tmpele.SetPtEtaPhiE( electron.pt, electron.eta, electron.phi, electron.e);
+	  if ( tmpele.DeltaR( tmpjet) < 0.3 ) skipjet = true;
+	  //if ( tmpele.DeltaR( tmpjet) > 0.5 && SF_JEC*tmpjet.Pt() > 50. ) {
+	    //tmpjet = tmpjet - tmpele;
+	  //}
+	}
+    }// end e removal
+    if (skipjet) continue;
+
+    if ( ijet==0) tmp1stjet = tmpjet;
+
+    if ( SF_JEC*tmpjet.Pt() > 50. && fabs(tmpjet.Eta()) < 2.4 && SF_JEC*tmp1stjet.Pt() > 250. ) 
       {
 	if (fVerbose) cout << " jet pt " << SF_JEC*jet.pt << endl;
 	
@@ -798,11 +864,18 @@ Bool_t Analyzer::Process(Long64_t entry)
 	//hjets["eta"]->Fill( jet.eta, PUweight );
 	//hjets["phi"]->Fill( jet.phi, PUweight );
 
-	TLorentzVector tmpjet;
-	tmpjet.SetPtEtaPhiE(SF_JEC*jet.pt, jet.eta, jet.phi, SF_JEC*jet.e);
+	//TLorentzVector tmpjet;
+	//tmpjet.SetPtEtaPhiE(SF_JEC*jet.pt, jet.eta, jet.phi, SF_JEC*jet.e);
 	p4jets.push_back( tmpjet);
 	listflavor.push_back( jet.mc.flavor );
 
+	double tmpdeltar = p4lepton.DeltaR( tmpjet );
+	if ( tmpdeltar < deltaRelectron ) {
+	  deltaRelectron = tmpdeltar;
+	  ptrel = p4lepton.Perp( tmpjet.Vect() );
+	}
+	
+	
 	if (fVerbose) {
 	  cout << "done storing njets " << njets << endl;
 	  cout << " bdisc " << jet.btag_TCHP << endl;
@@ -885,9 +958,17 @@ Bool_t Analyzer::Process(Long64_t entry)
       hjets["1st_eta"]->Fill( p4jets[0].Eta(), PUweight );
       hjets["2nd_eta"]->Fill( p4jets[1].Eta(), PUweight );
 
-      hmuons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
-      hmuons["reliso_2jet"]->Fill( RelIso, PUweight );
+      
+      helectrons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
+      helectrons["eta_2jet"]->Fill( p4lepton.Eta(), PUweight );
+      helectrons["ptrel_2jet"]->Fill( ptrel, PUweight );
+      helectrons["reliso_2jet"]->Fill( RelIso, PUweight );
+      helectrons["deltaR_2jet"]->Fill( deltaRelectron, PUweight );
+      h2_2Dcut_2jet->Fill( deltaRelectron, ptrel, PUweight );
+
       hMET["MET_2jet"]->Fill( p4MET.Pt(), PUweight );
+
+
       if (fIsMC) {
 	hMET["genMET_2jet"]->Fill( ntuple->gen.MET, PUweight );
 	hMET["deltaMET_2jet"]->Fill( p4MET.Pt() - ntuple->gen.MET, PUweight );
@@ -1024,6 +1105,11 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    }
 
         }
+
+      // combinatorics
+      myCombi.Clear();
+      myCombi.UsebTagging(False);
+      myCombi.SetLeptonicW(p4LepW);
 
       // check if the two leading jets have a b jet 
       if ( Nbtags_TCHPM >= 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) )
@@ -1191,7 +1277,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   return kTRUE;
 }
 
-void Analyzer::SlaveTerminate()
+void Zprime::SlaveTerminate()
 {
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
@@ -1224,6 +1310,20 @@ void Analyzer::SlaveTerminate()
             temp->Write();
           //else cout << "Warning: empty histogram " << temp->GetName() << " will not be written to file." << endl;
         }
+
+      fFile->cd();
+      fFile->mkdir("electrons");
+      fFile->cd("electrons");
+      for ( map<string,TH1* >::const_iterator imap=helectrons.begin(); imap!=helectrons.end(); ++imap )
+        {
+          TH1 *temp = imap->second;
+          if ( temp->GetEntries() > 0 )
+            temp->Write();
+          //else cout << "Warning: empty histogram " << temp->GetName() << " will not be written to file." << endl;                                                                                                                        
+        }
+      h2_2Dcut->Write();
+      h2_2Dcut_2jet->Write();
+
       fFile->cd();
       fFile->mkdir("PVs");
       fFile->cd("PVs");
@@ -1287,11 +1387,11 @@ void Analyzer::SlaveTerminate()
 
 }
 
-void Analyzer::Terminate()
+void Zprime::Terminate()
 {
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
-  Info("Terminate","Analyzer done.");
+  Info("Terminate","Zprime done.");
 }

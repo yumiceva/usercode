@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.cc,v 1.5 2010/11/06 15:51:22 yumiceva Exp $
+ version $Id: JetCombinatorics.cc,v 1.1 2011/09/01 19:31:55 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -62,6 +62,7 @@ void JetCombinatorics::Clear() {
 
 	allCombos_.clear();
 	allCombosSumEt_.clear();
+	allCombosDeltaR_.clear();
 	//Template4jCombos_.clear();
 	//Template5jCombos_.clear();
 	//Template6jCombos_.clear();
@@ -216,7 +217,7 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> *jets, s
 	int n = 0; // total number of combos
 	std::map< Combo, int, minChi2 > allCombos;
 	std::map< Combo, int, maxSumEt > allCombosSumEt;
-
+	std::map< Combo, int, minDeltaR > allCombosDeltaR;
 
 	for ( int iw = 0; iw < 2; iw++ ) 
 	  { // loop over two neutrino solutions                                                                                                                                                     
@@ -277,7 +278,7 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> *jets, s
 
 		  allCombos[acombo] = n;
 		  allCombosSumEt[acombo] = n;
-
+		  allCombosDeltaR[acombo] = n;
 		  n++;
 		}
 
@@ -285,6 +286,13 @@ void JetCombinatorics::FourJetsCombinations(std::vector<TLorentzVector> *jets, s
 	    while (stdcomb::next_combination( jets->begin(), jets->end(), tmpFourJetCombo.begin(), tmpFourJetCombo.end() ) );
 
 	  }
+
+	allCombos_ = allCombos;
+	allCombosSumEt_ = allCombosSumEt;
+	allCombosDeltaR_ = allCombosDeltaR;
+	allCombos.clear();
+	allCombosSumEt.clear();
+	allCombosDeltaR.clear();
 
 }
 
@@ -339,4 +347,20 @@ Combo JetCombinatorics::GetCombinationSumEt(int n) {
 	return a;
 
 	
+}
+
+Combo JetCombinatorics::GetCombinationDeltaR(int n) {
+
+  int j = 0;
+  Combo a;
+  for ( std::map<Combo,int,minDeltaR>::const_iterator ite=allCombosDeltaR_.begin();
+	ite!=allCombosDeltaR_.end(); ++ite) {
+
+    if (j == n) a = ite->first;
+    j++;
+  }
+
+  return a;
+
+
 }

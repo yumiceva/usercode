@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: JetCombinatorics.h,v 1.7 2010/11/06 15:51:22 yumiceva Exp $
+ version $Id: JetCombinatorics.h,v 1.1 2011/09/01 19:31:54 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -38,6 +38,8 @@ class Combo {
 
 	  chi2_ = 0.;
 	  SumEt_ = 0.;
+	  deltaRl_ = 999;
+	  deltaRtlth_ = 999;
 	  usebtag_ = false;
 	  useMtop_ = true;
 	  IsGoodbTagEvent_ = false;
@@ -152,8 +154,16 @@ class Combo {
 		    IsGoodbTagEvent_ = true;
 
 		  }
-
+		  
 		}
+
+		// delta R
+		double deltaRbltl = Lepb_.DeltaR( LepTop_ );
+		double deltaRnutl = LepW_.DeltaR( LepTop_ );
+		//double deltaRltl =
+		deltaRl_ = deltaRbltl + deltaRnutl;
+		deltaRtlth_ = LepTop_.DeltaR( HadTop_);
+
 	}
 
 	TLorentzVector GetWp() { return Wp_; }
@@ -168,6 +178,8 @@ class Combo {
 	double GetChi2() { return chi2_; }
 	double GetNdof() { return Ndof_; }
 	double GetSumEt() { return SumEt_; }
+	double GetDeltaRl() { return deltaRl_; }
+	double GetDeltaRtlth() { return deltaRtlth_; }
 	int GetIdHadb() { return IdHadb_;}
 	int GetIdWp() { return IdWp_; }
 	int GetIdWq() { return IdWq_; }
@@ -228,6 +240,8 @@ class Combo {
 	double chi2_;
 	double Ndof_;
 	double SumEt_;
+	double deltaRl_;
+	double deltaRtlth_;
 	double minMassLepW_;
 	double maxMassLepW_;
 	double minMassHadW_;
@@ -267,6 +281,14 @@ struct maxSumEt
   }
 };
 
+struct minDeltaR
+{
+  bool operator()(Combo s1, Combo s2) const
+  {
+    return ( s1.GetDeltaRl() <= s2.GetDeltaRl() ) && ( s1.GetDeltaRtlth() >= s2.GetDeltaRtlth() );
+  }
+};
+
 
 class JetCombinatorics {
 
@@ -288,6 +310,7 @@ class JetCombinatorics {
 	void SetMaxNJets(int n) { maxNJets_ = n; }
 	Combo GetCombination(int n=0);
 	Combo GetCombinationSumEt(int n=0);
+	Combo GetCombinationDeltaR(int n =0);
 	int GetNumberOfCombos() { return ( (int)allCombos_.size() ); } 
 	//void SetCandidate( std::vector< TLorentzVector > JetCandidates );
 
@@ -348,10 +371,12 @@ class JetCombinatorics {
 	
 	std::map< Combo, int, minChi2 > allCombos_;
 	std::map< Combo, int, maxSumEt > allCombosSumEt_;
+	std::map< Combo, int, minDeltaR > allCombosDeltaR_;
 
 	Double_t minPhi_;
 	double chi2_;
 	int ndf_;
+	Double_t minDeltaR_;
 	bool removeDuplicates_;
 	
 	//std::vector< TLorentzVector > cand1_;
