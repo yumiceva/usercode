@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopElectronEvent.cc,v 1.7 2011/08/24 19:35:38 yumiceva Exp $
+ version $Id: TopElectronEvent.cc,v 1.8 2011/10/31 15:10:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -30,7 +30,8 @@ void TopElectronEvent::Reset()
     d0wrtPV2d = -1;
     d0wrtPV2derr = -1;
 
-    IsTight = -1;
+    eidHyperTight1MC = -1;
+    eidLooseMC = -1;
     pass70 = -1;
     pass95 = -1;
 
@@ -51,7 +52,7 @@ void TopElectronEvent::Reset()
     iso03_hcalveto = -1;
     reliso03 = -1;
     pfreliso = -1;
-
+    
     mc.Reset();
 
 }

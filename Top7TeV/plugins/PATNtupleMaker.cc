@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.32 2011/10/24 21:15:57 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.33 2011/10/31 15:10:14 yumiceva Exp $
 //
 //
 
@@ -353,7 +353,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      mygen.Wp_pt = mcIter->pt();
 	      mygen.isWevent = 1;
 	    }
-	    // find a neutrino from W
+	    // find a neutrino
 	    if ( ( fabs(mcIter->pdgId()) == 12 || fabs(mcIter->pdgId()) == 14 ) && mcIter->status()==3 ) {
 	      
 	      //if (mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
@@ -364,7 +364,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      mygen.isSemiLeptonic = 1;
 	      //}
 	    }
-	    // find a lepton from W
+	    // find a lepton e or mu
 	    if ( ( fabs(mcIter->pdgId()) == 11 || fabs(mcIter->pdgId()) == 13 ) && mcIter->status()==3 ) {
 	      
 	      //if ( mcIter->mother() && fabs( (mcIter->mother())->pdgId() ) == 24) {
@@ -373,12 +373,35 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      mygen.mu_eta = mcIter->eta();
 	      mygen.mu_phi = mcIter->phi();
 	      if ( fabs(mcIter->pdgId()) == 11 ) mygen.LeptonicChannel = 11; // electrons
-	    else mygen.LeptonicChannel = 13; // muons
-	      //}
+	      else mygen.LeptonicChannel = 13; // muons
+	      
+	      reco::GenParticleCollection::const_iterator mcIter2 ;
+	      for( mcIter2=genParticles->begin() ; mcIter2!=genParticles->end() ; mcIter++ ) {
+		// find a b when lepton is negative
+		if ( mcIter2->pdgId() == 6 && (mcIter->pdgId()==-11 || mcIter->pdgId()==-13) && mcIter->status()==3 && mcIter2->status()==3 ) {
+		  mygen.bLep_pt = mcIter->pt();
+		  mygen.bLep_e = mcIter->energy();
+		  mygen.bLep_eta = mcIter->eta();
+		  mygen.bLep_phi = mcIter->phi();
+		}
+		// find a b_bar when lepton is positive
+                if ( mcIter2->pdgId() == -6 && (mcIter->pdgId()==11 || mcIter->pdgId()==13) && mcIter->status()==3 && mcIter2->status()==3 ) {
+		  mygen.bHad_pt = mcIter->pt();
+                  mygen.bHad_e = mcIter->energy();
+                  mygen.bHad_eta = mcIter->eta();
+                  mygen.bHad_phi = mcIter->phi();
+                }
+	      }
+	    }
+	    // find a top                                                                                                                                                                                           
+            if ( ( fabs(mcIter->pdgId()) == 6 ) && mcIter->status()==3 ) {
+              mygen.t_pt = mcIter->pt();
+              mygen.t_e = mcIter->energy();
+              mygen.t_eta = mcIter->eta();
+              mygen.t_phi = mcIter->phi();
 	    }
 	  }
 	}
-
 
       mygen.MET = pfmet->genMET()->pt();
       mygen.METPhi = pfmet->genMET()->phi();
@@ -582,7 +605,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         bool pass70 = patEle70(*elec);
         bool pass95 = patEle95(*elec);
-        bool IsTight = false;
+        //bool IsTight = false;
 
         bool tmpIsConversion = false;
 
@@ -600,7 +623,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  double e1_dcot = elec->convDcot();
 	  bool ise1Conv =  fabs(e1_dist) < 0.02 && fabs(e1_dcot) < 0.02 ;
 
-	  if ( ise1Conv || nhits>0 ) {
+	  if ( ise1Conv || nhits>=2 ) {
 	    isConversion = true;
 	    tmpIsConversion = true;
 	  }
@@ -630,7 +653,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	//topele.iso03_ecalveto = elec->isolationR03().emVetoEt;
 	//topele.iso03_hcalveto = elec->isolationR03().hadVetoEt;
 	topele.reliso03 = RelIso;
-	topele.IsTight = int(IsTight);
+	//topele.IsTight = int(IsTight);
 	topele.pass70 = int(pass70);
 	topele.pass95 = int(pass95);
 
@@ -683,7 +706,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         bool pass70 = patEle70(*elec);
         bool pass95 = patEle95(*elec);
-        bool IsTight = false;
+        //bool IsTight = false;
 
         bool tmpIsConversion = false;
 
@@ -700,7 +723,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
           double e1_dcot = elec->convDcot();
           bool ise1Conv =  fabs(e1_dist) < 0.02 && fabs(e1_dcot) < 0.02 ;
 
-          if ( ise1Conv || nhits>0 ) {
+          if ( ise1Conv || nhits>=2 ) {
             isConversion = true;
             tmpIsConversion = true;
           }
@@ -731,13 +754,30 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         //topele.iso03_hcalveto = elec->isolationR03().hadVetoEt;
         topele.reliso03 = RelIso;
 	topele.pfreliso = PFRelIso;
-        topele.IsTight = int(IsTight);
         topele.pass70 = int(pass70);
         topele.pass95 = int(pass95);
         topele.missingHits = elec->gsfTrack()->trackerExpectedHitsInner().numberOfHits();
         topele.convDist = elec->convDist();
         topele.convDcot = elec->convDcot();
         topele.IsConversion = int(tmpIsConversion);
+
+	int eidBitTight = (int) elec->electronID("eidHyperTight1MC");
+	int eidBitLoose = (int) elec->electronID("eidLooseMC");
+
+	//int ourMask = 5;
+	//int conversionRejectionMask = 4;
+	//eidBit will have 4 bits.
+	//2^0 = 1 = id
+	//2^1 = 2 = iso
+	//2^2 = 4 = conversion veto
+	//2^3 = 8 = ip
+	int idMask = 1;
+	bool tmpTight = (eidBitTight & idMask) == idMask;
+	bool tmpLoose = (eidBitLoose & idMask) == idMask;
+	//bool tmpconversionVeto = (eidBitTight & conversionRejectionMask) == conversionRejectionMask;
+	
+	topele.eidHyperTight1MC = (int)tmpTight;
+	topele.eidLooseMC = (int)tmpLoose;
 
         topele.etasc = eta_sc;
         topele.sigmaIetaIeta = elec->sigmaIetaIeta();
