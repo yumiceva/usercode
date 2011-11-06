@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.33 2011/10/31 15:10:14 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.34 2011/11/05 12:20:34 yumiceva Exp $
 //
 //
 
@@ -376,7 +376,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      else mygen.LeptonicChannel = 13; // muons
 	      
 	      reco::GenParticleCollection::const_iterator mcIter2 ;
-	      for( mcIter2=genParticles->begin() ; mcIter2!=genParticles->end() ; mcIter++ ) {
+	      for( mcIter2=genParticles->begin() ; mcIter2!=genParticles->end() ; mcIter2++ ) {
 		// find a b when lepton is negative
 		if ( mcIter2->pdgId() == 6 && (mcIter->pdgId()==-11 || mcIter->pdgId()==-13) && mcIter->status()==3 && mcIter2->status()==3 ) {
 		  mygen.bLep_pt = mcIter->pt();
@@ -623,7 +623,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  double e1_dcot = elec->convDcot();
 	  bool ise1Conv =  fabs(e1_dist) < 0.02 && fabs(e1_dcot) < 0.02 ;
 
-	  if ( ise1Conv || nhits>=2 ) {
+	  if ( ise1Conv || nhits>0 ) {
 	    isConversion = true;
 	    tmpIsConversion = true;
 	  }
@@ -723,7 +723,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
           double e1_dcot = elec->convDcot();
           bool ise1Conv =  fabs(e1_dist) < 0.02 && fabs(e1_dcot) < 0.02 ;
 
-          if ( ise1Conv || nhits>=2 ) {
+          if ( ise1Conv || nhits>0 ) {
             isConversion = true;
             tmpIsConversion = true;
           }
