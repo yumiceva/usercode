@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.35 2011/11/06 23:12:37 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.36 2011/11/07 16:53:18 yumiceva Exp $
 //
 //
 
@@ -379,17 +379,17 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      for( mcIter2=genParticles->begin() ; mcIter2!=genParticles->end() ; mcIter2++ ) {
 		// find a b when lepton is negative
 		if ( mcIter2->pdgId() == 5 && (mcIter->pdgId()==-11 || mcIter->pdgId()==-13) && mcIter->status()==3 && mcIter2->status()==3 ) {
-		  mygen.bLep_pt = mcIter->pt();
-		  mygen.bLep_e = mcIter->energy();
-		  mygen.bLep_eta = mcIter->eta();
-		  mygen.bLep_phi = mcIter->phi();
+		  mygen.bLep_pt = mcIter2->pt();
+		  mygen.bLep_e = mcIter2->energy();
+		  mygen.bLep_eta = mcIter2->eta();
+		  mygen.bLep_phi = mcIter2->phi();
 		}
 		// find a b_bar when lepton is positive
                 if ( mcIter2->pdgId() == -5 && (mcIter->pdgId()==11 || mcIter->pdgId()==13) && mcIter->status()==3 && mcIter2->status()==3 ) {
-		  mygen.bHad_pt = mcIter->pt();
-                  mygen.bHad_e = mcIter->energy();
-                  mygen.bHad_eta = mcIter->eta();
-                  mygen.bHad_phi = mcIter->phi();
+		  mygen.bHad_pt = mcIter2->pt();
+                  mygen.bHad_e = mcIter2->energy();
+                  mygen.bHad_eta = mcIter2->eta();
+                  mygen.bHad_phi = mcIter2->phi();
                 }
 	      }
 	    }
