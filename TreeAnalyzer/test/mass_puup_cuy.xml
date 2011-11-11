@@ -1,0 +1,257 @@
+<cuy>
+
+  <validation type="ttbarPUUP" file="./results_ttbar_PUUP.root" weight="MCScaleFactors.txt:ttbar">
+    <TH1 name="mu_mass__ttbar__pu__plus" source="/mass/Wprime_1btag_ttbar_PUUP"/>
+    <TH1 name="Wprime_2btag_ttbarPUUP" source="/mass/Wprime_2btag_ttbar_PUUP"/>
+  </validation>
+
+  <validation type="WjetsPUUP" file="./results_WJets_PUUP.root" weight="MCScaleFactors.txt:Wjets">
+    <TH1 name="mu_mass__ttbar__wjets__plus" source="/mass/Wprime_1btag_WJets_PUUP"/>
+    <TH1 name="Wprime_2btag_WJetsPUUP" source="/mass/Wprime_2btag_WJets_PUUP"/>
+  </validation>
+
+  <validation type="ZjetsPUUP" file="./results_ZJets_PUUP.root" weight="MCScaleFactors.txt:Zjets">
+    <TH1 name="mu_mass__zjets__pu__plus" source="/mass/Wprime_1btag_ZJets_PUUP"/>
+    <TH1 name="Wprime_2btag_ZJetsPUUP" source="/mass/Wprime_2btag_ZJets_PUUP"/>
+  </validation>
+
+  <validation type="STtchPUUP" file="./results_STtch_PUUP.root" weight="MCScaleFactors.txt:tch">
+    <TH1 name="mu_mass__STtchPUUP" source="/mass/Wprime_1btag_STtch_PUUP"/>
+    <TH1 name="Wprime_2btag_STtchPUUP" source="/mass/Wprime_2btag_STtch_PUUP"/>
+  </validation>
+
+  <validation type="STtch_barPUUP" file="./results_STtch_bar_PUUP.root" weight="MCScaleFactors.txt:tch_bar">
+    <TH1 name="mu_mass__STtch_barPUUP" source="/mass/Wprime_1btag_STtch_bar_PUUP"/>
+    <TH1 name="Wprime_2btag_STtch_barPUUP" source="/mass/Wprime_2btag_STtch_bar_PUUP"/>
+  </validation>
+
+  <validation type="STtWchPUUP" file="./results_STtWch_PUUP.root" weight="MCScaleFactors.txt:tWch">
+    <TH1 name="mu_mass__STtWchPUUP" source="/mass/Wprime_1btag_STtWch_PUUP"/>
+    <TH1 name="Wprime_2btag_STtWchPUUP" source="/mass/Wprime_2btag_STtWch_PUUP"/>
+  </validation>
+
+  <validation type="STtWch_barPUUP" file="./results_STtWch_bar_PUUP.root" weight="MCScaleFactors.txt:tWch_bar">
+    <TH1 name="mu_mass__STtWch_barPUUP" source="/mass/Wprime_1btag_STtWch_bar_PUUP"/>
+    <TH1 name="Wprime_2btag_STtWch_barPUUP" source="/mass/Wprime_2btag_STtWch_bar_PUUP"/>
+  </validation>
+
+  <validation type="STschPUUP" file="./results_STsch_PUUP.root" weight="MCScaleFactors.txt:sch">
+    <TH1 name="mu_mass__STschPUUP" source="/mass/Wprime_1btag_STsch_PUUP"/>
+    <TH1 name="Wprime_2btag_STschPUUP" source="/mass/Wprime_2btag_STsch_PUUP"/>
+  </validation>
+
+  <validation type="STsch_barPUUP" file="./results_STsch_bar_PUUP.root" weight="MCScaleFactors.txt:sch_bar">
+    <TH1 name="mu_mass__STsch_barPUUP" source="/mass/Wprime_1btag_STsch_bar_PUUP"/>
+    <TH1 name="Wprime_2btag_STsch_barPUUP" source="/mass/Wprime_2btag_STsch_bar_PUUP"/>
+  </validation>
+
+  <validation type="WWPUUP" file="./results_WW_PUUP.root" weight="MCScaleFactors.txt:WW">
+    <TH1 name="mu_mass__WWPUUP" source="/mass/Wprime_1btag_WW_PUUP"/>
+    <TH1 name="Wprime_2btag_WWPUUP" source="/mass/Wprime_2btag_WW_PUUP"/>
+  </validation>
+
+  <validation type="WZPUUP" file="./results_WZ_PUUP.root" weight="MCScaleFactors.txt:WZ">
+    <TH1 name="mu_mass__WZPUUP" source="/mass/Wprime_1btag_WZ_PUUP"/>
+    <TH1 name="Wprime_2btag_WZPUUP" source="/mass/Wprime_2btag_WZ_PUUP"/>
+  </validation>
+
+  <validation type="WpRH800PUUP" file="./results_WpRH800_PUUP.root" weight="MCScaleFactors.txt:WpRH800">
+    <TH1 name="mu_mass__wprh800__pu__plus" source="/mass/Wprime_1btag_WpRH800_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH800PUUP" source="/mass/Wprime_2btag_WpRH800_PUUP"/>
+  </validation>
+
+  <validation type="WpRH900PUUP" file="./results_WpRH900_PUUP.root" weight="MCScaleFactors.txt:WpRH900">
+    <TH1 name="mu_mass__wprh900__pu__plus" source="/mass/Wprime_1btag_WpRH900_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH900PUUP" source="/mass/Wprime_2btag_WpRH900_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1000PUUP" file="./results_WpRH1000_PUUP.root" weight="MCScaleFactors.txt:WpRH1000">
+    <TH1 name="mu_mass__wprh1000__pu__plus" source="/mass/Wprime_1btag_WpRH1000_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1000PUUP" source="/mass/Wprime_2btag_WpRH1000_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1100PUUP" file="./results_WpRH1100_PUUP.root" weight="MCScaleFactors.txt:WpRH1100">
+    <TH1 name="mu_mass__wprh11000__pu__plus" source="/mass/Wprime_1btag_WpRH1100_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1100PUUP" source="/mass/Wprime_2btag_WpRH1100_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1200PUUP" file="./results_WpRH1200_PUUP.root" weight="MCScaleFactors.txt:WpRH1200">
+    <TH1 name="mu_mass__wprh1200__pu__plus" source="/mass/Wprime_1btag_WpRH1200_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1200PUUP" source="/mass/Wprime_2btag_WpRH1200_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1300PUUP" file="./results_WpRH1300_PUUP.root" weight="MCScaleFactors.txt:WpRH1300">
+    <TH1 name="mu_mass__wprh1300__pu__plus" source="/mass/Wprime_1btag_WpRH1300_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1300PUUP" source="/mass/Wprime_2btag_WpRH1300_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1400PUUP" file="./results_WpRH1400_PUUP.root" weight="MCScaleFactors.txt:WpRH1400">
+    <TH1 name="mu_mass__wprh1400__pu__plus" source="/mass/Wprime_1btag_WpRH1400_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1400PUUP" source="/mass/Wprime_2btag_WpRH1400_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1500PUUP" file="./results_WpRH1500_PUUP.root" weight="MCScaleFactors.txt:WpRH1500">
+    <TH1 name="mu_mass__wprh1500__pu__plus" source="/mass/Wprime_1btag_WpRH1500_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1500PUUP" source="/mass/Wprime_2btag_WpRH1500_PUUP"/>
+  </validation>
+
+  <validation type="WpRH1600PUUP" file="./results_WpRH1600_PUUP.root" weight="MCScaleFactors.txt:WpRH1600">
+    <TH1 name="mu_mass__wprh1600__pu__plus" source="/mass/Wprime_1btag_WpRH1600_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH1600PUUP" source="/mass/Wprime_2btag_WpRH1600_PUUP"/>
+  </validation>
+
+  <validation type="WpRH2000PUUP" file="./results_WpRH2000_PUUP.root" weight="MCScaleFactors.txt:WpRH2000">
+    <TH1 name="mu_mass__wprh2000__pu__plus" source="/mass/Wprime_1btag_WpRH2000_PUUP"/>
+    <TH1 name="Wprime_2btag_WpRH2000PUUP" source="/mass/Wprime_2btag_WpRH2000_PUUP"/>
+  </validation>
+
+  <validation type="WpLH800PUUP" file="./results_WpLH800_PUUP.root" weight="MCScaleFactors.txt:WpLH800">
+    <TH1 name="mu_mass__wplh800__pu__plus" source="/mass/Wprime_1btag_WpLH800_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH800PUUP" source="/mass/Wprime_2btag_WpLH800_PUUP"/>
+  </validation>
+
+  <validation type="WpLH900PUUP" file="./results_WpLH900_PUUP.root" weight="MCScaleFactors.txt:WpLH900">
+    <TH1 name="mu_mass__wplh900__pu__plus" source="/mass/Wprime_1btag_WpLH900_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH900PUUP" source="/mass/Wprime_2btag_WpLH900_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1000PUUP" file="./results_WpLH1000_PUUP.root" weight="MCScaleFactors.txt:WpLH1000">
+    <TH1 name="mu_mass__wplh1000__pu__plus" source="/mass/Wprime_1btag_WpLH1000_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1000PUUP" source="/mass/Wprime_2btag_WpLH1000_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1100PUUP" file="./results_WpLH1100_PUUP.root" weight="MCScaleFactors.txt:WpLH1100">
+    <TH1 name="mu_mass__wplh1100__pu__plus" source="/mass/Wprime_1btag_WpLH1100_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1100PUUP" source="/mass/Wprime_2btag_WpLH1100_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1200PUUP" file="./results_WpLH1200_PUUP.root" weight="MCScaleFactors.txt:WpLH1200">
+    <TH1 name="mu_mass__wplh1200__pu__plus" source="/mass/Wprime_1btag_WpLH1200_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1200PUUP" source="/mass/Wprime_2btag_WpLH1200_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1300PUUP" file="./results_WpLH1300_PUUP.root" weight="MCScaleFactors.txt:WpLH1300">
+    <TH1 name="mu_mass__wplh1300__pu__plus" source="/mass/Wprime_1btag_WpLH1300_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1300PUUP" source="/mass/Wprime_2btag_WpLH1300_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1400PUUP" file="./results_WpLH1400_PUUP.root" weight="MCScaleFactors.txt:WpLH1400">
+    <TH1 name="mu_mass__wplh1400__pu__plus" source="/mass/Wprime_1btag_WpLH1400_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1400PUUP" source="/mass/Wprime_2btag_WpLH1400_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1500PUUP" file="./results_WpLH1500_PUUP.root" weight="MCScaleFactors.txt:WpLH1500">
+    <TH1 name="mu_mass__wplh1500__pu__plus" source="/mass/Wprime_1btag_WpLH1500_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1500PUUP" source="/mass/Wprime_2btag_WpLH1500_PUUP"/>
+  </validation>
+
+  <validation type="WpLH1600PUUP" file="./results_WpLH1600_PUUP.root" weight="MCScaleFactors.txt:WpLH1600">
+    <TH1 name="mu_mass__wplh1600__pu__plus" source="/mass/Wprime_1btag_WpLH1600_PUUP"/>
+    <TH1 name="Wprime_2btag_WpLH1600PUUP" source="/mass/Wprime_2btag_WpLH1600_PUUP"/>
+  </validation>
+
+  <validation type="WpMix800PUUP" file="./results_WpMix800_PUUP.root" weight="MCScaleFactors.txt:WpMix800">
+    <TH1 name="mu_mass__wpmix800__pu__plus" source="/mass/Wprime_1btag_WpMix800_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix800PUUP" source="/mass/Wprime_2btag_WpMix800_PUUP"/>
+  </validation>
+
+  <validation type="WpMix900PUUP" file="./results_WpMix900_PUUP.root" weight="MCScaleFactors.txt:WpMix900">
+    <TH1 name="mu_mass__wpmix900__pu__plus" source="/mass/Wprime_1btag_WpMix900_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix900PUUP" source="/mass/Wprime_2btag_WpMix900_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1000PUUP" file="./results_WpMix1000_PUUP.root" weight="MCScaleFactors.txt:WpMix1000">
+    <TH1 name="mu_mass__wpmix1000__pu__plus" source="/mass/Wprime_1btag_WpMix1000_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1000PUUP" source="/mass/Wprime_2btag_WpMix1000_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1100PUUP" file="./results_WpMix1100_PUUP.root" weight="MCScaleFactors.txt:WpMix1100">
+    <TH1 name="mu_mass__wpmix11000__pu__plus" source="/mass/Wprime_1btag_WpMix1100_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1100PUUP" source="/mass/Wprime_2btag_WpMix1100_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1200PUUP" file="./results_WpMix1200_PUUP.root" weight="MCScaleFactors.txt:WpMix1200">
+    <TH1 name="mu_mass__wpmix1200__pu__plus" source="/mass/Wprime_1btag_WpMix1200_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1200PUUP" source="/mass/Wprime_2btag_WpMix1200_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1300PUUP" file="./results_WpMix1300_PUUP.root" weight="MCScaleFactors.txt:WpMix1300">
+    <TH1 name="mu_mass__wpmix1300__pu__plus" source="/mass/Wprime_1btag_WpMix1300_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1300PUUP" source="/mass/Wprime_2btag_WpMix1300_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1400PUUP" file="./results_WpMix1400_PUUP.root" weight="MCScaleFactors.txt:WpMix1400">
+    <TH1 name="mu_mass__wpmix1400__pu__plus" source="/mass/Wprime_1btag_WpMix1400_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1400PUUP" source="/mass/Wprime_2btag_WpMix1400_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1500PUUP" file="./results_WpMix1500_PUUP.root" weight="MCScaleFactors.txt:WpMix1500">
+    <TH1 name="mu_mass__wpmix1500__pu__plus" source="/mass/Wprime_1btag_WpMix1500_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1500PUUP" source="/mass/Wprime_2btag_WpMix1500_PUUP"/>
+  </validation>
+
+  <validation type="WpMix1600PUUP" file="./results_WpMix1600_PUUP.root" weight="MCScaleFactors.txt:WpMix1600">
+    <TH1 name="mu_mass__wpmix1600__pu__plus" source="/mass/Wprime_1btag_WpMix1600_PUUP"/>
+    <TH1 name="Wprime_2btag_WpMix1600PUUP" source="/mass/Wprime_2btag_WpMix1600_PUUP"/>
+  </validation>
+
+  <additionArray name="singletopnosch__pu__plus" title="singletopnosch__pu__plus">
+    <additionArrayItem array="STtchPUUP"/>
+    <additionArrayItem array="STtWchPUUP"/>
+<!--    <additionArrayItem array="STschPUUP"/>
+   <additionArrayItem array="STsch_barPUUP"/> -->
+    <additionArrayItem array="STtch_barPUUP"/>
+    <additionArrayItem array="STtWch_barPUUP"/>
+  </additionArray>
+
+  <additionArray name="singletop__pu__plus" title="singletop__pu__plus">
+    <additionArrayItem array="STtchPUUP"/>
+    <additionArrayItem array="STtWchPUUP"/>
+    <additionArrayItem array="STschPUUP"/>
+   <additionArrayItem array="STsch_barPUUP"/> 
+    <additionArrayItem array="STtch_barPUUP"/>
+    <additionArrayItem array="STtWch_barPUUP"/>
+  </additionArray>
+
+  <additionArray name="dibosons__pu__plus" title="dibosons__pu__plus">
+    <additionArrayItem array="WWPUUP"/>
+    <additionArrayItem array="WZPUUP"/>
+  </additionArray>
+
+  <superimpose name="Wprime_1btagPUUP" title="Wprime_1btagPUUP" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+    <superimposeItem name="mu_mass__wjets__pu__plus" color="top" legend="Wjets"/>
+    <superimposeItem name="mu_mass__zjets__pu__plus" color="top" legend="Zjets"/>
+    <superimposeItem name="mu_mass__dibosons__pu__plus" color="top" legend="Dibosons"/>
+    <superimposeItem name="mu_mass__singletop__pu__plus" color="top" legend="ST"/>
+    <superimposeItem name="mu_mass__singletopnosch__pu__plus" color="top" legend="ST"/>
+    <superimposeItem name="mu_mass__ttbar__pu__plus" color="top" legend="TTbar"/>
+    <superimposeItem name="mu_mass__wprh800__pu__plus" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh900__pu__plus" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1000__pu__plus" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1100__pu__plus" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1200__pu__plus" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1300__pu__plus" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1400__pu__plus" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1500__pu__plus" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1600__pu__plus" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh2000__pu__plus" color="1" legend="W' 2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh800__pu__plus" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1000__pu__plus" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1100__pu__plus" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1200__pu__plus" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1300__pu__plus" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1400__pu__plus" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1500__pu__plus" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1600__pu__plus" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix800__pu__plus" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix900__pu__plus" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1000__pu__plus" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1100__pu__plus" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1200__pu__plus" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1300__pu__plus" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1400__pu__plus" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1500__pu__plus" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1600__pu__plus" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+  </superimpose>
+
+</cuy>

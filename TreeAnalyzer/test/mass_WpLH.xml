@@ -1,0 +1,71 @@
+<cuy>
+
+ <validation type="WpLH800" file="./results_WpLH800.root" weight="1.52158856872e-05">
+    <TH1 name="Wprime_0btag_WpLH800" source="/mass/Wprime_0btag_WpLH800"/>
+    <TH1 name="Wprime_1btag_WpLH800" source="/mass/Wprime_1btag_WpLH800"/>
+    <TH1 name="Wprime_2btag_WpLH800" source="/mass/Wprime_2btag_WpLH800"/>
+  </validation>
+
+  <validation type="WpLH900" file="./results_WpLH900.root" weight="8.89821778568e-06">
+    <TH1 name="Wprime_0btag_WpLH900" source="/mass/Wprime_0btag_WpLH900"/>
+    <TH1 name="Wprime_1btag_WpLH900" source="/mass/Wprime_1btag_WpLH900"/>
+    <TH1 name="Wprime_2btag_WpLH900" source="/mass/Wprime_2btag_WpLH900"/>
+  </validation>
+
+  <validation type="WpLH1000" file="./results_WpLH1000.root" weight="5.36268508297e-06">
+    <TH1 name="Wprime_0btag_WpLH1000" source="/mass/Wprime_0btag_WpLH1000"/>
+    <TH1 name="Wprime_1btag_WpLH1000" source="/mass/Wprime_1btag_WpLH1000"/>
+    <TH1 name="Wprime_2btag_WpLH1000" source="/mass/Wprime_2btag_WpLH1000"/>
+  </validation>
+
+  <validation type="WpLH1100" file="./results_WpLH1100.root" weight="3.30824735685e-06">
+    <TH1 name="Wprime_0btag_WpLH1100" source="/mass/Wprime_0btag_WpLH1100"/>
+    <TH1 name="Wprime_1btag_WpLH1100" source="/mass/Wprime_1btag_WpLH1100"/>
+    <TH1 name="Wprime_2btag_WpLH1100" source="/mass/Wprime_2btag_WpLH1100"/>
+  </validation>
+
+  <validation type="WpLH1200" file="./results_WpLH1200.root" weight="2.08181254106e-06">
+    <TH1 name="Wprime_0btag_WpLH1200" source="/mass/Wprime_0btag_WpLH1200"/>
+    <TH1 name="Wprime_1btag_WpLH1200" source="/mass/Wprime_1btag_WpLH1200"/>
+    <TH1 name="Wprime_2btag_WpLH1200" source="/mass/Wprime_2btag_WpLH1200"/>
+  </validation>
+
+  <validation type="WpLH1300" file="./results_WpLH1300.root" weight="1.33106985744e-06">
+    <TH1 name="Wprime_0btag_WpLH1300" source="/mass/Wprime_0btag_WpLH1300"/>
+    <TH1 name="Wprime_1btag_WpLH1300" source="/mass/Wprime_1btag_WpLH1300"/>
+    <TH1 name="Wprime_2btag_WpLH1300" source="/mass/Wprime_2btag_WpLH1300"/>
+  </validation>
+
+  <validation type="WpLH1400" file="./results_WpLH1400.root" weight="8.62520308877e-07">
+    <TH1 name="Wprime_0btag_WpLH1400" source="/mass/Wprime_0btag_WpLH1400"/>
+    <TH1 name="Wprime_1btag_WpLH1400" source="/mass/Wprime_1btag_WpLH1400"/>
+    <TH1 name="Wprime_2btag_WpLH1400" source="/mass/Wprime_2btag_WpLH1400"/>
+  </validation>
+
+  <validation type="WpLH1500" file="./results_WpLH1500.root" weight="5.65551619618e-07">
+    <TH1 name="Wprime_0btag_WpLH1500" source="/mass/Wprime_0btag_WpLH1500"/>
+    <TH1 name="Wprime_1btag_WpLH1500" source="/mass/Wprime_1btag_WpLH1500"/>
+    <TH1 name="Wprime_2btag_WpLH1500" source="/mass/Wprime_2btag_WpLH1500"/>
+  </validation>
+
+  <validation type="WpLH1600" file="./results_WpLH1600.root" weight="3.82153737225e-07">
+    <TH1 name="Wprime_0btag_WpLH1600" source="/mass/Wprime_0btag_WpLH1600"/>
+    <TH1 name="Wprime_1btag_WpLH1600" source="/mass/Wprime_1btag_WpLH1600"/>
+    <TH1 name="Wprime_2btag_WpLH1600" source="/mass/Wprime_2btag_WpLH1600"/>
+  </validation>
+
+  <superimpose name="WpLH_1btag" title="WpLH_1btag" YTitle="Unit Area" Normalize="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+    <superimposeItem name="Wprime_1btag_WpLH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpLH900" color="2" legend="W' 0.9TeV" NoStack="true"/>-->
+    <superimposeItem name="Wprime_1btag_WpLH1000" color="3" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpLH1100" color="4" legend="W' 1.1TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpLH1200" color="5" legend="W' 1.2TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpLH1300" color="6" legend="W' 1.3TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpLH1400" color="7" legend="W' 1.4TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpLH1500" color="8" legend="W' 1.5TeV" NoStack="true"/>
+    <superimposeItem name="Wprime_1btag_WpLH1600" color="9" legend="W' 1.6TeV" NoStack="true"/>
+<!--    <superimposeItem name="Wprime_1btag_WpLH2000" color="10" legend="W' 2TeV" NoStack="true"/>-->
+  </superimpose>
+
+
+</cuy>

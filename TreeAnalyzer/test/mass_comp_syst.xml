@@ -1,0 +1,102 @@
+<cuy>
+
+  <validation type="ttbar" file="./results_ttbar.root" weight="4.27548221332e-05">
+    <TH1 name="NPV_ttbar" source="/PVs/NPVreweight_2jet_ttbar"/>
+    <TH1 name="Wprime_1btag_ttbar" source="/mass/Wprime_1btag_ttbar"/>
+    <TH1 name="Wprime_1btag_systUp_ttbar" source="/mass/Wprime_1btag_systUp_ttbar"/>
+    <TH1 name="Wprime_1btag_systDown_ttbar" source="/mass/Wprime_1btag_systDown_ttbar"/>
+  </validation>
+
+  <validation type="ttbarup" file="./results_ttbar_JECUP.root" weight="4.27548221332e-05">
+    <TH1 name="Wprime_1btag_ttbar_JECUP" source="/mass/Wprime_1btag_ttbar_JECUP"/>
+    <TH1 name="Wprime_2btag_ttbar_JECUP" source="/mass/Wprime_2btag_ttbar_JECUP"/>
+  </validation>
+
+  <validation type="ttbardown" file="./results_ttbar_JECDOWN.root" weight="4.27548221332e-05">
+    <TH1 name="Wprime_1btag_ttbar_JECDOWN" source="/mass/Wprime_1btag_ttbar_JECDOWN"/>
+    <TH1 name="Wprime_2btag_ttbar_JECDOWN" source="/mass/Wprime_2btag_ttbar_JECDOWN"/>
+  </validation>
+
+  <validation type="ttbarPUup" file="./results_ttbar_PUUP.root" weight="4.27548221332e-05">
+    <TH1 name="NPV_ttbar_PUUP" source="/PVs/NPVreweight_2jet_ttbar_PUUP"/>
+    <TH1 name="Wprime_1btag_ttbar_PUUP" source="/mass/Wprime_1btag_ttbar_PUUP"/>
+    <TH1 name="Wprime_2btag_ttbar_PUUP" source="/mass/Wprime_2btag_ttbar_PUUP"/>
+  </validation>
+
+  <validation type="ttbarPUdown" file="./results_ttbar_PUDOWN.root" weight="4.27548221332e-05">
+    <TH1 name="NPV_ttbar_PUDOWN" source="/PVs/NPVreweight_2jet_ttbar_PUDOWN"/>
+    <TH1 name="Wprime_1btag_ttbar_PUDOWN" source="/mass/Wprime_1btag_ttbar_PUDOWN"/>
+    <TH1 name="Wprime_2btag_ttbar_PUDOWN" source="/mass/Wprime_2btag_ttbar_PUDOWN"/>
+  </validation>
+
+  <validation type="Wjets" file="./results_WJets.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_WJets" source="/mass/Wprime_1btag_WJets"/>
+    <TH1 name="Wprime_1btag_systUp_WJets" source="/mass/Wprime_1btag_systUp_WJets"/>
+    <TH1 name="Wprime_1btag_systDown_WJets" source="/mass/Wprime_1btag_systDown_WJets"/>
+  </validation>
+
+  <validation type="Wjetsup" file="./results_WJets_JECUP.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_WJets_JECUP" source="/mass/Wprime_1btag_WJets_JECUP"/>
+    <TH1 name="Wprime_2btag_WJets_JECUP" source="/mass/Wprime_2btag_WJets_JECUP"/>
+  </validation>
+
+  <validation type="Wjetsdown" file="./results_WJets_JECDOWN.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_WJets_JECDOWN" source="/mass/Wprime_1btag_WJets_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WJets_JECDOWN" source="/mass/Wprime_2btag_WJets_JECDOWN"/>
+  </validation>
+
+  <validation type="WjetsPUup" file="./results_WJets_PUUP.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_WJets_PUUP" source="/mass/Wprime_1btag_WJets_PUUP"/>
+    <TH1 name="Wprime_2btag_WJets_PUUP" source="/mass/Wprime_2btag_WJets_PUUP"/>
+  </validation>
+
+  <validation type="WjetsPUdown" file="./results_WJets_PUDOWN.root" weight="0.000634709217683">
+    <TH1 name="Wprime_1btag_WJets_PUDOWN" source="/mass/Wprime_1btag_WJets_PUDOWN"/>
+    <TH1 name="Wprime_2btag_WJets_PUDOWN" source="/mass/Wprime_2btag_WJets_PUDOWN"/>
+  </validation>
+
+
+  <superimpose name="Wprime_1btag_ttbar_bsyst" title="Wprime_1btag_ttbar_bsyst" Normalize="true" YTitle="Arbitrary Units" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" SetLogy="true" Maximum="40">
+    <superimposeItem name="Wprime_1btag_ttbar" color="1" legend="ttbar nominal"/>
+    <superimposeItem name="Wprime_1btag_systUp_ttbar" color="2" legend="ttbar b-tag syst. up"/>
+    <superimposeItem name="Wprime_1btag_systDown_ttbar" color="4" legend="ttbar b-tag syst. down"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btag_WJets_bsyst" title="Wprime_1btag_WJets_bsyst" Normalize="true" YTitle="Arbitrary Units" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" SetLogy="true" Maximum="40">
+    <superimposeItem name="Wprime_1btag_WJets" color="1" legend="Wjets nominal"/>
+    <superimposeItem name="Wprime_1btag_systUp_WJets" color="2" legend="Wjets b-tag syst. up"/>
+    <superimposeItem name="Wprime_1btag_systDown_WJets" color="4" legend="Wjets b-tag syst. down"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btag_ttbar_jessyst" title="Wprime_1btag_ttbar_jessyst" Normalize="true" YTitle="Arbitrary Units" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" SetLogy="true" Maximum="40">
+    <superimposeItem name="Wprime_1btag_ttbar" color="1" legend="ttbar nominal"/>
+    <superimposeItem name="Wprime_1btag_ttbar_JECUP" color="2" legend="ttbar JES syst. up"/>
+    <superimposeItem name="Wprime_1btag_ttbar_JECDOWN" color="4" legend="ttbar JES syst. down"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btag_WJets_jessyst" title="Wprime_1btag_WJets_jessyst" Normalize="true" YTitle="Arbitrary Units" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" SetLogy="true" Maximum="40">
+    <superimposeItem name="Wprime_1btag_WJets" color="1" legend="WJets nominal"/>
+    <superimposeItem name="Wprime_1btag_WJets_JECUP" color="2" legend="WJets JES syst. up"/>
+    <superimposeItem name="Wprime_1btag_WJets_JECDOWN" color="4" legend="WJets JES syst. down"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btag_ttbar_pusyst" title="Wprime_1btag_ttbar_pusyst" Normalize="true" YTitle="Arbitrary Units" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" SetLogy="true" Maximum="40">
+    <superimposeItem name="Wprime_1btag_ttbar" color="1" legend="ttbar nominal"/>
+    <superimposeItem name="Wprime_1btag_ttbar_PUUP" color="2" legend="ttbar PU syst. up"/>
+    <superimposeItem name="Wprime_1btag_ttbar_PUDOWN" color="4" legend="ttbar PU syst. down"/>
+  </superimpose>
+
+  <superimpose name="Wprime_1btag_WJets_pusyst" title="Wprime_1btag_WJets_pusyst" Normalize="true" YTitle="Arbitrary Units" Stack="false" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" SetLogy="true" Maximum="40">
+    <superimposeItem name="Wprime_1btag_WJets" color="1" legend="WJets nominal"/>
+    <superimposeItem name="Wprime_1btag_WJets_PUUP" color="2" legend="WJets PU syst. up"/>
+    <superimposeItem name="Wprime_1btag_WJets_PUDOWN" color="4" legend="WJets PU syst. down"/>
+  </superimpose>
+
+  <superimpose name="NPV_ttbar_pusyst" title="NPV_ttbar_pusyst" Normalize="true" YTitle="Arbitrary Units" XTitle= "Primary Vertices" Stack="false" SubBanner="#mu+jets N_{jets}#geq2">
+    <superimposeItem name="NPV_ttbar" color="1" legend="ttbar nominal"/>
+    <superimposeItem name="NPV_ttbar_PUUP" color="2" legend="ttbar PU syst. up"/>
+    <superimposeItem name="NPV_ttbar_PUDOWN" color="4" legend="ttbar PU syst. down"/>
+  </superimpose>
+
+
+</cuy>
