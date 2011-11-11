@@ -10,6 +10,7 @@ Lumi = 10.93 # in pb-1
 JetType = "PF" #calo
 showWprime = False
 kFactor = 1.2
+WprimeType = "RH"
 
 if len(sys.argv) < 2:
     print "usage: mkCutFlowTables.py <path to files> <Lumi for MC> < 1 =will produce table for signal Wprime>"
@@ -26,7 +27,9 @@ if len(sys.argv) > 1:
 
         if len(sys.argv)>3:
             showWprime = True
-            
+            WprimeType = sys.argv[3]
+            print "checking W' files of type: " +WprimeType
+
 Nevents = {}
 xsec = {} # xsection in pb
 file = {}
@@ -55,6 +58,7 @@ if IsMC:
     file['WpRH1400'] = path+'/results_WpRH1400.root'
     file['WpRH1500'] = path+'/results_WpRH1500.root'
     file['WpRH1600'] = path+'/results_WpRH1600.root'
+    file['WpRH2000'] = path+'/results_WpRH2000.root' # pythia
 
     file['WpLH800'] = path+'/results_WpLH800.root'
     file['WpLH900'] = path+'/results_WpLH900.root'
@@ -75,8 +79,6 @@ if IsMC:
     file['WpMix1400'] = path+'/results_WpMix1400.root'
     file['WpMix1500'] = path+'/results_WpMix1500.root'
     file['WpMix1600'] = path+'/results_WpMix1600.root'
-
-#    file['WpRH2000'] = path+'/results_WpRH2000.root'
     
     xsec['ttbar'] = 157.5
     xsec['QCD']   = 84679.3
@@ -99,15 +101,6 @@ if IsMC:
     xsec['WpRH1400'] = 0.094496*kFactor
     xsec['WpRH1500'] = 0.061946*kFactor
     xsec['WpRH1600'] = 0.04102*kFactor
-    Nevents['WpRH800'] = 109734.0 
-    Nevents['WpRH900'] = 109695.0
-    Nevents['WpRH1000'] = 109613.0
-    Nevents['WpRH1100'] = 109623.0
-    Nevents['WpRH1200'] = 109592.0
-    Nevents['WpRH1300'] = 109566.0
-    Nevents['WpRH1400'] = 109558.0
-    Nevents['WpRH1500'] = 109532.0
-    Nevents['WpRH1600'] = 109529.0
 
     xsec['WpLH800'] = 2.3139*kFactor
     xsec['WpLH1000'] = 1.3529*kFactor
@@ -117,14 +110,6 @@ if IsMC:
     xsec['WpLH1400'] = 0.96318*kFactor
     xsec['WpLH1500'] = 0.94378*kFactor
     xsec['WpLH1600'] = 0.93355*kFactor
-    Nevents['WpLH800'] = 105441.0
-    Nevents['WpLH1000'] = 109762.0
-    Nevents['WpLH1100'] = 109501.0
-    Nevents['WpLH1200'] = 109116.0
-    Nevents['WpLH1300'] = 107481.0
-    Nevents['WpLH1400'] = 109846.0
-    Nevents['WpLH1500'] = 108879.0
-    Nevents['WpLH1600'] = 109880.0
 
     xsec['WpMix800'] = 3.9983*kFactor
     xsec['WpMix900'] = 2.6853*kFactor
@@ -135,6 +120,54 @@ if IsMC:
     xsec['WpMix1400'] = 1.067*kFactor
     xsec['WpMix1500'] = 1.0132*kFactor
     xsec['WpMix1600'] = 0.98074*kFactor
+    
+    # Pythia W'
+#    xsec['WpRH800'] = 6.838
+#    xsec['WpRH1000'] = 2.509
+#    xsec['WpRH1200'] = 1.1595
+#    xsec['WpRH1500'] = 0.2964
+    xsec['WpRH2000'] = 0.0306*kFactor # pythia xsec scaled to comphep xsec by 0.9
+   
+    Nevents['ttbar'] = 3697476.0
+    Nevents['Wjets'] = 76978604.0
+    Nevents['Zjets']  = 36236728.0
+    Nevents['WW'] = 4223922.0
+    Nevents['WZ'] = 4263076.0
+    Nevents['QCD'] = 25076831.0
+    Nevents['sch'] = 259762.0
+    Nevents['sch_bar'] = 137916.0
+    Nevents['tch'] = 3897643.0
+    Nevents['tch_bar'] = 1943821.0
+    Nevents['tWch'] = 813629.0
+    Nevents['tWch_bar'] = 809293.0
+    
+    
+    Nevents['WpRH800'] = 109734.0
+    Nevents['WpRH900'] = 109695.0
+    Nevents['WpRH1000'] = 109613.0
+    Nevents['WpRH1100'] = 109623.0
+    Nevents['WpRH1200'] = 109592.0
+    Nevents['WpRH1300'] = 109566.0
+    Nevents['WpRH1400'] = 109558.0
+    Nevents['WpRH1500'] = 109532.0
+    Nevents['WpRH1600'] = 109529.0
+
+    # pythia
+    #    Nevents["WpRH800"] = 107347.
+    #    Nevents["WpRH1000"] = 109204.0
+    #    Nevents["WpRH1200"] = 108990.0
+    #    Nevents["WpRH1500"] = 108733.0  
+    Nevents["WpRH2000"] = 105942.0
+    
+    Nevents['WpLH800'] = 105441.0
+    Nevents['WpLH1000'] = 109762.0
+    Nevents['WpLH1100'] = 109501.0
+    Nevents['WpLH1200'] = 109116.0
+    Nevents['WpLH1300'] = 107481.0
+    Nevents['WpLH1400'] = 109846.0
+    Nevents['WpLH1500'] = 108879.0
+    Nevents['WpLH1600'] = 109880.0
+
     Nevents['WpMix800'] = 109681.0
     Nevents['WpMix900'] = 108706.0
     Nevents['WpMix1000'] = 108735.0
@@ -144,30 +177,6 @@ if IsMC:
     Nevents['WpMix1400'] = 109163.0
     Nevents['WpMix1500'] = 108854.0
     Nevents['WpMix1600'] = 109862.0
-    
-#    xsec['WpRH800'] = 6.838
-#    xsec['WpRH1000'] = 2.509
-#    xsec['WpRH1200'] = 1.1595
-#    xsec['WpRH1500'] = 0.2964
-    xsec['WpRH2000'] = 7.935e-3 #0.0442
-#    Nevents["WpRH800"] = 107347. 
-#    Nevents["WpRH1000"] = 109204.0
-#    Nevents["WpRH1200"] = 108990.0
-#    Nevents["WpRH1500"] = 108733.0
-    Nevents["WpRH2000"] = 106657.0
-    
-    Nevents['ttbar'] = 3697476.0 #3683795.0
-    Nevents['QCD']   = 24909653.0 
-    Nevents['Wjets'] = 76978604.0 #49335978.0
-    Nevents['Zjets'] = 36236728.0 #32475188.0
-    Nevents['tch']   = 3897643.0 
-    Nevents['tWch']  = 813629.0 
-    Nevents['sch']   = 259762.0
-    Nevents['tch_bar']  = 1943821.0 #1943821.0 
-    Nevents['tWch_bar'] = 809293.0
-    Nevents['sch_bar']  = 137916.0 #137916.0            
-    Nevents['WW']    = 4223922.0
-    Nevents['WZ']    = 4263076.0
     
     label['ttbar'] = '$t\\overline{t}$'
     label['QCD'] = 'QCD'
@@ -273,7 +282,12 @@ weightmap = {}
 
 tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ','Total']
 if showWprime:
-    tablelist = ['WpRH800','WpRH900','WpRH1000','WpRH1100','WpRH1200','WpRH1300','WpRH1400','WpRH1500','WpRH1600'] #,'WpRH2000']
+    tablelist = ['WpRH800','WpRH900','WpRH1000','WpRH1100','WpRH1200','WpRH1300','WpRH1400','WpRH1500','WpRH1600','WpRH2000']
+    if WprimeType=="LH":
+        tablelist = ['WpLH800','WpLH1000','WpLH1100','WpLH1200','WpLH1300','WpLH1400','WpLH1500','WpLH1600']
+    if WprimeType=="Mix":
+        tablelist = ['WpMix800','WpMix900','WpMix1000','WpMix1100','WpMix1200','WpMix1300','WpMix1400','WpMix1500','WpMix1600']
+        
 #tablelist = ['WpRH800','WpRH1000','WpRH1200','WpRH1500','WpRH2000']
 if Lumi<=0:
     tablelist = ['ttbar','Wjets','Zjets','QCD','tch','tch_bar','tWch','tWch_bar','sch','sch_bar','WW','WZ']
@@ -361,8 +375,9 @@ texname = "cutflow_"+JetType+"_data.tex"
 
 if IsMC:
     texname = "cutflow_"+JetType+"_MC.tex"
-    if showWprime: texname = "cutflow_"+JetType+"_MC_WpRH.tex"
-    
+    if showWprime:
+        texname = "cutflow_"+JetType+"_MC_Wp"+WprimeType+".tex"
+        
 outtex = open(texname,"w")
 
 sss = " & "
@@ -489,8 +504,9 @@ print "file "+texname+ " has been written."
 if IsMC:
     
     print "\n MC Weights"
-    
-    for sample in weightmap.keys():
+    tmplistsamples = weightmap.keys()
+    tmplistsamples.sort()
+    for sample in tmplistsamples:
 
         print sample+" "+str(weightmap[sample])
 

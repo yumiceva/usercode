@@ -1,177 +1,254 @@
 <cuy>
 
-  <validation type="ttbarJECDOWN" file="./results_ttbar_JECDOWN.root" weight="4.27548221332e-05">
-    <TH1 name="Wprime_1btag_ttbarJECDOWN" source="/mass/Wprime_1btag_ttbar_JECDOWN"/>
+  <validation type="ttbarJECDOWN" file="./results_ttbar_JECDOWN.root" weight="MCScaleFactors.txt:ttbar">
+    <TH1 name="mu_mass__ttbar__jes__minus" source="/mass/Wprime_1btag_ttbar_JECDOWN"/>
     <TH1 name="Wprime_2btag_ttbarJECDOWN" source="/mass/Wprime_2btag_ttbar_JECDOWN"/>
   </validation>
 
-  <validation type="WjetsJECDOWN" file="./results_WJets_JECDOWN.root" weight="0.000634709217683">
-    <TH1 name="Wprime_1btag_WJetsJECDOWN" source="/mass/Wprime_1btag_WJets_JECDOWN"/>
+  <validation type="WjetsJECDOWN" file="./results_WJets_JECDOWN.root" weight="MCScaleFactors.txt:Wjets">
+    <TH1 name="mu_mass__wjets__jes__minus" source="/mass/Wprime_1btag_WJets_JECDOWN"/>
     <TH1 name="Wprime_2btag_WJetsJECDOWN" source="/mass/Wprime_2btag_WJets_JECDOWN"/>
   </validation>
 
-  <validation type="ZjetsJECDOWN" file="./results_ZJets_JECDOWN.root" weight="9.38562695927e-05">
-    <TH1 name="Wprime_1btag_ZJetsJECDOWN" source="/mass/Wprime_1btag_ZJets_JECDOWN"/>
+  <validation type="ZjetsJECDOWN" file="./results_ZJets_JECDOWN.root" weight="MCScaleFactors.txt:Zjets">
+    <TH1 name="mu_mass__zjets__jes__minus" source="/mass/Wprime_1btag_ZJets_JECDOWN"/>
     <TH1 name="Wprime_2btag_ZJetsJECDOWN" source="/mass/Wprime_2btag_ZJets_JECDOWN"/>
   </validation>
 
-  <validation type="STtchJECDOWN" file="./results_STtch_JECDOWN.root" weight="1.07552179612e-05">
-    <TH1 name="Wprime_1btag_STtchJECDOWN" source="/mass/Wprime_1btag_STtch_JECDOWN"/>
+  <validation type="STtchJECDOWN" file="./results_STtch_JECDOWN.root" weight="MCScaleFactors.txt:tch">
+    <TH1 name="mu_mass__STtchJECDOWN" source="/mass/Wprime_1btag_STtch_JECDOWN"/>
     <TH1 name="Wprime_2btag_STtchJECDOWN" source="/mass/Wprime_2btag_STtch_JECDOWN"/>
   </validation>
 
-  <validation type="STtch_barJECDOWN" file="./results_STtch_bar_JECDOWN.root" weight="1.16523074913e-05">
-    <TH1 name="Wprime_1btag_STtch_barJECDOWN" source="/mass/Wprime_1btag_STtch_bar_JECDOWN"/>
+  <validation type="STtch_barJECDOWN" file="./results_STtch_bar_JECDOWN.root" weight="MCScaleFactors.txt:tch_bar">
+    <TH1 name="mu_mass__STtch_barJECDOWN" source="/mass/Wprime_1btag_STtch_bar_JECDOWN"/>
     <TH1 name="Wprime_2btag_STtch_barJECDOWN" source="/mass/Wprime_2btag_STtch_bar_JECDOWN"/>
   </validation>
 
-  <validation type="STtWchJECDOWN" file="./results_STtWch_JECDOWN.root" weight="9.67271323908e-06">
-    <TH1 name="Wprime_1btag_STtWchJECDOWN" source="/mass/Wprime_1btag_STtWch_JECDOWN"/>
+  <validation type="STtWchJECDOWN" file="./results_STtWch_JECDOWN.root" weight="MCScaleFactors.txt:tWch">
+    <TH1 name="mu_mass__STtWchJECDOWN" source="/mass/Wprime_1btag_STtWch_JECDOWN"/>
     <TH1 name="Wprime_2btag_STtWchJECDOWN" source="/mass/Wprime_2btag_STtWch_JECDOWN"/>
   </validation>
 
-  <validation type="STtWch_barJECDOWN" file="./results_STtWch_bar_JECDOWN.root" weight="9.72453734309e-06">
-    <TH1 name="Wprime_1btag_STtWch_barJECDOWN" source="/mass/Wprime_1btag_STtWch_bar_JECDOWN"/>
+  <validation type="STtWch_barJECDOWN" file="./results_STtWch_bar_JECDOWN.root" weight="MCScaleFactors.txt:tWch_bar">
+    <TH1 name="mu_mass__STtWch_barJECDOWN" source="/mass/Wprime_1btag_STtWch_bar_JECDOWN"/>
     <TH1 name="Wprime_2btag_STtWch_barJECDOWN" source="/mass/Wprime_2btag_STtWch_bar_JECDOWN"/>
   </validation>
 
-  <validation type="STschJECDOWN" file="./results_STsch_JECDOWN.root" weight="1.22804721245e-05">
-    <TH1 name="Wprime_1btag_STschJECDOWN" source="/mass/Wprime_1btag_STsch_JECDOWN"/>
+  <validation type="STschJECDOWN" file="./results_STsch_JECDOWN.root" weight="MCScaleFactors.txt:sch">
+    <TH1 name="mu_mass__STschJECDOWN" source="/mass/Wprime_1btag_STsch_JECDOWN"/>
     <TH1 name="Wprime_2btag_STschJECDOWN" source="/mass/Wprime_2btag_STsch_JECDOWN"/>
   </validation>
 
-  <validation type="STsch_barJECDOWN" file="./results_STsch_bar_JECDOWN.root" weight="1.04411380841e-05">
-    <TH1 name="Wprime_1btag_STsch_barJECDOWN" source="/mass/Wprime_1btag_STsch_bar_JECDOWN"/>
+  <validation type="STsch_barJECDOWN" file="./results_STsch_bar_JECDOWN.root" weight="MCScaleFactors.txt:sch_bar">
+    <TH1 name="mu_mass__STsch_barJECDOWN" source="/mass/Wprime_1btag_STsch_bar_JECDOWN"/>
     <TH1 name="Wprime_2btag_STsch_barJECDOWN" source="/mass/Wprime_2btag_STsch_bar_JECDOWN"/>
   </validation>
 
-  <validation type="WWJECDOWN" file="./results_WW_JECDOWN.root" weight="1.01801122275e-05">
-    <TH1 name="Wprime_1btag_WWJECDOWN" source="/mass/Wprime_1btag_WW_JECDOWN"/>
+  <validation type="WWJECDOWN" file="./results_WW_JECDOWN.root" weight="MCScaleFactors.txt:WW">
+    <TH1 name="mu_mass__WWJECDOWN" source="/mass/Wprime_1btag_WW_JECDOWN"/>
     <TH1 name="Wprime_2btag_WWJECDOWN" source="/mass/Wprime_2btag_WW_JECDOWN"/>
   </validation>
 
-  <validation type="WZJECDOWN" file="./results_WZ_JECDOWN.root" weight="4.22230333215e-06">
-    <TH1 name="Wprime_1btag_WZJECDOWN" source="/mass/Wprime_1btag_WZ_JECDOWN"/>
+  <validation type="WZJECDOWN" file="./results_WZ_JECDOWN.root" weight="MCScaleFactors.txt:WZ">
+    <TH1 name="mu_mass__WZJECDOWN" source="/mass/Wprime_1btag_WZ_JECDOWN"/>
     <TH1 name="Wprime_2btag_WZJECDOWN" source="/mass/Wprime_2btag_WZ_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH800JECDOWN" file="./results_WpRH800_JECDOWN.root" weight="1.52158856872e-05">
-    <TH1 name="Wprime_1btag_WpRH800JECDOWN" source="/mass/Wprime_1btag_WpRH800_JECDOWN"/>
+  <validation type="WpRH800JECDOWN" file="./results_WpRH800_JECDOWN.root" weight="MCScaleFactors.txt:WpRH800">
+    <TH1 name="mu_mass__wprh800__jes__minus" source="/mass/Wprime_1btag_WpRH800_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH800JECDOWN" source="/mass/Wprime_2btag_WpRH800_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH900JECDOWN" file="./results_WpRH900_JECDOWN.root" weight="8.89821778568e-06">
-    <TH1 name="Wprime_1btag_WpRH900JECDOWN" source="/mass/Wprime_1btag_WpRH900_JECDOWN"/>
+  <validation type="WpRH900JECDOWN" file="./results_WpRH900_JECDOWN.root" weight="MCScaleFactors.txt:WpRH900">
+    <TH1 name="mu_mass__wprh900__jes__minus" source="/mass/Wprime_1btag_WpRH900_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH900JECDOWN" source="/mass/Wprime_2btag_WpRH900_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1000JECDOWN" file="./results_WpRH1000_JECDOWN.root" weight="5.36268508297e-06">
-    <TH1 name="Wprime_1btag_WpRH1000JECDOWN" source="/mass/Wprime_1btag_WpRH1000_JECDOWN"/>
+  <validation type="WpRH1000JECDOWN" file="./results_WpRH1000_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1000">
+    <TH1 name="mu_mass__wprh1000__jes__minus" source="/mass/Wprime_1btag_WpRH1000_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1000JECDOWN" source="/mass/Wprime_2btag_WpRH1000_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1100JECDOWN" file="./results_WpRH1100_JECDOWN.root" weight="3.30824735685e-06">
-    <TH1 name="Wprime_1btag_WpRH1100JECDOWN" source="/mass/Wprime_1btag_WpRH1100_JECDOWN"/>
+  <validation type="WpRH1100JECDOWN" file="./results_WpRH1100_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1100">
+    <TH1 name="mu_mass__wprh1100__jes__minus" source="/mass/Wprime_1btag_WpRH1100_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1100JECDOWN" source="/mass/Wprime_2btag_WpRH1100_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1200JECDOWN" file="./results_WpRH1200_JECDOWN.root" weight="2.08181254106e-06">
-    <TH1 name="Wprime_1btag_WpRH1200JECDOWN" source="/mass/Wprime_1btag_WpRH1200_JECDOWN"/>
+  <validation type="WpRH1200JECDOWN" file="./results_WpRH1200_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1200">
+    <TH1 name="mu_mass__wprh1200__jes__minus" source="/mass/Wprime_1btag_WpRH1200_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1200JECDOWN" source="/mass/Wprime_2btag_WpRH1200_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1300JECDOWN" file="./results_WpRH1300_JECDOWN.root" weight="1.33106985744e-06">
-    <TH1 name="Wprime_1btag_WpRH1300JECDOWN" source="/mass/Wprime_1btag_WpRH1300_JECDOWN"/>
+  <validation type="WpRH1300JECDOWN" file="./results_WpRH1300_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1300">
+    <TH1 name="mu_mass__wprh1300__jes__minus" source="/mass/Wprime_1btag_WpRH1300_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1300JECDOWN" source="/mass/Wprime_2btag_WpRH1300_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1400JECDOWN" file="./results_WpRH1400_JECDOWN.root" weight="8.62520308877e-07">
-    <TH1 name="Wprime_1btag_WpRH1400JECDOWN" source="/mass/Wprime_1btag_WpRH1400_JECDOWN"/>
+  <validation type="WpRH1400JECDOWN" file="./results_WpRH1400_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1400">
+    <TH1 name="mu_mass__wprh1400__jes__minus" source="/mass/Wprime_1btag_WpRH1400_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1400JECDOWN" source="/mass/Wprime_2btag_WpRH1400_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1500JECDOWN" file="./results_WpRH1500_JECDOWN.root" weight="5.65551619618e-07">
-    <TH1 name="Wprime_1btag_WpRH1500JECDOWN" source="/mass/Wprime_1btag_WpRH1500_JECDOWN"/>
+  <validation type="WpRH1500JECDOWN" file="./results_WpRH1500_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1500">
+    <TH1 name="mu_mass__wprh1500__jes__minus" source="/mass/Wprime_1btag_WpRH1500_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1500JECDOWN" source="/mass/Wprime_2btag_WpRH1500_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH1600JECDOWN" file="./results_WpRH1600_JECDOWN.root" weight="3.82153737225e-07">
-    <TH1 name="Wprime_1btag_WpRH1600JECDOWN" source="/mass/Wprime_1btag_WpRH1600_JECDOWN"/>
+  <validation type="WpRH1600JECDOWN" file="./results_WpRH1600_JECDOWN.root" weight="MCScaleFactors.txt:WpRH1600">
+    <TH1 name="mu_mass__wprh1600__jes__minus" source="/mass/Wprime_1btag_WpRH1600_JECDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1600JECDOWN" source="/mass/Wprime_2btag_WpRH1600_JECDOWN"/>
   </validation>
 
-  <validation type="WpRH2000JECDOWN" file="./results_WpRH2000_JECDOWN.root" weight="7.43973672614e-08">
-    <TH1 name="Wprime_1btag_WpRH2000JECDOWN" source="/mass/Wprime_1btag_Wprime_2000_JECDOWN"/>
-    <TH1 name="Wprime_2btag_WpRH2000JECDOWN" source="/mass/Wprime_2btag_Wprime_2000_JECDOWN"/>
+  <validation type="WpRH2000JECDOWN" file="./results_WpRH2000_JECDOWN.root" weight="MCScaleFactors.txt:WpRH2000">
+    <TH1 name="mu_mass__wprh2000__jes__minus" source="/mass/Wprime_1btag_WpRH2000_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpRH2000JECDOWN" source="/mass/Wprime_2btag_WpRH2000_JECDOWN"/>
   </validation>
 
-<!--
-  <validation type="Wprime_800" file="./results_Wprime_800.root" weight="4.89999720532e-04">
-    <TH1 name="Wprime_1btag_Wprime_800" source="/mass/Wprime_1btag_Wprime_800"/>
-    <TH1 name="Wprime_1btag_systDown_Wprime_800" source="/mass/Wprime_1btag_systDown_Wprime_800"/>
-    <TH1 name="Wprime_2btag_Wprime_800" source="/mass/Wprime_2btag_Wprime_800"/>
-    <TH1 name="Wprime_2btag_systDown_Wprime_800" source="/mass/Wprime_2btag_systDown_Wprime_800"/>
+ <validation type="WpLH800JECDOWN" file="./results_WpLH800_JECDOWN.root" weight="MCScaleFactors.txt:WpLH800">
+    <TH1 name="mu_mass__wplh800__jes__minus" source="/mass/Wprime_1btag_WpLH800_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH800JECDOWN" source="/mass/Wprime_2btag_WpLH800_JECDOWN"/>
   </validation>
 
-  <validation type="Wprime_1000" file="./results_Wprime_1000.root" weight="1.76733452987e-04">
-    <TH1 name="Wprime_1btag_Wprime_1000" source="/mass/Wprime_1btag_Wprime_1000"/>
-    <TH1 name="Wprime_1btag_systDown_Wprime_1000" source="/mass/Wprime_1btag_systDown_Wprime_1000"/>
-    <TH1 name="Wprime_2btag_Wprime_1000" source="/mass/Wprime_2btag_Wprime_1000"/>
-    <TH1 name="Wprime_2btag_systDown_Wprime_1000" source="/mass/Wprime_2btag_systDown_Wprime_1000"/>
+  <validation type="WpLH1000JECDOWN" file="./results_WpLH1000_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1000">
+    <TH1 name="mu_mass__wplh1000__jes__minus" source="/mass/Wprime_1btag_WpLH1000_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1000JECDOWN" source="/mass/Wprime_2btag_WpLH1000_JECDOWN"/>
   </validation>
 
-  <validation type="Wprime_1200" file="./results_Wprime_1200.root" weight="7.06486833654e-05">
-    <TH1 name="Wprime_1btag_Wprime_1200" source="/mass/Wprime_1btag_Wprime_1200"/>
-    <TH1 name="Wprime_1btag_systDown_Wprime_1200" source="/mass/Wprime_1btag_systDown_Wprime_1200"/>
-    <TH1 name="Wprime_2btag_Wprime_1200" source="/mass/Wprime_2btag_Wprime_1200"/>
-    <TH1 name="Wprime_2btag_systDown_Wprime_1200" source="/mass/Wprime_2btag_systDown_Wprime_1200"/>
+  <validation type="WpLH1100JECDOWN" file="./results_WpLH1100_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1100">
+    <TH1 name="mu_mass__wplh1100__jes__minus" source="/mass/Wprime_1btag_WpLH1100_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1100JECDOWN" source="/mass/Wprime_2btag_WpLH1100_JECDOWN"/>
   </validation>
 
-  <validation type="Wprime_1500" file="./results_Wprime_1500.root" weight="2.0968795122e-05">
-    <TH1 name="Wprime_1btag_Wprime_1500" source="/mass/Wprime_1btag_Wprime_1500"/>
-    <TH1 name="Wprime_1btag_systDown_Wprime_1500" source="/mass/Wprime_1btag_systDown_Wprime_1500"/>
-    <TH1 name="Wprime_2btag_Wprime_1500" source="/mass/Wprime_2btag_Wprime_1500"/>
-    <TH1 name="Wprime_2btag_systDown_Wprime_1500" source="/mass/Wprime_2btag_systDown_Wprime_1500"/>
+  <validation type="WpLH1200JECDOWN" file="./results_WpLH1200_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1200">
+    <TH1 name="mu_mass__wplh1200__jes__minus" source="/mass/Wprime_1btag_WpLH1200_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1200JECDOWN" source="/mass/Wprime_2btag_WpLH1200_JECDOWN"/>
   </validation>
 
-  <validation type="Wprime_2000" file="./results_Wprime_2000.root" weight="3.20654059274e-06">
-    <TH1 name="Wprime_1btag_Wprime_2000" source="/mass/Wprime_1btag_Wprime_2000"/>
-    <TH1 name="Wprime_1btag_systDown_Wprime_2000" source="/mass/Wprime_1btag_systDown_Wprime_2000"/>
-    <TH1 name="Wprime_2btag_Wprime_2000" source="/mass/Wprime_2btag_Wprime_2000"/>
-    <TH1 name="Wprime_2btag_systDown_Wprime_2000" source="/mass/Wprime_2btag_systDown_Wprime_2000"/>
+  <validation type="WpLH1300JECDOWN" file="./results_WpLH1300_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1300">
+    <TH1 name="mu_mass__wplh1300__jes__minus" source="/mass/Wprime_1btag_WpLH1300_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1300JECDOWN" source="/mass/Wprime_2btag_WpLH1300_JECDOWN"/>
   </validation>
--->
 
-  <additionArray name="STJECDOWN" title="STJECDOWN">
+  <validation type="WpLH1400JECDOWN" file="./results_WpLH1400_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1400">
+    <TH1 name="mu_mass__wplh1400__jes__minus" source="/mass/Wprime_1btag_WpLH1400_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1400JECDOWN" source="/mass/Wprime_2btag_WpLH1400_JECDOWN"/>
+  </validation>
+
+  <validation type="WpLH1500JECDOWN" file="./results_WpLH1500_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1500">
+    <TH1 name="mu_mass__wplh1500__jes__minus" source="/mass/Wprime_1btag_WpLH1500_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1500JECDOWN" source="/mass/Wprime_2btag_WpLH1500_JECDOWN"/>
+  </validation>
+
+  <validation type="WpLH1600JECDOWN" file="./results_WpLH1600_JECDOWN.root" weight="MCScaleFactors.txt:WpLH1600">
+    <TH1 name="mu_mass__wplh1600__jes__minus" source="/mass/Wprime_1btag_WpLH1600_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpLH1600JECDOWN" source="/mass/Wprime_2btag_WpLH1600_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix800JECDOWN" file="./results_WpMix800_JECDOWN.root" weight="MCScaleFactors.txt:WpMix800">
+    <TH1 name="mu_mass__wpmix800__jes__minus" source="/mass/Wprime_1btag_WpMix800_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix800JECDOWN" source="/mass/Wprime_2btag_WpMix800_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix900JECDOWN" file="./results_WpMix900_JECDOWN.root" weight="MCScaleFactors.txt:WpMix900">
+    <TH1 name="mu_mass__wpmix900__jes__minus" source="/mass/Wprime_1btag_WpMix900_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix900JECDOWN" source="/mass/Wprime_2btag_WpMix900_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1000JECDOWN" file="./results_WpMix1000_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1000">
+    <TH1 name="mu_mass__wpmix1000__jes__minus" source="/mass/Wprime_1btag_WpMix1000_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1000JECDOWN" source="/mass/Wprime_2btag_WpMix1000_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1100JECDOWN" file="./results_WpMix1100_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1100">
+    <TH1 name="mu_mass__wpmix1100__jes__minus" source="/mass/Wprime_1btag_WpMix1100_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1100JECDOWN" source="/mass/Wprime_2btag_WpMix1100_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1200JECDOWN" file="./results_WpMix1200_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1200">
+    <TH1 name="mu_mass__wpmix1200__jes__minus" source="/mass/Wprime_1btag_WpMix1200_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1200JECDOWN" source="/mass/Wprime_2btag_WpMix1200_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1300JECDOWN" file="./results_WpMix1300_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1300">
+    <TH1 name="mu_mass__wpmix1300__jes__minus" source="/mass/Wprime_1btag_WpMix1300_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1300JECDOWN" source="/mass/Wprime_2btag_WpMix1300_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1400JECDOWN" file="./results_WpMix1400_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1400">
+    <TH1 name="mu_mass__wpmix1400__jes__minus" source="/mass/Wprime_1btag_WpMix1400_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1400JECDOWN" source="/mass/Wprime_2btag_WpMix1400_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1500JECDOWN" file="./results_WpMix1500_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1500">
+    <TH1 name="mu_mass__wpmix1500__jes__minus" source="/mass/Wprime_1btag_WpMix1500_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1500JECDOWN" source="/mass/Wprime_2btag_WpMix1500_JECDOWN"/>
+  </validation>
+
+  <validation type="WpMix1600JECDOWN" file="./results_WpMix1600_JECDOWN.root" weight="MCScaleFactors.txt:WpMix1600">
+    <TH1 name="mu_mass__wpmix1600__jes__minus" source="/mass/Wprime_1btag_WpMix1600_JECDOWN"/>
+    <TH1 name="Wprime_2btag_WpMix1600JECDOWN" source="/mass/Wprime_2btag_WpMix1600_JECDOWN"/>
+  </validation>
+
+
+  <additionArray name="singletopnosch__jes__minus" title="singletopnosch__jes__minus">
+    <additionArrayItem array="STtchJECDOWN"/>
+    <additionArrayItem array="STtWchJECDOWN"/>
+<!--    <additionArrayItem array="STschJECDOWN"/>
+    <additionArrayItem array="STsch_barJECDOWN"/> -->
+    <additionArrayItem array="STtch_barJECDOWN"/>
+    <additionArrayItem array="STtWch_barJECDOWN"/>
+  </additionArray>
+
+  <additionArray name="singletop__jes__minus" title="singletop__jes__minus">
     <additionArrayItem array="STtchJECDOWN"/>
     <additionArrayItem array="STtWchJECDOWN"/>
     <additionArrayItem array="STschJECDOWN"/>
+    <additionArrayItem array="STsch_barJECDOWN"/>
     <additionArrayItem array="STtch_barJECDOWN"/>
     <additionArrayItem array="STtWch_barJECDOWN"/>
-    <additionArrayItem array="STsch_barJECDOWN"/>
   </additionArray>
 
-  <additionArray name="DibosonsJECDOWN" title="Dibosons">
+  <additionArray name="dibosons__jes__minus" title="dibosons__jes__minus">
     <additionArrayItem array="WWJECDOWN"/>
     <additionArrayItem array="WZJECDOWN"/>
   </additionArray>
 
-  <superimpose name="Wprime_1btagJECDOWN" title="Wprime_1btagJECDOWN" YTitle="Events" Fill="true" Weight="true" Lumi="2180.9" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
-    <superimposeItem name="Wprime_1btag_WJetsJECDOWN" color="top" legend="Wjets"/>
-    <superimposeItem name="Wprime_1btag_ZJetsJECDOWN" color="top" legend="Zjets"/>
-    <superimposeItem name="Wprime_1btag_DibosonsJECDOWN" color="top" legend="Dibosons"/>
-    <superimposeItem name="Wprime_1btag_STJECDOWN" color="top" legend="ST"/>
-    <superimposeItem name="Wprime_1btag_ttbarJECDOWN" color="top" legend="TTbar"/>
-    <superimposeItem name="Wprime_1btag_WpRH800JECDOWN" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH900JECDOWN" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1000JECDOWN" color="1" legend="W' 1TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1100JECDOWN" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1200JECDOWN" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1300JECDOWN" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1400JECDOWN" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1500JECDOWN" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
-    <superimposeItem name="Wprime_1btag_WpRH1600JECDOWN" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
-<!--    <superimposeItem name="Wprime_1btag_WpRH2000JECDOWN" color="1" legend="W' 2TeV x10" NoStack="true"/>-->
+  <superimpose name="Wprime_1btagJECDOWN" title="Wprime_1btagJECDOWN" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1">
+    <superimposeItem name="mu_mass__wjets__jes__minus" color="top" legend="Wjets"/>
+    <superimposeItem name="mu_mass__zjets__jes__minus" color="top" legend="Zjets"/>
+    <superimposeItem name="mu_mass__dibosons__jes__minus" color="top" legend="Dibosons"/>
+    <superimposeItem name="mu_mass__singletop__jes__minus" color="top" legend="ST"/>
+    <superimposeItem name="mu_mass__singletopnosch__jes__minus" color="top" legend="ST"/>
+    <superimposeItem name="mu_mass__ttbar__jes__minus" color="top" legend="TTbar"/>
+    <superimposeItem name="mu_mass__wprh800__jes__minus" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh900__jes__minus" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1000__jes__minus" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1100__jes__minus" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1200__jes__minus" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1300__jes__minus" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1400__jes__minus" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1500__jes__minus" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh1600__jes__minus" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wprh2000__jes__minus" color="1" legend="W' 2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh800__jes__minus" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh900__jes__minus" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1000__jes__minus" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1100__jes__minus" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1200__jes__minus" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1300__jes__minus" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1400__jes__minus" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1500__jes__minus" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wplh1600__jes__minus" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix800__jes__minus" color="1" legend="W' 0.8TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix900__jes__minus" color="1" legend="W' 0.9TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1000__jes__minus" color="1" legend="W' 1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1100__jes__minus" color="1" legend="W' 1.1TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1200__jes__minus" color="1" legend="W' 1.2TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1300__jes__minus" color="1" legend="W' 1.3TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1400__jes__minus" color="1" legend="W' 1.4TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1500__jes__minus" color="1" legend="W' 1.5TeV x10" NoStack="true"/>
+    <superimposeItem name="mu_mass__wpmix1600__jes__minus" color="1" legend="W' 1.6TeV x10" NoStack="true"/>
   </superimpose>
 
 </cuy>

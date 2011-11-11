@@ -70,6 +70,8 @@ void Analyzer::ParseInput()
       fSample = tmp;
       if (fdoJECunc && fdoJECup==true) fSample += "_JECUP";
       if (fdoJECunc && fdoJECup==false) fSample += "_JECDOWN";
+      if (fMyOpt.Contains("PUUP")) fSample += "_PUUP";
+      if (fMyOpt.Contains("PUDOWN")) fSample += "_PUDOWN";
 
       Info("Begin","Histogram names will have suffix: %s", fSample.Data());
 
@@ -80,9 +82,12 @@ void Analyzer::ParseInput()
 	  if (fdoQCD1SideBand) fSample = "dataQCD1";
 	  if (fdoQCD2SideBand) fSample = "dataQCD2";
 	}
-      else Info("Begin","This sample is treated as MC");
-
-
+      else
+	{
+	  Info("Begin","This sample is treated as MC");
+	  Info("Begin","we will use pileup set: %s", fpuhistogram.Data());
+	}
+      
       
     }
 }
@@ -157,23 +162,19 @@ void Analyzer::SlaveBegin(TTree * tree)
    
    hmuons["pt_1jet"] = new TH1F("muon_pt_1jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
    hmuons["pt_2jet"] = new TH1F("muon_pt_2jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
-   hmuons["pt_3jet"] = new TH1F("muon_pt_3jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
-   hmuons["pt_4jet"] = new TH1F("muon_pt_4jet"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
+   hmuons["pt_fin"] = new TH1F("muon_pt_fin"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
    hmuons["eta"] = new TH1F("muon_eta"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_1jet"] = new TH1F("muon_eta_1jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["eta_2jet"] = new TH1F("muon_eta_2jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
-   hmuons["eta_3jet"] = new TH1F("muon_eta_3jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
-   hmuons["eta_4jet"] = new TH1F("muon_eta_4jet"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
+   hmuons["eta_fin"] = new TH1F("muon_eta_fin"+hname,"#eta^{#mu}", 20, -2.1, 2.1);
    hmuons["phi"] = new TH1F("muon_phi"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["phi_1jet"] = new TH1F("muon_phi_1jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["phi_2jet"] = new TH1F("muon_phi_2jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
-   hmuons["phi_3jet"] = new TH1F("muon_phi_3jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
-   hmuons["phi_4jet"] = new TH1F("muon_phi_4jet"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
+   hmuons["phi_fin"] = new TH1F("muon_phi_fin"+hname,"#phi^{#mu}", 30, -3.15, 3.15);
    hmuons["reliso"] = new TH1F("muon_reliso"+hname,"Relative Isolation", 40, 0, 0.2);
    hmuons["reliso_1jet"] = new TH1F("muon_reliso_1jet"+hname,"Relative Isolation", 40, 0, 0.2);
    hmuons["reliso_2jet"] = new TH1F("muon_reliso_2jet"+hname,"Relative Isolation", 40, 0, 0.2);
-   hmuons["reliso_3jet"] = new TH1F("muon_reliso_3jet"+hname,"Relative Isolation", 40, 0, 0.2);
-   hmuons["reliso_4jet"] = new TH1F("muon_reliso_4jet"+hname,"Relative Isolation", 40, 0, 0.2);
+   hmuons["reliso_fin"] = new TH1F("muon_reliso_fin"+hname,"Relative Isolation", 40, 0, 0.2);
    hmuons["deltaR_cut0"] = new TH1F("deltaR_cut0"+hname,"#DeltaR(#mu,jet)",80, 0, 4);
    hmuons["deltaR"] = new TH1F("deltaR"+hname,"#DeltaR(#mu,jet)", 80, 0, 4);
    hmuons["d0_cut1"] = new TH1F("d0_cut1"+hname,"#mu Impact Parameter [cm]",20,-0.1,0.1);
@@ -182,6 +183,8 @@ void Analyzer::SlaveBegin(TTree * tree)
    hmuons["pt_cut3"] = new TH1F("muon_pt_cut3"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
    hmuons["pt"] = new TH1F("muon_pt"+hname,"p_{T}^{#mu} [GeV/c]", 50, 0, 500);
    hmuons["dz"] = new TH1F("dz"+hname,"|z(#mu) - z_{PV}| [cm]", 25, 0, 1.);
+   hmuons["Niso"] = new TH1F("Niso"+hname,"Number of Primary Vertices", 25,-0.5,24.5);
+   hmuons["Ngood"] = new TH1F("Ngood"+hname,"Number of Primary Vertices",25,-0.5,24.5);
 
    hPVs["N"] = new TH1F("NPV"+hname,"Number of PVs",25,-0.5,24.5);
    hPVs["Nreweight"] = new TH1F("NPVreweight"+hname,"Number of PVs",25,-0.5,24.5);
@@ -217,6 +220,7 @@ void Analyzer::SlaveBegin(TTree * tree)
       
    hMET["MET"] = new TH1F("MET"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["MET_2jet"] = new TH1F("MET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
+   hMET["MET_fin"] = new TH1F("MET_fin"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["genMET_2jet"] = new TH1F("genMET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, 0, 300);
    hMET["deltaMET_2jet"] = new TH1F("deltaMET_2jet"+hname,"Missing Transverse Energy [GeV]", 50, -200, 200);
    hMET["phi"] = new TH1F("MET_phi"+hname,"#phi Missing Transverse Energy [GeV]", 20, 0, 3.15);
@@ -231,6 +235,7 @@ void Analyzer::SlaveBegin(TTree * tree)
 
    hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
    hM["WMt_2jet"] = new TH1F("Mt_2jet"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
+   hM["WMt_fin"] = new TH1F("Mt_fin"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
    hM["dijet"] = new TH1F("dijet"+hname,"(jj) mass [GeV/c^{2}]", 50, 0, 1000);
    hM["trijet"] = new TH1F("trijet"+hname,"(jjj) mass [GeV/c^{2}]", 50, 0, 1000);
    hM["top_1btag"] = new TH1F("top_1btag"+hname,"top mass [GeV/c^{2}]",50,0,500);
@@ -278,9 +283,13 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["2nd_pt"] = new TH1F("jet2_pt"+hname,"2nd jet p_{T} [GeV/c]",60, 30, 800);
    hjets["3rd_pt"] = new TH1F("jet3_pt"+hname,"3rd jet p_{T} [GeV/c]",60, 30, 800);
    hjets["4th_pt"] = new TH1F("jet4_pt"+hname,"4th jet p_{T} [GeV/c]",60, 30, 800);
+   hjets["1st_pt_fin"] = new TH1F("jet1_pt_fin"+hname,"Leading jet p_{T} [GeV/c]",60, 30, 800);
+   hjets["2nd_pt_fin"] = new TH1F("jet2_pt_fin"+hname,"2nd jet p_{T} [GeV/c]",60, 30, 800);
    hjets["eta"] = new TH1F("jet_eta"+hname,"jet #eta",50, -2.4, 2.4);
    hjets["1st_eta"] = new TH1F("jet1_eta"+hname,"Leading jet #eta",50, -2.4, 2.4);
    hjets["2nd_eta"] = new TH1F("jet2_eta"+hname,"2nd jet #eta",50, -2.4, 2.4);
+   hjets["1st_eta_fin"] = new TH1F("jet1_eta_fin"+hname,"Leading jet #eta",50, -2.4, 2.4);
+   hjets["2nd_eta_fin"] = new TH1F("jet2_eta_fin"+hname,"2nd jet #eta",50, -2.4, 2.4);
    hjets["phi"] = new TH1F("jet_phi"+hname,"jet #phi",50, 0, 3.15);
    hjets["Njets"] = new TH1F("Njets"+hname,"jet multiplicity",6,0.5,6.5);
    hjets["Njets_1tag"] = new TH1F("Njets_1tag"+hname,"jet multiplicity",6,0.5,6.5);
@@ -289,9 +298,12 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Dijet_deltaPhi"] = new TH1F("Dijet_deltaPhi"+hname,"#Delta #phi(j,j)",30,-3.15,3.15);
    hjets["tb_deltaPhi"] = new TH1F("tb_deltaPhi"+hname,"#Delta #phi(t,b)",30,0.,3.15);
-   hjets["tb_deltaEta"] = new TH1F("tb_deltaEta"+hname,"#Delta #eta(t,b)",30,0.,5);
+   hjets["tb_deltaEta"] = new TH1F("tb_deltaEta"+hname,"#Delta #eta(t,b)",30,-5,5);
    h2_pt_Wprime = new TH2F("toppt_vs_Wprime"+hname,"top p_{T} vs W' mass",60,0,1500,70, 100, 3000);
-   hjets["pt_Wprime"] = new TH1F("pt_Wprime"+hname,"W' p_{T} [GeV]",30,0,100);
+   hjets["pt_Wprime"] = new TH1F("pt_Wprime"+hname,"W' p_{T} [GeV]",50,0,200);
+   hjets["pt_top"]  = new TH1F("pt_top"+hname,"top p_{T} [GeV]",60,0,1500);
+   hjets["pt_b"]  = new TH1F("pt_b"+hname,"b-jet p_{T} [GeV]",60,0,1500);
+   hjets["gen_deltaR_mub"] = new TH1F("gen_deltaR_mub"+hname,"#Delta R(#mu,b)",40,0,4);
 
    map<string,TH1* > allhistos = hmuons;
    allhistos.insert( helectrons.begin(), helectrons.end() );
@@ -346,36 +358,6 @@ void Analyzer::SlaveBegin(TTree * tree)
        cutmap[ *ivec ] = 0;
      }
 
-   // for the 1fb-1
-   /*
-   double pu_weights[25] = { 
-     0,
-     0.216263,
-     0.731377,
-     1.1416,
-     1.4592,
-     1.58665,
-     1.53217,
-     1.37603,
-     1.15313,
-     0.950982,
-     0.753041,
-     0.591861,
-     0.453312,
-     0.344267,
-     0.256831,
-     0.187768,
-     0.147568,
-     0.110464,
-     0.0824476,
-     0.0645739,
-     0.0480766,
-     0.0308829,
-     0.0248396,
-     0.0160992,
-     0.0171581
-     }; 
-   */
    double pu_weights[35] = {
      0.0255506,
      0.251923,
@@ -413,43 +395,6 @@ void Analyzer::SlaveBegin(TTree * tree)
      0.146428,
      0.224425
    };
-     /*
-     0.00114291,
-     0.0176121,
-     0.0604592,
-     0.157344,
-     0.323424,
-     0.557855,
-     0.844349,
-     1.15484,
-     1.4646,
-     1.75079,
-     1.99923,
-     2.20248,
-     2.35689,
-     2.4583,
-     2.5194,
-     2.53173,
-     2.50326,
-     2.43816,
-     2.33907,
-     2.21742,
-     2.0764,
-     1.91042,
-     1.7423,
-     1.57514,
-     1.4079,
-     1.24298,
-     1.09095,
-     0.937302,
-     0.808853,
-     0.700883,
-     0.590723,
-     0.488729,
-     0.406146,
-     0.353644,
-     0.533737
-     };*/
    
    fpu_weights_vec.assign( pu_weights, pu_weights + 35 );
 
@@ -498,8 +443,12 @@ Bool_t Analyzer::Process(Long64_t entry)
   // get collections
   vector< TopVertexEvent > primaryVertices = ntuple->vertices;
   vector< TopMuonEvent > muons = ntuple->muons;
-  vector< TopElectronEvent > electrons = ntuple->electrons;
+  vector< TopElectronEvent > electrons = ntuple->PFelectrons; // use PF electrons (gsf collection is called "electrons")
   vector< TopJetEvent > jets = ntuple->PFjets;
+
+  // USE PF Isolation
+  fMuSelector.UsePFIsolation(true);
+  fEleSelector.UsePFIsolation(true);
 
   size_t total_pvs   = primaryVertices.size();
   size_t total_muons = muons.size();
@@ -513,6 +462,23 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   vector< TLorentzVector > p4jets;
 
+  ////////////////////
+  // GENERATOR
+  ///////////////////
+  if (fIsMC && fSample.Contains("Wp") )
+    {
+      TLorentzVector p4genLepton;
+      TLorentzVector p4genNu;
+      TLorentzVector p4genb;
+      if (ntuple->gen.bLep_pt>0)
+	{
+	  p4genLepton.SetPtEtaPhiE(ntuple->gen.mu_pt,ntuple->gen.mu_eta,ntuple->gen.mu_phi,ntuple->gen.mu_e);
+	  p4genNu.SetPtEtaPhiE(ntuple->gen.nu_pt,ntuple->gen.nu_eta,ntuple->gen.nu_phi,ntuple->gen.nu_e);
+	  p4genb.SetPtEtaPhiE(ntuple->gen.bLep_pt,ntuple->gen.bLep_eta,ntuple->gen.bLep_phi,ntuple->gen.bLep_e);
+	  
+	  hjets["gen_deltaR_mub"]->Fill( p4genLepton.DeltaR( p4genb ) ); 
+	}
+    }
   ////////////////////////////////////
   // PRIMARY VERTICES
   ///////////////////////////////////
@@ -554,6 +520,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   //////////////////////////////////
   // MUONS
   //////////////////////////////////
+  int ngoodIDmuons = 0;
   int nloosemuons = 0;
   int ntightmuons = 0;
   int nqcdmuons = 0;
@@ -570,8 +537,10 @@ Bool_t Analyzer::Process(Long64_t entry)
     h1test->Fill( muon.pt );
     hmuons["pt_cut1"]->Fill( muon.pt, PUweight );
 
-    // select only good muons
+    if ( fMuSelector.MuonID( muon, PVz ) ) ngoodIDmuons++;
 
+    // select only good muons
+    
     if ( fMuSelector.MuonLoose( muon ) ) 
       {
 
@@ -645,9 +614,12 @@ Bool_t Analyzer::Process(Long64_t entry)
 	deltaR = QCDdeltaR;
       } else {
 
+	if ( ngoodIDmuons > 0 ) hmuons["Ngood"]->Fill( total_pvs, PUweight);
+	if ( ntightmuons > 0 ) hmuons["Niso"]->Fill( total_pvs, PUweight);
+
 	if ( ntightmuons != 1 ) return kTRUE;
 	cutmap["OneIsoMu"] += PUweight;
-	
+
 	if ( nloosemuons > 1 ) return kTRUE;
 	cutmap["LooseMuVeto"] += PUweight;
 	
@@ -888,6 +860,7 @@ Bool_t Analyzer::Process(Long64_t entry)
       hmuons["pt_2jet"]->Fill( p4lepton.Pt(), PUweight );
       hmuons["reliso_2jet"]->Fill( RelIso, PUweight );
       hMET["MET_2jet"]->Fill( p4MET.Pt(), PUweight );
+
       if (fIsMC) {
 	hMET["genMET_2jet"]->Fill( ntuple->gen.MET, PUweight );
 	hMET["deltaMET_2jet"]->Fill( p4MET.Pt() - ntuple->gen.MET, PUweight );
@@ -1006,24 +979,67 @@ Bool_t Analyzer::Process(Long64_t entry)
       //hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb );
       //hjets["Nbtags_SSVHEM"]->Fill( Nbtags_SSVHEM, PUweight*SFb );
 
-      if ( Nbtags_TCHPM == 0 )
+      if ( Nbtags_TCHPM == 0 && njets < 5)
         {
-          hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
-	  if (fSample=="WJets")
-	    {
-	      int FH = ntuple->flavorHistory;
-	      if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_0btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
-	      else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_0btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
-	      else if ( FH == 11 ) hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+	  // compute top mass
+	  int top_bjet_index = 0;
+	  double deltaM = 99999.;
+	  //double top_mass = 0.;
+	  //TLorentzVector p4Top;
+	  TLorentzVector bestp4Top;
+	  for ( size_t itejet = 0; itejet < p4jets.size(); ++itejet )
+            {
+	      
+	      for ( int isolw =0; isolw<2; ++ isolw)
+		{
+		  
+		  p4Top = p4jets[itejet] + p4LepW;
+		  if (isolw==1) p4Top = p4jets[itejet] + p4OtherLepW;
+		  
+		  if ( fabs( p4Top.M() - 172.) < deltaM ) {
+		    top_bjet_index = itejet;
+		    //top_mass = p4Top.M();
+		    deltaM = fabs( p4Top.M() - 172.);
+		    bestp4Top = p4Top;
+		  }
+	      
+		}
 	    }
-	  if (fSample.Contains("Wprime"))
-	    {
-	      if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_0btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
-	      else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_0btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
-	      else hM["Wprime_0btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
-	    }
+	  p4Top = bestp4Top;
+	  bool passcutWlep = false;
+	  if ( p4LepW.M() < 90 ) passcutWlep = true;
 
-        }
+	  if (passcutWlep) {
+
+	    if ( top_bjet_index == 0 ) {
+	      p4Wprime = p4Top + p4jets[1];
+	    }
+	    else {
+	      p4Wprime = p4Top + p4jets[0];
+	    }
+	
+	    bool passcut = true;
+            if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
+
+            if (passcut) {
+
+	      hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+	      if (fSample=="WJets")
+		{
+		  int FH = ntuple->flavorHistory;
+		  if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_0btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+		  else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_0btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+		  else if ( FH == 11 ) hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+		}
+	      if (fSample.Contains("Wprime"))
+		{
+		  if ( ntuple->gen.LeptonicChannel == 11 ) hM["Wprime_0btag_MCsemie"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+		  else if ( ntuple->gen.LeptonicChannel == 13 ) hM["Wprime_0btag_MCsemimu"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+		  else hM["Wprime_0btag_MChad"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
+		}
+	    } // top mass cut
+	  }// Wlep cut
+	}// 0 tag
 
       // check if the two leading jets have a b jet 
       if ( Nbtags_TCHPM >= 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) )
@@ -1087,7 +1103,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  hMET["LepWmassNoPt"]->Fill(WmassNoPt, PUweight*SFb_1tag );
 
 	  bool passcutWlep = false;
-	  if ( p4LepW.M() > 60 && p4LepW.M() < 90 ) passcutWlep = true;
+	  if ( p4LepW.M() < 90 ) passcutWlep = true;
 
 	  if (passcutWlep) {
 
@@ -1095,19 +1111,28 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	    double tb_deltaPhi = 0.;
 	    double tb_deltaR = 0.;
-
+	    double tb_deltaEta = -999;
+	    double pt_wprime = 0;
+	    double pt_top = 0;
+	    double pt_b = 0;
 	    if ( top_bjet_index == 0 ) {
 	      p4Wprime = p4Top + p4jets[1];
 	      tb_deltaPhi = p4Top.DeltaPhi( p4jets[1] );
 	      tb_deltaR = p4Top.DeltaR( p4jets[1] );
+	      tb_deltaEta = p4Top.Eta() - p4jets[1].Eta();
+	      pt_wprime = p4Wprime.Pt();
+	      pt_top = p4Top.Pt();
+	      pt_b = p4jets[1].Pt();
 	    }
 	    else {
 	      p4Wprime = p4Top + p4jets[0];
 	      tb_deltaPhi = fabs( p4Top.DeltaPhi( p4jets[0] ) );
 	      tb_deltaR = p4Top.DeltaR( p4jets[0] );
+	      tb_deltaEta = p4Top.Eta() - p4jets[0].Eta();
+	      pt_wprime= p4Wprime.Pt();
+	      pt_top = p4Top.Pt();
+	      pt_b = p4jets[0].Pt();
 	    }
-	    hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
-	    hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
 
 	    bool passcut = true;
 	    if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
@@ -1116,9 +1141,24 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	      h2_pt_Wprime->Fill( p4Top.Pt(), p4Wprime.M(), PUweight*SFb_1tag );
 	      hM["Wprime_1btag"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
+	      // FINAL Plots
 	      hMET["deltaPhi"]->Fill( p4lepton.DeltaPhi( p4MET ), PUweight*SFb_1tag );
+	      hjets["tb_deltaPhi"]->Fill( tb_deltaPhi, PUweight*SFb_1tag );
+	      hjets["tb_deltaEta"]->Fill( tb_deltaEta, PUweight*SFb_1tag );
+	      //hjets["tb_deltaR"]->Fill( tb_deltaR, PUweight*SFb_1tag );
+	      hjets["pt_Wprime"]->Fill( pt_wprime, PUweight*SFb_1tag );
+	      hjets["pt_top"]->Fill( pt_top, PUweight*SFb_1tag );
+	      hjets["pt_b"]->Fill( pt_b, PUweight*SFb_1tag );
+	      hjets["1st_pt_fin"]->Fill( p4jets[0].Pt(), PUweight*SFb_1tag );
+	      hjets["2nd_pt_fin"]->Fill( p4jets[1].Pt(), PUweight*SFb_1tag );
+	      hjets["1st_eta_fin"]->Fill( p4jets[0].Eta(), PUweight*SFb_1tag );
+	      hjets["2nd_eta_fin"]->Fill( p4jets[1].Eta(), PUweight*SFb_1tag );
+	      hmuons["pt_fin"]->Fill( p4lepton.Pt(), PUweight*SFb_1tag );
+	      hmuons["reliso_fin"]->Fill( RelIso, PUweight*SFb_1tag );
+	      hMET["MET_fin"]->Fill( p4MET.Pt(), PUweight*SFb_1tag );
+	      hM["WMt_fin"]->Fill( WMt, PUweight*SFb_1tag );
 
-	      if ( p4Wprime.M() > 1000.)
+	      if ( p4Wprime.M() > 1500.)
 		{
 		  TString outstring = "run: ";
 		  outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event)); 

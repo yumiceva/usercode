@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: MuonSelector.h,v 1.4 2011/09/01 19:31:54 yumiceva Exp $
+ version $Id: MuonSelector.h,v 1.5 2011/11/02 14:54:15 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -23,10 +23,12 @@ public:
     _version = 4;
     _Pz = 0.;
     _deltaR = -1;
+    _usePFIso = false;
   }
 
   void SetPz( double Pz) { _Pz = Pz; }
-  
+  void UsePFIsolation( bool option) { _usePFIso = option;}
+
   virtual ~MuonSelector() {}
 
   void Version(int version) {
@@ -41,10 +43,33 @@ public:
   //  return pass;
   //}
 
+  bool MuonID( TopMuonEvent muon, float PVz ) {
+    // no isolation
+    bool pass = false;
+    
+    if (muon.pt > 35. &&
+        fabs(muon.eta)<2.1 &&
+        muon.IsTrackerMuon==1 &&
+        fabs(muon.d0)<0.02 &&
+        muon.muonhits>0 &&
+        muon.normchi2<10 &&
+        muon.trackerhits>=11 &&
+	muon.muonstations > 1 &&
+        muon.pixelhits >= 1 &&
+        fabs(muon.vz - PVz) < 1.
+        ) pass = true;
+
+    return pass;
+  }
+
   bool MuonLoose( TopMuonEvent muon ) {
     
     bool pass = false;
-    if ( muon.pt > 10. && fabs(muon.eta)< 2.5 && muon.reliso03<0.2 ) pass = true;
+    float theIso = 0.;
+    if (_usePFIso) theIso = muon.pfreliso;
+    else theIso= muon.reliso03;
+
+    if ( muon.pt > 10. && fabs(muon.eta)< 2.5 && theIso<0.2 ) pass = true;
 
     return pass;
 
@@ -52,6 +77,9 @@ public:
 
   bool MuonTight( TopMuonEvent muon, float PVz ) {
     bool pass = false;
+    float theIso = 0.;
+    if (_usePFIso) theIso = muon.pfreliso;
+    else theIso= muon.reliso03;
 
     if (muon.pt > 35. &&
         fabs(muon.eta)<2.1 &&
@@ -60,7 +88,7 @@ public:
         muon.muonhits>0 &&
         muon.normchi2<10 &&
         muon.trackerhits>=11 &&
-	muon.reliso03 < 0.1 && // was 0.125
+	theIso < 0.1 && // was 0.125
 	muon.muonstations > 1 &&
 	muon.pixelhits >= 1 &&
 	fabs(muon.vz - PVz) < 1.
@@ -152,6 +180,9 @@ public:
   {
 
     bool pass = false;
+    float theIso = 0.;
+    if (_usePFIso) theIso = muon.pfreliso;
+    else theIso= muon.reliso03;
 
     if ( muon.pt > 35. &&
 	 fabs(muon.eta)<2.1 &&
@@ -160,8 +191,8 @@ public:
 	 muon.muonhits>0 &&
 	 muon.normchi2<10 &&
 	 muon.trackerhits>=11 &&
-	 muon.reliso03 < 0.5 && // HERE
-	 muon.reliso03 > 0.2 && // and HERE
+	 theIso < 0.5 && // HERE
+	 theIso > 0.2 && // and HERE
 	 muon.muonstations > 1 &&
 	 muon.pixelhits >= 1 &&
 	 fabs(muon.vz - PVz) < 1.
@@ -199,5 +230,6 @@ private:
   int _version;
   float _Pz;
   double _deltaR;
+  bool _usePFIso;
 };
 

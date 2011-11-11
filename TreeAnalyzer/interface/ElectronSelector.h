@@ -4,7 +4,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: ElectronSelector.h,v 1.3 2011/07/29 23:12:37 yumiceva Exp $
+ version $Id: ElectronSelector.h,v 1.4 2011/11/02 14:54:15 yumiceva Exp $
 
  ________________________________________________________________**/
 #include<iostream>
@@ -26,11 +26,14 @@ public:
     _ptrel = -99;
     _elepT = 35.;
     _jetpT = 35.;
+    _usePFIso = false;
   }
 
   void SetElectronPt(float pT) { _elepT = pT; }
   void SetJetPt(float pT) { _jetpT = pT; }
-
+  void UsePFIsolation( bool option) { 
+    _usePFIso = option;
+  }
   double GetDeltaR() { return _deltaR; }
   double GetPtrel() { return _ptrel;}
 
@@ -46,9 +49,13 @@ public:
     
     bool pass = false;
 
+    float theIso = 0.;
+    if (_usePFIso) theIso = electron.pfreliso;
+    else theIso = electron.reliso03;
+    
     if ( electron.pt > 15. && 
 	 fabs(electron.eta) < 2.5 &&
-	 electron.reliso03< 0.2 ) pass = true;
+	 theIso < 0.2 ) pass = true;
 
     return pass;
 
@@ -102,12 +109,15 @@ public:
     bool pass = false;
     
     float eta_sc = electron.etasc;
+    float theIso = 0.;
+    if (_usePFIso) theIso = electron.pfreliso;
+    else theIso= electron.reliso03;
 
     if (electron.pt > _elepT &&
 	( (eta_sc > -2.5 && eta_sc < -1.566) || (fabs(eta_sc)<1.4442) || (eta_sc > 1.566 && eta_sc< 2.5) ) &&
         fabs(electron.d0)<0.02 &&
         electron.pass70==1 &&
-	electron.reliso03 < 0.1 &&
+	theIso < 0.1 &&
 	fabs(electron.vz - PVz) < 1.
         ) pass = true;
     
@@ -117,20 +127,23 @@ public:
   bool ElectronZveto( TLorentzVector p4ele, vector<TopElectronEvent> electrons ) {
 
     bool isZevent = false;
-    
+
     for ( vector<TopElectronEvent>::iterator jelectron = electrons.begin(); jelectron != electrons.end(); ++jelectron)
       {
 	TopElectronEvent tmpele = *jelectron;
 
 	float eta_sc = tmpele.etasc;
 	bool pass95 = tmpele.pass95;
+	float theIso = 0.;
+	if (_usePFIso) theIso = tmpele.pfreliso;
+	else theIso= tmpele.reliso03;
 
 	TLorentzVector tmpp4ele;
 	tmpp4ele.SetPtEtaPhiE( tmpele.pt, tmpele.eta, tmpele.phi, tmpele.e);
 
 	if ( tmpp4ele.Et()> _elepT &&
 	     ( (eta_sc > -2.5 && eta_sc < -1.566) || (fabs(eta_sc)<1.4442) || (eta_sc > 1.566 && eta_sc< 2.5) ) &&
-	     tmpele.reliso03<1.0 &&
+	     theIso <1.0 &&
 	     fabs(eta_sc)<2.5 ) {
 
 	  if (pass95) {
@@ -156,5 +169,6 @@ private:
   double _ptrel;
   float _elepT;
   float _jetpT;
+  bool _usePFIso;
 };
 
