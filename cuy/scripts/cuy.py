@@ -26,6 +26,7 @@
    -O, --OutputFilename = OUTPUTFILENAME: name of the output ROOT file. 
    -o, --output  = OUTPUT: output directory
    -p, --prt     = PRT: print canvas in the format specified png, ps, eps, pdf, etc.
+   -q, --quit  : quit after producing plots.
    -t, --tag     = TAG: tag name for XML configuration file.
    -v, --verbose : verbose output.
    -w, --wait : Pause script after plotting a new superposition of histograms.
@@ -413,96 +414,7 @@ if __name__ == '__main__':
     #print thedata['ttbar'].TH1s['gen_eta'].GetEntries()
 
 
-    theaddition = dh.addition
-    if verbose : print "= Create addition histograms:"
-    
-    for ikey in theaddition:
-	if verbose : print "== plot name: \""+theaddition[ikey].name+"\" title: \""+theaddition[ikey].title+"\""
-	listname = theaddition[ikey].histos
-	listweight = theaddition[ikey].weight
-
-	#create canvas
-	cv[theaddition[ikey].name] = TCanvas(theaddition[ikey].name,theaddition[ikey].name,700,700)
-
-	isFirst = True
-	ihnameIt = 0
-	for ihname in listname:
-	    aweight = 1
-	    if listweight[ihnameIt]:
-	    #if thedata[jkey].weight != None and theaddition[ikey].Weight == "true":
-		aweight = float(listweight[ihnameIt])
-		#aweight = float(thedata[jkey].weight)
-                
-                if theaddition[ikey].Lumi != None:
-                    aweight = aweight * float(theaddition[ikey].Lumi)
-                    # check if we have additianal SF
-                    #aSF = 1.
-                    #if listSF[ii] != None:
-                    #    tmpSF = listSF[ii]
-                    #    if tmpSF.find('*') != -1:
-                    #        tmpSFlist = tmpSF.split('*')
-                    #        for i_tmpSF in tmpSFlist:
-                    #            aSF *= float(i_tmpSF)
-                    #        else:
-                    #            aSF = tmpSF
-                    #            
-                    #aweight = aweight * aSF
-                                    
-                                                                                                                                                                                                                                                                                                                                                                                            
-	    for jkey in thedata:
-		tmpkeys = thedata[jkey].histos.keys()
-		for tmpname in tmpkeys:
-		    if tmpname == ihname:
-			ath = thedata[jkey].TH1s[tmpname]
-			if ath is None:
-			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
-			    exit(0)
-			if verbose : print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
-			#ath.Print("all")
-			if isFirst:
-			    newth = ath.Clone(theaddition[ikey].name)
-			    newth.Sumw2()
-			    if theaddition[ikey].Normalize == "true":
-				newth.Scale(1/newth.Integral())
-			    newth.Scale(aweight)
-			    isFirst = False
-			else:
-			    atmpth = ath.Clone()
-			    atmpth.Sumw2()
-			    if theaddition[ikey].Normalize == "true":
-				atmpth.Scale(1/atmpth.Integral())
-			    atmpth.Scale(aweight)
-			    newth.Add( atmpth )
-	    ihnameIt = ihnameIt + 1
-
-	if theaddition[ikey].XTitle != None:
-	    newth.SetXTitle(theaddition[ikey].XTitle)
-	if theaddition[ikey].YTitle != None:
-	    newth.SetYTitle(theaddition[ikey].YTitle)
-
-	if theaddition[ikey].Option:
-	    newth.Draw(theaddition[ikey].Option)
-	else:
-	    newth.Draw()
-
-	if theaddition[ikey].SetGrid == "true":
-	    cv[theaddition[ikey].name].SetGrid()
-	
-	cv[theaddition[ikey].name].Update()
-
-	# add new histogram to the list
-	newth.SetName(theaddition[ikey].name)
-	newTH1list.append(newth.GetName())
-	thedata[newth.GetName()] = ValElement()
-	thedata[newth.GetName()].TH1s[newth.GetName()] = newth
-	thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
-
-	# write new histograms to file
-	outputroot.cd()
-	newth.Write()
-	
-
-    #### addition array
+    #### ADDITION ARRAY
     theadditionArray = dh.additionArray
     
     if verbose : print "= Create addition arrays:"
@@ -517,9 +429,14 @@ if __name__ == '__main__':
         new_tmplisthistos = []
         for isuffix in range(0, len(tmplisthistos)):
             tmpname = ''
-            blist = tmplisthistos[isuffix].split('_')
-            for iblist in range(0,len(blist)-1):
-                tmpname += blist[iblist] +"_"
+            if tmplisthistos[isuffix].find("__")!=-1:
+                blist = tmplisthistos[isuffix].split('__')
+                for iblist in range(0,len(blist)-1):
+                    tmpname += blist[iblist] +"__"
+            else:
+                blist = tmplisthistos[isuffix].split('_')
+                for iblist in range(0,len(blist)-1):
+                    tmpname += blist[iblist] +"_"
             #tmpname = tmplisthistos[isuffix].strip(listarray[0])
             new_tmplisthistos.append( tmpname )
         tmplisthistos = new_tmplisthistos
@@ -578,9 +495,105 @@ if __name__ == '__main__':
             thedata[newth.GetName()].TH1s[newth.GetName()] = newth
             thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
             thedata[newth.GetName()].weight = 1.
+            thedata[newth.GetName()].filename = "memory"
             if verbose: print "=== new histogram added to list: "+ newth.GetName() + " integral: "+str(newth.Integral())
-                                                   
+
+    # ADDITION HISTOGRAM
+    theaddition = dh.addition
+    tmp_listtheaddition = theaddition.keys()
+    tmp_listtheaddition.sort()
+    tmp_listtheaddition.reverse()
+    if verbose : print "= Create addition histograms:"; print tmp_listtheaddition
     
+    for ikey in tmp_listtheaddition:
+	if verbose : print "== plot name: \""+theaddition[ikey].name+"\" title: \""+theaddition[ikey].title+"\""
+	listname = theaddition[ikey].histos
+	listweight = theaddition[ikey].weight
+
+	#create canvas
+	cv[theaddition[ikey].name] = TCanvas(theaddition[ikey].name,theaddition[ikey].name,700,700)
+
+	isFirst = True
+	ihnameIt = 0
+	for ihname in listname:
+	    aweight = 1
+	    if listweight[ihnameIt]:
+	    #if thedata[jkey].weight != None and theaddition[ikey].Weight == "true":
+		aweight = float(listweight[ihnameIt])
+		#aweight = float(thedata[jkey].weight)
+                
+                if theaddition[ikey].Lumi != None:
+                    aweight = aweight * float(theaddition[ikey].Lumi)
+                    # check if we have additianal SF
+                    #aSF = 1.
+                    #if listSF[ii] != None:
+                    #    tmpSF = listSF[ii]
+                    #    if tmpSF.find('*') != -1:
+                    #        tmpSFlist = tmpSF.split('*')
+                    #        for i_tmpSF in tmpSFlist:
+                    #            aSF *= float(i_tmpSF)
+                    #        else:
+                    #            aSF = tmpSF
+                    #            
+                    #aweight = aweight * aSF
+                                    
+                                                                                                                                                                                                                                                                                                                                                                                            
+	    for jkey in thedata:
+		tmpkeys = thedata[jkey].histos.keys()
+		for tmpname in tmpkeys:
+		    if tmpname == ihname:
+			ath = thedata[jkey].TH1s[tmpname]
+			if ath is None:
+			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
+			    exit(0)
+                                                    
+			if verbose : print "=== add histogram: "+ath.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight) + " integral= " +str(ath.Integral())
+			#ath.Print("all")
+			if isFirst:
+			    newth = ath.Clone(theaddition[ikey].name)
+			    newth.Sumw2()
+			    if theaddition[ikey].Normalize == "true":
+				newth.Scale(1/newth.Integral())
+			    newth.Scale(aweight)
+			    isFirst = False
+			else:
+			    atmpth = ath.Clone()
+			    atmpth.Sumw2()
+			    if theaddition[ikey].Normalize == "true":
+				atmpth.Scale(1/atmpth.Integral())
+			    atmpth.Scale(aweight)
+			    newth.Add( atmpth )
+	    ihnameIt = ihnameIt + 1
+
+	if theaddition[ikey].XTitle != None:
+	    newth.SetXTitle(theaddition[ikey].XTitle)
+	if theaddition[ikey].YTitle != None:
+	    newth.SetYTitle(theaddition[ikey].YTitle)
+
+	if theaddition[ikey].Option:
+	    newth.Draw(theaddition[ikey].Option)
+	else:
+	    newth.Draw()
+
+	if theaddition[ikey].SetGrid == "true":
+	    cv[theaddition[ikey].name].SetGrid()
+	
+	cv[theaddition[ikey].name].Update()
+
+	# add new histogram to the list
+	newth.SetName(theaddition[ikey].name)
+	newTH1list.append(newth.GetName())
+	thedata[newth.GetName()] = ValElement()
+	thedata[newth.GetName()].TH1s[newth.GetName()] = newth
+	thedata[newth.GetName()].histos[newth.GetName()] = newth.GetName()
+        thedata[newth.GetName()].weight = 1.
+	# write new histograms to file
+	outputroot.cd()
+	#newth.Write()
+        if verbose: print "=== new histogram added to list: "+ newth.GetName() + " integral: "+str(newth.Integral())
+
+                                                   
+    # DIVIDE    
     if verbose : print "= Create ratio histograms:"
     
     thedivition = dh.divide
@@ -728,7 +741,8 @@ if __name__ == '__main__':
 	SetOwnership( aleg, 0 ) 
 	aleg.SetMargin(0.12)
         aleg.SetTextSize(0.035)
-        aleg.SetFillColor(10)
+        aleg.SetFillColor(0)
+        aleg.SetFillStyle(0)
 	aleg.SetBorderSize(0)
 
         # check if diff plot requested
@@ -1160,6 +1174,9 @@ if __name__ == '__main__':
     #outputroot.Close()
 
 #    if not option.wait:
+    if option.quit:
+        sys.exit()
+        
     rep = ''
     while not rep in [ 'q', 'Q', '.q', 'qq' 'p']:
 	rep = raw_input( '\nenter: ["q",".q" to quit] ["p" or "print" to print all canvas]: ' )
