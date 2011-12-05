@@ -6,7 +6,7 @@
   </validation>
 
   <validation type="WjetsPUDOWN" file="./results_WJets_PUDOWN.root" weight="MCScaleFactors.txt:Wjets">
-    <TH1 name="mu_mass__ttbar__wjets__minus" source="/mass/Wprime_1btag_WJets_PUDOWN"/>
+    <TH1 name="mu_mass__wjets__pu__minus" source="/mass/Wprime_1btag_WJets_PUDOWN"/>
     <TH1 name="Wprime_2btag_WJetsPUDOWN" source="/mass/Wprime_2btag_WJets_PUDOWN"/>
   </validation>
 
@@ -71,7 +71,7 @@
   </validation>
 
   <validation type="WpRH1100PUDOWN" file="./results_WpRH1100_PUDOWN.root" weight="MCScaleFactors.txt:WpRH1100">
-    <TH1 name="mu_mass__wprh11000__pu__minus" source="/mass/Wprime_1btag_WpRH1100_PUDOWN"/>
+    <TH1 name="mu_mass__wprh1100__pu__minus" source="/mass/Wprime_1btag_WpRH1100_PUDOWN"/>
     <TH1 name="Wprime_2btag_WpRH1100PUDOWN" source="/mass/Wprime_2btag_WpRH1100_PUDOWN"/>
   </validation>
 

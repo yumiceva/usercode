@@ -272,9 +272,9 @@ void Analyzer::SlaveBegin(TTree * tree)
      }
 
    hjets["pt"] = new TH1F("jet_pt"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
-   hjets["pt_b"] = new TH1F("jet_pt_b"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
-   hjets["pt_c"] = new TH1F("jet_pt_c"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
-   hjets["pt_l"] = new TH1F("jet_pt_l"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_b_mc"] = new TH1F("jet_pt_b_mc"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_c_mc"] = new TH1F("jet_pt_c_mc"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
+   hjets["pt_l_mc"] = new TH1F("jet_pt_l_mc"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
    hjets["pt_btag"] = new TH1F("jet_pt_btag"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
    hjets["pt_btag_b"] = new TH1F("jet_pt_btag_b"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
    hjets["pt_btag_c"] = new TH1F("jet_pt_btag_c"+hname,"jet p_{T} [GeV/c]", 60, 30, 800);
@@ -295,7 +295,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hjets["Njets_1tag"] = new TH1F("Njets_1tag"+hname,"jet multiplicity",6,0.5,6.5);
    hjets["Njets_2tag"] = new TH1F("Njets_2tag"+hname,"jet multiplicity",6,0.5,6.5);
    hjets["Nbtags_TCHPM"] = new TH1F("Nbjets_TCHPM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
-   hjets["Nbtags_SSVHEM"] = new TH1F("Nbjets_SSVHEM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
+   hjets["Nbtags_CSVM"] = new TH1F("Nbjets_CSVM_N2j"+hname,"Tagged b-jets",3,-0.5,2.5);
    hjets["Dijet_deltaPhi"] = new TH1F("Dijet_deltaPhi"+hname,"#Delta #phi(j,j)",30,-3.15,3.15);
    hjets["tb_deltaPhi"] = new TH1F("tb_deltaPhi"+hname,"#Delta #phi(t,b)",30,0.,3.15);
    hjets["tb_deltaEta"] = new TH1F("tb_deltaEta"+hname,"#Delta #eta(t,b)",30,-5,5);
@@ -514,6 +514,15 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   hPVs["Nreweight"]->Fill( total_pvs, PUweight );
 
+  /////////////
+  // HLT scale factor for MC
+  ////////////
+  double SF_hlt = 1.;
+  if (fIsMC) SF_hlt = 0.966;
+
+  // LETS INCLUDE THE TRIGGER SF INTO THE PU WEIGHTS
+  PUweight = PUweight*SF_hlt;
+
   cutmap["Processed"] += PUweight;
 
   if (fVerbose) cout << "done pv" << endl;
@@ -552,7 +561,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  deltaR = fMuSelector.GetDeltaR();
 	}
 	p4muon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
-	RelIso = muon.reliso03;
+	RelIso = muon.pfreliso; //muon.reliso03;
 	
       }
     // check muon in QCD control region
@@ -562,7 +571,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	// keep the leading muon for selection
 	if (nqcdmuons==1) {
 	  p4QCDmuon.SetPtEtaPhiE( muon.pt, muon.eta, muon.phi, muon.e );
-	  QCDRelIso = muon.reliso03;
+	  QCDRelIso = muon.pfreliso; //muon.reliso03;
 	  QCDdeltaR = fMuSelector.GetDeltaR();
 	}
       }
@@ -675,7 +684,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   double Wpy = p4lepton.Py() + p4MET.Py();
   double WMt = sqrt(Wpt*Wpt-Wpx*Wpx-Wpy*Wpy);
 
-  if ( WMt <= 40. ) return kTRUE;
+  if ( WMt <= 40. ) return kTRUE; 
   cutmap["MET"] += PUweight;
 
   if (fVerbose) cout << "pass W MT cut " << endl;
@@ -778,11 +787,11 @@ Bool_t Analyzer::Process(Long64_t entry)
 	if (fVerbose) {
 	  cout << "done storing njets " << njets << endl;
 	  cout << " bdisc " << jet.btag_TCHP << endl;
-	  cout << " bdisc " << jet.btag_SSVHE << endl;
+	  cout << " bdisc " << jet.btag_CSV << endl;
 	}
 	// store discriminators
 	bdisc["TCHP"].push_back( jet.btag_TCHP );
-	bdisc["SSVHE"].push_back( jet.btag_SSVHE );
+	bdisc["CSV"].push_back( jet.btag_CSV );
 	if (fVerbose) cout << "store bdisc" << endl;
 	// TCHPL cut at 1.19
 	// check TCHPM cut at 1.93
@@ -790,9 +799,9 @@ Bool_t Analyzer::Process(Long64_t entry)
 	else isTagb["TCHPM"].push_back(false);
 	if (fVerbose) cout << "done tchpl" << endl;
 	// check SSVHEM cut at 1.74
-	if ( jet.btag_SSVHE > 1.74) isTagb["SSVHEM"].push_back(true);
-	else isTagb["SSVHEM"].push_back(false);
-	if (fVerbose) cout << "done ssvem" << endl;
+	if ( jet.btag_CSV > 0.679) isTagb["CSVM"].push_back(true);
+	else isTagb["CSVM"].push_back(false);
+	if (fVerbose) cout << "done csvm" << endl;
 	// CSVM cut at 0.679
 
 	njets++;
@@ -835,12 +844,12 @@ Bool_t Analyzer::Process(Long64_t entry)
       for ( size_t kk=0; kk < p4jets.size(); ++kk)
 	{
 	  hjets["pt"]->Fill( p4jets[kk].Pt(), PUweight );
-	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()<=240 ) { number_of_b++; hjets["pt_b"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()<=240 ) { number_of_c++; hjets["pt_c"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()<=240 ) { number_of_b++; hjets["pt_b_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()<=240 ) { number_of_c++; hjets["pt_c_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
 	  if ( abs(listflavor[kk])==1 || abs(listflavor[kk])==2 || abs(listflavor[kk])==3 || abs(listflavor[kk])==21 ) 
-	    { number_of_l++; hjets["pt_l"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++; hjets["pt_b"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++; hjets["pt_c"]->Fill( p4jets[kk].Pt(), PUweight );}
+	    { number_of_l++; hjets["pt_l_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++; hjets["pt_b_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++; hjets["pt_c_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
 
 	  if ( isTagb["TCHPM"][kk] ) 
 	    {
@@ -879,11 +888,11 @@ Bool_t Analyzer::Process(Long64_t entry)
 
       // count number of b-tags
       int Nbtags_TCHPM = 0;
-      int Nbtags_SSVHEM = 0;
+      int Nbtags_CSVM = 0;
       for ( size_t itag=0; itag< isTagb["TCHPM"].size(); ++itag )
 	{
 	  if ( isTagb["TCHPM"][itag] ) Nbtags_TCHPM++;
-	  if ( isTagb["SSVHEM"][itag] ) Nbtags_SSVHEM++;
+	  if ( isTagb["CSVM"][itag] ) Nbtags_CSVM++;
 	}
 
       // compute b-tag event weight
@@ -977,7 +986,7 @@ Bool_t Analyzer::Process(Long64_t entry)
       else hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM );
 
       //hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb );
-      //hjets["Nbtags_SSVHEM"]->Fill( Nbtags_SSVHEM, PUweight*SFb );
+      //hjets["Nbtags_CSVM"]->Fill( Nbtags_CSVM, PUweight*SFb );
 
       if ( Nbtags_TCHPM == 0 && njets < 5)
         {

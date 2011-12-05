@@ -6,7 +6,7 @@
   </validation>
 
   <validation type="WjetsPUUP" file="./results_WJets_PUUP.root" weight="MCScaleFactors.txt:Wjets">
-    <TH1 name="mu_mass__ttbar__wjets__plus" source="/mass/Wprime_1btag_WJets_PUUP"/>
+    <TH1 name="mu_mass__wjets__pu__plus" source="/mass/Wprime_1btag_WJets_PUUP"/>
     <TH1 name="Wprime_2btag_WJetsPUUP" source="/mass/Wprime_2btag_WJets_PUUP"/>
   </validation>
 
@@ -71,7 +71,7 @@
   </validation>
 
   <validation type="WpRH1100PUUP" file="./results_WpRH1100_PUUP.root" weight="MCScaleFactors.txt:WpRH1100">
-    <TH1 name="mu_mass__wprh11000__pu__plus" source="/mass/Wprime_1btag_WpRH1100_PUUP"/>
+    <TH1 name="mu_mass__wprh1100__pu__plus" source="/mass/Wprime_1btag_WpRH1100_PUUP"/>
     <TH1 name="Wprime_2btag_WpRH1100PUUP" source="/mass/Wprime_2btag_WpRH1100_PUUP"/>
   </validation>
 

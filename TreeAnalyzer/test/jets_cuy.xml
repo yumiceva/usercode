@@ -16,6 +16,10 @@
     <TH1 name="pt_Wprime_data" source="/jets/pt_Wprime_data"/>
     <TH1 name="pt_top_data" source="/jets/pt_top_data"/>
     <TH1 name="pt_b_data" source="/jets/pt_b_data"/>
+    <TH1 name="jet1_pt_fin_data" source="/jets/jet1_pt_fin_data"/>
+    <TH1 name="jet2_pt_fin_data" source="/jets/jet2_pt_fin_data"/>
+    <TH1 name="jet1_eta_fin_data" source="/jets/jet1_eta_fin_data"/>
+    <TH1 name="jet2_eta_fin_data" source="/jets/jet2_eta_fin_data"/>
   </validation>
 <!--
   <validation type="dataReverse" file="./results_dataReverse.root" weight="1">
@@ -44,6 +48,10 @@
     <TH1 name="pt_Wprime_ttbar" source="/jets/pt_Wprime_ttbar"/>
     <TH1 name="pt_top_ttbar" source="/jets/pt_top_ttbar"/>
     <TH1 name="pt_b_ttbar" source="/jets/pt_b_ttbar"/>
+    <TH1 name="jet1_pt_fin_ttbar" source="/jets/jet1_pt_fin_ttbar"/>
+    <TH1 name="jet2_pt_fin_ttbar" source="/jets/jet2_pt_fin_ttbar"/>
+    <TH1 name="jet1_eta_fin_ttbar" source="/jets/jet1_eta_fin_ttbar"/>
+    <TH1 name="jet2_eta_fin_ttbar" source="/jets/jet2_eta_fin_ttbar"/>
   </validation>
 
   <validation type="Wjets" file="./results_WJets.root" weight="MCScaleFactors.txt:Wjets">
@@ -62,6 +70,10 @@
     <TH1 name="pt_Wprime_WJets" source="/jets/pt_Wprime_WJets"/>
     <TH1 name="pt_top_WJets" source="/jets/pt_top_WJets"/>
     <TH1 name="pt_b_WJets" source="/jets/pt_b_WJets"/>
+    <TH1 name="jet1_pt_fin_WJets" source="/jets/jet1_pt_fin_WJets"/>
+    <TH1 name="jet2_pt_fin_WJets" source="/jets/jet2_pt_fin_WJets"/>
+    <TH1 name="jet1_eta_fin_WJets" source="/jets/jet1_eta_fin_WJets"/>
+    <TH1 name="jet2_eta_fin_WJets" source="/jets/jet2_eta_fin_WJets"/>
   </validation>
 
   <validation type="Zjets" file="./results_ZJets.root" weight="MCScaleFactors.txt:Zjets">
@@ -80,6 +92,10 @@
     <TH1 name="pt_Wprime_ZJets" source="/jets/pt_Wprime_ZJets"/>
     <TH1 name="pt_top_ZJets" source="/jets/pt_top_ZJets"/>
     <TH1 name="pt_b_ZJets" source="/jets/pt_b_ZJets"/>
+    <TH1 name="jet1_pt_fin_ZJets" source="/jets/jet1_pt_fin_ZJets"/>
+    <TH1 name="jet2_pt_fin_ZJets" source="/jets/jet2_pt_fin_ZJets"/>
+    <TH1 name="jet1_eta_fin_ZJets" source="/jets/jet1_eta_fin_ZJets"/>
+    <TH1 name="jet2_eta_fin_ZJets" source="/jets/jet2_eta_fin_ZJets"/>
   </validation>
 
   <validation type="QCD" file="./results_QCD.root" weight="MCScaleFactors.txt:QCD">
@@ -98,6 +114,10 @@
     <TH1 name="pt_Wprime_QCD" source="/jets/pt_Wprime_QCD"/>
     <TH1 name="pt_top_QCD" source="/jets/pt_top_QCD"/>
     <TH1 name="pt_b_QCD" source="/jets/pt_b_QCD"/>
+    <TH1 name="jet1_pt_fin_QCD" source="/jets/jet1_pt_fin_QCD"/>
+    <TH1 name="jet2_pt_fin_QCD" source="/jets/jet2_pt_fin_QCD"/>
+    <TH1 name="jet1_eta_fin_QCD" source="/jets/jet1_eta_fin_QCD"/>
+    <TH1 name="jet2_eta_fin_QCD" source="/jets/jet2_eta_fin_QCD"/>
   </validation>
 
   <validation type="STtch" file="./results_STtch.root" weight="MCScaleFactors.txt:tch">
@@ -116,6 +136,10 @@
     <TH1 name="pt_Wprime_STtch" source="/jets/pt_Wprime_STtch"/>
     <TH1 name="pt_top_STtch" source="/jets/pt_top_STtch"/>
     <TH1 name="pt_b_STtch" source="/jets/pt_b_STtch"/>
+    <TH1 name="jet1_pt_fin_STtch" source="/jets/jet1_pt_fin_STtch"/>
+    <TH1 name="jet2_pt_fin_STtch" source="/jets/jet2_pt_fin_STtch"/>
+    <TH1 name="jet1_eta_fin_STtch" source="/jets/jet1_eta_fin_STtch"/>
+    <TH1 name="jet2_eta_fin_STtch" source="/jets/jet2_eta_fin_STtch"/>
   </validation>
 
   <validation type="STtch_bar" file="./results_STtch_bar.root" weight="MCScaleFactors.txt:tch_bar">
@@ -134,6 +158,10 @@
     <TH1 name="pt_Wprime_STtch_bar" source="/jets/pt_Wprime_STtch_bar"/>
     <TH1 name="pt_top_STtch_bar" source="/jets/pt_top_STtch_bar"/>
     <TH1 name="pt_b_STtch_bar" source="/jets/pt_b_STtch_bar"/>
+    <TH1 name="jet1_pt_fin_STtch_bar" source="/jets/jet1_pt_fin_STtch_bar"/>
+    <TH1 name="jet2_pt_fin_STtch_bar" source="/jets/jet2_pt_fin_STtch_bar"/>
+    <TH1 name="jet1_eta_fin_STtch_bar" source="/jets/jet1_eta_fin_STtch_bar"/>
+    <TH1 name="jet2_eta_fin_STtch_bar" source="/jets/jet2_eta_fin_STtch_bar"/>
   </validation>
 
   <validation type="STtWch" file="./results_STtWch.root" weight="MCScaleFactors.txt:tWch">
@@ -152,6 +180,10 @@
     <TH1 name="pt_Wprime_STtWch" source="/jets/pt_Wprime_STtWch"/>
     <TH1 name="pt_top_STtWch" source="/jets/pt_top_STtWch"/>
     <TH1 name="pt_b_STtWch" source="/jets/pt_b_STtWch"/>
+    <TH1 name="jet1_pt_fin_STtWch" source="/jets/jet1_pt_fin_STtWch"/>
+    <TH1 name="jet2_pt_fin_STtWch" source="/jets/jet2_pt_fin_STtWch"/>
+    <TH1 name="jet1_eta_fin_STtWch" source="/jets/jet1_eta_fin_STtWch"/>
+    <TH1 name="jet2_eta_fin_STtWch" source="/jets/jet2_eta_fin_STtWch"/>
   </validation>
 
   <validation type="STtWch_bar" file="./results_STtWch_bar.root" weight="MCScaleFactors.txt:tWch_bar">
@@ -170,6 +202,10 @@
     <TH1 name="pt_Wprime_STtWch_bar" source="/jets/pt_Wprime_STtWch_bar"/>
     <TH1 name="pt_top_STtWch_bar" source="/jets/pt_top_STtWch_bar"/>
     <TH1 name="pt_b_STtWch_bar" source="/jets/pt_b_STtWch_bar"/>
+    <TH1 name="jet1_pt_fin_STtWch_bar" source="/jets/jet1_pt_fin_STtWch_bar"/>
+    <TH1 name="jet2_pt_fin_STtWch_bar" source="/jets/jet2_pt_fin_STtWch_bar"/>
+    <TH1 name="jet1_eta_fin_STtWch_bar" source="/jets/jet1_eta_fin_STtWch_bar"/>
+    <TH1 name="jet2_eta_fin_STtWch_bar" source="/jets/jet2_eta_fin_STtWch_bar"/>
   </validation>
 
   <validation type="STsch" file="./results_STsch.root" weight="MCScaleFactors.txt:sch">
@@ -188,6 +224,10 @@
     <TH1 name="pt_Wprime_STsch" source="/jets/pt_Wprime_STsch"/>
     <TH1 name="pt_top_STsch" source="/jets/pt_top_STsch"/>
     <TH1 name="pt_b_STsch" source="/jets/pt_b_STsch"/>
+    <TH1 name="jet1_pt_fin_STsch" source="/jets/jet1_pt_fin_STsch"/>
+    <TH1 name="jet2_pt_fin_STsch" source="/jets/jet2_pt_fin_STsch"/>
+    <TH1 name="jet1_eta_fin_STsch" source="/jets/jet1_eta_fin_STsch"/>
+    <TH1 name="jet2_eta_fin_STsch" source="/jets/jet2_eta_fin_STsch"/>
   </validation>
 
   <validation type="STsch_bar" file="./results_STsch_bar.root" weight="MCScaleFactors.txt:sch_bar">
@@ -206,6 +246,10 @@
     <TH1 name="pt_Wprime_STsch_bar" source="/jets/pt_Wprime_STsch_bar"/>
     <TH1 name="pt_top_STsch_bar" source="/jets/pt_top_STsch_bar"/>
     <TH1 name="pt_b_STsch_bar" source="/jets/pt_b_STsch_bar"/>
+    <TH1 name="jet1_pt_fin_STsch_bar" source="/jets/jet1_pt_fin_STsch_bar"/>
+    <TH1 name="jet2_pt_fin_STsch_bar" source="/jets/jet2_pt_fin_STsch_bar"/>
+    <TH1 name="jet1_eta_fin_STsch_bar" source="/jets/jet1_eta_fin_STsch_bar"/>
+    <TH1 name="jet2_eta_fin_STsch_bar" source="/jets/jet2_eta_fin_STsch_bar"/>
   </validation>
 
   <validation type="WW" file="./results_WW.root" weight="MCScaleFactors.txt:WW">
@@ -224,6 +268,10 @@
     <TH1 name="pt_Wprime_WW" source="/jets/pt_Wprime_WW"/>
     <TH1 name="pt_top_WW" source="/jets/pt_top_WW"/>
     <TH1 name="pt_b_WW" source="/jets/pt_b_WW"/>
+    <TH1 name="jet1_pt_fin_WW" source="/jets/jet1_pt_fin_WW"/>
+    <TH1 name="jet2_pt_fin_WW" source="/jets/jet2_pt_fin_WW"/>
+    <TH1 name="jet1_eta_fin_WW" source="/jets/jet1_eta_fin_WW"/>
+    <TH1 name="jet2_eta_fin_WW" source="/jets/jet2_eta_fin_WW"/>
   </validation>
 
   <validation type="WZ" file="./results_WZ.root" weight="MCScaleFactors.txt:WZ">
@@ -242,6 +290,10 @@
     <TH1 name="pt_Wprime_WZ" source="/jets/pt_Wprime_WZ"/>
     <TH1 name="pt_top_WZ" source="/jets/pt_top_WZ"/>
     <TH1 name="pt_b_WZ" source="/jets/pt_b_WZ"/>
+    <TH1 name="jet1_pt_fin_WZ" source="/jets/jet1_pt_fin_WZ"/>
+    <TH1 name="jet2_pt_fin_WZ" source="/jets/jet2_pt_fin_WZ"/>
+    <TH1 name="jet1_eta_fin_WZ" source="/jets/jet1_eta_fin_WZ"/>
+    <TH1 name="jet2_eta_fin_WZ" source="/jets/jet2_eta_fin_WZ"/>
   </validation>
 
   <validation type="WpRH800" file="./results_WpRH800.root" weight="MCScaleFactors.txt:WpRH800">
@@ -260,6 +312,10 @@
     <TH1 name="pt_Wprime_WpRH800" source="/jets/pt_Wprime_WpRH800"/>
     <TH1 name="pt_top_WpRH800" source="/jets/pt_top_WpRH800"/>
     <TH1 name="pt_b_WpRH800" source="/jets/pt_b_WpRH800"/>
+    <TH1 name="jet1_pt_fin_WpRH800" source="/jets/jet1_pt_fin_WpRH800"/>
+    <TH1 name="jet2_pt_fin_WpRH800" source="/jets/jet2_pt_fin_WpRH800"/>
+    <TH1 name="jet1_eta_fin_WpRH800" source="/jets/jet1_eta_fin_WpRH800"/>
+    <TH1 name="jet2_eta_fin_WpRH800" source="/jets/jet2_eta_fin_WpRH800"/>
   </validation>
 
   <validation type="WpRH1000" file="./results_WpRH1000.root" weight="MCScaleFactors.txt:WpRH1000">
@@ -278,6 +334,10 @@
     <TH1 name="pt_Wprime_WpRH1000" source="/jets/pt_Wprime_WpRH1000"/>
     <TH1 name="pt_top_WpRH1000" source="/jets/pt_top_WpRH1000"/>
     <TH1 name="pt_b_WpRH1000" source="/jets/pt_b_WpRH1000"/>
+    <TH1 name="jet1_pt_fin_WpRH1000" source="/jets/jet1_pt_fin_WpRH1000"/>
+    <TH1 name="jet2_pt_fin_WpRH1000" source="/jets/jet2_pt_fin_WpRH1000"/>
+    <TH1 name="jet1_eta_fin_WpRH1000" source="/jets/jet1_eta_fin_WpRH1000"/>
+    <TH1 name="jet2_eta_fin_WpRH1000" source="/jets/jet2_eta_fin_WpRH1000"/>
   </validation>
 
   <validation type="WpRH1200" file="./results_WpRH1200.root" weight="MCScaleFactors.txt:WpRH1200">
@@ -296,6 +356,10 @@
     <TH1 name="pt_Wprime_WpRH1200" source="/jets/pt_Wprime_WpRH1200"/>
     <TH1 name="pt_top_WpRH1200" source="/jets/pt_top_WpRH1200"/>
     <TH1 name="pt_b_WpRH1200" source="/jets/pt_b_WpRH1200"/>
+    <TH1 name="jet1_pt_fin_WpRH1200" source="/jets/jet1_pt_fin_WpRH1200"/>
+    <TH1 name="jet2_pt_fin_WpRH1200" source="/jets/jet2_pt_fin_WpRH1200"/>
+    <TH1 name="jet1_eta_fin_WpRH1200" source="/jets/jet1_eta_fin_WpRH1200"/>
+    <TH1 name="jet2_eta_fin_WpRH1200" source="/jets/jet2_eta_fin_WpRH1200"/>
   </validation>
 
   <validation type="Wp1500" file="./results_Wprime_1500.root" weight="MCScaleFactors.txt:WpRH1500">
@@ -314,6 +378,10 @@
     <TH1 name="pt_Wprime_WpRH1500" source="/jets/pt_Wprime_WpRH1500"/>
     <TH1 name="pt_top_WpRH1500" source="/jets/pt_top_WpRH1500"/>
     <TH1 name="pt_b_WpRH1500" source="/jets/pt_b_WpRH1500"/>
+    <TH1 name="jet1_pt_fin_WpRH1500" source="/jets/jet1_pt_fin_WpRH1500"/>
+    <TH1 name="jet2_pt_fin_WpRH1500" source="/jets/jet2_pt_fin_WpRH1500"/>
+    <TH1 name="jet1_eta_fin_WpRH1500" source="/jets/jet1_eta_fin_WpRH1500"/>
+    <TH1 name="jet2_eta_fin_WpRH1500" source="/jets/jet2_eta_fin_WpRH1500"/>
   </validation>
 
   <validation type="Wp2000" file="./results_WpRH2000.root" weight="MCScaleFactors.txt:WpRH2000">
@@ -332,6 +400,10 @@
     <TH1 name="pt_Wprime_WpRH2000" source="/jets/pt_Wprime_WpRH2000"/>
     <TH1 name="pt_top_WpRH2000" source="/jets/pt_top_WpRH2000"/>
     <TH1 name="pt_b_WpRH2000" source="/jets/pt_b_WpRH2000"/>
+    <TH1 name="jet1_pt_fin_WpRH2000" source="/jets/jet1_pt_fin_WpRH2000"/>
+    <TH1 name="jet2_pt_fin_WpRH2000" source="/jets/jet2_pt_fin_WpRH2000"/>
+    <TH1 name="jet1_eta_fin_WpRH2000" source="/jets/jet1_eta_fin_WpRH2000"/>
+    <TH1 name="jet2_eta_fin_WpRH2000" source="/jets/jet2_eta_fin_WpRH2000"/>
   </validation>
 
   <additionArray name="ST" title="ST">
@@ -443,6 +515,62 @@
     <superimposeItem name="jet2eta_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
     <superimposeItem name="jet2eta_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
     <superimposeItem name="jet2eta_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="jet1_pt_fin" title="jet1_pt_fin" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true" SetLogy="true">
+    <superimposeItem name="jet1_pt_fin_data" color="top" legend="Data"/>
+    <superimposeItem name="jet1_pt_fin_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="jet1_pt_fin_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="jet1_pt_fin_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="jet1_pt_fin_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="jet1_pt_fin_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
+    <superimposeItem name="jet1_pt_fin_ST" color="top" legend="ST"/>
+    <superimposeItem name="jet1_pt_fin_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="jet1_pt_fin_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="jet1_pt_fin_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="jet1_pt_fin_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="jet2_pt_fin" title="jet2_pt_fin" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true" SetLogy="true">
+    <superimposeItem name="jet2_pt_fin_data" color="top" legend="Data"/>
+    <superimposeItem name="jet2_pt_fin_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="jet2_pt_fin_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="jet2_pt_fin_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="jet2_pt_fin_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="jet2_pt_fin_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
+    <superimposeItem name="jet2_pt_fin_ST" color="top" legend="ST"/>
+    <superimposeItem name="jet2_pt_fin_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="jet2_pt_fin_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="jet2_pt_fin_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="jet2_pt_fin_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="jet1_eta_fin" title="jet1_eta_fin" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true" SetLogy="true">
+    <superimposeItem name="jet1_eta_fin_data" color="top" legend="Data"/>
+    <superimposeItem name="jet1_eta_fin_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="jet1_eta_fin_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="jet1_eta_fin_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="jet1_eta_fin_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="jet1_eta_fin_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
+    <superimposeItem name="jet1_eta_fin_ST" color="top" legend="ST"/>
+    <superimposeItem name="jet1_eta_fin_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="jet1_eta_fin_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="jet1_eta_fin_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="jet1_eta_fin_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+  </superimpose>
+
+  <superimpose name="jet2_eta_fin" title="jet2_eta_fin" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true" SetLogy="true">
+    <superimposeItem name="jet2_eta_fin_data" color="top" legend="Data"/>
+    <superimposeItem name="jet2_eta_fin_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="jet2_eta_fin_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="jet2_eta_fin_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="jet2_eta_fin_QCD" color="top" legend="QCD"/>
+    <superimposeItem name="jet2_eta_fin_dataReverse" color="top" legend="QCD" Normalize="true" SF="Yields__MET.txt:2jetMM" Error="0.45"/> -->
+    <superimposeItem name="jet2_eta_fin_ST" color="top" legend="ST"/>
+    <superimposeItem name="jet2_eta_fin_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="jet2_eta_fin_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="jet2_eta_fin_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="jet2_eta_fin_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
   <superimpose name="Njets" title="Njets" YTitle="Events" Fill="true" Weight="true" Lumi="3558.0" Stack="true" SubBanner="#mu+jets" PlotDiff="true">

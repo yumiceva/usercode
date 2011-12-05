@@ -264,6 +264,40 @@ void runAnalysis(TString sample="all",bool NoGUI=false, bool getLogs=false)
       mc_ttbar->Process("Analyzer.C+","sample=ttbar");
     }
   if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
+  if (sample=="ttbarM"||sample=="all")
+    {
+      TDSet *mc_ttbarm = new TDSet("top","*","/PATNtupleMaker");
+      mc_ttbarm->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v9_3/TTbar_matchup_Mu.root");
+      mc_ttbarm->Process("Analyzer.C+","sample=ttbarMatchup");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
+  if (sample=="ttbarM"||sample=="all")
+    {
+      TDSet *mc_ttbarm = new TDSet("top","*","/PATNtupleMaker");
+      mc_ttbarm->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v9_3/TTbar_matchdown_Mu.root");
+      mc_ttbarm->Process("Analyzer.C+","sample=ttbarMatchdown");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
+  if (sample=="ttbarQ"||sample=="all")
+    {
+      TDSet *mc_ttbarm = new TDSet("top","*","/PATNtupleMaker");
+      mc_ttbarm->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v9_3/TTbar_scaleup_Mu.root");
+      mc_ttbarm->Process("Analyzer.C+","sample=ttbarScaleup");
+    }
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
+
+  if (sample=="ttbarQ"||sample=="all")
+    {
+      TDSet *mc_ttbarm = new TDSet("top","*","/PATNtupleMaker");
+      mc_ttbarm->Add("/uscms_data/d3/ttmuj/Documents/NtupleMaker/MC/v9_3/TTbar_scaledown_Mu.root");
+      mc_ttbarm->Process("Analyzer.C+","sample=ttbarScaledown");
+    }
+
+
+  if (NoGUI) p->SetBit(TProof::kUsingSessionGui);
   if (sample=="MC"||sample=="WJets"||sample=="all")
     {
       TDSet *mc_Wjets = new TDSet("top","*","/PATNtupleMaker");

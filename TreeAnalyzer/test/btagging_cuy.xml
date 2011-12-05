@@ -126,6 +126,17 @@
     <TH1 name="pt_btag_l_WpRH1000" source="/jets/jet_pt_btag_l_WpRH1000"/>
   </validation>
 
+  <validation type="WpRH1600" file="./results_WpRH1600.root" weight="MCScaleFactors.txt:WpRH1600">
+    <TH1 name="pt_WpRH1600" source="/jets/jet_pt_WpRH1600"/>
+    <TH1 name="pt_b_WpRH1600" source="/jets/jet_pt_b_WpRH1600"/>
+    <TH1 name="pt_c_WpRH1600" source="/jets/jet_pt_c_WpRH1600"/>
+    <TH1 name="pt_l_WpRH1600" source="/jets/jet_pt_l_WpRH1600"/>
+    <TH1 name="pt_btag_WpRH1600" source="/jets/jet_pt_btag_WpRH1600"/>
+    <TH1 name="pt_btag_b_WpRH1600" source="/jets/jet_pt_btag_b_WpRH1600"/>
+    <TH1 name="pt_btag_c_WpRH1600" source="/jets/jet_pt_btag_c_WpRH1600"/>
+    <TH1 name="pt_btag_l_WpRH1600" source="/jets/jet_pt_btag_l_WpRH1600"/>
+  </validation>
+
   <additionArray name="ST" title="ST">
     <additionArrayItem array="STtch"/>
     <additionArrayItem array="STtWch"/>
@@ -147,6 +158,7 @@
 <!--  <divide name="btag_eff_b_QCD" numerator="pt_btag_b_QCD" denominator="pt_b_QCD" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/> -->
   <divide name="btag_eff_b_WpRH800" numerator="pt_btag_b_WpRH800" denominator="pt_b_WpRH800" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
   <divide name="btag_eff_b_WpRH1000" numerator="pt_btag_b_WpRH1000" denominator="pt_b_WpRH1000" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
+  <divide name="btag_eff_b_WpRH1600" numerator="pt_btag_b_WpRH1600" denominator="pt_b_WpRH1600" DivideOption="B" Option="e1" YTitle="b-tag Efficiency" XTitle="jet p_{T} [GeV]"/>
 
   <superimpose name="btag_eff_b" title="btag_eff_b" Stack="false" YTitle="b-tag Efficiency" SubBanner="#mu+jets N_{jets}#geq2">
     <superimposeItem name="btag_eff_b_ttbar" color="2" legend="ttbar"/>
@@ -156,6 +168,7 @@
     <superimposeItem name="btag_eff_b_ST" color="6" legend="ST"/>
     <superimposeItem name="btag_eff_b_WpRH800" color="7" legend="W' 0.8TeV"/>
     <superimposeItem name="btag_eff_b_WpRH1000" color="8" legend="W' 1TeV"/>
+    <superimposeItem name="btag_eff_b_WpRH1600" color="3" legend="W' 1.6TeV"/>
   </superimpose>
 
   <divide name="btag_eff_c_ttbar" numerator="pt_btag_c_ttbar" denominator="pt_c_ttbar" DivideOption="B" Option="e1" YTitle="c-tag Efficiency" XTitle="jet p_{T} [GeV]"/>

@@ -12,6 +12,8 @@
     <TH1 name="MET_2jet_data" source="/MET/MET_2jet_data"/>
     <TH1 name="top_1btag_data" source="/mass/top_1btag_data"/>
     <TH1 name="LepWmass_data" source="/MET/LepWmass_data"/>
+    <TH1 name="Mt_fin_data" source="/mass/Mt_fin_data"/>
+    <TH1 name="MET_fin_data" source="/MET/MET_fin_data"/>
   </validation>
 
   <validation type="dataQCD2" file="./results_dataQCD2.root" weight="1.28205128205128205e-04">
@@ -31,6 +33,8 @@
     <TH1 name="MET_2jet_ttbar" source="/MET/MET_2jet_ttbar"/>
     <TH1 name="top_1btag_ttbar" source="/mass/top_1btag_ttbar"/>
     <TH1 name="LepWmass_ttbar" source="/MET/LepWmass_ttbar"/>
+    <TH1 name="Mt_fin_ttbar" source="/mass/Mt_fin_ttbar"/>
+    <TH1 name="MET_fin_ttbar" source="/MET/MET_fin_ttbar"/>
   </validation>
 
   <validation type="Wjets" file="./results_WJets.root" weight="MCScaleFactors.txt:Wjets">
@@ -51,6 +55,8 @@
     <TH1 name="Wprime_1btag_cc_WJets" source="/mass/Wprime_1btag_cc_WJets"/>
     <TH1 name="top_1btag_WJets" source="/mass/top_1btag_WJets"/>
     <TH1 name="LepWmass_WJets" source="/MET/LepWmass_WJets"/>
+    <TH1 name="Mt_fin_WJets" source="/mass/Mt_fin_WJets"/>
+    <TH1 name="MET_fin_WJets" source="/MET/MET_fin_WJets"/>
   </validation>
 
   <validation type="Zjets" file="./results_ZJets.root" weight="MCScaleFactors.txt:Zjets">
@@ -65,6 +71,8 @@
     <TH1 name="MET_2jet_ZJets" source="/MET/MET_2jet_ZJets"/>
     <TH1 name="top_1btag_ZJets" source="/mass/top_1btag_ZJets"/>
     <TH1 name="LepWmass_ZJets" source="/MET/LepWmass_ZJets"/>
+    <TH1 name="Mt_fin_ZJets" source="/mass/Mt_fin_ZJets"/>
+    <TH1 name="MET_fin_ZJets" source="/MET/MET_fin_ZJets"/>
   </validation>
 
   <validation type="QCD" file="./results_QCD.root" weight="MCScaleFactors.txt:QCD">
@@ -79,6 +87,8 @@
     <TH1 name="MET_2jet_QCD" source="/MET/MET_2jet_QCD"/>
     <TH1 name="top_1btag_QCD" source="/mass/top_1btag_QCD"/>
     <TH1 name="LepWmass_QCD" source="/MET/LepWmass_QCD"/>
+    <TH1 name="Mt_fin_QCD" source="/mass/Mt_fin_QCD"/>
+    <TH1 name="MET_fin_QCD" source="/MET/MET_fin_QCD"/>
   </validation>
 
   <validation type="STtch" file="./results_STtch.root" weight="MCScaleFactors.txt:tch">
@@ -93,6 +103,8 @@
     <TH1 name="MET_2jet_STtch" source="/MET/MET_2jet_STtch"/>
     <TH1 name="top_1btag_STtch" source="/mass/top_1btag_STtch"/>
     <TH1 name="LepWmass_STtch" source="/MET/LepWmass_STtch"/>
+    <TH1 name="Mt_fin_STtch" source="/mass/Mt_fin_STtch"/>
+    <TH1 name="MET_fin_STtch" source="/MET/MET_fin_STtch"/>
   </validation>
 
   <validation type="STtch_bar" file="./results_STtch_bar.root" weight="MCScaleFactors.txt:tch_bar">
@@ -107,6 +119,8 @@
     <TH1 name="MET_2jet_STtch_bar" source="/MET/MET_2jet_STtch_bar"/>
     <TH1 name="top_1btag_STtch_bar" source="/mass/top_1btag_STtch_bar"/>
     <TH1 name="LepWmass_STtch_bar" source="/MET/LepWmass_STtch_bar"/>
+    <TH1 name="Mt_fin_STtch_bar" source="/mass/Mt_fin_STtch_bar"/>
+    <TH1 name="MET_fin_STtch_bar" source="/MET/MET_fin_STtch_bar"/>
   </validation>
 
   <validation type="STtWch" file="./results_STtWch.root" weight="MCScaleFactors.txt:tWch">
@@ -121,6 +135,8 @@
     <TH1 name="MET_2jet_STtWch" source="/MET/MET_2jet_STtWch"/>
     <TH1 name="top_1btag_STtWch" source="/mass/top_1btag_STtWch"/>
     <TH1 name="LepWmass_STtWch" source="/MET/LepWmass_STtWch"/>
+    <TH1 name="Mt_fin_STtWch" source="/mass/Mt_fin_STtWch"/>
+    <TH1 name="MET_fin_STtWch" source="/MET/MET_fin_STtWch"/>
   </validation>
 
   <validation type="STtWch_bar" file="./results_STtWch_bar.root" weight="MCScaleFactors.txt:tWch_bar">
@@ -135,6 +151,8 @@
     <TH1 name="MET_2jet_STtWch_bar" source="/MET/MET_2jet_STtWch_bar"/>
     <TH1 name="top_1btag_STtWch_bar" source="/mass/top_1btag_STtWch_bar"/>
     <TH1 name="LepWmass_STtWch_bar" source="/MET/LepWmass_STtWch_bar"/>
+    <TH1 name="Mt_fin_STtWch_bar" source="/mass/Mt_fin_STtWch_bar"/>
+    <TH1 name="MET_fin_STtWch_bar" source="/MET/MET_fin_STtWch_bar"/>
   </validation>
 
   <validation type="STsch" file="./results_STsch.root" weight="MCScaleFactors.txt:sch">
@@ -149,6 +167,8 @@
     <TH1 name="MET_2jet_STsch" source="/MET/MET_2jet_STsch"/>
     <TH1 name="top_1btag_STsch" source="/mass/top_1btag_STsch"/>
     <TH1 name="LepWmass_STsch" source="/MET/LepWmass_STsch"/>
+    <TH1 name="Mt_fin_STsch" source="/mass/Mt_fin_STsch"/>
+    <TH1 name="MET_fin_STsch" source="/MET/MET_fin_STsch"/>
   </validation>
 
   <validation type="STsch_bar" file="./results_STsch_bar.root" weight="MCScaleFactors.txt:sch_bar">
@@ -163,6 +183,8 @@
     <TH1 name="MET_2jet_STsch_bar" source="/MET/MET_2jet_STsch_bar"/>
     <TH1 name="top_1btag_STsch_bar" source="/mass/top_1btag_STsch_bar"/>
     <TH1 name="LepWmass_STsch_bar" source="/MET/LepWmass_STsch_bar"/>
+    <TH1 name="Mt_fin_STsch_bar" source="/mass/Mt_fin_STsch_bar"/>
+    <TH1 name="MET_fin_STsch_bar" source="/MET/MET_fin_STsch_bar"/>
   </validation>
 
   <validation type="WW" file="./results_WW.root" weight="MCScaleFactors.txt:WW">
@@ -177,6 +199,8 @@
     <TH1 name="MET_2jet_WW" source="/MET/MET_2jet_WW"/>
     <TH1 name="top_1btag_WW" source="/mass/top_1btag_WW"/>
     <TH1 name="LepWmass_WW" source="/MET/LepWmass_WW"/>
+    <TH1 name="Mt_fin_WW" source="/mass/Mt_fin_WW"/>
+    <TH1 name="MET_fin_WW" source="/MET/MET_fin_WW"/>
   </validation>
 
   <validation type="WZ" file="./results_WZ.root" weight="MCScaleFactors.txt:WZ">
@@ -191,6 +215,8 @@
     <TH1 name="MET_2jet_WZ" source="/MET/MET_2jet_WZ"/>
     <TH1 name="top_1btag_WZ" source="/mass/top_1btag_WZ"/>
     <TH1 name="LepWmass_WZ" source="/MET/LepWmass_WZ"/>
+    <TH1 name="Mt_fin_WZ" source="/mass/Mt_fin_WZ"/>
+    <TH1 name="MET_fin_WZ" source="/MET/MET_fin_WZ"/>
   </validation>
 
   <validation type="WpRH800" file="./results_WpRH800.root" weight="MCScaleFactors.txt:WpRH800">
@@ -205,6 +231,8 @@
     <TH1 name="MET_2jet_WpRH800" source="/MET/MET_2jet_WpRH800"/>
     <TH1 name="top_1btag_WpRH800" source="/mass/top_1btag_WpRH800"/>
     <TH1 name="LepWmass_WpRH800" source="/MET/LepWmass_WpRH800"/>
+    <TH1 name="Mt_fin_WpRH800" source="/mass/Mt_fin_WpRH800"/>
+    <TH1 name="MET_fin_WpRH800" source="/MET/MET_fin_WpRH800"/>
   </validation>
 
   <validation type="WpRH900" file="./results_WpRH900.root" weight="MCScaleFactors.txt:WpRH900">
@@ -219,6 +247,8 @@
     <TH1 name="MET_2jet_WpRH900" source="/MET/MET_2jet_WpRH900"/>
     <TH1 name="top_1btag_WpRH900" source="/mass/top_1btag_WpRH900"/>
     <TH1 name="LepWmass_WpRH900" source="/MET/LepWmass_WpRH900"/>
+    <TH1 name="Mt_fin_WpRH900" source="/mass/Mt_fin_WpRH900"/>
+    <TH1 name="MET_fin_WpRH900" source="/MET/MET_fin_WpRH900"/>
   </validation>
 
   <validation type="WpRH1000" file="./results_WpRH1000.root" weight="MCScaleFactors.txt:WpRH1000">
@@ -233,6 +263,8 @@
     <TH1 name="MET_2jet_WpRH1000" source="/MET/MET_2jet_WpRH1000"/>
     <TH1 name="top_1btag_WpRH1000" source="/mass/top_1btag_WpRH1000"/>
     <TH1 name="LepWmass_WpRH1000" source="/MET/LepWmass_WpRH1000"/>
+    <TH1 name="Mt_fin_WpRH1000" source="/mass/Mt_fin_WpRH1000"/>
+    <TH1 name="MET_fin_WpRH1000" source="/MET/MET_fin_WpRH1000"/>
   </validation>
 
   <validation type="WpRH1100" file="./results_WpRH1100.root" weight="MCScaleFactors.txt:WpRH1100">
@@ -247,6 +279,8 @@
     <TH1 name="MET_2jet_WpRH1100" source="/MET/MET_2jet_WpRH1100"/>
     <TH1 name="top_1btag_WpRH1100" source="/mass/top_1btag_WpRH1100"/>
     <TH1 name="LepWmass_WpRH1100" source="/MET/LepWmass_WpRH1100"/>
+    <TH1 name="Mt_fin_WpRH1100" source="/mass/Mt_fin_WpRH1100"/>
+    <TH1 name="MET_fin_WpRH1100" source="/MET/MET_fin_WpRH1100"/>
   </validation>
 
   <validation type="WpRH1200" file="./results_WpRH1200.root" weight="MCScaleFactors.txt:WpRH1200">
@@ -261,6 +295,8 @@
     <TH1 name="MET_2jet_WpRH1200" source="/MET/MET_2jet_WpRH1200"/>
     <TH1 name="top_1btag_WpRH1200" source="/mass/top_1btag_WpRH1200"/>
     <TH1 name="LepWmass_WpRH1200" source="/MET/LepWmass_WpRH1200"/>
+    <TH1 name="Mt_fin_WpRH1200" source="/mass/Mt_fin_WpRH1200"/>
+    <TH1 name="MET_fin_WpRH1200" source="/MET/MET_fin_WpRH1200"/>
   </validation>
 
   <validation type="WpRH1300" file="./results_WpRH1300.root" weight="MCScaleFactors.txt:WpRH1300">
@@ -275,6 +311,8 @@
     <TH1 name="MET_2jet_WpRH1300" source="/MET/MET_2jet_WpRH1300"/>
     <TH1 name="top_1btag_WpRH1300" source="/mass/top_1btag_WpRH1300"/>
     <TH1 name="LepWmass_WpRH1300" source="/MET/LepWmass_WpRH1300"/>
+    <TH1 name="Mt_fin_WpRH1300" source="/mass/Mt_fin_WpRH1300"/>
+    <TH1 name="MET_fin_WpRH1300" source="/MET/MET_fin_WpRH1300"/>
   </validation>
 
   <validation type="WpRH1400" file="./results_WpRH1400.root" weight="MCScaleFactors.txt:WpRH1400">
@@ -289,6 +327,8 @@
     <TH1 name="MET_2jet_WpRH1400" source="/MET/MET_2jet_WpRH1400"/>
     <TH1 name="top_1btag_WpRH1400" source="/mass/top_1btag_WpRH1400"/>
     <TH1 name="LepWmass_WpRH1400" source="/MET/LepWmass_WpRH1400"/>
+    <TH1 name="Mt_fin_WpRH1400" source="/mass/Mt_fin_WpRH1400"/>
+    <TH1 name="MET_fin_WpRH1400" source="/MET/MET_fin_WpRH1400"/>
   </validation>
 
   <validation type="WpRH1500" file="./results_WpRH1500.root" weight="MCScaleFactors.txt:WpRH1500">
@@ -303,6 +343,8 @@
     <TH1 name="MET_2jet_WpRH1500" source="/MET/MET_2jet_WpRH1500"/>
     <TH1 name="top_1btag_WpRH1500" source="/mass/top_1btag_WpRH1500"/>
     <TH1 name="LepWmass_WpRH1500" source="/MET/LepWmass_WpRH1500"/>
+    <TH1 name="Mt_fin_WpRH1500" source="/mass/Mt_fin_WpRH1500"/>
+    <TH1 name="MET_fin_WpRH1500" source="/MET/MET_fin_WpRH1500"/>
   </validation>
 
   <validation type="WpRH1600" file="./results_WpRH1600.root" weight="MCScaleFactors.txt:WpRH1600">
@@ -317,6 +359,8 @@
     <TH1 name="MET_2jet_WpRH1600" source="/MET/MET_2jet_WpRH1600"/>
     <TH1 name="top_1btag_WpRH1600" source="/mass/top_1btag_WpRH1600"/>
     <TH1 name="LepWmass_WpRH1600" source="/MET/LepWmass_WpRH1600"/>
+    <TH1 name="Mt_fin_WpRH1600" source="/mass/Mt_fin_WpRH1600"/>
+    <TH1 name="MET_fin_WpRH1600" source="/MET/MET_fin_WpRH1600"/>
   </validation>
 
   <validation type="WpRH2000" file="./results_WpRH2000.root" weight="MCScaleFactors.txt:WpRH2000">
@@ -331,6 +375,8 @@
     <TH1 name="MET_2jet_WpRH2000" source="/MET/MET_2jet_Wprime_2000"/>
     <TH1 name="top_1btag_WpRH2000" source="/mass/top_1btag_Wprime_2000"/>
     <TH1 name="LepWmass_WpRH2000" source="/MET/LepWmass_Wprime_2000"/>
+    <TH1 name="Mt_fin_WpRH2000" source="/mass/Mt_fin_WpRH2000"/>
+    <TH1 name="MET_fin_WpRH2000" source="/MET/MET_fin_WpRH2000"/>
   </validation>
 
 <!--
@@ -485,6 +531,21 @@
     <superimposeItem name="Mt_2jet_Wprime_2000" color="1" legend="W' 2TeV" NoStack="true"/> -->
   </superimpose>
 
+  <superimpose name="Mt_fin" title="Mt_fin" YTitle="Events" Fill="true" Weight="true" Lumi="3558." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="Mt_fin_data" color="top" legend="Data"/>
+    <superimposeItem name="Mt_fin_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="Mt_fin_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="Mt_fin_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="Mt_fin_QCD" color="top" legend="QCD"/> -->
+    <superimposeItem name="Mt_fin_ST" color="top" legend="ST"/>
+    <superimposeItem name="Mt_fin_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="Mt_fin_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="Mt_fin_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="Mt_fin_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+<!--    <superimposeItem name="Mt_fin_WpRH1500" color="1" legend="W' 1.5TeV" NoStack="true"/>
+    <superimposeItem name="Mt_fin_Wprime_2000" color="1" legend="W' 2TeV" NoStack="true"/> -->
+  </superimpose>
+
   <superimpose name="dijet" title="dijet" YTitle="Events" Fill="true" Weight="true" Lumi="3558." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="dijet_data" color="top" legend="Data"/>
     <superimposeItem name="dijet_WJets" color="top" legend="Wjets"/>
@@ -561,6 +622,19 @@
     <superimposeItem name="MET_2jet_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
+  <superimpose name="MET_fin" title="MET_fin" YTitle="Events" Fill="true" Weight="true" Lumi="3558." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
+    <superimposeItem name="MET_fin_data" color="top" legend="Data"/>
+    <superimposeItem name="MET_fin_WJets" color="top" legend="Wjets"/>
+    <superimposeItem name="MET_fin_ZJets" color="top" legend="Zjets"/>
+    <superimposeItem name="MET_fin_Dibosons" color="top" legend="Dibosons"/>
+<!--    <superimposeItem name="MET_fin_QCD" color="top" legend="QCD"/> -->
+    <superimposeItem name="MET_fin_ST" color="top" legend="ST"/>
+    <superimposeItem name="MET_fin_ttbar" color="top" legend="TTbar"/>
+    <superimposeItem name="MET_fin_WpRH800" color="1" legend="W' 0.8TeV" NoStack="true"/>
+    <superimposeItem name="MET_fin_WpRH1000" color="1" legend="W' 1TeV" NoStack="true"/>
+    <superimposeItem name="MET_fin_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
+  </superimpose>
+
   <superimpose name="Wprime" title="Wprime" YTitle="Events" Fill="true" Weight="true" Lumi="3558." Stack="true" SubBanner="#mu+jets N_{jets}#geq2" PlotDiff="true">
     <superimposeItem name="Wprime_data" color="top" legend="Data"/>
     <superimposeItem name="Wprime_WJets" color="top" legend="Wjets"/>
@@ -587,7 +661,7 @@
     <superimposeItem name="Wprime_0btag_WpRH1200" color="1" legend="W' 1.2TeV" NoStack="true"/>
   </superimpose>
 
-  <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="3558." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true" doKS="true">
+  <superimpose name="Wprime_1btag" title="Wprime_1btag" YTitle="Events" Fill="true" Weight="true" Lumi="3558." Stack="true" SubBanner="#mu+jets N_{jets}#geq2 N_{btags}#geq1" PlotDiff="true" doKS="true" SetLogy="true" Minimum="0.1">
     <superimposeItem name="Wprime_1btag_data" color="top" legend="Data"/>
     <superimposeItem name="Wprime_1btag_WJets" color="top" legend="Wjets"/>
     <superimposeItem name="Wprime_1btag_ZJets" color="top" legend="Zjets"/>
