@@ -29,6 +29,9 @@ const Int_t kMaxtop = 1;
 #include <string>
 #include <vector>
 
+#include "LOTable.h"
+
+
 class Analyzer : public TSelector {
 
 private:
@@ -61,6 +64,16 @@ private:
   JetCorrectionUncertainty *fJECunc;
   TFile *fweightfile;
   TH1D  *f3Dweight;
+  LOTable bSF_table;
+  LOTable lSF_table;
+  LOTable beff_mc_table;
+  LOTable ceff_mc_table;
+  LOTable leff_mc_table;
+  TFile*   btagefffile;
+  TH2D*    f2Dttbarbtag;
+  TH2D*    f2Dttbarctag;
+  TH2D*    f2Dttbarlighttag;
+  TH2D*    f2Dwprimebtag;
 
 public :
 

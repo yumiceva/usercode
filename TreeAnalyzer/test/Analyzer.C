@@ -24,8 +24,9 @@
 //
 
 #include "Analyzer.h"
-#include "BTagWeight.h"
-//#include "Yumiceva/TreeAnalyzer/interface/JetCombinatorics.h"
+//#include "BTagWeight.h"
+#include "BTagSFUtil_lite.h"
+//y#include "Yumiceva/TreeAnalyzer/interface/JetCombinatorics.h"
 
 #include <TStyle.h>
 #include <TSystem.h>
@@ -151,7 +152,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    }
 
    // Get PU weights
-   TString weightfilename = "/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/Weight3D.root";
+   TString weightfilename = "/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/Weight3Dfinebin4p7.root"; //Weight3D.root";
    fweightfile =  new TFile(weightfilename,"read");
    f3Dweight = (TH1D*) fweightfile->Get(fpuhistogram);
 
@@ -232,6 +233,7 @@ void Analyzer::SlaveBegin(TTree * tree)
    hMET["LepWmass_topcut"] = new TH1F("LepWmass_topcut"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["LepWmassNoPt"]=new TH1F("LepWmassNoPt"+hname,"W#rightarrow#mu#nu Mass [GeV/c^{2}]",20, 0, 150);
    hMET["deltaPhi"] = new TH1F("deltaPhi"+hname,"#Delta #phi(#mu,MET)",50, -3.15, 3.15);
+   hMET["countPz"] = new TH1F("countPz"+hname,"count Pz",3,1,4);
 
    hM["WMt"] = new TH1F("Mt"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
    hM["WMt_2jet"] = new TH1F("Mt_2jet"+hname,"M_{T}(W) [GeV/c^{2}]", 50, 0, 300);
@@ -400,6 +402,22 @@ void Analyzer::SlaveBegin(TTree * tree)
 
    // For JEC uncertainties
    if (fdoJECunc) fJECunc = new JetCorrectionUncertainty("/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/GR_R_42_V19_AK5PF_Uncertainty.txt");
+
+   // LOT for b-tagging SF
+   bSF_table.LoadTable("/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/Table_CSVM_beff_SF.txt");
+   lSF_table.LoadTable("/uscms/home/yumiceva/work/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/Table_CSVM_lmistag_SF.txt");
+
+   //btag efficiency file and 2D histogram
+   TString btagefffilename = "/uscms/home/weizou/work/NtupleMaker/CMSSW_4_2_4/src/Yumiceva/TreeAnalyzer/test/BtagEff.root";
+   btagefffile = new TFile(btagefffilename,"read");
+   //ttbar
+   f2Dttbarbtag = (TH2D*) btagefffile->Get("ttbar_csv_btageff");
+   f2Dttbarctag = (TH2D*) btagefffile->Get("ttbar_csv_ctageff");
+   f2Dttbarlighttag = (TH2D*) btagefffile->Get("ttbar_csv_lighttageff");
+   //wprime
+   f2Dwprimebtag = (TH2D*) btagefffile->Get("wprime_csv_btageff");
+   //f2Dwprimectag = (TH2D*) btagefffile->Get("wprime_csv_ctageff");
+   //f2Dwprimelighttag = (TH2D*) btagefffile->Get("wprime_csv_lighttageff");
 
 }
 
@@ -684,7 +702,7 @@ Bool_t Analyzer::Process(Long64_t entry)
   double Wpy = p4lepton.Py() + p4MET.Py();
   double WMt = sqrt(Wpt*Wpt-Wpx*Wpx-Wpy*Wpy);
 
-  if ( WMt <= 40. ) return kTRUE; 
+  //if ( WMt <= 40. ) return kTRUE; // REMOVED
   cutmap["MET"] += PUweight;
 
   if (fVerbose) cout << "pass W MT cut " << endl;
@@ -701,13 +719,21 @@ Bool_t Analyzer::Process(Long64_t entry)
     }
 
   double pzNu = fzCalculator.Calculate();
+  double pzOtherNu = fzCalculator.getOther();
+  if (fabs(pzNu) > fabs(pzOtherNu) ) {
+    double tmppzNu = pzNu;
+    double tmppzOtherNu = pzOtherNu;
+    pzNu = tmppzOtherNu;
+    pzOtherNu = tmppzNu;
+  }
+
   p4Nu = TLorentzVector();
   p4OtherNu = TLorentzVector();
 
   p4Nu.SetPxPyPzE(p4MET.Px(), p4MET.Py(), pzNu, sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzNu*pzNu));
   //print "pzNu = " +str(pzNu)
   //print "p4Nu =("+str(p4Nu.Px())+","+str(p4Nu.Py())+","+str(p4Nu.Pz())+","+str(p4Nu.E())
-  double pzOtherNu = fzCalculator.getOther();
+  //double pzOtherNu = fzCalculator.getOther();
   p4OtherNu.SetPxPyPzE( p4MET.Px(), p4MET.Py(),pzOtherNu,sqrt(p4MET.Px()*p4MET.Px()+p4MET.Py()*p4MET.Py()+pzOtherNu*pzOtherNu));
 
   double WmassNoPt = (p4Nu+p4lepton).M();
@@ -754,6 +780,8 @@ Bool_t Analyzer::Process(Long64_t entry)
   int njets = 0;
   map< string, vector<float> > bdisc;
   map< string, vector<bool> >  isTagb;
+  map< string, vector<bool> >  isTagbUp;
+  map< string, vector<bool> >  isTagbDown;
   vector<int> listflavor;
 
   for ( size_t ijet=0; ijet < total_jets; ++ijet) 
@@ -771,7 +799,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 	else SF_JEC = 1.-jec_unc;
       }
 
-    if ( SF_JEC*jet.pt > 35. && fabs(jet.eta) < 2.4 && SF_JEC*jets[0].pt > 120. ) 
+    // was 35 for all, leading 120
+    if ( SF_JEC*jet.pt > 30. && fabs(jet.eta) < 2.4 && SF_JEC*jets[0].pt > 100. && SF_JEC*jets[1].pt > 40. ) 
       {
 	if (fVerbose) cout << " jet pt " << SF_JEC*jet.pt << endl;
 	
@@ -826,6 +855,12 @@ Bool_t Analyzer::Process(Long64_t entry)
 
   if (njets > 1 )
     {
+
+      // logging
+      TString outstring = "cut1 run: ";                                                                                                                                                                           
+      outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event));
+      //Info("Process",outstring);   
+
       // count partons
       int number_of_b = 0;
       int number_of_c = 0;
@@ -841,17 +876,120 @@ Bool_t Analyzer::Process(Long64_t entry)
       float SFb_2tag_syst[2] = {1.};
       //float SFb_1tag_systhighpt[2] = {1.};
 
+      //vector<BTagWeight::JetInfo> j;
+      //vector<BTagWeight::JetInfo> jup;
+      //vector<BTagWeight::JetInfo> jdown;
+      
       for ( size_t kk=0; kk < p4jets.size(); ++kk)
 	{
 	  hjets["pt"]->Fill( p4jets[kk].Pt(), PUweight );
-	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()<=240 ) { number_of_b++; hjets["pt_b_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()<=240 ) { number_of_c++; hjets["pt_c_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==1 || abs(listflavor[kk])==2 || abs(listflavor[kk])==3 || abs(listflavor[kk])==21 ) 
-	    { number_of_l++; hjets["pt_l_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++; hjets["pt_b_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
-	  if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++; hjets["pt_c_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  if ( fIsMC && abs(listflavor[kk])==5 ) { 
+	    number_of_b++; hjets["pt_b_mc"]->Fill( p4jets[kk].Pt(), PUweight );
+	    //float b_mc_eff = f2Dttbarbtag->GetBinContent(f2Dttbarbtag->FindBin(p4jets[kk].Pt(),fabs(p4jets[kk].Eta())));
+	    float b_SF = bSF_table.GetValue(  p4jets[kk].Pt(), fabs(p4jets[kk].Eta()) );
+	    //float l_mc_eff = f2Dttbarctag->GetBinContent(f2Dttbarctag->FindBin(p4jets[kk].Pt(),fabs(p4jets[kk].Eta())));
+            
+	    //Info("Process",TString("btag SF= ")+TString(Form("%f",b_SF)));
+	    double seed = abs(static_cast<int>(sin(p4jets[kk].Phi()*1000000)*100000));
+	    BTagSFUtil btsfutil = BTagSFUtil( seed );
+	    bool tmp_IsTag = isTagb["CSVM"][kk];
+	    isTagb["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF, 0., 0.);
+	    if (p4jets[kk].Pt()<=240 )
+	      {
+		isTagbUp["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*1.05, 0., 0.);
+		isTagbDown["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*0.95, 0., 0.);
+	      }
+	    else
+	      {
+		isTagbUp["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*1.15, 0., 0.);
+		isTagbDown["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*0.85, 0., 0.);
+	      }
+	    
+	    /*
+	    BTagWeight::JetInfo bj(b_mc_eff, b_SF);
+	    j.push_back(bj);
+	    
+	    if (p4jets[kk].Pt()<=240 ) {
+	      BTagWeight::JetInfo bjUP(b_mc_eff, b_SF*1.05);
+	      BTagWeight::JetInfo bjDOWN(b_mc_eff, b_SF*0.95);
+	      jup.push_back(bjUP);
+	      jdown.push_back(bjDOWN);
+	    } else {
+	      b_mc_eff = f2Dwprimebtag->GetBinContent(f2Dwprimebtag->FindBin(p4jets[kk].Pt(),fabs(p4jets[kk].Eta())));
+	      BTagWeight::JetInfo bjUP(b_mc_eff, b_SF*1.15);
+	      BTagWeight::JetInfo bjDOWN(b_mc_eff, b_SF*0.85);
+              jup.push_back(bjUP);
+	      jdown.push_back(bjDOWN);
+	    }
+	    */
+	  }
+	  if ( fIsMC && abs(listflavor[kk])==4 ) { 
+	    number_of_c++; hjets["pt_c_mc"]->Fill( p4jets[kk].Pt(), PUweight );
+	    //float c_mc_eff =  f2Dttbarctag->GetBinContent(f2Dttbarctag->FindBin(p4jets[kk].Pt(),fabs(p4jets[kk].Eta())));
+            float b_SF = bSF_table.GetValue(  p4jets[kk].Pt(), fabs(p4jets[kk].Eta()) );
+	    
+	    double seed = abs(static_cast<int>(sin(p4jets[kk].Phi()*1000000)*100000));
+            BTagSFUtil btsfutil = BTagSFUtil( seed );
+            bool tmp_IsTag = isTagb["CSVM"][kk];
+            isTagb["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF, 0., 0.);
+            if (p4jets[kk].Pt()<=240 )
+              {
+                isTagbUp["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*1.1, 0., 0.);
+		isTagbDown["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*0.9, 0., 0.);
+              }
+	    else
+	      { 
+                isTagbUp["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*1.15, 0., 0.);
+		isTagbDown["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), b_SF*0.85, 0., 0.);
+              } 
 
-	  if ( isTagb["TCHPM"][kk] ) 
+	    /*
+	    BTagWeight::JetInfo cj(c_mc_eff, b_SF);
+	    j.push_back(cj);
+	    // systematics, check high pt b-tagging
+	    if (p4jets[kk].Pt()<=240 ) {
+	      BTagWeight::JetInfo cjUP(c_mc_eff, b_SF*1.10);
+	      BTagWeight::JetInfo cjDOWN(c_mc_eff, b_SF*0.90);
+	      jup.push_back(cjUP);
+              jdown.push_back(cjDOWN);
+	    } else {
+	      BTagWeight::JetInfo cjUP(c_mc_eff, b_SF*1.15);
+	      BTagWeight::JetInfo cjDOWN(c_mc_eff, b_SF*0.85);
+              jup.push_back(cjUP);
+              jdown.push_back(cjDOWN);
+            }
+	    */
+	  }
+	  if ( fIsMC && (abs(listflavor[kk])==1 || abs(listflavor[kk])==2 || abs(listflavor[kk])==3 || abs(listflavor[kk])==21 )) { 
+	    number_of_l++; hjets["pt_l_mc"]->Fill( p4jets[kk].Pt(), PUweight );
+	    float l_mc_eff = f2Dttbarctag->GetBinContent(f2Dttbarctag->FindBin(p4jets[kk].Pt(),fabs(p4jets[kk].Eta())));
+            float l_SF = lSF_table.GetValue(  p4jets[kk].Pt(), fabs(p4jets[kk].Eta()) );
+	    
+	    double seed = abs(static_cast<int>(sin(p4jets[kk].Phi()*1000000)*100000));
+            BTagSFUtil btsfutil = BTagSFUtil( seed );
+            bool tmp_IsTag = isTagb["CSVM"][kk];
+            isTagb["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), 0., l_SF, l_mc_eff);
+            
+	    isTagbUp["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), 0., l_SF, l_mc_eff);
+	    isTagbDown["CSVM"][kk] = btsfutil.modifyBTagsWithSF( tmp_IsTag, abs(listflavor[kk]), 0., l_SF, l_mc_eff);
+            
+
+	    /*
+	    BTagWeight::JetInfo lj(l_mc_eff, l_SF);
+	    j.push_back(lj);
+	    // systematics,
+	    BTagWeight::JetInfo ljUP(l_mc_eff, l_SF);
+	    BTagWeight::JetInfo ljDOWN(l_mc_eff, l_SF);
+	    jup.push_back(ljUP);
+	    jdown.push_back(ljDOWN);
+	    */
+	  }
+	  
+
+	  //if ( abs(listflavor[kk])==5 && p4jets[kk].Pt()>240 ) { number_of_b_highpt++; hjets["pt_b_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
+	  //if ( abs(listflavor[kk])==4 && p4jets[kk].Pt()>240 ) { number_of_c_highpt++; hjets["pt_c_mc"]->Fill( p4jets[kk].Pt(), PUweight );}
+
+	  if ( isTagb["CSVM"][kk] ) 
 	    {
 	      hjets["pt_btag"]->Fill( p4jets[kk].Pt(), PUweight );
 	      if ( abs(listflavor[kk])==5 ) hjets["pt_btag_b"]->Fill( p4jets[kk].Pt(), PUweight );
@@ -899,96 +1037,121 @@ Bool_t Analyzer::Process(Long64_t entry)
       if ( fIsMC )
         {
 
-	  // zeto tag
-          BTagWeight b0(0,0); // number of tags 
-	  BTagWeight::JetInfo bj(0.63,0.91); // mean MC eff and mean SF. For TCHPM=0.91\pm0.09, CSVM=0.96\pm0.096
-	  BTagWeight::JetInfo cj(0.15,0.91);
-          double light_mceff = 0.017;
-          if ( 100 < p4jets[0].Pt() && p4jets[0].Pt() <= 200 ) light_mceff = 0.04;
-          if ( 200 < p4jets[0].Pt() && p4jets[0].Pt() <= 300 ) light_mceff = 0.08;
-          if ( 300 < p4jets[0].Pt() && p4jets[0].Pt() <= 400 ) light_mceff = 0.12;
-          if ( 400 < p4jets[0].Pt() ) light_mceff = 0.14;
-	  BTagWeight::JetInfo lj(light_mceff,1.22); //for TCHPM=1.22, CSVM=1.08 \pm 0.13
-	  // b-tag systematic UP 9% for b, 18% for c
-	  BTagWeight::JetInfo bjUP(0.63,0.99);                                                                                                                                                                
-	  BTagWeight::JetInfo cjUP(0.15,1.07);
-	  // b-tag systemacit DOWN 9% for b, 18% for c
-	  BTagWeight::JetInfo bjDOWN(0.63,0.83);
-	  BTagWeight::JetInfo cjDOWN(0.15,0.75);
-	  // for high pt jets > 240 UP 50% for b and c
-	  BTagWeight::JetInfo bjUPhighpt(0.63,1.36);
-	  BTagWeight::JetInfo cjUPhighpt(0.15,1.36);
-          // for high pt jets > 240 UP 50% for b and c
-	  BTagWeight::JetInfo bjDOWNhighpt(0.63,0.46);
-	  BTagWeight::JetInfo cjDOWNhighpt(0.15,0.46);
+	  // setup btag weights
 
-          vector<BTagWeight::JetInfo> j;
-          for(int i=0;i<number_of_b;i++)j.push_back(bj);
-	  for(int i=0;i<number_of_b_highpt;i++)j.push_back(bj);
-          for(int i=0;i<number_of_c;i++)j.push_back(cj);
-	  for(int i=0;i<number_of_c_highpt;i++)j.push_back(cj);
-          for(int i=0;i<number_of_l;i++)j.push_back(lj);
+	  // zeto tag
+          //BTagWeight b0(0,0); // number of tags 
+
+	  //BTagWeight::JetInfo bj(0.63,0.91); // mean MC eff and mean SF. For TCHPM=0.91\pm0.09, CSVM=0.96\pm0.096
+	  //BTagWeight::JetInfo cj(0.15,0.91);
+	  //BTagWeight::JetInfo bj(0.63,0.96); 
+	  //BTagWeight::JetInfo cj(0.15,0.96);
+          //double light_mceff = 0.017; //CHECK
+          //if ( 100 < p4jets[0].Pt() && p4jets[0].Pt() <= 200 ) light_mceff = 0.04;
+          //if ( 200 < p4jets[0].Pt() && p4jets[0].Pt() <= 300 ) light_mceff = 0.08;
+          //if ( 300 < p4jets[0].Pt() && p4jets[0].Pt() <= 400 ) light_mceff = 0.12;
+          //if ( 400 < p4jets[0].Pt() ) light_mceff = 0.14;
+	  
+	  ////BTagWeight::JetInfo lj(light_mceff,1.22); //for TCHPM=1.22, CSVM=1.08 \pm 0.13
+	  //BTagWeight::JetInfo lj(light_mceff,1.08); 
+	  //// b-tag systematic UP 9% for b, 18% for c
+	  //// for CSVM 5% for b, and 10% for c
+	  ////BTagWeight::JetInfo bjUP(0.63,0.99);
+	  ////BTagWeight::JetInfo cjUP(0.15,1.07);
+	  //BTagWeight::JetInfo bjUP(0.63,1.008); 
+	  //BTagWeight::JetInfo cjUP(0.15,1.056);
+
+	  // b-tag systemacit DOWN 9% for b, 18% for c
+	  ////BTagWeight::JetInfo bjDOWN(0.63,0.83);
+	  ////BTagWeight::JetInfo cjDOWN(0.15,0.75);
+	  //BTagWeight::JetInfo bjDOWN(0.63,0.912);
+	  //BTagWeight::JetInfo cjDOWN(0.15,0.864);
+	  // for high pt jets > 240 UP 50% for b and c
+	  // for CSVM 
+	  ////BTagWeight::JetInfo bjUPhighpt(0.63,1.36);
+	  ////BTagWeight::JetInfo cjUPhighpt(0.15,1.36);
+	  //BTagWeight::JetInfo bjUPhighpt(0.63,1.104);
+          //BTagWeight::JetInfo cjUPhighpt(0.15,1.104);
+          // for high pt jets > 240 UP 50% for b and c
+	  ////BTagWeight::JetInfo bjDOWNhighpt(0.63,0.46);
+	  ////BTagWeight::JetInfo cjDOWNhighpt(0.15,0.46);
+	  //BTagWeight::JetInfo bjDOWNhighpt(0.63,0.816);
+	  //BTagWeight::JetInfo cjDOWNhighpt(0.15,0.816);
+
+          //vector<BTagWeight::JetInfo> j;
+          //for(int i=0;i<number_of_b;i++)j.push_back(bj);
+	  //for(int i=0;i<number_of_b_highpt;i++)j.push_back(bj);
+          //for(int i=0;i<number_of_c;i++)j.push_back(cj);
+	  //for(int i=0;i<number_of_c_highpt;i++)j.push_back(cj);
+          //for(int i=0;i<number_of_l;i++)j.push_back(lj);
           
-	  if (Nbtags_TCHPM==0) {
-	    SFb_0tag = b0.weight(j,0);
-	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_0tag ); // fill bin 0
+	  // changed to CSVM from TCHPM
+	  if (Nbtags_CSVM==0) {
+	    //SFb_0tag = b0.weight(j,0);
+	    hjets["Nbtags_CSVM"]->Fill( Nbtags_CSVM, PUweight*SFb_0tag ); // fill bin 0
 	  }
 	  // only one tag
-	  BTagWeight b11(1,1); // number of tags
-          if (Nbtags_TCHPM==1) {
-	    SFb_only1tag = b11.weight(j,1);
-	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_only1tag ); // fill bin 1
+	  //BTagWeight b11(1,1); // number of tags
+          if (Nbtags_CSVM==1) {
+	    //SFb_only1tag = b11.weight(j,1);
+	    hjets["Nbtags_CSVM"]->Fill( Nbtags_CSVM, PUweight*SFb_only1tag ); // fill bin 1
 	  }
 	  // at least one tag
-	  BTagWeight b1(1,Nbtags_TCHPM); // number of tags
-	  if (Nbtags_TCHPM>=1) {
-	    SFb_1tag = b1.weight(j,1);
+	  //BTagWeight b1(1,Nbtags_CSVM); // number of tags
+	  if (Nbtags_CSVM>=1) {
+	    //SFb_1tag = b1.weight(j,1);
 
-	    vector<BTagWeight::JetInfo> jj;
-	    for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
-	    for(int i=0;i<number_of_b_highpt;i++)jj.push_back(bjUPhighpt);
-	    for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
-	    for(int i=0;i<number_of_c_highpt;i++)jj.push_back(cjUPhighpt);
-	    for(int i=0;i<number_of_l;i++)jj.push_back(lj);
-	    SFb_1tag_syst[0] = b1.weight(jj,1); //UP
-	    vector<BTagWeight::JetInfo> jk;
-            for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
-	    for(int i=0;i<number_of_b_highpt;i++)jk.push_back(bjDOWNhighpt);
-            for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
-	    for(int i=0;i<number_of_c_highpt;i++)jk.push_back(cjDOWNhighpt);
-            for(int i=0;i<number_of_l;i++)jk.push_back(lj);
-            SFb_1tag_syst[1] = b1.weight(jk,1);//DOWN
+	    //vector<BTagWeight::JetInfo> jj;
+	    //for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
+	    //for(int i=0;i<number_of_b_highpt;i++)jj.push_back(bjUPhighpt);
+	    //for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
+	    //for(int i=0;i<number_of_c_highpt;i++)jj.push_back(cjUPhighpt);
+	    //for(int i=0;i<number_of_l;i++)jj.push_back(lj);
+	    
+	    //SFb_1tag_syst[0] = b1.weight(jup,1); //UP
+
+	    //vector<BTagWeight::JetInfo> jk;
+            //for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
+	    //for(int i=0;i<number_of_b_highpt;i++)jk.push_back(bjDOWNhighpt);
+            //for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
+	    //for(int i=0;i<number_of_c_highpt;i++)jk.push_back(cjDOWNhighpt);
+            //for(int i=0;i<number_of_l;i++)jk.push_back(lj);
+            
+	    //SFb_1tag_syst[1] = b1.weight(jdown,1);//DOWN
 	    
 	  }
 	  // at least two tags
-	  BTagWeight b2(2,Nbtags_TCHPM); // number of tags
-	  if (Nbtags_TCHPM>=2) {
-	    SFb_2tag = b2.weight(j,2);
-	    hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb_2tag ); // fill bin >=2
+	  //BTagWeight b2(2,Nbtags_CSVM); // number of tags
+	  if (Nbtags_CSVM>=2) {
+	    //SFb_2tag = b2.weight(j,2);
+
+	    hjets["Nbtags_CSVM"]->Fill( Nbtags_CSVM, PUweight*SFb_2tag ); // fill bin >=2
 	    
-	    vector<BTagWeight::JetInfo> jj;
-            for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
-	    for(int i=0;i<number_of_b_highpt;i++)jj.push_back(bjUPhighpt);
-            for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
-	    for(int i=0;i<number_of_c_highpt;i++)jj.push_back(cjUPhighpt);
-            for(int i=0;i<number_of_l;i++)jj.push_back(lj);
-            SFb_2tag_syst[0] = b2.weight(jj,2); //UP
-                                                                                                                                                                                   
-            vector<BTagWeight::JetInfo> jk;
-            for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
-	    for(int i=0;i<number_of_b_highpt;i++)jk.push_back(bjDOWNhighpt);
-            for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
-	    for(int i=0;i<number_of_c_highpt;i++)jk.push_back(cjDOWNhighpt);
-            for(int i=0;i<number_of_l;i++)jk.push_back(lj);
-            SFb_2tag_syst[1] = b2.weight(jk,2);//DOWN
+	    //vector<BTagWeight::JetInfo> jj;
+            //for(int i=0;i<number_of_b;i++)jj.push_back(bjUP);
+	    //for(int i=0;i<number_of_b_highpt;i++)jj.push_back(bjUPhighpt);
+            //for(int i=0;i<number_of_c;i++)jj.push_back(cjUP);
+	    //for(int i=0;i<number_of_c_highpt;i++)jj.push_back(cjUPhighpt);
+            //for(int i=0;i<number_of_l;i++)jj.push_back(lj);
+            //SFb_2tag_syst[0] = b2.weight(jup,2); //UP
+	    
+            //vector<BTagWeight::JetInfo> jk;
+            //for(int i=0;i<number_of_b;i++)jk.push_back(bjDOWN);
+	    //for(int i=0;i<number_of_b_highpt;i++)jk.push_back(bjDOWNhighpt);
+            //for(int i=0;i<number_of_c;i++)jk.push_back(cjDOWN);
+	    //for(int i=0;i<number_of_c_highpt;i++)jk.push_back(cjDOWNhighpt);
+            //for(int i=0;i<number_of_l;i++)jk.push_back(lj);
+            
+	    //SFb_2tag_syst[1] = b2.weight(jdown,2);//DOWN
 	  }
         }
-      else hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM );
+
+      else hjets["Nbtags_CSVM"]->Fill( Nbtags_CSVM );
 
       //hjets["Nbtags_TCHPM"]->Fill( Nbtags_TCHPM, PUweight*SFb );
       //hjets["Nbtags_CSVM"]->Fill( Nbtags_CSVM, PUweight*SFb );
 
-      if ( Nbtags_TCHPM == 0 && njets < 5)
+      if ( Nbtags_CSVM == 0 )
         {
 	  // compute top mass
 	  int top_bjet_index = 0;
@@ -996,6 +1159,7 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  //double top_mass = 0.;
 	  //TLorentzVector p4Top;
 	  TLorentzVector bestp4Top;
+	  int best_pznu = 0;
 	  for ( size_t itejet = 0; itejet < p4jets.size(); ++itejet )
             {
 	      
@@ -1010,16 +1174,20 @@ Bool_t Analyzer::Process(Long64_t entry)
 		    //top_mass = p4Top.M();
 		    deltaM = fabs( p4Top.M() - 172.);
 		    bestp4Top = p4Top;
+		    best_pznu = isolw;
 		  }
 	      
 		}
 	    }
 	  p4Top = bestp4Top;
-	  bool passcutWlep = false;
-	  if ( p4LepW.M() < 90 ) passcutWlep = true;
+	  if ( fzCalculator.IsComplex() ) hMET["countPz"]->Fill( 3 );
+	  else hMET["countPz"]->Fill( best_pznu+1 );
+	  //bool passcutWlep = false;
+	  //if ( p4LepW.M() < 90 ) passcutWlep = true;
 
-	  if (passcutWlep) {
+	  //if (passcutWlep) {
 
+	  if (true) {
 	    if ( top_bjet_index == 0 ) {
 	      p4Wprime = p4Top + p4jets[1];
 	    }
@@ -1035,7 +1203,8 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      hM["Wprime_0btag"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
 	      if (fSample=="WJets")
 		{
-		  int FH = ntuple->flavorHistory;
+		  //int FH = ntuple->flavorHistory;
+		  
 		  if ( FH == 1 || FH == 2 || FH == 5 || FH == 7 || FH == 9 ) hM["Wprime_0btag_bb"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
 		  else if ( FH == 3 || FH == 4 || FH == 6 || FH == 8 || FH == 10) hM["Wprime_0btag_cc"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
 		  else if ( FH == 11 ) hM["Wprime_0btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_0tag );
@@ -1051,14 +1220,26 @@ Bool_t Analyzer::Process(Long64_t entry)
 	}// 0 tag
 
       // check if the two leading jets have a b jet 
-      if ( Nbtags_TCHPM >= 1 && (isTagb["TCHPM"][0] || isTagb["TCHPM"][1]) )
+      if ( Nbtags_CSVM >= 1 && (isTagb["CSVM"][0] || isTagb["CSVM"][1]) )
 	{
+
+	  // logging
+	  outstring = "cut2 run: ";
+	  outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event)) +" "+ TString(Form("%f",PUweight*SFb_1tag));
+	  Info("Process",outstring);
+
+	  if ( Nbtags_CSVM >=2 && (isTagb["CSVM"][0] && isTagb["CSVM"][1]) ) {
+	    // logging
+	    outstring = "cut3 run: ";
+	    outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event))+" "+ TString(Form("%f",PUweight*SFb_2tag));
+	    Info("Process",outstring);
+	  }
 
 	  //cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	  hjets["Njets_1tag"]->Fill( njets, PUweight*SFb_1tag );
-	  if (Nbtags_TCHPM > 1 ) hjets["Njets_2tag"]->Fill( njets, PUweight*SFb_2tag );
+	  if (Nbtags_CSVM > 1 ) hjets["Njets_2tag"]->Fill( njets, PUweight*SFb_2tag );
 
-	  if ( njets < 5 ) {
+	  //if ( njets < 5 ) {
 
 	    //cutmap["2Jet1b"] += PUweight*SFb_1tag;
 	  // calculate dijet mass closest to W mass
@@ -1111,10 +1292,10 @@ Bool_t Analyzer::Process(Long64_t entry)
 	  hMET["LepWmass"]->Fill(p4LepW.M(), PUweight*SFb_1tag );
 	  hMET["LepWmassNoPt"]->Fill(WmassNoPt, PUweight*SFb_1tag );
 
-	  bool passcutWlep = false;
-	  if ( p4LepW.M() < 90 ) passcutWlep = true;
-
-	  if (passcutWlep) {
+	  //bool passcutWlep = false;
+	  //if ( p4LepW.M() < 90 ) passcutWlep = true;
+	  //if (passcutWlep) {
+	  if (true) {
 
 	    if ( p4Top.M() > 130 && p4Top.M() < 210 ) hMET["LepWmass_topcut"]->Fill(p4LepW.M(), PUweight*SFb_1tag );
 
@@ -1144,7 +1325,12 @@ Bool_t Analyzer::Process(Long64_t entry)
 	    }
 
 	    bool passcut = true;
-	    if (fdoMtopCut && ( p4Top.M() <= 130 || p4Top.M() >= 210 ) ) passcut = false;
+	    TLorentzVector p4J1J2 = p4jtes[0] + p4jets[1];
+
+	    if (fdoMtopCut && 
+		( p4Top.M() <= 130 || p4Top.M() >= 210 ) 
+		&& p4Top.Pt() > 75 
+		&& p4J1J2.Pt() > 100 ) passcut = false;
 
 	    if (passcut) {
 	      cutmap["2Jet1b"] += PUweight*SFb_1tag;
@@ -1167,12 +1353,12 @@ Bool_t Analyzer::Process(Long64_t entry)
 	      hMET["MET_fin"]->Fill( p4MET.Pt(), PUweight*SFb_1tag );
 	      hM["WMt_fin"]->Fill( WMt, PUweight*SFb_1tag );
 
-	      if ( p4Wprime.M() > 1500.)
-		{
-		  TString outstring = "run: ";
-		  outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event)); 
-		  Info("Process",outstring);
-		}
+	      //if ( p4Wprime.M() > 1500.)
+	      //{
+	      //  TString outstring = "run: ";
+	      //  outstring += TString(Form("%i",ntuple->run)) +" lumi: "+ TString(Form("%i",ntuple->lumi)) + " event: " + TString(Form("%i",ntuple->event)); 
+	      //  Info("Process",outstring);
+	      //}
 
 	      if (fIsMC)
 		{
@@ -1195,8 +1381,10 @@ Bool_t Analyzer::Process(Long64_t entry)
 		  else if ( FH == 11 ) hM["Wprime_1btag_light"]->Fill( p4Wprime.M(), PUweight*SFb_1tag );
 		}
 
+	      if ( Nbtags_CSVM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb_only1tag );
+
 	      // check two b-tags
-	      if ( Nbtags_TCHPM > 1 )
+	      if ( Nbtags_CSVM > 1 )
 		{
 		  cutmap["2Jet2b"] += PUweight*SFb_2tag;
 		  hM["Wprime_2btag"]->Fill( p4Wprime.M(), PUweight*SFb_2tag );
@@ -1210,11 +1398,11 @@ Bool_t Analyzer::Process(Long64_t entry)
 
 	    }//passcut mtop cut if requested
 	  }//passcutWlep cut
-	  }// njets < 5
+	  //}// njets < 5
 
 	}
 
-      if ( Nbtags_TCHPM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb_only1tag );
+      //if ( Nbtags_CSVM == 1 ) hM["Wprime_1onlybtag"]->Fill( p4Wprime.M(), PUweight*SFb_only1tag );
 
     }
 
