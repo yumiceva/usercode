@@ -422,8 +422,9 @@ if __name__ == '__main__':
     for ikey in theadditionArray:
         if verbose : print "== block name: \""+theadditionArray[ikey].name+"\" title: \""+theadditionArray[ikey].title+"\""
         listarray = theadditionArray[ikey].array
-        #listweight = theaddition[ikey].weight
-
+        listweight = theadditionArray[ikey].weight
+        #print listweight
+        
         # get first list of histos to add
         tmplisthistos = thedata[ listarray[0] ].histos.keys()
         new_tmplisthistos = []
@@ -443,14 +444,19 @@ if __name__ == '__main__':
         if verbose:
             print "  histogram names to be added: "
             print tmplisthistos
+        
         for namehisto in tmplisthistos:
 
             isFirst = True
             # loop over samples
+            iisample = 0
             for jsample in listarray:
 
                 the_namehisto = namehisto+jsample
-
+                tmp_weight = 1.
+                if listweight[iisample]:
+                    tmp_weight = float(listweight[iisample])
+                #print tmp_weight
                 # first check if SF/weight is given as a file and check the key
                 the_big_weight = 1
                 if type(thedata[jsample].weight) is not float and len(thedata[jsample].weight.split(":"))>1:
@@ -464,14 +470,16 @@ if __name__ == '__main__':
                                 break
                 else: the_big_weight = thedata[jsample].weight
                                                                                                         
-                aweight = float( the_big_weight )
+                aweight = float( the_big_weight ) * tmp_weight
                 if verbose: print " get histogram name: "+the_namehisto+" from sample: "+ jsample
 
                 
                 ath = thedata[jsample].TH1s[the_namehisto]
                 if ath is None:
                     print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
-                if verbose : print "=== add histogram: "+ath.GetName() + " from " + thedata[jsample].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
+                if verbose :
+                    print "=== histogram from sample: "+jsample
+                    print "=== add histogram: "+ath.GetName() + " from " + thedata[jsample].filename + " mean = " + "%.2f" % round(ath.GetMean(),2) + " weight= " + str(aweight)
                 if isFirst:
                     newth = ath.Clone(namehisto + theadditionArray[ikey].name)
                     newth.SetName(namehisto + theadditionArray[ikey].name)
@@ -487,9 +495,11 @@ if __name__ == '__main__':
                     #    atmpth.Scale(1/atmpth.Integral())
                     atmpth.Scale(aweight)
                     newth.Add( atmpth )
-
+                    
+                iisample += 1
             # add new histogram to the list
             #newth.SetName(theadditionArray[ikey].name)
+            
             newTH1list.append(newth.GetName())
             thedata[newth.GetName()] = ValElement()
             thedata[newth.GetName()].TH1s[newth.GetName()] = newth
@@ -626,16 +636,25 @@ if __name__ == '__main__':
 	
 	numeratorth.Sumw2()
 	denominatorth.Sumw2()
+
+        #numeratorth.Rebin(4)
+        #denominatorth.Rebin(4)
+        
 	newth = numeratorth.Clone("ratio")
 	newth.Clear()
 	if thedivition[ikey].DivideOption is None:
 	    newth.Divide(numeratorth,denominatorth)
+        elif thedivition[ikey].DivideOption == "TGraph":
+            newth = TGraphAsymmErrors( denominatorth )
+            newth.Divide( numeratorth, denominatorth, "cl=0.683 b(1,1) mode pois")
 	else:
 	    newth.Divide(numeratorth,denominatorth,1.,1.,thedivition[ikey].DivideOption)
-	if thedivition[ikey].XTitle != None:
-	    newth.SetXTitle(thedivition[ikey].XTitle)
-	if thedivition[ikey].YTitle != None:
-	    newth.SetYTitle(thedivition[ikey].YTitle)
+
+        if thedivition[ikey].DivideOption != "TGraph":
+            if thedivition[ikey].XTitle != None:
+                newth.SetXTitle(thedivition[ikey].XTitle)
+            if thedivition[ikey].YTitle != None:
+                newth.SetYTitle(thedivition[ikey].YTitle)
 
                 
 	if thedivition[ikey].Option:
@@ -885,14 +904,15 @@ if __name__ == '__main__':
 			# clone original histogram
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
 
-                        newth.Sumw2()
+                        if newth.InheritsFrom("TH1"):
+                            newth.Sumw2()
                         listofnorm = thesuper[ikey].Norm
                         #print listofnorm
                         if listofnorm[ii] == "true":
                             newth.Scale(1./newth.Integral())
                             if verbose: print " histogram has been normalized before applying weight"
                             
-			newth.Scale(aweight)
+                        if newth.InheritsFrom("TH1"): newth.Scale(aweight)
 			
 			# check if we have color
 			if not listcolor[ii]:
@@ -1022,6 +1042,9 @@ if __name__ == '__main__':
 	if thesuper[ikey].YTitle != None:
 	    astack.GetHistogram().SetYTitle(thesuper[ikey].YTitle)
             if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetYTitle(thesuper[ikey].YTitle)
+        else:
+            astack.GetHistogram().SetYTitle("Events/"+str( int(astack.GetHistogram().GetBinWidth(1) ) ) +" GeV" )
+            if datahist[thesuper[ikey].name] != None: datahist[thesuper[ikey].name].SetYTitle("Events/"+str( int(datahist[thesuper[ikey].name].GetBinWidth(1) ) ) +" GeV" )
 	if doFill:
             if datahist[thesuper[ikey].name] != None:
 #                if thesuper[ikey].Ndivisions !=None: datahist[thesuper[ikey].name].GetXaxis().SetNdivisions( int(thesuper[ikey].Ndivisions) )
@@ -1097,7 +1120,7 @@ if __name__ == '__main__':
             if thesuper[ikey].SubBanner != None:
                 newBanner = '#splitline{'+Banner+'}{'+thesuper[ikey].SubBanner+'}'
                 if verbose: print "add sub banner"
-	    tex[thesuper[ikey].name] = TLatex(0.25,0.85,newBanner)
+	    tex[thesuper[ikey].name] = TLatex(0.28,0.85,newBanner)
 	    tex[thesuper[ikey].name].SetNDC()
 	    tex[thesuper[ikey].name].SetTextSize(0.035)
 	    tex[thesuper[ikey].name].Draw()
@@ -1117,19 +1140,30 @@ if __name__ == '__main__':
                 else:
                     # get KS value
                     if doKS: KSvalue = datahist[thesuper[ikey].name].KolmogorovTest(astack.GetStack().Last() )
-                    ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
-                    #S = tmpNoStackhist[thesuper[ikey].name][1].Integral(tmpNoStackhist[thesuper[ikey].name][1].FindBin(800),-1)
+                    tmpsubst = datahist[thesuper[ikey].name].Clone()
+                    tmpsubst.Add(astack.GetStack().Last(),-1.)
+                    ratiohist[thesuper[ikey].name+"_diff"].Divide(tmpsubst, astack.GetStack().Last() ) 
+                    #ratiohist[thesuper[ikey].name+"_diff"].Divide(datahist[thesuper[ikey].name], astack.GetStack().Last() )
+                    if (thesuper[ikey].name).find("Wprime_1btag") != -1:
+                        Sdata = (datahist[thesuper[ikey].name]).Integral(datahist[thesuper[ikey].name].FindBin(1500),-1)
+                        S = tmpNoStackhist[thesuper[ikey].name][1].Integral(tmpNoStackhist[thesuper[ikey].name][1].FindBin(1500),-1)
                     #S = S*0.1
-                    #B = astack.GetStack().Last().Integral(astack.GetStack().Last().FindBin(800),-1)
-                    #print "FOM for "+thesuper[ikey].name+" in "+str(tmpNoStackhist[thesuper[ikey].name][1].GetName())
+                        B = astack.GetStack().Last().Integral(astack.GetStack().Last().FindBin(1500),-1)
+                        print "  Data with mass>1.5 = "+str(Sdata)
+                        print " Signal with mass>1.5 = " +str(S)
+                        
+                        print " Background  mass>1.5 = " +str(B)
+                        #print "FOM for "+thesuper[ikey].name+" in "+str(tmpNoStackhist[thesuper[ikey].name][1].GetName())
                     #print " S/sqrt(B) = "+str(S/math.sqrt(B))
                     #print " S/sqrt(S+B) = "+str(S/math.sqrt(S+B))
                 #cv[thesuper[ikey].name].Clear()
                 pad2.cd()
-                ratiohist[thesuper[ikey].name+"_diff"].SetYTitle("Data/MC")
+                ratiohist[thesuper[ikey].name+"_diff"].SetYTitle("#frac{(Data - MC)}{MC}")
+                ratiohist[thesuper[ikey].name+"_diff"].SetTitleSize(0.09,"Y")
+                ratiohist[thesuper[ikey].name+"_diff"].SetTitleOffset(0.7,"Y")
                 ratiohist[thesuper[ikey].name+"_diff"].Draw()
                 ratiohist[thesuper[ikey].name+"_diff"].SetMaximum(2.)
-                ratiohist[thesuper[ikey].name+"_diff"].SetMinimum(0.)
+                ratiohist[thesuper[ikey].name+"_diff"].SetMinimum(-2.)
                 if doKS:
                     texKS = TLatex(0.25,0.82,"KS="+str(round(KSvalue,2)))
                     texKS.SetNDC()
@@ -1188,5 +1222,9 @@ if __name__ == '__main__':
 		for ikey in thesuper:
 		    cv[thesuper[ikey].name].Print(thesuper[ikey].name + "." + printFormat) 
 
+        
+    print "exit"
+
+    
 		    
 
