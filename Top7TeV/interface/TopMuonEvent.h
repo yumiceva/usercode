@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.h,v 1.5 2010/09/28 15:49:23 yumiceva Exp $
+ version $Id: TopMuonEvent.h,v 1.6 2011/10/31 15:10:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -42,12 +42,15 @@ public:
 
     Float_t d0;
     Float_t d0err;
+    Float_t d0wrtBS2d;
+    Float_t d0wrtBS2derr;
     Float_t d0wrtPV2d;
     Float_t d0wrtPV2derr;
 
     Int_t muonhits;
     Int_t trackerhits;
     Int_t muonstations;
+    Int_t muonstationsold;
     Float_t normchi2;
     Int_t pixelhits;
 

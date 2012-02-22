@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopMuonEvent.cc,v 1.4 2010/09/28 15:49:24 yumiceva Exp $
+ version $Id: TopMuonEvent.cc,v 1.5 2011/10/31 15:10:14 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -29,6 +29,8 @@ void TopMuonEvent::Reset()
   IsTightIsoMuon = 0;
 
   d0 = -1;
+  d0wrtBS2d = -1;
+  d0wrtBS2derr = -1;
   d0err = -1;
   d0wrtPV2d = -1;
   d0wrtPV2derr = -1;
@@ -36,6 +38,7 @@ void TopMuonEvent::Reset()
   muonhits = -1;
   trackerhits = -1;
   muonstations = -1;
+  muonstationsold = -1;
   normchi2 = -1;
   pixelhits = -1;
 

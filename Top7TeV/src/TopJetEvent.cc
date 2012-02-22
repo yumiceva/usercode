@@ -5,7 +5,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.cc,v 1.6 2011/05/16 19:44:28 yumiceva Exp $
+ version $Id: TopJetEvent.cc,v 1.7 2011/10/10 20:53:15 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -22,6 +22,8 @@ ClassImp(TopJetEvent)
 //_______________________________________________________________
 void TopJetEvent::Reset()
 {
+  uncorrpx = -999;
+  uncorrpy = -999;
 
   //___
   id_neutralEmE = -999;

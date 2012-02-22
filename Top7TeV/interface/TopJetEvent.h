@@ -8,7 +8,7 @@
 
  author: Francisco Yumiceva, Fermilab (yumiceva@fnal.gov)
 
- version $Id: TopJetEvent.h,v 1.7 2011/05/16 19:43:37 yumiceva Exp $
+ version $Id: TopJetEvent.h,v 1.8 2011/10/10 20:53:12 yumiceva Exp $
 
 ________________________________________________________________**/
 
@@ -34,6 +34,9 @@ public:
         ~TopJetEvent() {}
 
     virtual void Reset();
+
+    Float_t uncorrpx;
+    Float_t uncorrpy;
 
     //___
     Float_t id_neutralEmE;
