@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.36 2011/11/07 16:53:18 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.37 2011/11/11 06:16:39 yumiceva Exp $
 //
 //
 
@@ -343,7 +343,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
       if ( iEvent.getByLabel("prunedGenParticles", genParticles) ) 
 	{
-	  reco::GenParticleCollection::const_iterator mcIter ;
+	  reco::GenParticleCollection::const_iterator mcIter;
 	  for( mcIter=genParticles->begin() ; mcIter!=genParticles->end() ; mcIter++ ) {
 	    
 	    //cout << "pdgId= " << mcIter->pdgId() << endl;
@@ -442,7 +442,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       topvtx.IsGood = 0.;
       // PV quality cuts
       if( !pv->isFake()
-	 &&pv->ndof()>4
+	 &&pv->ndof()>=4
 	 &&fabs(pv->z())< cutPVz
 	 &&fabs(pv->position().Rho())<2.0 ) {
 
@@ -481,7 +481,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     for(MuonCollection::const_iterator mu = muons->begin(); mu != muons->end();  ++mu) {
         
-      if ( (!mu->isTrackerMuon()) || (!mu->isGlobalMuon()) ) continue;
+      if ( !mu->isGlobalMuon() ) continue;
       
       // relative isolation
       double reliso = (mu->isolationR03().hadEt+mu->isolationR03().emEt+mu->isolationR03().sumPt)/mu->pt(); //
@@ -504,7 +504,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  }
       }
 
-      if ( mu->pt() <= 20. || fabs(mu->eta()) >= 2.1 ) continue;
+      if ( fabs(mu->eta()) >= 2.5 ) continue;
  
       nmu_loose++;
 	  
@@ -521,8 +521,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       topmuon.charge = mu->charge();
 
       if (verbose_) cout << "filling ntuple with muon IP data" << endl;
-      topmuon.d0 = mu->dB();
-      topmuon.d0err = mu->edB();
+      topmuon.d0 = mu->dB(pat::Muon::BS2D);
+      topmuon.d0err = mu->edB(pat::Muon::BS2D);
 
 	  //          topmuon.d0 = -1.* mu->innerTrack()->dxy(point);
           //topmuon.d0err = sqrt( mu->innerTrack()->d0Error()*mu->innerTrack()->d0Error() + 0.5* beamSpot.BeamWidthX()*beamSpot.BeamWidthX() + 0.5* beamSpot.BeamWidthY()*beamSpot.BeamWidthY() );
@@ -534,13 +534,32 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  //topmuon.d0wrtPV2derr = IPresult.second.error();
 
       if (verbose_) cout << "check if muon track exists" << endl;
+      
+      // now the global track parameters
+      reco::TrackRef muTrack = mu->globalTrack();
+      if (  muTrack.isNonnull() && muTrack.isAvailable() ) {
+	topmuon.normchi2  = muTrack->normalizedChi2();
+	topmuon.muonhits = muTrack->hitPattern().numberOfValidMuonHits();
+	topmuon.muonstations = mu->numberOfMatchedStations();
+      }
+
+      // now inner track parameters
+      muTrack = mu->innerTrack();
+      if (  muTrack.isNonnull() && muTrack.isAvailable() ) {
+	topmuon.trackerhits = mu->innerTrack()->numberOfValidHits();
+	topmuon.pixelhits = muTrack->hitPattern().pixelLayersWithMeasurement();
+      }
+
+      /*
       if ( mu->track().isNonnull() && mu->track().isAvailable() ) {
 	topmuon.muonhits = mu->numberOfValidHits();
-	topmuon.muonstations = mu->numberOfMatches();
+	topmuon.muonstations = mu->numberOfMatchedStations();
 	topmuon.normchi2 = mu->normChi2();
 	topmuon.trackerhits = mu->track()->numberOfValidHits();
 	topmuon.pixelhits = mu->track()->hitPattern().pixelLayersWithMeasurement();
       }
+      */
+
       // storing isolation variables
       topmuon.iso03_track = mu->isolationR03().sumPt;
       topmuon.iso03_ecal = mu->isolationR03().emEt;
@@ -629,7 +648,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  }
 	}
 
-	if ( elec->pt() <= 30. || fabs(elec->eta()) >= 2.5 ) continue;
+	if ( fabs(elec->eta()) >= 2.5 ) continue;
 	nele_loose++;
 
 	TopElectronEvent topele;
@@ -710,7 +729,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         bool tmpIsConversion = false;
 
-        if ( (eta_sc <= -2.5 || eta_sc >= -1.566)&&(fabs(eta_sc)>=1.4442)&&(eta_sc <= 1.566 || eta_sc >= 2.5) ) continue;
+        //if ( (eta_sc <= -2.5 || eta_sc >= -1.566)&&(fabs(eta_sc)>=1.4442)&&(eta_sc <= 1.566 || eta_sc >= 2.5) ) continue;
 
         if ( elec->et()>30 && fabs( elec->dB() ) < 0.02 && pass70 && RelIso < 0.1 ) {
           //nel_tight++;                                                                                                                                                                                                                       
@@ -729,7 +748,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
           }
         }
 
-	if ( elec->pt() <= 30. || fabs(elec->eta()) >= 2.5 ) continue;
+	if ( fabs(elec->eta()) >= 2.5 ) continue;
 
 	nPFele_loose++;
 
@@ -816,9 +835,9 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	bool passJetID = true;
         //passJetID = pfjetIdLoose_(*jet, bitset_for_PFjets); //jets already have ID applied
 
-        if (jet->pt()>20.
-            && fabs(jet->eta())<2.4
-            && passJetID)
+        if ( passJetID )
+            //&& fabs(jet->eta())<2.4
+            //&& passJetID)
 	  {
 
             TopJetEvent topjet;
@@ -828,6 +847,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
             topjet.pt = jet->pt();
             topjet.e  = jet->energy();
 	    topjet.jetArea = jet->jetArea();
+	    topjet.uncorrpx = (jet->correctedJet("Uncorrected")).px();
+	    topjet.uncorrpy = (jet->correctedJet("Uncorrected")).py();
 	    
 	    ++npfjets;
 
