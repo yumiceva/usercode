@@ -21,7 +21,7 @@ else:
     DoMuons = DoElectrons = True
 
 current = os.getcwd() # current path
-py_cfg = "PATskim.py" # cfg config file
+py_cfg = "TuplesFromPAT.py" # cfg config file
 crab_cfg = "crab.py" # crab config file
 
 # Dictionaries
@@ -33,11 +33,11 @@ jsonFilesMu = {}
 jsonFilesEl = {}
 
 ######## Muons
-directoriesMuData['Run2010A_Mu9'] = '/Mu/Run2010A-Nov4ReReco_v1/AOD'  # 135821   144114
+directoriesMuData['Run2012A-12Jul2012-v1'] = '/SingleMu/StoreResults-SingleMu_Run2012A-13Jul2012-v1_TLBSM_53x_v2_jsonfix-e3fb55b810dc7a0811f4c66dfa2267c9/USER'  # 
 directoriesMuData['Run2010B_Mu9'] = '/Mu/Run2010B-Nov4ReReco_v1/AOD'  # 146240   147195 
 directoriesMuData['Run2010B_Mu15'] = '/Mu/Run2010B-Nov4ReReco_v1/AOD' # 147196   149711
 
-jsonFilesMu['Run2010A_Mu9']  = 'Cert_136033-149442_7TeV_Nov4ReReco_Collisions10_JSON.txt'
+jsonFilesMu['Run2012A-12Jul2012-v1']  = 'Cert_190456-195530_8TeV_08Jun2012ReReco_Collisions12_JSON.txt'
 jsonFilesMu['Run2010B_Mu9']  = 'Cert_146240-147195_7TeV_Nov4ReReco.txt'
 jsonFilesMu['Run2010B_Mu15'] = 'Cert_147196-149442_7TeV_Nov4ReReco.txt'
 

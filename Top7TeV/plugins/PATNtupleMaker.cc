@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.37 2011/11/11 06:16:39 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.38 2012/02/22 17:41:44 yumiceva Exp $
 //
 //
 
@@ -163,7 +163,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     
   if (verbose_) cout << "got all collections" << endl;
 
-  // count number of processed events by analyzer                                                                                                                                                                           
+  // count number of processed events by analyzer
+                                                                                                                                                                           
   _cutflow->Fill(1);
 
 
@@ -187,7 +188,21 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	if (aTrigger == "") { passORTriggers = true; continue; }
 	
 	if (verbose_ && i==0) cout << "checking trigger name = " << aTrigger << endl;
-	if ( trigPaths[i].name().find(aTrigger) == 0 ) {
+
+        //bool passTriggerName = false;
+        // check wildcard
+        size_t wildcard_pos = aTrigger.find("*");
+        if ( wildcard_pos != string::npos) {
+          if (verbose_ && i==0) cout << "Remove wildcard for trigger name = " << aTrigger << endl;
+          aTrigger = string(aTrigger.begin(), aTrigger.end() - 1);
+        }
+
+        //
+        //  passTriggerName = true;
+        //}
+        //else if ( trigPaths[i].name().find(aTrigger) == 0 ) passTriggerName;
+        
+        if ( trigPaths[i].name().find(aTrigger) !=string::npos ) {
 	  
 	  hasAtriggerPath = true;
 	  aTrigger = trigPaths[i].name();
