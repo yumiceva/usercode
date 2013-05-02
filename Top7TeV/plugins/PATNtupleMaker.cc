@@ -12,7 +12,7 @@
 */
 // Francisco Yumiceva, Fermilab
 //         Created:  Fri Jun 11 12:14:21 CDT 2010
-// $Id: PATNtupleMaker.cc,v 1.38 2012/02/22 17:41:44 yumiceva Exp $
+// $Id: PATNtupleMaker.cc,v 1.39 2013/04/30 23:35:06 yumiceva Exp $
 //
 //
 
@@ -795,8 +795,8 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
         topele.convDcot = elec->convDcot();
         topele.IsConversion = int(tmpIsConversion);
 
-	int eidBitTight = (int) elec->electronID("eidHyperTight1MC");
-	int eidBitLoose = (int) elec->electronID("eidLooseMC");
+	int eidBitTight = (int) elec->electronID("eidRobustTight");
+	int eidBitLoose = (int) elec->electronID("eidRobustLoose");
 
 	//int ourMask = 5;
 	//int conversionRejectionMask = 4;
@@ -812,6 +812,7 @@ PATNtupleMaker::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	
 	topele.eidHyperTight1MC = (int)tmpTight;
 	topele.eidLooseMC = (int)tmpLoose;
+        topele.eidmva = elec->electronID("mvaTrigV0");
 
         topele.etasc = eta_sc;
         topele.sigmaIetaIeta = elec->sigmaIetaIeta();

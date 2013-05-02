@@ -1,4 +1,3 @@
-
 import string
 import os
 
@@ -52,6 +51,8 @@ jsonfile = "Cert_190456-196531_8TeV_13Jul2012ReReco_Collisions12_JSON_v2.txt"
 out = "%s-*-PATskim.root"%eventtype
 outfile = string.replace(out,"*","PAT")
 outntuple = string.replace(out,"*","Tuple")
+
+print options
 
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("UFO")
@@ -118,9 +119,10 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( events ))
 
 ## JSON Filter
-import FWCore.PythonUtilities.LumiList as LumiList
-import FWCore.ParameterSet.Types as CfgTypes
 if os.path.exists(jsonfile) and inputType=="DATA":
+    import FWCore.PythonUtilities.LumiList as LumiList
+    import FWCore.ParameterSet.Types as CfgTypes
+
     print "Using JSON file "+jsonfile
     myLumis = LumiList.LumiList(filename = jsonfile).getCMSSWString().split(',')
     process.source.lumisToProcess = CfgTypes.untracked(CfgTypes.VLuminosityBlockRange())
@@ -148,8 +150,3 @@ process.p = cms.Path(
     process.patTriggerDefaultSequence * process.PATNtupleMaker
 
 )
-            
-
-
-                    
-

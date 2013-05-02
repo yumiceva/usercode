@@ -7,7 +7,7 @@ import fileinput
 if len(sys.argv) < 2:
     print "\n usage: setupProd.py <path> \n"
     print "   <path> = path to directory where the crab configuration files will be stored.\n"
-    print "   <channel> = default both electron and muon otherwise specify here either \"electron\" or \"muon\""
+    print "   <channel> = default both electron and muon otherwise specify here either \"electrons\" or \"muons\""
     sys.exit()
 
 # configutation
@@ -34,94 +34,24 @@ jsonFilesEl = {}
 
 ######## Muons
 directoriesMuData['Run2012A-12Jul2012-v1'] = '/SingleMu/StoreResults-SingleMu_Run2012A-13Jul2012-v1_TLBSM_53x_v2_jsonfix-e3fb55b810dc7a0811f4c66dfa2267c9/USER'  # 
-directoriesMuData['Run2010B_Mu9'] = '/Mu/Run2010B-Nov4ReReco_v1/AOD'  # 146240   147195 
-directoriesMuData['Run2010B_Mu15'] = '/Mu/Run2010B-Nov4ReReco_v1/AOD' # 147196   149711
 
 jsonFilesMu['Run2012A-12Jul2012-v1']  = 'Cert_190456-195530_8TeV_08Jun2012ReReco_Collisions12_JSON.txt'
-jsonFilesMu['Run2010B_Mu9']  = 'Cert_146240-147195_7TeV_Nov4ReReco.txt'
-jsonFilesMu['Run2010B_Mu15'] = 'Cert_147196-149442_7TeV_Nov4ReReco.txt'
+
 
 ## Attention:
 ## if a dataset name has ":g" it means that for that sample the jobs will be sent to Nebraska
 ## using condor_g
 
-directoriesMuMC['TTbar_D6T_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['WJets_D6T_Mu'] = '/WJetsToLNu_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['ZJets_D6T_Mu'] ='/DYJetsToLL_TuneD6T_M-50_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['Wc_D6T_Mu'] = '/WCJetsToLNu_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['Vqq_D6T_Mu'] = '/VQQJetsToLL_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM:g'
-
-directoriesMuMC['TTbar_Z2_Mu'] = '/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall10-START38_V12-v3/AODSIM:g'
-directoriesMuMC['WJets_Z2_Mu'] = '/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['ZJets_Z2_Mu'] = '/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM:g'
-directoriesMuMC['STsch_Z2_Mu'] = '/TToBLNu_TuneZ2_s-channel_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['STtch_Z2_Mu'] = '/TToBLNu_TuneZ2_t-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['STtWch_Z2_Mu'] = '/TToBLNu_TuneZ2_tW-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['QCD_Z2_Mu'] = '/QCD_Pt-20_MuEnrichedPt-15_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['WW_Z2_Mu'] = '/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM' # missing at fnal/unl
-directoriesMuMC['WZ_Z2_Mu'] = '/WZtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM'
-
-directoriesMuMC['TTbar_scaleup_Mu'] = '/TTJets_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['TTbar_scaledown_Mu'] = '/TTJets_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['TTbar_matchingup_Mu'] = '/TTJets_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['TTbar_matchingdown_Mu'] = '/TTJets_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['TTbar_smallerISRFSR_Mu'] = '/TTJets_TuneD6T_smallerISRFSR_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['TTbar_largerISRFSR_Mu'] = '/TTJets_TuneD6T_largerISRFSR_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['TTbar_0Jetalpgen_Mu'] = '/TT0Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['TTbar_1Jetalpgen_Mu'] = '/TT1Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['TTbar_2Jetalpgen_Mu'] = '/TT2Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['TTbar_3Jetalpgen_Mu'] = '/TT3Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['TTbar_4Jetalpgen_Mu'] = '/TT4Jets_40GeVTh_TuneZ2_7TeV-alpgen-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['TTbar_PU_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-E7TeV_ProbDist_2010Data_BX156_START38_V12-v1/AODSIM' # missing
-directoriesMuMC['Vqq_scaleup_Mu'] = '/VQQJetsToLL_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['Vqq_scaledown_Mu'] = '/VQQJetsToLL_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
-
-directoriesMuMC['WJets_scaleup_Mu'] = '/WJets_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['WJets_scaledown_Mu'] = '/WJets_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['WJets_matchingdown_Mu'] = '/WJets_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM:g'
-directoriesMuMC['WJets_matchingup_Mu'] = '/WJets_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-
-directoriesMuMC['ZJets_scaleup_Mu'] = '/DYJetsToLL_TuneD6T_scaleup_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['ZJets_scaledown_Mu'] = '/DYJetsToLL_TuneD6T_scaledown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesMuMC['ZJets_matchingup_Mu'] = '/DYJetsToLL_TuneD6T_matchingup_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesMuMC['ZJets_matchingdown_Mu'] = '/DYJetsToLL_TuneD6T_matchingdown_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-
-directoriesMuMC['HToWW_M300_Mu'] = '/WH_ZH_TTH_HToWW_M-300_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO:lite'
+#directoriesMuMC['TTbar_D6T_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
+#directoriesMuMC['HToWW_M300_Mu'] = '/WH_ZH_TTH_HToWW_M-300_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO:lite'
 
 ########## Electrons
 directoriesElData['TrigA'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, Oct 1st json
-directoriesElData['TrigB'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, July16 json
-directoriesElData['TrigC'] = '/EG/Run2010A-Nov4ReReco_v1/AOD'       #trig:Ele15_LW, Oct 1st json
-directoriesElData['PromptRecoTrigC'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'
-directoriesElData['TrigD'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'
-directoriesElData['TrigE'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'  #trig:Ele17_SW_CaloID, Oct 1st json
-directoriesElData['TrigF'] = '/Electron/Run2010B-Nov4ReReco_v1/AOD'
 
 jsonFilesEl['TrigA'] = 'Cert_136033_140040_EL.txt'
-jsonFilesEl['TrigB'] = 'Cert_140041_143962_EL.txt'
-jsonFilesEl['TrigC'] = 'Cert_143963_146427_EL.txt'
-jsonFilesEl['PromptRecoTrigC'] = 'Cert_146428_147116_EL.txt'
-jsonFilesEl['TrigD'] = 'Cert_147117_148818_EL.txt'
-jsonFilesEl['TrigE'] = 'Cert_148819_149180_EL.txt'
-jsonFilesEl['TrigF'] = 'Cert_149181_EL.txt'
-
 
 directoriesElMC['TTbar_D6T_El'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesElMC['WJets_D6T_El'] = '/WJetsToLNu_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['ZJets_D6T_El'] ='/DYJetsToLL_TuneD6T_M-50_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
-directoriesElMC['STsch_Z2_El'] = '/TToBLNu_TuneZ2_s-channel_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['STtch_Z2_El'] = '/TToBLNu_TuneZ2_t-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
-directoriesElMC['STtWch_Z2_El'] = '/TToBLNu_TuneZ2_tW-channel_7TeV-madgraph/Fall10-START38_V12-v2/AODSIM'
-directoriesElMC['QCDEMEn2030_El']=   '/QCD_Pt-20to30_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['QCDEMEn3080_El'] =  '/QCD_Pt-30to80_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['QCDEMEn80170_El'] = '/QCD_Pt-80to170_EMEnriched_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['QCDBCtoE2030_El'] = '/QCD_Pt-20to30_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['QCDBCtoE3080_El'] = '/QCD_Pt-30to80_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['QCDBCtoE80170_El'] = '/QCD_Pt-80to170_BCtoE_TuneZ2_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO'
-directoriesElMC['PhoJet40100_El'] = '/GJets_TuneD6T_HT-40To100_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['PhoJet100200_El'] = '/GJets_TuneD6T_HT-100To200_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['PhoJet200Inf_El'] = '/GJets_TuneD6T_HT-200_7TeV-madgraph/Fall10-START38_V12-v1/AODSIM'
-directoriesElMC['WW_Z2_El'] = '/WWtoAnything_TuneZ2_7TeV-pythia6-tauola/Fall10-START38_V12-v1/AODSIM'
+
 
 
 print "==> make directories"
@@ -215,70 +145,81 @@ if DoElectrons:
 
 print "==> create crab configuration files"
 
+
+# scheduler = remoteGlidein
+
 crabData = '''
 [CMSSW]
 datasetpath = %(DATASET)s
-pset = PATskim.py
+pset = %(CFG)s
 total_number_of_events = -1
 lumi_mask = %(JSON)s
 total_number_of_lumis = -1
-lumis_per_job = 20
+lumis_per_job = 40
+pycfg_params = noprint
+#the line above is needed for VarParsing
 
 [USER]
 return_data = 1
 copy_data = 0
 ui_working_dir = %(DIR)s
-storage_element = cmssrm.fnal.gov
-storage_path = /srm/managerv2?SFN=/11/
-user_remote_dir = /store/user/ttmuj/
+storage_element = cmseos.fnal.gov
+storage_path = /srm/v2/server?SFN=/eos/uscms/store/user/yumiceva
+user_remote_dir = ntuples_4tops_v1
 publish_data = 0
-publish_data_name = Summer10_363_v2
+publish_data_name = Summer13
 dbs_url_for_publication = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
 check_user_remote_dir = 0
 
 [CRAB]
 jobtype = cmssw
 scheduler = condor
+use_server = 0
 '''
 
 crabMC = '''
 [CMSSW]
 datasetpath = %(DATASET)s
-pset = PATskim.py
+pset = %(CFG)s
 total_number_of_events = -1
 events_per_job = 25000
+pycfg_params = noprint
+#the line above is needed for VarParsing
 
 [USER]
 return_data = 1
 copy_data = 0
 ui_working_dir = %(DIR)s
-storage_element = cmssrm.fnal.gov
+storage_element = cmseos.fnal.gov
 storage_path = /srm/managerv2?SFN=/11/
-user_remote_dir = /store/user/ttmuj/
+user_remote_dir = ntuples_4tops_v1
 publish_data = 0
-publish_data_name = Summer10_363_v2
+publish_data_name = Summer13
 dbs_url_for_publication = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
 check_user_remote_dir = 0
 
 [CRAB]
 jobtype = cmssw
 scheduler = condor
+use_server = 0
 '''
 
 crabMCg = '''
 [CMSSW]
 datasetpath = %(DATASET)s
-pset = PATskim.py
+pset = %(CFG)s
 total_number_of_events = -1
 events_per_job = 25000
+pycfg_params = noprint
+#the line above is needed for VarParsing
 
 [USER]
 return_data = 1
 copy_data = 0
 ui_working_dir = %(DIR)s
-storage_element = cmssrm.fnal.gov
+storage_element = cmseos.fnal.gov
 storage_path = /srm/managerv2?SFN=/11/
-user_remote_dir = /store/user/ttmuj/
+user_remote_dir = ntuples_4tops_v1
 publish_data = 0
 publish_data_name = Summer10_363_v2
 dbs_url_for_publication = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
@@ -287,6 +228,7 @@ check_user_remote_dir = 0
 [CRAB]
 jobtype = cmssw
 scheduler = condor_g
+use_server = 0
 
 [EDG]
 se_white_list = unl
@@ -296,7 +238,7 @@ se_white_list = unl
 crabMCglite = '''
 [CMSSW]
 datasetpath = %(DATASET)s
-pset = PATskim.py
+pset = %(CFG)s
 total_number_of_events = -1
 events_per_job = 25000
 
@@ -306,7 +248,7 @@ copy_data = 0
 ui_working_dir = %(DIR)s
 storage_element = cmssrm.fnal.gov
 storage_path = /srm/managerv2?SFN=/11/
-user_remote_dir = /store/user/ttmuj/
+user_remote_dir = ntuples_4tops_v1
 publish_data = 0
 publish_data_name = Summer10_363_v2
 dbs_url_for_publication = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
@@ -315,6 +257,7 @@ check_user_remote_dir = 0
 [CRAB]
 jobtype = cmssw
 scheduler = glite
+use_server = 0
 
 [EDG]
 rb                      = CERN
@@ -343,6 +286,7 @@ if DoMuons:
         adict['DATASET'] = directoriesMuData[dir]
         adict['JSON'] = ajson
         adict['DIR'] = dir
+        adict['CFG'] = py_cfg
         
         acrab = crabData%adict
 
@@ -374,7 +318,8 @@ if DoMuons:
             adict['DATASET'] = directoriesMuMC[dir].strip(":lite")
                                     
         adict['DIR'] = dir
-    
+        adict['CFG'] = py_cfg
+        
         acrab = crabMC%adict
         if docondorg:
             acrab = crabMCg%adict
@@ -400,6 +345,7 @@ if DoElectrons:
         adict['DATASET'] = directoriesElData[dir]
         adict['JSON'] = ajson
         adict['DIR'] = dir
+        adict['CFG'] = py_cfg
         
         acrab = crabData%adict
         
@@ -422,7 +368,8 @@ if DoElectrons:
         adict = {}
         adict['DATASET'] = directoriesElMC[dir]
         adict['DIR'] = dir
-
+        adict['CFG'] = py_cfg
+        
         acrab = crabMC%adict
         
         fileout = open(path+"/"+dir+"/crab.cfg","w")
