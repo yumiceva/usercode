@@ -3,6 +3,7 @@
 import sys
 import os
 import commands
+import subprocess
 
 # List of colors.  Replace digit [0; with [1; to get light color version.
 black  = "\033[0;30m"
@@ -39,12 +40,37 @@ def get_list_files(directory):
 
                                     
 #________________________________________________________________
+def my_getLumi(adir):
+
+    cmdlumi = "pixelLumiCalc.py overview -i "
+    totallumi = 0
+
+    if not os.path.isdir(path+"/"+adir): return totallumi
+    print "calculating luminosity for "+adir
+    thejson = path+"/"+adir+"/"+adir+"/res/lumiSummary.json"
+    if not os.path.isfile(thejson):
+        print " no lumiSummary.json file for this folder. skip dataset."
+        return totallumi
+    output = commands.getstatusoutput(cmdlumi+thejson)
+    lines = output[1].split('\n')
+    theline = lines[len(lines)-2]
+    tmplist = theline.split()
+    alumi = tmplist[len(tmplist)-2]
+    alumi = float(alumi) #/1.e6
+    print "==> recorded in pb-1 "+str(round(alumi,2))
+    totallumi = alumi
+    return totallumi
+#________________________________________________________________
+
 
 if len(sys.argv) < 2:
-    print " usage: statusProd.py path-directory <getoutput/report/lumi>"
+    print " usage: statusProd.py path-directory <status/getoutput/report/lumi>"
     sys.exit()
 
-
+if subprocess.call(['which','crab']):
+    print "Executable crab was not found in path"
+    sys.exit()
+    
 path = sys.argv[1]
 current = os.getcwd()
 cmdcrab = "-status -c "
@@ -65,7 +91,7 @@ if len(sys.argv)==4:
 
 if doLumi:
 
-    cmdlumi = "lumiCalc.py -c frontier://LumiProd/CMS_LUMI_PROD --nowarning overview -i "
+    cmdlumi = "pixelLumiCalc.py overview -i "
     totallumi = 0
     
     for adir in dirs:
@@ -80,7 +106,7 @@ if doLumi:
         theline = lines[len(lines)-2]
         tmplist = theline.split()
         alumi = tmplist[len(tmplist)-2]
-        alumi = float(alumi)/1.e6
+        alumi = float(alumi) #/1.e6
         print "==> recorded in pb-1 "+str(round(alumi,2))
         totallumi += alumi
 
@@ -104,6 +130,7 @@ for adir in dirs:
             totaljobs = 0
             donejobs = 0
             retrievedjobs = 0
+            createdjobs = 0
             for line in lines:
                 if line.find("Total Jobs")!=-1:
                     totaljobs = line.split()[1]
@@ -111,17 +138,24 @@ for adir in dirs:
                     donejobs = line.split()[1]
                 if line.find("Jobs with Wrapper Exit Code : 0")!=-1:
                     retrievedjobs = line.split()[1]
+                if line.find("Jobs Created")!=-1:
+                    createdjobs = line.split()[1]
+                    
             if sys.argv[2]=="status":
                 print " Total Jobs "+str(totaljobs)
-                print " Jobs Done  "+str(donejobs)
-                print " Retrieved Jobs "+str(retrievedjobs)
+                if createdjobs != 0:
+                    print " Jobs Created  "+str(createdjobs)
+                if donejobs != 0:
+                    print " Jobs Done  "+str(donejobs)
+                if retrievedjobs != 0:
+                    print " Retrieved Jobs "+str(retrievedjobs)
                 if totaljobs == retrievedjobs:
                     print green+"===> DONE"+reset
                 if donejobs>0:
                     print yellow+"===> need to getoutput"+reset
                 if totaljobs > donejobs and totaljobs > retrievedjobs:
                     print purple+"===> incomplete"+reset
-                if totaljobs == 0:
+                if totaljobs == 0 or createdjobs > 0:
                     print red+"===> Zero jobs! need to submit them?"+reset
         #if len(sys.argv)>2 and (sys.argv[2]=="getoutput" or sys.argv[2]=="hadd"):
         if len(sys.argv)>2 and sys.argv[2]=="hadd":
@@ -130,7 +164,8 @@ for adir in dirs:
                 os.chdir(current)
                 continue
             if os.path.isfile(adir+".root"):
-                print " merged root file already exits. we will not merge again."
+                print " merged root file already exits. we will not merge again. The file is:"
+                print green+path+"/"+adir+"/"+adir+".root"+reset
                 os.chdir(current)
                 continue
             listofroot = get_list_files(adir+"/res/")
@@ -175,6 +210,7 @@ for adir in dirs:
                     linefiles = linefiles + " " +adir+"_"+str(kk)+".root"
                 cmd = "hadd "+adir+".root "+linefiles
                 print cmd
+                print green+path+"/"+adir+"/"+adir+".root"+reset
                 output = commands.getstatusoutput(cmd)
                 print output[1]
                 for kk in range(1,istrfile):
