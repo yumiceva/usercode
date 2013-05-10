@@ -61,8 +61,9 @@ def my_getLumi(adir):
     totallumi = alumi
     return totallumi
 #________________________________________________________________
+#def my_hadd(adir):
 
-
+#________________________________________________________________     
 if len(sys.argv) < 2:
     print " usage: statusProd.py path-directory <status/getoutput/report/lumi>"
     sys.exit()
@@ -149,14 +150,17 @@ for adir in dirs:
                     print " Jobs Done  "+str(donejobs)
                 if retrievedjobs != 0:
                     print " Retrieved Jobs "+str(retrievedjobs)
-                if totaljobs == retrievedjobs:
+                if totaljobs == retrievedjobs and totaljobs>0:
                     print green+"===> DONE"+reset
                 if donejobs>0:
                     print yellow+"===> need to getoutput"+reset
                 if totaljobs > donejobs and totaljobs > retrievedjobs:
                     print purple+"===> incomplete"+reset
-                if totaljobs == 0 or createdjobs > 0:
-                    print red+"===> Zero jobs! need to submit them?"+reset
+                if createdjobs > 0:
+                    print red+"===> need to submit these jobs?"+reset
+                if totaljobs == 0:
+                    print red+"===> No jobs. create them?"+reset
+                    
         #if len(sys.argv)>2 and (sys.argv[2]=="getoutput" or sys.argv[2]=="hadd"):
         if len(sys.argv)>2 and sys.argv[2]=="hadd":
             if not os.path.isdir(adir+"/res/"):
