@@ -29,6 +29,7 @@ directoriesMuData = {}
 directoriesElData = {}
 directoriesMuMC = {}
 directoriesElMC = {}
+dbsURL = {}
 jsonFilesMu = {}
 jsonFilesEl = {}
 
@@ -39,12 +40,14 @@ directoriesMuData['Run2012B-13Jul2012-v1'] = '/SingleMu/StoreResults-Run2012B-13
 directoriesMuData['Run2012C-24Aug2012-v1'] = '/SingleMu/StoreResults-Run2012C-24Aug2012-v1_TLBSM_53x_v2-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 directoriesMuData['Run2012C-PromptReco-v2'] = '/SingleMu/StoreResults-Run2012C-PromptReco-v2_TLBSM_53x_v2-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 directoriesMuData['Run2012C-PromptReco-v2-p2'] = '/SingleMu/StoreResults-Run2012C-PromptReco-v2_TLBSM_53x_v2-646f7563e9ae6f48814faa1c250f042a/USER'
+#missing:
+#directoriesMuData['Run2012C-PromptReco-v2-ext1'] = '/SingleMu/StoreResults-Run2012C-PromptReco-v2_TLBSM_53x_v2_extension_v1-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 directoriesMuData['Run2012C-EcalRecover_11Dec2012-v1'] = '/SingleMu/jpilot-Run2012C-EcalRecover_11Dec2012-v1_TLBSM_53x_v2-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 directoriesMuData['Run2012D-PromptReco-v1'] = '/SingleMu/StoreResults-Run2012D-PromptReco-v1_TLBSM_53x_v2-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 directoriesMuData['Run2012D-PromptReco-v1-p2'] = '/SingleMu/StoreResults-Run2012D-PromptReco-v1_TLBSM_53x_v2_extension_v1-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 directoriesMuData['Run2012D-PromptReco-v1-p3'] = '/SingleMu/StoreResults-Run2012D-PromptReco-v1_TLBSM_53x_v2_extension_v2-e3fb55b810dc7a0811f4c66dfa2267c9/USER'
 
-jsonFilesMu['Run2012A-12Jul2012-v1']  = 'Cert_190456-195530_8TeV_08Jun2012ReReco_Collisions12_JSON.txt'
+jsonFilesMu['Run2012A-12Jul2012-v1']  = 'Cert_190456-203742_8TeV_22Jan2013ReReco_Collisions12_JSON.txt'
 jsonFilesMu['Run2012A-recover-06Aug2012-v1'] = 'Cert_190456-203742_8TeV_22Jan2013ReReco_Collisions12_JSON.txt'
 jsonFilesMu['Run2012B-13Jul2012-v1'] = 'Cert_190456-203742_8TeV_22Jan2013ReReco_Collisions12_JSON.txt'
 jsonFilesMu['Run2012C-24Aug2012-v1'] = 'Cert_190456-203742_8TeV_22Jan2013ReReco_Collisions12_JSON.txt'
@@ -60,6 +63,11 @@ jsonFilesMu['Run2012D-PromptReco-v1-p3'] = 'Cert_190456-203742_8TeV_22Jan2013ReR
 ## using condor_g
 
 directoriesMuMC['TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola'] = '/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/meloam-Summer12_DR53X-PU_S10_START53_V7A-v1_TLBSM_53x_v2-c04f3b4fa74c8266c913b71e0c74901d/USER'
+
+#for i in directoriesMuMC:
+#dbsURL[i] = 'http://cmsdbsprod.cern.ch/cms_dbs_prod_global/servlet/DBSServlet'
+
+
 
 #directoriesMuMC['TTbar_D6T_Mu'] = '/TTJets_TuneD6T_7TeV-madgraph-tauola/Fall10-START38_V12-v2/AODSIM'
 #directoriesMuMC['HToWW_M300_Mu'] = '/WH_ZH_TTH_HToWW_M-300_7TeV-pythia6/Fall10-START38_V12-v1/GEN-SIM-RECO:lite'
@@ -204,7 +212,7 @@ total_number_of_events = -1
 events_per_job = 25000
 pycfg_params = noprint
 #the line above is needed for VarParsing
-dbs_url = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_02/servlet/DBSServlet
+dbs_url = %(DBSURL)s
 
 [USER]
 return_data = 1
@@ -339,6 +347,7 @@ if DoMuons:
                                     
         adict['DIR'] = dir
         adict['CFG'] = py_cfg
+        adict['DBSURL'] = dbsURL[dir]
         
         acrab = crabMC%adict
         if docondorg:

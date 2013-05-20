@@ -35,14 +35,14 @@ def get_list_files(directory):
         if f.endswith(".root"):
             
             lfiles.append(directory+"/"+f)
-                
+    lfiles.sort()
     return lfiles
 
                                     
 #________________________________________________________________
 def my_getLumi(adir):
 
-    cmdlumi = "pixelLumiCalc.py overview -i "
+    cmdlumi = "lumiCalc2.py overview -i " #"pixelLumiCalc.py overview -i "
     totallumi = 0
 
     if not os.path.isdir(path+"/"+adir): return totallumi
@@ -82,6 +82,7 @@ if len(sys.argv)>=3:
         doLumi = True
 
 dirs = os.listdir(path)
+dirs.sort()
 
 # only look at input directory
 if len(sys.argv)==4:
@@ -92,7 +93,7 @@ if len(sys.argv)==4:
 
 if doLumi:
 
-    cmdlumi = "pixelLumiCalc.py overview -i "
+    cmdlumi = "lumiCalc2.py overview -i " #"pixelLumiCalc.py overview -i "
     totallumi = 0
     
     for adir in dirs:
