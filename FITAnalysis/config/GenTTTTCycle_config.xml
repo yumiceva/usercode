@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
+<!ENTITY TTTT SYSTEM "53xNTuples-v2/TTTT.xml">
+]>
+
+<JobConfiguration JobName="GenTTTTCycleJob" OutputLevel="DEBUG">
+	<Library Name="libfastjet" />
+        <Library Name="libfastjettools"/>
+        <Library Name="libSFramePlugIns"/>
+        <Library Name="libSFrameTools"/>
+        <Library Name="libAnalysis"/>
+        <Library Name="libFITAnalysis"/>
+
+	<Package Name="SFrameCore.par" />
+	<Package Name="SFramePlugIns.par" />
+        <Package Name="Analysis.par" />
+	<Package Name="FITAnalysis.par" />
+
+<!--	<Cycle Name="TauEffiCycle"  RunMode="PROOF" ProofServer="lite://"  ProofWorkDir="/afs/naf.desy.de/group/cms/scratch/peiffer/PROOF/" OutputDirectory="./" PostFix="" TargetLumi="1" > -->
+	<Cycle Name="GenTTTTCycle"  OutputDirectory="/uscmst1b_scratch/lpc1/cmsroc/yumiceva/4tops2013_templates/" PostFix="" TargetLumi="1" > 
+		<InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTTT">
+                        &TTTT;
+<!--		<In FileName="/scratch/hh/lustre/cms/user/peiffer/Ntuples/ttbar52.root" Lumi="0.0"/> -->                
+                        <InputTree Name="AnalysisTree" />
+		</InputData>
+		<UserConfig>
+
+		</UserConfig>
+	</Cycle>
+</JobConfiguration>

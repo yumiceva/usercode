@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
+<!ENTITY TTTT SYSTEM "TTTT.xml">
+]>
+
+<JobConfiguration JobName="PileUpHistoCycleJob" OutputLevel="DEBUG">
+	<Library Name="libfastjet" />
+	<Library Name="libfastjettools"/>
+	<Library Name="libSFrameTools" />
+	<Library Name="libAnalysis" />
+	<Library Name="libSFramePlugIns" />
+
+	<Package Name="SFrameCore.par" />
+	<Package Name="SFramePlugIns.par" />
+	<Package Name="SFrameTools.par" />
+	<Package Name="Analysis.par" />
+
+	<Cycle Name="PileUpHistoCycle"  RunMode="PROOF" ProofServer="lite://"  ProofWorkDir="/uscmst1b_scratch/lpc1/cmsroc/yumiceva/proof/" OutputDirectory="/uscms/home/yumiceva/work/sframe/CMSSW_5_3_3/src/SFrame/FITAnalysis/PileUpHistos/" PostFix="" TargetLumi="1" > 
+
+	        <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTTT" Cacheable="False">
+                        &TTTT;
+			<InputTree Name="AnalysisTree" /> 
+		</InputData>
+
+		<UserConfig>
+
+		</UserConfig>
+	</Cycle>
+</JobConfiguration>

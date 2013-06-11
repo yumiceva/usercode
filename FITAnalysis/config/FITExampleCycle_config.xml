@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
+<!ENTITY TTTT SYSTEM "53xNTuples-v2/TTTT.xml">
+]>
+
+<!-- <JobConfiguration JobName="ExampleCycleJob" OutputLevel="VERBOSE"> -->
+<JobConfiguration JobName="FITExampleCycleJob" OutputLevel="INFO">
+
+	<Library Name="libfastjet"/>
+        <Library Name="libfastjettools"/>
+	<Library Name="libSFramePlugIns"/>
+	<Library Name="libSFrameTools"/>
+        <Library Name="libAnalysis"/>
+	<Library Name="libFITAnalysis"/>
+
+	<Package Name="SFrameCore.par" />
+	<Package Name="SFramePlugIns.par" />
+	<Package Name="Analysis.par" />
+
+	<Cycle Name="FITExampleCycle" OutputDirectory="/uscmst1b_scratch/lpc1/cmsroc/yumiceva/4tops2013_templates/" PostFix="" TargetLumi="1.0"> 
+
+		<InputData Lumi="1" NEventsMax="-1" Type="MC" Version="TTTT" Cacheable="False">
+		        &TTTT;
+			<InputTree Name="AnalysisTree" /> 
+		</InputData> 
+
+		<UserConfig>
+
+		   <Item Name="JetCollection" Value="goodPatJetsPFlow" />  
+		   <Item Name="ElectronCollection" Value="selectedPatElectronsPFlowLoose" /> 
+		   <Item Name="MuonCollection" Value="selectedPatMuonsPFlowLoose" /> 
+		   <Item Name="TauCollection" Value="selectedPatTausPFlow" /> 
+<!--		   <Item Name="PhotonCollection" Value="patPhotons" /> -->
+		   <Item Name="PrimaryVertexCollection" Value="goodOfflinePrimaryVertices" /> 
+		   <Item Name="METName" Value="patMETsPFlow" />  
+		   <Item Name="TopJetCollection" Value="goodPatJetsCATopTagPF" />
+		   <Item Name="TopJetCollectionGen" Value="caTopTagGen" />
+		   <Item Name="PrunedJetCollection" Value="goodPatJetsCA8PrunedPF" />  
+		   <Item Name="GenParticleCollection" Value="GenParticles" /> 
+		      
+		      <Item Name="PU_Filename_MC" Value="/uscms/home/yumiceva/work/sframe/CMSSW_5_3_3/src/SFrame/FITAnalysis/PileUpHistos/PileUpHistoCycle" />
+		      <Item Name="PU_Filename_Data" Value="/uscms/home/yumiceva/work/sframe/CMSSW_5_3_3/src/SFrame/FITAnalysis/PileUpHistos/PileUpHistoCycle.DATA.SingleMu_208686.root" />
+		      <Item Name="PU_Histname_Data" Value="pileup" />
+		      <Item Name="PU_Histname_MC" Value="N_pileup_hist" />
+
+		      <Item Name="writeTTbarReco" Value="True" />  
+		      <Item Name="readTTbarReco" Value="True" /> 
+
+		   <Item Name="LumiFilePath" Value="/uscms/home/yumiceva/work/sframe/CMSSW_5_3_3/src/SFrame/FITAnalysis/LumiFiles/" /> 
+		   <Item Name="LumiFileName" Value="MuonAll.root" /> 
+		   <Item Name="LumiTrigger" Value="HLT_IsoMu24_eta2p1_v" /> 
+		      
+                </UserConfig>
+	</Cycle>
+</JobConfiguration>

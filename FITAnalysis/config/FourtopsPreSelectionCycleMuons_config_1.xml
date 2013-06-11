@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd"[
+<!ENTITY SingleTop_T_sch SYSTEM "53xNTuples-v2/T_s-channel_TuneZ2star_8TeV-powheg-tauola.xml">
+]>
+
+
+<JobConfiguration JobName="FourtopsPreSelectionCycle" OutputLevel="DEBUG">
+
+    <Library Name="libfastjet" />
+    <Library Name="libfastjettools"/>
+    <Library Name="libJetMETObjects" />
+    <Library Name="libSFrameTools" />
+    <Library Name="libAnalysis" />
+    <Library Name="libFITAnalysis" />
+    <Library Name="libSFramePlugIns" />
+
+    <Package Name="SFrameCore.par" />
+    <Package Name="SFramePlugIns.par" />
+    <Package Name="SFrameTools.par" />
+    <Package Name="Analysis.par" />
+    <Package Name="FITAnalysis.par" />
+
+    <Cycle Name="FourtopsPreSelectionCycle" RunMode="PROOF" ProofServer="lite://"  ProofWorkDir="/uscmst1b_scratch/lpc1/cmsroc/yumiceva/proof/" OutputDirectory="/eos/uscms/store/user/yumiceva/fourtops/sframePreselection/" PostFix="" TargetLumi="1" >
+
+<!--
+    <Cycle Name="FourtopsPreSelectionCycle" OutputDirectory="/eos/uscms/store/user/yumiceva/fourtops/sframePreselection/" PostFix="" TargetLumi="1" >
+
+-->
+        <InputData Lumi="1" NEventsMax="-1" Type="MC" Version="SingleTop_T_sch" Cacheable="False">
+            &SingleTop_T_sch;
+            <InputTree Name="AnalysisTree" />
+            <OutputTree Name="AnalysisTree" />
+        </InputData>
+
+        <UserConfig>
+            <Item Name="Electron_Or_Muon_Selection" Value="Muon" />
+            <Item Name="JetCollection" Value="goodPatJetsPFlow" />
+            <Item Name="ElectronCollection" Value="selectedPatElectronsPFlow" />
+            <Item Name="MuonCollection" Value="selectedPatMuonsPFlow" />
+            <Item Name="TauCollection" Value="selectedPatTausPFlow" /> 
+            <Item Name="PrimaryVertexCollection" Value="goodOfflinePrimaryVertices" />
+            <Item Name="METName" Value="patMETsPFlow" />
+            <Item Name="TopJetCollection" Value="goodPatJetsCATopTagPF" />
+            <Item Name="TopJetCollectionGen" Value="caTopTagGen" />
+            <Item Name="PrunedJetCollection" Value="goodPatJetsCA8PrunedPF" />
+            <Item Name="GenParticleCollection" Value="GenParticles" />
+            <Item Name="JECFileLocation" Value="/uscms/home/yumiceva/work/sframe/CMSSW_5_3_3/src/SFrame/ZprimeAnalysis2012/JECFiles/" />
+            <Item Name="JECDataGlobalTag" Value="FT_53_V10_AN3" />
+            <Item Name="JECMCGlobalTag" Value="START53_V15" />
+            <Item Name="JECJetCollection" Value="AK5PFchs" />
+            <Item Name="ReversedElectronSelection" Value="false" />
+        </UserConfig>
+
+    </Cycle>
+</JobConfiguration>

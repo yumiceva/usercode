@@ -1,0 +1,11 @@
+universe = vanilla
+Executable = sframe_condor_exe.csh 
+Requirements = Memory >= 199 &&OpSys == "LINUX"&& Machine == "cmswn1019.fnal.gov"
+REQUEST_CPUS = 8
++BigMemoryJob = TRUE
+Output = sframe_$(Cluster)_$(Process).stdout
+Error = sframe_$(Cluster)_$(Process).stderr
+Log = sframe_$(Cluster)_$(Process).log
+notify_user = ${LOGNAME}@FNAL.GOV
+Arguments = FourtopsPreSelectionCycleMuons_config.xml 
+Queue 1
