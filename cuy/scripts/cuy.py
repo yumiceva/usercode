@@ -66,8 +66,8 @@ except:
 from xml.sax import saxutils, make_parser, handler
 from xml.sax.handler import feature_namespaces
 
-import Inspector
-import Style
+from usercode.cuy.Inspector import *
+from usercode.cuy.Style import *
 
 
 #_______________OPTIONS________________
@@ -273,7 +273,7 @@ if __name__ == '__main__':
 
 
     # style
-    thestyle = Style.Style()
+    thestyle = Style()
 
     HasCMSStyle = False
     style = None
@@ -1127,7 +1127,7 @@ if __name__ == '__main__':
 	
 	cv[thesuper[ikey].name].Update()
 
-        if makeDiffPlot:
+        if makeDiffPlot and datahist[thesuper[ikey].name] != None:
             
             ratiohist[thesuper[ikey].name+"_diff"] = datahist[thesuper[ikey].name].Clone(thesuper[ikey].name+"_diff")
             ratiohist[thesuper[ikey].name+"_diff"].Reset()
@@ -1185,7 +1185,36 @@ if __name__ == '__main__':
                 #        errorgraph[thesuper[ikey].name].Draw("E3 same")
             else:
                 print "stack plot has zero entries for "+thesuper[ikey].name + " skip data/MC ratio plot"
+
+        elif makeDiffPlot and len(astack.GetHists()) ==2:
+
+            atemphist = astack.GetHists().At(0)
+            atemphist1 = atemphist.Clone()
+            ratiohist[thesuper[ikey].name+"_diff"] = atemphist1.Clone( thesuper[ikey].name+"_diff" )
+            ratiohist[thesuper[ikey].name+"_diff"].Reset()
+
+            atemphist2 = astack.GetHists().At(1)
+            atemphist1.Add(atemphist2,-1.)
+            ratiohist[thesuper[ikey].name+"_diff"].Divide(atemphist1, atemphist2 )
+            # get KS value
+            #if doKS: KSvalue = datahist[thesuper[ikey].name].KolmogorovTest(astack.GetStack().Last() )
+            pad2.cd()
+            ratiohist[thesuper[ikey].name+"_diff"].SetYTitle("#frac{(hist1 - hist2)}{hist2}")
+            ratiohist[thesuper[ikey].name+"_diff"].SetTitleSize(0.09,"Y")
+            ratiohist[thesuper[ikey].name+"_diff"].SetTitleOffset(0.7,"Y")
+            ratiohist[thesuper[ikey].name+"_diff"].Draw()
+            ratiohist[thesuper[ikey].name+"_diff"].SetMaximum(2.)
+            ratiohist[thesuper[ikey].name+"_diff"].SetMinimum(-2.)
+            #if doKS:
+            #    texKS = TLatex(0.25,0.82,"KS="+str(round(KSvalue,2)))
+            #    texKS.SetNDC()
+            #    texKS.SetTextSize(0.1)
+            #    texKS.Draw()
                 
+            pad2.SetGrid()
+            pad2.Update()
+                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                
 	#cv[thesuper[ikey].name].Print("test.png")
 	#cv[thesuper[ikey].name].UseCurrentStyle()
         #gPad.SetRightMargin(4)
