@@ -435,9 +435,18 @@ if __name__ == '__main__':
                 for iblist in range(0,len(blist)-1):
                     tmpname += blist[iblist] +"__"
             else:
-                blist = tmplisthistos[isuffix].split('_')
-                for iblist in range(0,len(blist)-1):
-                    tmpname += blist[iblist] +"_"
+                if tmplisthistos[isuffix].count('_') % 2 == 0:
+                    tmpname = tmplisthistos[isuffix]
+                    tmpname = tmpname[0:tmpname.rfind('_')]
+                    tmpname += '_'
+                else:
+                    tmpname = tmplisthistos[isuffix]
+                    tmpname = tmpname[0:tmpname.rfind('_')]
+                    tmpname = tmpname[0:tmpname.rfind('_')]
+                    tmpname += '_'
+                #blist = tmplisthistos[isuffix].split('_')
+                #for iblist in range(0,len(blist)-1):
+                #    tmpname += blist[iblist] +"_"
             #tmpname = tmplisthistos[isuffix].strip(listarray[0])
             new_tmplisthistos.append( tmpname )
         tmplisthistos = new_tmplisthistos
@@ -466,7 +475,8 @@ if __name__ == '__main__':
                         for sfline in SFfile:
                             if sfline.find("#")!=-1: continue
                             if sfline.find(keySF)!=-1:
-                                the_big_weight = sfline.split()[1]
+                                the_big_weight = float(sfline.split()[1])/float(sfline.split()[2])
+                                if verbose: print "SF computed as "+str(sfline.split()[1])+" / "+str(sfline.split()[2])+" = "+str(the_big_weight)
                                 break
                 else: the_big_weight = thedata[jsample].weight
                                                                                                         
@@ -843,7 +853,9 @@ if __name__ == '__main__':
                                     for sfline in SFfile:
                                         if sfline.find("#")!=-1: continue
                                         if sfline.find(keySF)!=-1:
-                                            the_big_weight = sfline.split()[1]
+                                            #the_big_weight = sfline.split()[1]
+                                            the_big_weight = float(sfline.split()[1])/float(sfline.split()[2])
+                                            if verbose: print "SF computed as "+str(sfline.split()[1])+" / "+str(sfline.split()[2])+" = "+str(the_big_weight)
                                             break
                             else: the_big_weight = thedata[jkey].weight
                             #print " WEIGHT==="+the_big_weight
