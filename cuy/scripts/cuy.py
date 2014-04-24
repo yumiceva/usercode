@@ -435,7 +435,7 @@ if __name__ == '__main__':
                 for iblist in range(0,len(blist)-1):
                     tmpname += blist[iblist] +"__"
             else:
-                if tmplisthistos[isuffix].count('_') % 2 == 0:
+                if tmplisthistos[isuffix].count('_') % 2 == 1:
                     tmpname = tmplisthistos[isuffix]
                     tmpname = tmpname[0:tmpname.rfind('_')]
                     tmpname += '_'
@@ -765,6 +765,8 @@ if __name__ == '__main__':
 	if verbose : print "fill option:"+ str(doFill)
 	#create canvas
 	cv[thesuper[ikey].name] = TCanvas(thesuper[ikey].name,thesuper[ikey].title,700,700)
+        if verbose: print "canvas created with name: "+thesuper[ikey].name+" and title: "+thesuper[ikey].title
+        
 	#legend
 	aleg = TLegend(0.66,0.65,0.93,0.93)
 	SetOwnership( aleg, 0 ) 
@@ -778,6 +780,7 @@ if __name__ == '__main__':
         makeDiffPlot = False
         doKS = False
         if thesuper[ikey].PlotDiff == "true":
+            if verbose: print "PlotDiff = true"
             makeDiffPlot = True
             if thesuper[ikey].doKS == "true": doKS = True
             #cv[thesuper[ikey].name+"_diff"] = TCanvas(thesuper[ikey].name+"_diff",thesuper[ikey].title,700,700)
@@ -804,15 +807,18 @@ if __name__ == '__main__':
         yarray = array('d')
         xerr_array = array('d')
         yerr_array = array('d')
-
+        
+        #if verbose: print listname
 	for ihname in listname:
-	
+            got_ihname = False
+            
 	    for jkey in thedata:
 		tmpkeys = thedata[jkey].histos.keys()
 		
 		for tmpname in tmpkeys:
-		
+                    
 		    if tmpname == ihname:
+                        got_ihname = True
 			ath = thedata[jkey].TH1s[tmpname]
 			if ath is None:
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
@@ -925,7 +931,7 @@ if __name__ == '__main__':
                             if verbose: print " histogram has been normalized before applying weight"
                             
                         if newth.InheritsFrom("TH1"): newth.Scale(aweight)
-			
+                        if verbose: print " integral = "+str(newth.Integral())
 			# check if we have color
 			if not listcolor[ii]:
 			    listcolor[ii] = 1
@@ -983,6 +989,7 @@ if __name__ == '__main__':
                             
 			# stack histograms
 			if doFill:
+                            
 			    if thesuper[ikey].XTitle != None:
 				newth.SetXTitle("")
                             if listlegend[ii]=="Data": datahist[thesuper[ikey].name] = newth
@@ -993,6 +1000,7 @@ if __name__ == '__main__':
                                 tmpNoStackhist[thesuper[ikey].name].append(newth)
                             else:
                                 astack.Add(newth,"HIST")
+                                
 			elif thesuper[ikey].Option:
 			    astack.Add(newth,thesuper[ikey].Option)
 			else:
@@ -1027,6 +1035,9 @@ if __name__ == '__main__':
 			outputroot.cd()
 			newth.Write()
 	    ii = ii + 1
+            if not got_ihname:
+                print "ERROR: histogram with name: "+ihname+" does not exist"
+                
 	if thesuper[ikey].Maximum != None:
 	    astack.SetMaximum( float(thesuper[ikey].Maximum) )
         else: astack.SetMaximum( thisistheMax * 1.55 )
