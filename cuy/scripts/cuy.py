@@ -435,15 +435,21 @@ if __name__ == '__main__':
                 for iblist in range(0,len(blist)-1):
                     tmpname += blist[iblist] +"__"
             else:
-                if tmplisthistos[isuffix].count('_') % 2 == 1:
-                    tmpname = tmplisthistos[isuffix]
+                ncounts = tmplisthistos[isuffix].count('_')
+                tmpname = tmplisthistos[isuffix]
+                for jcount in range(1,ncounts):
                     tmpname = tmpname[0:tmpname.rfind('_')]
-                    tmpname += '_'
-                else:
-                    tmpname = tmplisthistos[isuffix]
-                    tmpname = tmpname[0:tmpname.rfind('_')]
-                    tmpname = tmpname[0:tmpname.rfind('_')]
-                    tmpname += '_'
+                tmpname += '_'
+                
+                #if tmplisthistos[isuffix].count('_') % 2 == 1:
+                #    tmpname = tmplisthistos[isuffix]
+                #    tmpname = tmpname[0:tmpname.rfind('_')]
+                #    tmpname += '_'
+                #else:
+                #    tmpname = tmplisthistos[isuffix]
+                #    tmpname = tmpname[0:tmpname.rfind('_')]
+                #    tmpname = tmpname[0:tmpname.rfind('_')]
+                #    tmpname += '_'
                 #blist = tmplisthistos[isuffix].split('_')
                 #for iblist in range(0,len(blist)-1):
                 #    tmpname += blist[iblist] +"_"
@@ -478,6 +484,9 @@ if __name__ == '__main__':
                                 the_big_weight = float(sfline.split()[1])/float(sfline.split()[2])
                                 if verbose: print "SF computed as "+str(sfline.split()[1])+" / "+str(sfline.split()[2])+" = "+str(the_big_weight)
                                 break
+                    else:
+                        print "ERROR: File "+thedata[jsample].weight.split(":")[0]+" does not exist in path"
+                        sys.exit()
                 else: the_big_weight = thedata[jsample].weight
                                                                                                         
                 aweight = float( the_big_weight ) * tmp_weight
