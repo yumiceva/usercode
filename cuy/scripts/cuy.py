@@ -21,7 +21,7 @@
    -b, --batch : run in batch mode without graphics.
    -c, --create  = CREATE: create XML configuration file from a ROOT file.
    -e, --example = EXAMPLE: generate an example xml file.
-   -f, --flag    = FLAG: create a baneer
+   -f, --flag    = FLAG: create a banner
    -l, --list    = LIST: list of objects in the ROOT file.
    -O, --OutputFilename = OUTPUTFILENAME: name of the output ROOT file. 
    -o, --output  = OUTPUT: output directory
@@ -122,7 +122,11 @@ class ValElement:
 	self.histos = {}
 	self.TH1s = {}
 	self.weight = None
-
+class globalElement:
+    def __init__(self):
+        self.location = ""
+        self.banner = ""
+        
 class divideElement:
     def __init__(self):
 	self.name = ""
@@ -179,13 +183,19 @@ class FindIssue(handler.ContentHandler):
 	self.size = 0
 	self.atype = ""
 	self.tmpsupername = ""
-
+        self.Global = None
+        
     def startElement(self, name, attrs):
+        if name == 'global':
+            self.Global = globalElement()
+            self.Global.location = attrs.get('location',None)
+            self.Global.banner = attrs.get('banner',None)
         if name == 'validation':
 	    self.size = self.size + 1
 	    self.atype = attrs.get('type',None)
 	    self.data[self.atype] = ValElement()
 	    self.data[self.atype].type = attrs.get('type',None)
+            #self.data[self.atype].type = attrs.get('sample',None)
 	    self.data[self.atype].filename = attrs.get('file',None)
 	    self.data[self.atype].release = attrs.get('release',None)
 	    self.data[self.atype].weight = attrs.get('weight','')
@@ -269,7 +279,6 @@ class FindIssue(handler.ContentHandler):
             self.superimpose[self.tmpsupername].NoStack.append(attrs.get('NoStack',None))
             
 if __name__ == '__main__':
-
 
 
     # style
@@ -363,6 +372,11 @@ if __name__ == '__main__':
     # Parse the input
     parser.parse(option.xml)
 
+    # check again banner option
+    if dh.Global.banner != None:
+        printBanner = True
+        Banner = dh.Global.banner
+        
     # list of canvas
     cv = {}
     afilelist = {}
@@ -384,7 +398,9 @@ if __name__ == '__main__':
 
     for ikey in thedata:
 	if verbose : print "= Processing set called: " + ikey
-	afilename = thedata[ikey].filename
+        afilename = thedata[ikey].filename
+        if dh.Global.location:
+            afilename = dh.Global.location + thedata[ikey].filename
 	if firstFilename == '':
 	    firstFilename = afilename
 	arelease = ""
@@ -495,6 +511,7 @@ if __name__ == '__main__':
                 
                 ath = thedata[jsample].TH1s[the_namehisto]
                 if ath is None:
+                    print "Input files located: "+dh.Global.location
                     print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
                 if verbose :
                     print "=== histogram from sample: "+jsample
@@ -573,6 +590,7 @@ if __name__ == '__main__':
 		    if tmpname == ihname:
 			ath = thedata[jkey].TH1s[tmpname]
 			if ath is None:
+                            print "Input files located: "+dh.Global.location
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			    exit(0)
                                                     
@@ -640,6 +658,7 @@ if __name__ == '__main__':
 		if tmpname == numerator:
 		    numeratorth = thedata[jkey].TH1s[tmpname]
 		    if numeratorth is None:
+                        print "Input files located: "+dh.Global.location
 			print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			exit(0)
 			#print "=== numerator histogram: "+numeratorth.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(numeratorth.GetMean(),2) + " weight= " + str(aweight)
@@ -647,6 +666,7 @@ if __name__ == '__main__':
 		if tmpname == denominator:
 		    denominatorth = thedata[jkey].TH1s[tmpname]
 		    if denominatorth is None:
+                        print "Input files located: "+dh.Global.location
 			print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			exit(0)
 			#print "=== denominator histogram: "+denominatorth.GetName() + " from " + thedata[jkey].filename + " mean = " + "%.2f" % round(denominatorth.GetMean(),2) + " weight= " + str(aweight)
@@ -830,6 +850,7 @@ if __name__ == '__main__':
                         got_ihname = True
 			ath = thedata[jkey].TH1s[tmpname]
 			if ath is None:
+                            print "Input files located: "+dh.Global.location
 			    print "ERROR: histogram name \""+tmpname+"\" does not exist in file "+thedata[jkey].filename
 			    exit(0)
 			if verbose : print "=== superimpose histogram: "+ath.GetName() + " mean = " + "%.2f" % round(ath.GetMean(),2)
