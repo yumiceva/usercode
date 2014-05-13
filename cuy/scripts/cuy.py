@@ -124,8 +124,8 @@ class ValElement:
 	self.weight = None
 class globalElement:
     def __init__(self):
-        self.location = ""
-        self.banner = ""
+        self.location = None
+        self.banner = None
         
 class divideElement:
     def __init__(self):
@@ -183,11 +183,11 @@ class FindIssue(handler.ContentHandler):
 	self.size = 0
 	self.atype = ""
 	self.tmpsupername = ""
-        self.Global = None
+        self.Global = globalElement()
         
     def startElement(self, name, attrs):
         if name == 'global':
-            self.Global = globalElement()
+            #self.Global = globalElement()
             self.Global.location = attrs.get('location',None)
             self.Global.banner = attrs.get('banner',None)
         if name == 'validation':
@@ -373,7 +373,8 @@ if __name__ == '__main__':
     parser.parse(option.xml)
 
     # check again banner option
-    if dh.Global.banner != None:
+    if dh.Global.banner:
+        print "NOTE: Global"
         printBanner = True
         Banner = dh.Global.banner
         
