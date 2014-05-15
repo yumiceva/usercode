@@ -454,7 +454,7 @@ if __name__ == '__main__':
             else:
                 ncounts = tmplisthistos[isuffix].count('_')
                 tmpname = tmplisthistos[isuffix]
-                for jcount in range(1,ncounts):
+                for jcount in range(1,ncounts+1):
                     tmpname = tmpname[0:tmpname.rfind('_')]
                 tmpname += '_'
                 
