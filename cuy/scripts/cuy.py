@@ -447,30 +447,20 @@ if __name__ == '__main__':
         new_tmplisthistos = []
         for isuffix in range(0, len(tmplisthistos)):
             tmpname = ''
-            if tmplisthistos[isuffix].find("__")!=-1:
-                blist = tmplisthistos[isuffix].split('__')
-                for iblist in range(0,len(blist)-1):
-                    tmpname += blist[iblist] +"__"
-            else:
-                ncounts = tmplisthistos[isuffix].count('_')
-                tmpname = tmplisthistos[isuffix]
-                for jcount in range(1,ncounts+1):
-                    tmpname = tmpname[0:tmpname.rfind('_')]
-                tmpname += '_'
+            #if tmplisthistos[isuffix].find("__")!=-1:
+            #    blist = tmplisthistos[isuffix].split('__')
+            #    for iblist in range(0,len(blist)-1):
+            #        tmpname += blist[iblist] +"__"
+            #else:
+            #    ncounts = tmplisthistos[isuffix].count('_')
+            #    tmpname = tmplisthistos[isuffix]
+            #    for jcount in range(1,ncounts+1):
+            #        tmpname = tmpname[0:tmpname.rfind('_')]
+            #    tmpname += '_'
                 
-                #if tmplisthistos[isuffix].count('_') % 2 == 1:
-                #    tmpname = tmplisthistos[isuffix]
-                #    tmpname = tmpname[0:tmpname.rfind('_')]
-                #    tmpname += '_'
-                #else:
-                #    tmpname = tmplisthistos[isuffix]
-                #    tmpname = tmpname[0:tmpname.rfind('_')]
-                #    tmpname = tmpname[0:tmpname.rfind('_')]
-                #    tmpname += '_'
-                #blist = tmplisthistos[isuffix].split('_')
-                #for iblist in range(0,len(blist)-1):
-                #    tmpname += blist[iblist] +"_"
-            #tmpname = tmplisthistos[isuffix].strip(listarray[0])
+            tmpname = tmplisthistos[isuffix]
+            tmpname = tmpname[0:tmpname.rfind(listarray[0])]
+            #tmpname += '_'
             new_tmplisthistos.append( tmpname )
         tmplisthistos = new_tmplisthistos
         if verbose:
