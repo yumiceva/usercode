@@ -374,7 +374,7 @@ if __name__ == '__main__':
 
     # check again banner option
     if dh.Global.banner:
-        print "NOTE: Global"
+        #print "NOTE: Global"
         printBanner = True
         Banner = dh.Global.banner
         
@@ -511,13 +511,15 @@ if __name__ == '__main__':
                     newth = ath.Clone(namehisto + theadditionArray[ikey].name)
                     newth.SetName(namehisto + theadditionArray[ikey].name)
                     if verbose: print "=== new histogram name: "+ newth.GetName()
-                    newth.Sumw2()
+                    if newth.GetSumw2N() == 0:
+                        newth.Sumw2()
                     #newth.Scale(1/newth.Integral())
                     newth.Scale(aweight)
                     isFirst = False
                 else:
                     atmpth = ath.Clone()
-                    atmpth.Sumw2()
+                    if atmpth.GetSumw2N() == 0:
+                        atmpth.Sumw2()
                     #if theaddition[ikey].Normalize == "true":
                     #    atmpth.Scale(1/atmpth.Integral())
                     atmpth.Scale(aweight)
@@ -589,14 +591,16 @@ if __name__ == '__main__':
 			#ath.Print("all")
 			if isFirst:
 			    newth = ath.Clone(theaddition[ikey].name)
-			    newth.Sumw2()
+                            if newth.GetSumw2N() == 0:
+                                newth.Sumw2()
 			    if theaddition[ikey].Normalize == "true":
 				newth.Scale(1/newth.Integral())
 			    newth.Scale(aweight)
 			    isFirst = False
 			else:
 			    atmpth = ath.Clone()
-			    atmpth.Sumw2()
+                            if atmpth.GetSumw2N() == 0:
+                                atmpth.Sumw2()
 			    if theaddition[ikey].Normalize == "true":
 				atmpth.Scale(1/atmpth.Integral())
 			    atmpth.Scale(aweight)
@@ -664,8 +668,10 @@ if __name__ == '__main__':
 
 
 	
-	numeratorth.Sumw2()
-	denominatorth.Sumw2()
+	if numeratorth.GetSumw2N() == 0:
+            numeratorth.Sumw2()
+	if denominatorth.GetSumw2N() == 0:
+            denominatorth.Sumw2()
 
         #numeratorth.Rebin(4)
         #denominatorth.Rebin(4)
@@ -788,7 +794,7 @@ if __name__ == '__main__':
         if verbose: print "canvas created with name: "+thesuper[ikey].name+" and title: "+thesuper[ikey].title
         
 	#legend
-	aleg = TLegend(0.66,0.65,0.93,0.93)
+	aleg = TLegend(0.8,0.64,0.99,0.92)
 	SetOwnership( aleg, 0 ) 
 	aleg.SetMargin(0.12)
         aleg.SetTextSize(0.035)
@@ -944,7 +950,8 @@ if __name__ == '__main__':
 			if projectAxis == "no" and profileAxis == "no" : newth = ath.Clone()
 
                         if newth.InheritsFrom("TH1"):
-                            newth.Sumw2()
+                            if newth.GetSumw2N() == 0:
+                                newth.Sumw2()
                         listofnorm = thesuper[ikey].Norm
                         #print listofnorm
                         if listofnorm[ii] == "true":
@@ -1164,7 +1171,7 @@ if __name__ == '__main__':
             if thesuper[ikey].SubBanner != None:
                 newBanner = '#splitline{'+Banner+'}{'+thesuper[ikey].SubBanner+'}'
                 if verbose: print "add sub banner"
-	    tex[thesuper[ikey].name] = TLatex(0.28,0.85,newBanner)
+	    tex[thesuper[ikey].name] = TLatex(0.28,0.93,newBanner)
 	    tex[thesuper[ikey].name].SetNDC()
 	    tex[thesuper[ikey].name].SetTextSize(0.035)
 	    tex[thesuper[ikey].name].Draw()
